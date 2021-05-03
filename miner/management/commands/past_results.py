@@ -1,6 +1,5 @@
 import sys
 import concurrent.futures
-import requests
 
 from django.core.management.base import BaseCommand
 
@@ -22,9 +21,27 @@ class Command(BaseCommand):
     def scan_month(self, venue, month, year):
         day = 1
         while day <= 31:
-            build_daily_charts(venue, month, year, day)
+            build_daily_charts(venue, year, month, day)
+            # get results
+            # save weather
             day += 1
-        # create history scan
+        self.create_venue_scan(venue, year, month)
+
+    def create_venue_scan(self, venue, year, month):
+        try:
+            venue_scan = VenueScan.objects.get(
+                venue=venue,
+                year=year,
+                month=month
+            )
+        except ObjectDoesNotExist:
+            new_scan = VenueScan.objects.get(
+                venue=venue,
+                year=year,
+                month=month
+            )
+            new_scan.set_fields_to_base()
+            new_scan.save()
 
     def get_venue_results(self, venue):
         year = sys.argv[3]

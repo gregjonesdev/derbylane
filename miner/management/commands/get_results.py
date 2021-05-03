@@ -11,7 +11,6 @@ class Command(BaseCommand):
         active_venues = Venue.objects.filter(is_active=True)
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
-        all_scaled_metrics = {}
         for program in Program.objects.filter(
             date__range=(yesterday, today)):
             venue = program.venue

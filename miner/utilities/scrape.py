@@ -1,4 +1,5 @@
 import requests
+
 from lxml import html
 
 from miner.utilities.urls import (
@@ -20,11 +21,11 @@ from rawdat.utilities.constants import (
 
 
 
-def build_daily_charts(venue, month, year, day):
+def build_daily_charts(venue, year, month, day):
     for time in chart_times:
-        scan_chart(venue, month, year, day, time)
+        scan_chart(venue, year, month, day, time)
 
-def scan_chart(venue, month, year, day, time):
+def scan_chart(venue, year, month, day, time):
     number = 1
     failed_attempts = 0
     while failed_attempts <= allowed_attempts and number <= max_races_per_chart:
@@ -53,13 +54,13 @@ def scan_chart(venue, month, year, day, time):
 
 def build_results_url(venue_code, year, month, day, time, race_number):
     return "{}G{}${}{}{}{}{}".format(
-                results_url,
-                venue_code,
-                year,
-                str(month).zfill(2),
-                str(day).zfill(2),
-                time,
-                str(race_number).zfill(2))
+        results_url,
+        venue_code,
+        year,
+        str(month).zfill(2),
+        str(day).zfill(2),
+        time,
+        str(race_number).zfill(2))
 
 
 def get_node_elements(url, string):
