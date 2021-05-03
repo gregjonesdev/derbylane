@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 
 from rawdat.models import (
     Venue,
-    VenueScan
+    VenueScan,
     )
 
 from rawdat.utilities.constants import (
@@ -14,7 +14,15 @@ from rawdat.utilities.constants import (
 )
 
 from rawdat.utilities.methods import (
-    build_results_url
+    get_program,
+    get_chart,
+    get_race
+)
+
+from miner.utilities.scrape import (
+    build_results_url,
+    has_race_data,
+    save_race_data,
 )
 
 
@@ -28,11 +36,30 @@ class Command(BaseCommand):
         parser.add_argument('--venue', type=str)
 
     def scan_chart(self, venue, month, year, day, time):
-        race_number = 1
+        number = 1
         failed_attempts = 0
-        while failed_attempts <= allowed_attempts and race_number <= 30:
-            self.stdout.write(build_results_url(venue.code, year, month, day, time, race_number))
-            race_number += 1
+        while failed_attempts <= allowed_attempts and number <= 30:
+            target_url = build_results_url(
+                venue.code,
+                year,
+                month,
+                day,
+                time,
+                number)
+            if has_race_data(target_url):
+                program = get_program(
+                    venue,
+                    year,
+                    month,
+                    day)
+                chart = get_chart(program, time)
+                race = get_race(
+                    chart,
+                    number)
+                save_race_data(target_url)
+            else:
+                failed_attempts += 1
+            number += 1
 
 
     def scan_month(self, venue, month, year):

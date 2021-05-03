@@ -4,6 +4,7 @@ chardet==4.0.0
 Django==3.2
 idna==2.10
 javabridge==1.0.19
+lxml==4.6.3
 numpy==1.20.2
 psycopg2==2.8.6
 python-weka-wrapper3==0.2.2
