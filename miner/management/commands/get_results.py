@@ -1,7 +1,10 @@
+import datetime
+
 from django.core.management.base import BaseCommand
 
 from rawdat.models import (
     Program,
+    Venue
     )
 
 class Command(BaseCommand):
@@ -12,7 +15,8 @@ class Command(BaseCommand):
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
         for program in Program.objects.filter(
-            date__range=(yesterday, today)):
+            date__range=(yesterday, today),
+            venue__in=active_venues):
             venue = program.venue
-            if venue in active_venues:
-                pass
+            print(venue)
+            print(date)

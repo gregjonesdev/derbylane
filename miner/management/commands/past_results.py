@@ -8,7 +8,7 @@ from rawdat.models import (
     VenueScan,
     )
 
-from miner.utilities.scrape import build_daily_charts
+from miner.utilities.scrape import scan_chart_times
 
 
 
@@ -21,11 +21,10 @@ class Command(BaseCommand):
     def scan_month(self, venue, month, year):
         day = 1
         while day <= 31:
-            build_daily_charts(venue, year, month, day)
-            # get results
+            scan_chart_times(venue, year, month, day)
             # save weather
             day += 1
-        self.create_venue_scan(venue, year, month)
+        # self.create_venue_scan(venue, year, month)
 
     def create_venue_scan(self, venue, year, month):
         try:

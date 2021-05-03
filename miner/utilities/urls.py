@@ -4,6 +4,9 @@ trackinfo_desktop_base = "https://www.trackinfo.com"
 results_extension = "/index.jsp?next=resultsrace&raceid="
 entries_extension = "/index.jsp?next=entriesrace&raceid="
 
+
+
+
 results_url = "{}{}".format(trackinfo_mobile_base, results_extension)
 entries_url = "{}{}".format(trackinfo_mobile_base, entries_extension)
 

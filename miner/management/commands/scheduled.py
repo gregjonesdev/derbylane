@@ -7,7 +7,7 @@ from rawdat.models import (
     Venue,
     )
 
-from miner.utilities.scrape import build_daily_charts
+from miner.utilities.scrape import scan_chart_times
 
 class Command(BaseCommand):
 
@@ -16,9 +16,8 @@ class Command(BaseCommand):
         dates = self.get_dates()
         for venue in Venue.objects.filter(is_active=True):
             for date in dates:
-                # build_daily_charts(venue, date.year, date.month, date.day)
-                self.get_forecast(venue.weatherlookup.geocode, date)
-                # race data
+                scan_chart_times(venue, date.year, date.month, date.day)
+                # self.get_forecast(venue.weatherlookup.geocode, date)
 
     def get_forecast(self, geocode, date):
         self.stdout.write("geocode: {}".format(geocode))
