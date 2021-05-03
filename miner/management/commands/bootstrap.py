@@ -14,7 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         self.stdout.write("Starting Bootstrap script..")
-        data = open('./static/json/data.json').read()
+        data = open('./rawdat/json/data.json').read()
         jsonData = json.loads(data)
         self.seed_users(jsonData["users"])
         self.seed_venues(jsonData["venues"])

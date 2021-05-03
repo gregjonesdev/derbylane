@@ -10,3 +10,6 @@ chart_times = [
  "X",
  "Z"
 ]
+
+allowed_attempts = 3
+max_races_per_chart = 30
