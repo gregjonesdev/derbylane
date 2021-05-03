@@ -2,10 +2,9 @@
   "users": [
       {
           "is_superuser": true,
-          "username": "",
+          "username": "Greg",
           "first_name": "",
           "last_name": "",
-          "is_staff": true,
           "is_active": true
       }
 
@@ -53,6 +52,7 @@
       "about": "Opened since 1929, Caliente built a greyhound track to the infield of its horse track in 1947. A fire destroyed the original building in 1971, but the track reopened just a month later.",
       "weather":{
          "code":"32d51n117d04",
+         "geocode": "32.58%2C-117.09",
          "place":"tijuana",
          "wunderground":"mx/tijuana/MMTJ"
       }
@@ -83,7 +83,7 @@
    {
       "name":"Derby Lane",
       "code":"SP",
-      "is_active":true,
+      "is_active":false,
       "street_number":10490,
       "street_name":"Gandy",
       "street_suffix":"Blvd",
@@ -145,6 +145,7 @@
       "about": "In 1984, the Iowa State Legislature passed the Pari-mutuel Wagering Act which opened Iowa to greyhound and horse racing. The track opened on June 1, 1985.",
       "weather":{
          "code":"42d50n90d66",
+         "geocode": "42.5%2C-90.68",
          "place":"dubuque",
          "wunderground":"us/ia/dubuque/KDBQ"
       }
@@ -175,7 +176,7 @@
    {
       "name":"Orange Park",
       "code":"OP",
-      "is_active":true,
+      "is_active":false,
       "street_number":455,
       "street_name":"Park",
       "street_suffix":"Ave",
@@ -248,7 +249,7 @@
       "street_name":"North Congress",
       "street_suffix":"Ave",
       "zip_code":"33409",
-      "is_active":true,
+      "is_active":false,
       "city":"West Palm Beach",
       "state":"FL",
       "country":"USA",
@@ -444,6 +445,7 @@
       "weather":{
          "code":"35d15n90d18",
          "place":"west-memphis",
+         "geocode": "42.5%2C-90.68",
          "wunderground":"us/ar/west-memphis/KMEM"
       }
    },
@@ -467,13 +469,14 @@
       "weather":{
          "code":"38d42n81d79",
          "place":"cross-lanes",
+         "geocode": "38.41%2C-81.8",
          "wunderground":"us/wv/cross-lanes/KCRW"
       }
    },
    {
-      "name":"Wheeling",
+      "name":"Wheeling Downs",
       "code":"WD",
-      "is_active":true,
+      "is_active": true,
       "street_number":1,
       "street_name":"South Stone",
       "street_suffix":"St",
@@ -489,6 +492,7 @@
       },
       "weather":{
          "code":"40d06n80d72",
+         "geocode": "40.07%2C-80.69",
          "place":"wheeling",
          "wunderground":"us/wv/wheeling/KPIT"
       }
