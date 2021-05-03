@@ -1,0 +1,677 @@
+{
+  "users": [
+      {
+          "is_superuser": true,
+          "username": "Greg",
+          "first_name": "",
+          "last_name": "",
+          "is_active": true
+      }
+
+  ],
+  "venues": [
+    {
+      "name":"Birmingham",
+      "code":"BM",
+      "is_active":false,
+      "street_number":1000,
+      "street_name":"John Rogers",
+      "street_suffix":"Dr",
+      "zip_code":"35210",
+      "city":"Birmingham",
+      "state":"AL",
+      "country":"USA",
+      "social-media":{
+         "facebook":"https://www.facebook.com/birminghamgreyhoundracing",
+         "twitter":"https://twitter.com/BhmRaceCourse"
+      },
+      "website":"http://www.birminghamracecourse.com/liveracingmain.html",
+      "about": "In 1992, greyhound racing was added to Birmingham Race Course, which had originally opened in 1987. By 2019 the track was making more money from licensing the video to foreign gambling services than it was taking from on-site betting. Live greyhound racing ended at the track March 18, 2020.",
+      "weather":{
+         "code":"33d52n86d80",
+         "place":"birmingham",
+         "wunderground":"us/al/birmingham/KBHM"
+      }
+   },
+   {
+      "name":"Caliente",
+      "code":"CA",
+      "is_active":true,
+      "street_number":12027,
+      "street_name":"Agua Caliente",
+      "street_suffix":"Blvd",
+      "zip_code":"22024",
+      "city":"Tijuana",
+      "state":"BC",
+      "country":"MEX",
+      "social-media":{
+        "facebook":"https://www.facebook.com/caliente.winbig",
+        "twitter":null
+      },
+      "website":"https://www.calientecasino.us/caliente-sports-books-tijuana/greyhound-racing/",
+      "about": "Opened since 1929, Caliente built a greyhound track to the infield of its horse track in 1947. A fire destroyed the original building in 1971, but the track reopened just a month later.",
+      "weather":{
+         "code":"32d51n117d04",
+         "geocode": "32.58%2C-117.09",
+         "place":"tijuana",
+         "wunderground":"mx/tijuana/MMTJ"
+      }
+   },
+   {
+      "name":"Daytona Beach",
+      "code":"DB",
+      "is_active":false,
+      "street_number":960,
+      "street_name":"S. Willamson",
+      "street_suffix":"Blvd",
+      "zip_code":"32114",
+      "city":"Daytona Beach",
+      "state":"FL",
+      "country":"USA",
+      "social-media":{
+        "facebook":"https://www.facebook.com/DBKCandPR",
+        "twitter":"https://twitter.com/DBKCandPR"
+      },
+      "website":"https://www.daytonagreyhound.com",
+      "about": "The Daytona Beach Racing & Card Club was founded as the Volusia County Kennel Club in 1948, with the facility originally located adjacent to Daytona International Speedway. It represented the unofficial gateway to Daytona Beach. In 2002 it moved to a new location on Williamson Blvd and expanded its card room. Live greyhound racing ended at Daytona Beach March 28, 2020.",
+      "weather":{
+         "code":"29d21n81d02",
+         "place":"daytona-beach",
+         "wunderground":"us/fl/daytona-beach/KDAB"
+      }
+   },
+   {
+      "name":"Derby Lane",
+      "code":"SP",
+      "is_active":false,
+      "street_number":10490,
+      "street_name":"Gandy",
+      "street_suffix":"Blvd",
+      "zip_code":"33702",
+      "city":"St. Petersburg",
+      "state":"FL",
+      "country":"USA",
+      "website":"http://www.derbylane.com",
+      "social-media":{
+         "facebook":"https://www.facebook.com/DerbyLaneGreyhoundRacing",
+         "twitter":"https://twitter.com/Derby_Lane"
+      },
+      "about": "Originally named the St. Petersburg Kennel Club, Derby Lane was the oldest continuously operating greyhound track in the world. The club’s inaugural race was held on the afternoon of January 3rd, 1925. It closed December 27, 2020.",
+      "weather":{
+         "code":"27d75n82d63",
+         "place":"saint-petersburg",
+         "wunderground":"us/fl/st.-petersburg/KPIE"
+      }
+   },
+   {
+      "name":"Gulf Greyhound",
+      "code":"GG",
+      "is_active":false,
+      "street_number":1000,
+      "street_name":"FM 2004",
+      "street_suffix":null,
+      "zip_code":"77568",
+      "city":"La Marque",
+      "state":"TX",
+      "country":"USA",
+      "website":"http://www.gulfgreyhound.com",
+      "social-media":{
+         "facebook":"https://www.facebook.com/gulfgreyhound",
+         "twitter":"https://twitter.com/GulfGreyhound"
+      },
+      "about": "Gulf Greyhound Park opened its $55 million facility covering 110 acres to more than 11,000 fans in November 1992. In 2000, gamblers statewide wagered $63.2 million on live dog races; the amount dwindled to $6.9 million in 2014, when Gulf Greyhound Park was the only track offering live races. The park closed in June 2020.",
+      "weather":{
+         "code":"29d37n94d97",
+         "place":"la-marque",
+         "wunderground":"us/tx/la-marque/KGLS"
+      }
+   },
+   {
+      "name":"Iowa Greyhound",
+      "code":"IG",
+      "is_active":true,
+      "street_number":1899,
+      "street_name":"Greyhound Park Rd",
+      "street_suffix":"Blvd",
+      "zip_code":"52001",
+      "city":"Dubuque",
+      "state":"IA",
+      "country":"USA",
+      "website":"https://www.igaracing.com",
+      "social-media":{
+         "facebook":"https://www.facebook.com/theiowagreyhoundpark",
+         "twitter":null
+      },
+      "about": "In 1984, the Iowa State Legislature passed the Pari-mutuel Wagering Act which opened Iowa to greyhound and horse racing. The track opened on June 1, 1985.",
+      "weather":{
+         "code":"42d50n90d66",
+         "geocode": "42.5%2C-90.68",
+         "place":"dubuque",
+         "wunderground":"us/ia/dubuque/KDBQ"
+      }
+   },
+   {
+      "name":"Lincoln",
+      "code":"LI",
+      "is_active":false,
+      "street_number":100,
+      "street_name":"Twin River",
+      "street_suffix":"Rd",
+      "zip_code":"02865",
+      "city":"Lincoln",
+      "state":"RI",
+      "country":"USA",
+      "website":"https://www.twinriver.com",
+      "social-media":{
+         "facebook":"https://www.facebook.com/twinrivercasinohotel",
+         "twitter":"https://twitter.com/twinrivercasino/"
+      },
+      "about": "In 1976, B. A. Dario, the owner of the Pascoag Park Racetrack, sold a controlling interest in the Lincoln Downs horse track to the Taunton Greyhound Association. Rhode Island's 1991-92 budget authorized Lincoln and the state's other pari-mutuel facility, Newport Jai Alai, to offer off-track betting for 104 days a year. Simulcasting of horse races from other tracks began in July 1991. ",
+      "weather":{
+         "code":"41d91n71d44",
+         "place":"lincoln",
+         "wunderground":"us/ri/lincoln/KPVD"
+      }
+   },
+   {
+      "name":"Orange Park",
+      "code":"OP",
+      "is_active":false,
+      "street_number":455,
+      "street_name":"Park",
+      "street_suffix":"Ave",
+      "zip_code":"32073",
+      "city":"Orange Park",
+      "state":"FL",
+      "country":"USA",
+      "website":"http://www.bestbetjax.com/racing/",
+      "social-media":{
+         "facebook":"https://www.facebook.com/BestbetJacksonville",
+         "twitter":"https://twitter.com/BestBet_OP"
+      },
+      "about": "In May 1926, the Seminole Kennel Club opened its doors to an inaugural crowd of over 5,000 fans. Live racing ended in Decemeber 2020.",
+      "weather":{
+         "code":"30d17n81d71",
+         "place":"orange-park",
+         "wunderground":"us/fl/orange-park/KJAX"
+      }
+   },
+   {
+      "name":"Mardi Gras",
+      "code":"MG",
+      "is_active":false,
+      "street_number":831,
+      "street_name":"N. Federal Highway",
+      "street_suffix":null,
+      "zip_code":"33009",
+      "city":"Hollywood",
+      "state":"FL",
+      "country":"USA",
+      "website":"https://thebigeasycasino.com/",
+      "social-media":{
+         "facebook":"https://www.facebook.com/thebigeasycasino/",
+         "twitter":"https://twitter.com/thebigeasyfl"
+      },
+      "about": "Three years after Florida legalized parimutuel betting, the Hollywood Kennel Club opened on December 1, 1934.A grandstand was added in 1940. In 1974, the facility was reopened as Hollywood Greyhound Track. The last day of racing was held on May 5, 2018. ",
+      "weather":{
+         "code":"26d01n80d15",
+         "place":"hollywood",
+         "wunderground":"us/fl/hollywood/KFLL"
+      }
+   },
+   {
+      "name":"Naples-Ft Myers",
+      "code":"NF",
+      "is_active":false,
+      "street_number":10601,
+      "street_name":"Bonita Beach",
+      "street_suffix":"Rd",
+      "zip_code":"34113",
+      "city":"Bonita Springs",
+      "state":"FL",
+      "country":"USA",
+      "website":"https://www.naplesfortmyersdogs.com",
+      "social-media":{
+         "facebook":"https://www.facebook.com/NaplesFortMyersGreyhoundTrack/",
+         "twitter":null
+      },
+      "about": "The entertainment spectacular started in late December 1957 in a setting that would rival the opening of a motion picture. Southwest Florida officials participated in festivities, models posed with the greyhounds and a large crowd caused a parking jam and then watched the first winner pay $25.20 on a $2 bet. On Sunday, May 3, 2020, after almost 170,000 live races, live greyhound racing eneded without ceremony with a final 12-race program.",
+      "weather":{
+         "code":"26d34n81d78",
+         "place":"bonita-springs",
+         "wunderground":"us/fl/bonita-springs/KRSW"
+      }
+   },
+   {
+      "name":"Palm Beach",
+      "code":"PB",
+      "street_number":1111,
+      "street_name":"North Congress",
+      "street_suffix":"Ave",
+      "zip_code":"33409",
+      "is_active":false,
+      "city":"West Palm Beach",
+      "state":"FL",
+      "country":"USA",
+      "website":"https://pbkennelclub.com",
+      "social-media":{
+         "facebook":"https://www.facebook.com/PBKennelClub",
+         "twitter":"https://twitter.com/PBKennelClub"
+      },
+      "about": "In February 1932, greyhound racing was introduced to Palm Beach County in a facility built by the Carmichael Family. It was later sold to the Rooney Family that also owns the Pittsburgh Steelers. In addition to top-class greyhound racing, the facility hosts more than 60 Poker tables. After almost 90 years, live racing ended on New Year's Eve in December 2020.",
+      "weather":{
+         "code":"26d72n80d05",
+         "place":"west-palm-beach",
+         "wunderground":"us/fl/west-palm-beach/KPBI"
+      }
+   },
+   {
+      "name":"Sanford Orlando",
+      "code":"SN",
+      "is_active":false,
+      "street_number":301,
+      "street_name":"Dogtrack",
+      "street_suffix":"Rd",
+      "zip_code":"32750",
+      "city":"Longwood",
+      "state":"FL",
+      "country":"USA",
+      "website":"http://www.sanfordorlandokc.com/racing",
+      "social-media":{
+         "facebook":"https://www.facebook.com/SanfordOrlandoKC",
+         "twitter":null
+      },
+      "about": "Around 2,000 fans attened opening night of the Sanford Orlando Kennel Club in 1935. The last live races were held March 21, 2020.",
+      "weather":{
+         "code":"28d70n81d34",
+         "place":"longwood",
+         "wunderground":"us/fl/longwood/KSFB"
+      }
+   },
+   {
+      "name":"Sarasota",
+      "code":"SA",
+      "is_active":false,
+      "street_number":5400,
+      "street_name":"Bradenton",
+      "street_suffix":"Rd",
+      "zip_code":"34234",
+      "city":"Sarasota",
+      "state":"FL",
+      "country":"USA",
+      "website":"http://www.sarasotakennelclub.com/",
+      "about": "Sarasota originally opened in 1929. After a fire ruined most of the track in 1944, a car salesman and sheriff’s officer named Jerry Collins bought the place for $5,005 worth of back taxes. Last owned by Collins’s grandson, Jack Collins Jr., live racing came to and end May 4, 2019.",
+      "weather":{
+         "code":"27d34n82d53",
+         "place":"sarasota",
+         "wunderground":"us/fl/sarasota/KSRQ"
+      }
+   },
+   {
+      "name":"Tucson",
+      "code":"TU",
+      "is_active":false,
+      "street_number":2601,
+      "street_name":"S. Third",
+      "street_suffix":"Ave",
+      "zip_code":"85713",
+      "city":"Tucson",
+      "state":"AZ",
+      "country":"USA",
+      "website":"www.tucsongreyhound.com/",
+      "social-media":{
+         "facebook":"https://www.facebook.com/TucsonGreyhoundPark",
+         "twitter":"https://twitter.com/TucsonGreyhound"
+      },
+      "about": "Tucson Greyhound Park opened in 1944 and has operated continuously since, with attendance steadily declining as more and more gambling patrons started choosing the quick gratification of casino slot machines over wagering on dogs. Once a Saturday night favorite for a good meal and easy entertainment, the last race was run June 25, 2016.",
+      "weather":{
+         "code":"32d22n110d93",
+         "place":"tucson",
+         "wunderground":"us/az/tucson/KTUS"
+      }
+   },
+   {
+      "name":"Mobile",
+      "code":"MO",
+      "is_active":false,
+      "street_number":7101,
+      "street_name":"Old Pascagoula",
+      "street_suffix":"Rd",
+      "zip_code":"36582",
+      "city":"Theodore",
+      "state":"AL",
+      "country":"USA",
+      "website":"https://www.mobilegreyhoundpark.com/",
+      "about": "Mobile Greyhound Park officially opened in August 1973. Business peaked in 1988 with $100 million in wagers. Citing declining demand, Mobile Greyhound Park discontinued live racing on August 19, 2017. ",
+      "weather":{
+         "code":"30d55n88d18",
+         "place":"theodore",
+         "wunderground":"us/al/theodore/KMOB"
+      }
+   },
+   {
+      "name":"Flagler",
+      "code":"FL",
+      "is_active":false,
+      "street_number":450,
+      "street_name":"NW 37th",
+      "street_suffix":"Ave",
+      "zip_code":"33125",
+      "city":"Miami",
+      "state":"FL",
+      "country":"USA",
+      "website":"http://www.flaglerdogs.com/",
+      "about": "Flagler Greyhound Track opened in 1932. Once nicknamed 'Fabulous Flagler', Isadore Hecht purchased it in 1953 and developed it into one of the most successful venues in the country. Live racing ended in 2018.",
+      "weather":{
+         "code":"25d76n80d19",
+         "place":"miami",
+         "wunderground":"us/fl/miami/KMIA"
+      }
+   },
+   {
+      "name":"Pensacola",
+      "code":"PE",
+      "is_active":false,
+      "street_number":951,
+      "street_name":"Dog Track",
+      "street_suffix":"Rd",
+      "zip_code":"32506",
+      "city":"Pensacola",
+      "state":"FL",
+      "country":"USA",
+      "website":"https://www.pensacolagreyhoundtrack.com/",
+      "about": "1947-2018",
+      "weather":{
+         "code":"30d42n87d22",
+         "place":"pensacola",
+         "wunderground":"us/fl/pensacola/KPNS"
+      }
+   },
+   {
+      "name":"Valley Greyhound",
+      "code":"VG",
+      "is_active":false,
+      "street_number":2601,
+      "street_name":"South Ed Carey",
+      "street_suffix":"Dr",
+      "zip_code":"78552",
+      "city":"Harlingen",
+      "state":"TX",
+      "country":"USA",
+      "website":"https://www.valleyracepark.com/",
+      "about": "Valley Greyhound Park was originally owned by the Ladbroke Corporation which began racing in 1990. In 2000, Sam Houston Race Park, a thoroughbred racetrack in Houston bought and renamed the venue as Valley Race Park. Thousands turned out on opening night, March 17, 2000 even though it was only for simulcasting. Attendance in the first year was 949,399. But by 2006 it was down to 139,117. Track operators partly blamed the Texas Lottery, which started in 1992, for drawing away some customers.On Dec. 30, 2007, officials determined Bordertown Girl beat Oates after a short delay to determine the winner in the too-close-to-call race at the 15-year-old track. About 250 patrons showed up to witness – and bet – on the final race.",
+      "weather":{
+         "code":"26d19n97d70",
+         "place":"harlingen",
+         "wunderground":"us/tx/harlingen/KHRL"
+      }
+   },
+   {
+      "name":"Ebro",
+      "code":"EB",
+      "is_active":false,
+      "street_number":6558,
+      "street_name":"Dog Track",
+      "street_suffix":"Rd",
+      "zip_code":"32437",
+      "city":"Ebro",
+      "state":"FL",
+      "country":"USA",
+      "website":"http://www.goebro.com/",
+      "about": "After 65 seasons, Ebro Greyhound Park saw its last night of live greyhound racing Saturday, September 28, 2019.",
+      "weather":{
+         "code":"30d45n85d87",
+         "place":"ebro",
+         "wunderground":"us/fl/ebro/KECP"
+      }
+   },
+   {
+      "name":"Southland",
+      "code":"SL",
+      "is_active":true,
+      "street_number":1550,
+      "street_name":"North Ingram",
+      "street_suffix":"Blvd",
+      "zip_code":"72301",
+      "city":"West Memphis",
+      "state":"AR",
+      "country":"USA",
+      "about": "Southland Park Gaming and Racing originally opened in 1956 as Southland Greyhound Park. At its peak in popularity from the 1950s into the 1970s, the venue would draw approximately 20,000 fans every Saturday night.",
+      "website":"https://www.southlandcasino.com/greyhound-racing",
+      "social-media":{
+         "facebook":"https://www.facebook.com/SouthlandCasinoRacing/",
+         "twitter":"https://twitter.com/SouthlandGaming"
+      },
+      "weather":{
+         "code":"35d15n90d18",
+         "place":"west-memphis",
+         "geocode": "42.5%2C-90.68",
+         "wunderground":"us/ar/west-memphis/KMEM"
+      }
+   },
+   {
+      "name":"Mardi Gras",
+      "code":"TS",
+      "is_active":true,
+      "street_number":1,
+      "street_name":"Greyhound",
+      "street_suffix":"Dr",
+      "zip_code":"25313",
+      "city":"Cross Lanes",
+      "state":"WV",
+      "country":"USA",
+      "about": "Originally opened in 1985 as Tri-State Greyhound Park, the track expanded its casino offerings in 2008, as casino gambling was legalized in 2007. It currently has a large poker room, and offers the table games of blackjack, roulette, craps, three card poker, Mississippi stud, and Crisscross Poker. The casino was known previously as Tri-State Racetrack and Gaming Center before the addition of table games, and Tri-State Casino and Resort until the name was changed to reflect its Mardi Gras theme in July 2010.",
+      "website":"https://www.mardigrascasinowv.com/greyhound-racing",
+      "social-media":{
+         "facebook":"https://www.facebook.com/mardigrascasinohotelwestvirginia",
+         "twitter":"https://twitter.com/MardiGrasWV"
+      },
+      "weather":{
+         "code":"38d42n81d79",
+         "place":"cross-lanes",
+         "geocode": "38.41%2C-81.8",
+         "wunderground":"us/wv/cross-lanes/KCRW"
+      }
+   },
+   {
+      "name":"Wheeling Downs",
+      "code":"WD",
+      "is_active": true,
+      "street_number":1,
+      "street_name":"South Stone",
+      "street_suffix":"St",
+      "zip_code":"26003",
+      "city":"Wheeling",
+      "state":"WV",
+      "country":"USA",
+      "about": "Originally built in 1937 and named Wheeling Downs, the racetrack evolved over time. In the 1940s, it received a facelift courtesy of new shrubbery and steeps that earned it the nickname 'miniature Churchill Downs.' The track introduce off-track betting and video slot games in 1994. In 1999, “reel” slot machines arrived and the gaming center expanded to 34,000 square feet.",
+      "website":"https://www.wheelingisland.com/greyhound-racing",
+      "social-media":{
+         "facebook":"https://www.facebook.com/WheelingIslandCasino",
+         "twitter":"https://twitter.com/WheelingCasino"
+      },
+      "weather":{
+         "code":"40d06n80d72",
+         "geocode": "40.07%2C-80.69",
+         "place":"wheeling",
+         "wunderground":"us/wv/wheeling/KPIT"
+      }
+   },
+   {
+      "name":"Victoryland",
+      "code":"VL",
+      "is_active":false,
+      "street_number":8680,
+      "street_name":"County Road 40",
+      "zip_code":"36075",
+      "city":"Shorter",
+      "state":"AL",
+      "country":"USA",
+      "website":"http://www.victoryland.com/",
+      "social-media":{
+         "facebook":"https://www.facebook.com/pages/Victoryland/138926199483209"
+      },
+      "about": "Originally opened in 1983, VictoryLand ceased live racing on June 1, 2011. Victoryland still offers simulcasts and wagering for both greyhound and thoroughbred races elsewhere.",
+      "weather":{
+         "code":"32d40n85d92",
+         "place":"shorter",
+         "wunderground":"us/al/shorter/KMGM"
+      }
+   },
+   {
+      "name":"Raynham",
+      "code":"RT",
+      "is_active":false,
+      "street_number":1958,
+      "street_name":"Broadway",
+      "zip_code":"02767",
+      "city":"Raynham",
+      "state":"MA",
+      "country":"USA",
+      "website":"http://www.raynhampark.net/",
+      "about": "Raynham, a once-bustling track, used to boast 1,100 dogs and more than 50 kennels. In 1971, it became the first greyhound track in the country to hold races seven days a week. By the time it closed on Dec. 26, 2009, it hosted nine kennels and about 600 to 800 dogs, with live racing three days a week.",
+      "weather":{
+         "code":"41d95n71d07",
+         "place":"raynham",
+         "wunderground":"us/ma/raynham/KEWB"
+      }
+   }
+ ],
+ "scan_types": [
+   "scheduled",
+   "results"
+ ],
+ "race_grades": [
+    "AA",
+    "A",
+    "AT",
+    "B",
+    "BB",
+    "BT",
+    "C",
+    "CT",
+    "D",
+    "DT",
+    "E",
+    "J",
+    "M",
+    "T",
+    "S",
+    "SA",
+    "SC",
+    "SAA",
+    "SAT",
+    "SET",
+    "SB",
+    "SCL",
+    "SJ",
+    "SCT",
+    "SBT",
+    "SDT",
+    "SMT",
+    "SM",
+    "SD",
+    "SE",
+    "TAA",
+    "TA",
+    "TB",
+    "TC",
+    "TJ",
+    "TD",
+    "TE",
+    "TM",
+    "TMT",
+    "MT"
+  ],
+ "chart_times": [
+   "A",
+   "E",
+   "L",
+   "T",
+   "S",
+   "M",
+   "N",
+   "X",
+   "Z"
+ ],
+ "distances": [
+   "330",
+   "440",
+   "545",
+   "546",
+   "548",
+   "550",
+   "583",
+   "660"
+ ],
+ "race_conditions": [
+   "F",
+   "G",
+   "L",
+   "M",
+   "S",
+   "W"
+ ],
+ "venue_code_corrections": {
+   "66": "GG",
+   "M0": "MO",
+   "T$": "TS"
+ },
+  "skip_codes": [
+      "AD",
+      "BE",
+      "BF",
+      "BG",
+      "BR",
+      "EG",
+      "MP",
+      "CC",
+      "CG",
+      "CL",
+      "DG",
+      "DL",
+      "F$",
+      "FS",
+      "br",
+      "**",
+      "55",
+      "IF",
+      "$2",
+      "SO",
+      "SE",
+      "WO",
+      "HO",
+      "FK",
+      "EP",
+      "IR",
+      "MH",
+      "DP",
+      "PH",
+      "PN",
+      "OR",
+      "HI",
+      "GL",
+      "TP",
+      "31",
+      "BW",
+      "B$",
+      "BR",
+      "dP",
+      "DQ",
+      "dq",
+      "DW",
+      "JA",
+      "JC",
+      "IS",
+      "LR",
+      "MB",
+      "PU",
+      "PL",
+      "PT",
+      "SS",
+      "TR",
+      "WA",
+      "WF",
+      "WS",
+      "WT"]
+}
