@@ -205,7 +205,7 @@ class Program(CoreModel):
     date = models.DateField()
 
     def get_charts(self):
-        return Chart.objects.filter(program=self)
+        return Chart.objects.filter(program=self)  
 
 
 class Chart(CoreModel):
@@ -433,12 +433,11 @@ class Single(Payout):
         null=True
     )
 
-class HistoryScan(CoreModel):
+class VenueScan(CoreModel):
 
     class Meta:
-        verbose_name = 'HistoryScan'
+        verbose_name = 'VenueScan'
 
-    complete = models.BooleanField(default=False)
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
     month = models.IntegerField()
     year = models.IntegerField()
