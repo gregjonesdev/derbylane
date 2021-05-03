@@ -73,6 +73,18 @@ class Venue(CoreModel):
         return self.name
 
 
+class SocialMedia(CoreModel):
+    venue = models.ForeignKey(
+        Venue,
+        on_delete=models.CASCADE
+    )
+    twitter = models.CharField(
+        null=True,
+        max_length=128)
+    facebook = models.CharField(
+        null=True,
+        max_length=128)
+
 
 class Color(CoreModel):
 
@@ -213,10 +225,6 @@ class Chart(CoreModel):
         verbose_name = 'Chart'
         ordering = ['time']
 
-    url = models.ForeignKey(
-        Url,
-        null=True,
-        on_delete=models.CASCADE)
     program = models.ForeignKey(
         Program,
         null=True,
