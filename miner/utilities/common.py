@@ -1,5 +1,8 @@
 import requests
 
+from lxml import html
+
+
 def get_node_elements(url, string):
     return get_node(url).xpath(string)
 

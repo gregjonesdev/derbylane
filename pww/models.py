@@ -4,7 +4,7 @@ from derbylane.applib.models import CoreModel
 
 from rawdat.models import Race, Participant
 
-class Metric(CoreModel):
+# class Metric(CoreModel):
 
     # race
     # participant

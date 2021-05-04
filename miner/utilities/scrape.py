@@ -1,5 +1,4 @@
 
-from lxml import html
 
 from miner.utilities.urls import (
     results_url,
@@ -34,12 +33,64 @@ from miner.utilities.models import (
 
 from miner.utilities.common import get_node_elements
 
+def split_position_lengths(entry):
+    if entry:
+        split_entry = entry.replace("-", " ").split()
+        return split_entry
+    return [None, None]
+
+
+def get_final_and_lengths_behind(split_final):
+    try:
+        final = split_final[0]
+        if len(split_final) > 1:
+            lengths_behind = get_result_lengths_behind(split_final)
+        else:
+            lengths_behind = None
+    except IndexError:
+        final = None
+        lengths_behind = None
+    return [final, lengths_behind]
+
+def get_positions(row):
+    positions = []
+    i = 2
+    while i < 5:
+        split_position = split_position_lengths(row[i].text)
+        if len(split_position) > 0:
+            positions.append(split_position[0])
+        else:
+            positions.append(None)
+        i += 1
+    return positions
+
+
+def get_race_rows(all_tds, div_tds):
+    race_rows = []
+    for div_td in div_tds:
+        race_rows.append(div_td.getparent().getparent())
+    return race_rows
+
+def parse_row(row, race):
+    positions = get_positions(row)
+    final_lengths = get_final_and_lengths_behind(
+        split_position_lengths(row[5].text))
+    final = final_lengths[0]
+    lengths_behind = final_lengths[1]
+
+def get_results(target_url, all_tds, race):
+    div_tds = get_node_elements(target_url, '//td//div')
+    race_rows = get_race_rows(all_tds, div_tds)
+    for row in race_rows:
+        if len(row) is 10:
+            parse_row(row, race)
 
 def check_for_results(race, page_data):
     td_count = len(page_data)
     print(td_count)
     if td_count > 50:
         print('process results')
+        get_results(url, all_tds, race)
         if td_count > 110:
             print('process bets')
 
@@ -117,26 +168,6 @@ def populate_race(dognames, race):
                     post_position)
             i += 1
 
-def save_race_info(race, raw_setting):
-    print(raw_setting)
-    if raw_setting:
-        for item in raw_setting[:3]:
-            if item.upper() in race_grades:
-                race.grade = get_grade(item)
-        for item in raw_setting:
-            if item in distance_converter:
-                item = distance_converter[item]
-            try:
-                item = int(item)
-                if 100 < item < 900:
-                    distance = int(item)
-                    race.distance = distance
-            except:
-                pass
-        for item in raw_setting[3:]:
-            if item.upper() in race_conditions:
-                race.condition = item.upper()
-        race.save()
 
 def scan_chart_times(venue, year, month, day):
     for time in chart_times:
