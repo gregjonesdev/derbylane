@@ -245,6 +245,7 @@ def populate_race(dognames, race):
         for name in dognames:
             if not name in no_greyhound_names:
                 dog = get_dog(dognames[i])
+                print(dog)
                 post_position = i + 1
                 participant = get_participant(race, dog)
                 set_post(

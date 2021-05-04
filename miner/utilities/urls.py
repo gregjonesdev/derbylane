@@ -3,9 +3,13 @@ trackinfo_desktop_base = "https://www.trackinfo.com"
 
 results_extension = "/index.jsp?next=resultsrace&raceid="
 entries_extension = "/index.jsp?next=entriesrace&raceid="
+venue_entries_extension = "/index.jsp?next=entries&p=e&raceid="
 
 results_url = "{}{}".format(trackinfo_mobile_base, results_extension)
 entries_url = "{}{}".format(trackinfo_mobile_base, entries_extension)
+
+venue_entries_url = "{}{}".format(trackinfo_mobile_base, venue_entries_extension)
+# "/index.jsp?next=entries&p=e&raceid=GSL$20210506T"
 
 almanac_root = "https://www.almanac.com/weather/history/zipcode/"
 dog_root = "/{}dog.jsp?runnername=".format(trackinfo_desktop_base)
