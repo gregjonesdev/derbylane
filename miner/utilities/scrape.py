@@ -1,4 +1,4 @@
-
+import re
 
 from miner.utilities.urls import (
     results_url,
@@ -13,6 +13,7 @@ from miner.utilities.constants import (
     allowed_attempts,
     max_races_per_chart,
     art_skips,
+    no_greyhound_names,
     )
 
 from rawdat.utilities.methods import (

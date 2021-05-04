@@ -20,7 +20,7 @@ cost = 2.0
 grade_skips = ["--"]
 position_skips = ['.', '-', 'S', 'f', 'X', 'x', '0', 'O', 'N', '0', '+', 'D']
 art_skips = ['.', '-', 'f', 'X', 'x', '0', '+', 'D', 'OOP', 'DNF']
-
+no_greyhound_names = ["NO+GREYHOUND", "NO GREYHOUND", "*", "[EMAIL PROTECTED]"]
 
 chart_times = [
  "A",
