@@ -18,7 +18,20 @@ class Command(BaseCommand):
         jsonData = json.loads(data)
         self.seed_users(jsonData["users"])
         self.seed_venues(jsonData["venues"])
+        self.seed_grades(jsonData["race_grades"])
         self.stdout.write("Complete.")
+
+    def seed_grades(self, grades):
+        for grade in grades:
+            try:
+                grade = Grade.objects.get(name=grade["name"])
+            except ObjectDoesNotExist:
+                new_grade = Grade(
+                    name=grade["name"],
+                    value=grade["value"]
+                )
+                new_grade.set_fields_to_base()
+                new_grade.save()
 
     def seed_users(self, users):
         for user in users:

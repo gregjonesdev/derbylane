@@ -6,9 +6,11 @@ from rawdat.models import Program
 
 from miner.utilities.scrape import (
     build_results_url,
-    get_node_elements,
     check_for_results,
     )
+
+from miner.utilities.common import get_node_elements
+
 
 class Command(BaseCommand):
 
