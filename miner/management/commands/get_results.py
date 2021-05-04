@@ -39,4 +39,5 @@ class Command(BaseCommand):
                         race.number)
                     print(target_url)
                     page_data = get_node_elements(target_url, '//td')
-                    check_for_results(race, page_data)
+                    div_tds = get_node_elements(target_url, '//td//div')
+                    check_for_results(race, page_data, div_tds)

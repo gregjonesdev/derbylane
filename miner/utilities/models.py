@@ -122,27 +122,36 @@ def update_participant(
     actual_running_time,
     lengths_behind,
     comment):
-
-
-    if post_weight:
-        participant.post_weight = post_weight
-    if post:
-        participant.post = post
-    if off:
-        participant.off = off
-    if eighth:
-        participant.eighth = eighth
-    if straight:
-        participant.straight = straight
-    if final:
-        participant.final = final
-    if lengths_behind:
-        participant.lengths_behind = lengths_behind
-    if actual_running_time:
-        participant.actual_running_time = actual_running_time
-    if comment:
-        participant.comment = comment
-    participant.save()
+    print(participant.dog.name)
+    print(post_weight)
+    print(post)
+    print(off)
+    print(eighth)
+    print(straight)
+    print(final)
+    print(actual_running_time)
+    print(lengths_behind)
+    print(comment)
+    #
+    # if post_weight:
+    #     participant.post_weight = post_weight
+    # if post:
+    #     participant.post = post
+    # if off:
+    #     participant.off = off
+    # if eighth:
+    #     participant.eighth = eighth
+    # if straight:
+    #     participant.straight = straight
+    # if final:
+    #     participant.final = final
+    # if lengths_behind:
+    #     participant.lengths_behind = lengths_behind
+    # if actual_running_time:
+    #     participant.actual_running_time = actual_running_time
+    # if comment:
+    #     participant.comment = comment
+    # participant.save()
 
 def ask_user(attribute, value, check_url):
     print("Attention: {} is not a valid {}".format(value, attribute))

@@ -2,6 +2,8 @@
 
 from miner.utilities.urls import (
     results_url,
+    all_race_results,
+    all_race_suffix,
 )
 
 from miner.utilities.constants import distance_converter
@@ -40,6 +42,19 @@ def split_position_lengths(entry):
     return [None, None]
 
 
+def get_result_lengths_behind(split_final):
+    final = split_final[0]
+    lengths = None
+    if final.isnumeric() and int(final) > 1:
+        if len(split_final) > 1:
+            try:
+                lengths = float(split_final[1])
+            except ValueError:
+                if int(final) > 6:
+                    lengths = 30
+    return lengths
+
+
 def get_final_and_lengths_behind(split_final):
     try:
         final = split_final[0]
@@ -65,11 +80,55 @@ def get_positions(row):
     return positions
 
 
-def get_race_rows(all_tds, div_tds):
+def get_race_rows(div_tds):
     race_rows = []
     for div_td in div_tds:
         race_rows.append(div_td.getparent().getparent())
     return race_rows
+
+def get_post_weight(dog_name, string_date):
+    target_url = "{}{}{}".format(all_race_results, dog_name, all_race_suffix)
+    entries = get_node_elements(target_url, '//td[@class="raceline"]//a')
+    entries = get_node_elements(target_url, '//tr')
+    for entry in entries:
+        date = entry[0][0].text.strip().split()[0]
+        if date in [string_date]:
+            try:
+                float_weight = float(entry[5].text.strip())
+                if 20 < float_weight < 90:
+                    return float_weight
+            except:
+                return None
+
+def get_position(raw_position):
+    if raw_position:
+        raw_position = raw_position.strip()
+        if raw_position:
+            if isinstance(raw_position, str):
+                for skip in position_skips:
+                    if raw_position.find(skip) > -1:
+                        if len(raw_position) < 2:
+                            return None
+                        else:
+                            raw_position = raw_position.replace(skip, "")
+            try:
+                return int(raw_position)
+            except:
+                pass
+        else:
+            return None
+    else:
+        return None
+
+def get_time(entry):
+    if isinstance(entry, str):
+        entry = entry.strip()
+    if entry.upper() in art_skips:
+        return None
+    try:
+        return float(entry)
+    except ValueError:
+        return None        
 
 def parse_row(row, race):
     positions = get_positions(row)
@@ -77,20 +136,41 @@ def parse_row(row, race):
         split_position_lengths(row[5].text))
     final = final_lengths[0]
     lengths_behind = final_lengths[1]
+    dog = get_dog(row[0][0].text)
+    participant = get_participant(race, dog)
+    post_weight = get_post_weight(
+        participant.dog.name,
+        race.chart.program.date)
+    update_participant(
+        participant,
+        post_weight,
+        get_position(positions[0]),
+        get_position(row[1].text),
+        get_position(positions[1]),
+        get_position(positions[2]),
+        get_position(final),
+        get_time(row[6].text),
+        lengths_behind,
+        row[9].text.strip())
 
-def get_results(target_url, all_tds, race):
-    div_tds = get_node_elements(target_url, '//td//div')
-    race_rows = get_race_rows(all_tds, div_tds)
+
+
+
+
+
+
+def get_results(div_tds, race):
+    race_rows = get_race_rows(div_tds)
     for row in race_rows:
         if len(row) is 10:
             parse_row(row, race)
 
-def check_for_results(race, page_data):
+def check_for_results(race, page_data, div_tds):
     td_count = len(page_data)
     print(td_count)
     if td_count > 50:
         print('process results')
-        get_results(url, all_tds, race)
+        get_results(div_tds, race)
         if td_count > 110:
             print('process bets')
 
@@ -188,7 +268,8 @@ def scan_chart_times(venue, year, month, day):
                 race = build_race(venue, year, month, day, time, number)
                 anchor_elements = get_node_elements(target_url, '//a')
                 process_race(race, page_data, anchor_elements)
-                check_for_results(race, page_data)
+                div_tds = get_node_elements(target_url, '//td//div')
+                check_for_results(race, page_data, div_tds)
             else:
                 failed_attempts += 1
             number += 1
