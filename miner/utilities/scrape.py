@@ -6,18 +6,19 @@ from miner.utilities.urls import (
     all_race_suffix,
 )
 
-from miner.utilities.constants import distance_converter
+from miner.utilities.constants import (
+    distance_converter,
+    position_skips,
+    chart_times,
+    allowed_attempts,
+    max_races_per_chart,
+    art_skips,
+    )
 
 from rawdat.utilities.methods import (
     get_program,
     get_chart,
     get_race
-)
-
-from rawdat.utilities.constants import (
-    chart_times,
-    allowed_attempts,
-    max_races_per_chart,
 )
 
 from miner.utilities.models import (
@@ -86,19 +87,21 @@ def get_race_rows(div_tds):
         race_rows.append(div_td.getparent().getparent())
     return race_rows
 
-def get_post_weight(dog_name, string_date):
+def get_post_weight(dog_name, date):
     target_url = "{}{}{}".format(all_race_results, dog_name, all_race_suffix)
-    entries = get_node_elements(target_url, '//td[@class="raceline"]//a')
+    string_date = "{}".format(date)
+    entries = get_node_elements(target_url, '//td[@class="raceline"]')
     entries = get_node_elements(target_url, '//tr')
     for entry in entries:
         date = entry[0][0].text.strip().split()[0]
-        if date in [string_date]:
+        if date == string_date:
             try:
                 float_weight = float(entry[5].text.strip())
                 if 20 < float_weight < 90:
                     return float_weight
             except:
                 return None
+
 
 def get_position(raw_position):
     if raw_position:
@@ -128,7 +131,7 @@ def get_time(entry):
     try:
         return float(entry)
     except ValueError:
-        return None        
+        return None
 
 def parse_row(row, race):
     positions = get_positions(row)

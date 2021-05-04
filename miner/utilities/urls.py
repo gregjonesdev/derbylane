@@ -4,17 +4,13 @@ trackinfo_desktop_base = "https://www.trackinfo.com"
 results_extension = "/index.jsp?next=resultsrace&raceid="
 entries_extension = "/index.jsp?next=entriesrace&raceid="
 
-all_race_results = "https://www.trackinfo.com/dog-racelines.jsp?page=1&runnername="
-all_race_suffix = "&TotalRowCount=20000"
-
-
 results_url = "{}{}".format(trackinfo_mobile_base, results_extension)
 entries_url = "{}{}".format(trackinfo_mobile_base, entries_extension)
 
 almanac_root = "https://www.almanac.com/weather/history/zipcode/"
 dog_root = "/{}dog.jsp?runnername=".format(trackinfo_desktop_base)
 
-all_race_results = "{}dog-racelines.jsp?page=1&runnername=".format(trackinfo_desktop_base)
+all_race_results = "{}/dog-racelines.jsp?page=1&runnername=".format(trackinfo_desktop_base)
 all_race_suffix = "&TotalRowCount=20000"
 
 

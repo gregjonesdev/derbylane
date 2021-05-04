@@ -18,3 +18,21 @@ race_conditions = [
 
 cost = 2.0
 grade_skips = ["--"]
+position_skips = ['.', '-', 'S', 'f', 'X', 'x', '0', 'O', 'N', '0', '+', 'D']
+art_skips = ['.', '-', 'f', 'X', 'x', '0', '+', 'D', 'OOP', 'DNF']
+
+
+chart_times = [
+ "A",
+ "E",
+ "L",
+ "T",
+ "S",
+ "M",
+ "N",
+ "X",
+ "Z"
+]
+
+allowed_attempts = 3
+max_races_per_chart = 30
