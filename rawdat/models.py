@@ -183,9 +183,9 @@ class Dog(CoreModel):
     last_scanned = models.DateTimeField(null=True)
 
     def get_litters(self):
-        if self.sex is 'F':
+        if self.sex == 'F':
             return Litter.objects.filter(dam=self)
-        elif self.sex is 'M':
+        elif self.sex == 'M':
             return Litter.objects.filter(sire=self)
 
     def get_absolute_url(self):
@@ -205,7 +205,7 @@ class Program(CoreModel):
     date = models.DateField()
 
     def get_charts(self):
-        return Chart.objects.filter(program=self)  
+        return Chart.objects.filter(program=self)
 
 
 class Chart(CoreModel):

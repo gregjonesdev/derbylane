@@ -14,6 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write("Starting Scheduled script..")
         dates = self.get_dates()
+        print(Venue.objects.count())
         for venue in Venue.objects.filter(is_active=True):
             for date in dates:
                 scan_chart_times(venue, date.year, date.month, date.day)
