@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -21,16 +20,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'q^w%k)r#m4mz0n5m55w-9e)q#gs50(v^0f=)_e!#=qok$yg^6p'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -44,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'miner',
     'rawdat',
+    'derbylane',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +52,7 @@ ROOT_URLCONF = 'derbylane.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR + '/derbylane/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
