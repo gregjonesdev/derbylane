@@ -4,7 +4,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['www.cashdog.life', 'cashdog.life', '143.198.234.238',]
 
-ROOT_URLCONF = "cashdog.urls"
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
