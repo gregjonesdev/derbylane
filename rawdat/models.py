@@ -441,3 +441,12 @@ class VenueScan(CoreModel):
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
     month = models.IntegerField()
     year = models.IntegerField()
+
+class CronJob(CoreModel):
+
+    class Meta:
+        verbone_name = 'CronJob'
+
+    type = models.CharField(
+        null=True,
+        max_length=256)
