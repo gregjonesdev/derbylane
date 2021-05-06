@@ -445,7 +445,7 @@ class VenueScan(CoreModel):
 class CronJob(CoreModel):
 
     class Meta:
-        verbone_name = 'CronJob'
+        verbose_name = 'CronJob'
 
     type = models.CharField(
         null=True,
