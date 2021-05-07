@@ -23,9 +23,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'staticfiles'),
 )
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-# ROOT_URLCONF = "cashdog.urls"
+ALLOWED_HOSTS = [
+    'www.cashdog.life',
+    'cashdog.life',
+    '144.126.219.69',
+    'localhost',
+    '127.0.0.1']
 
 # Application definition
 
