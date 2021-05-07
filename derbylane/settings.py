@@ -1,1 +1,1 @@
-ROOT_URLCONF = "cashdog.urls"
+ROOT_URLCONF = "derbylane.urls"
