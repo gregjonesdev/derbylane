@@ -5,7 +5,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['www.cashdog.life', 'cashdog.life', '143.198.49.242',]
 
 
-
+from django.conf import settings
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
