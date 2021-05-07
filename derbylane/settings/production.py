@@ -2,7 +2,7 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['www.cashdog.life', 'cashdog.life', '143.198.49.242',]
+ALLOWED_HOSTS = ['www.cashdog.life', 'cashdog.life', '144.126.219.69',]
 
 
 from django.conf import settings
