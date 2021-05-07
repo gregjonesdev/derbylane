@@ -2,7 +2,7 @@ from settings.base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['www.cashdog.life', 'cashdog.life', '143.198.234.238',]
+ALLOWED_HOSTS = ['www.cashdog.life', 'cashdog.life', '143.198.49.242',]
 
 
 
