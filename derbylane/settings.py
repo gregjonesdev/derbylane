@@ -1,4 +1,4 @@
-# ROOT_URLCONF = "derbylane.urls"
+ROOT_URLCONF = "derbylane.urls"
 #
 from settings.base import *
 
