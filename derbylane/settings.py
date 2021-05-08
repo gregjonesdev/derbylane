@@ -1,6 +1,6 @@
 import os
 
-ROOT_URLCONF = "derbylane.urls"
+from settingsconf.base import *
 
 DEBUG = True
 
@@ -16,6 +16,3 @@ DATABASES = {
         'PORT': '',
     }
 }
-
-from django.conf import settings
-print(settings)
