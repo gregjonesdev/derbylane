@@ -26,7 +26,7 @@ STATICFILES_DIRS = (
 ALLOWED_HOSTS = [
     'www.cashdog.life',
     'cashdog.life',
-    '144.126.219.69',
+    '144.126.219.241',
     'localhost',
     '127.0.0.1']
 
