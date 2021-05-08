@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'miner',
     'rawdat',
     'derbylane',
+    'pww',
 ]
 
 MIDDLEWARE = [
