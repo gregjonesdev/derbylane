@@ -1,18 +1,18 @@
 from .base import *
 
 
-from django.core.urlresolvers import set_urlconf
+# from django.core.urlresolvers import set_urlconf
 
 DEBUG = False
-set_urlconf("derbylane.urls")
-print(settings)
-
-ALLOWED_HOSTS = [
-    'www.cashdog.life',
-    'cashdog.life',
-    '144.126.219.69',
-    'localhost',
-    '127.0.0.1']
+# set_urlconf("derbylane.urls")
+# print(settings)
+#
+# ALLOWED_HOSTS = [
+#     'www.cashdog.life',
+#     'cashdog.life',
+#     '144.126.219.69',
+#     'localhost',
+#     '127.0.0.1']
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
