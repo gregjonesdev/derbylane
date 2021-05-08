@@ -1,6 +1,6 @@
 import os
 
-from settingsconf.base import *
+from .settingsconf.base import *
 
 DEBUG = True
 
