@@ -2,7 +2,7 @@ import os
 
 ROOT_URLCONF = "derbylane.urls"
 
-DEBUG = False
+DEBUG = True
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
