@@ -1,6 +1,11 @@
 from .base import *
 
+
+from django.core.urlresolvers import set_urlconf
+
 DEBUG = False
+set_urlconf("derbylane.urls")
+print(settings)
 
 ALLOWED_HOSTS = [
     'www.cashdog.life',
@@ -10,7 +15,6 @@ ALLOWED_HOSTS = [
     '127.0.0.1']
 
 
-from django.conf import settings
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
