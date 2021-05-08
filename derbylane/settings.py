@@ -1,5 +1,5 @@
 import os
-
+from .settingsconf.bse import *
 ROOT_URLCONF = "derbylane.urls"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,13 +12,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'staticfiles'),
 )
-ALLOWED_HOSTS = [
-    'www.cashdog.life',
-    'cashdog.life',
-    '144.126.219.241',
-    'localhost',
-    '127.0.0.1']
-
+# ALLOWED_HOSTS = [
+#     'www.cashdog.life',
+#     'cashdog.life',
+#     '144.126.219.241',
+#     'localhost',
+#     '127.0.0.1']
+print("allowed hosts:")
+print(ALLOWED_HOSTS)
 # Application definition
 
 INSTALLED_APPS = [
@@ -28,11 +29,29 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'two_factor',
     'miner',
     'rawdat',
     'derbylane',
     'pww',
 ]
+
+LOGIN_URL = 'two_factor:login'
+
+# this one is optional
+LOGIN_REDIRECT_URL = 'two_factor:profile'
+LOGOUT_REDIRECT_URL = "/"
+TWILIO_CALLER_ID = "Cashdog"
+
+TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.twilio.gateway.Twilio'
+TWILIO_ACCOUNT_SID = ''
+TWILIO_AUTH_TOKEN = ''
+# TWILIO_CALLER_ID = "+12058090359"
+PHONENUMBER_DEFAULT_REGION = "US"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -42,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
 ]
 
 # ROOT_URLCONF = 'derbylane.urls'

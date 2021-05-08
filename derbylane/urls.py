@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from two_factor.urls import urlpatterns as tf_urls
 
 from derbylane.views import (
     Welcome,
@@ -12,6 +13,7 @@ def buildURL(object_name):
         r'(?:\/(?P<action>[a-z_]+))?/$' % object_name)
 
 urlpatterns = [
+    url(r'', include(tf_urls)),
     url(
         r'^$',
         Welcome.as_view(),
