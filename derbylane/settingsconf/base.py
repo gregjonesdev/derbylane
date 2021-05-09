@@ -107,11 +107,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+TWILIO_CALLER_ID = "Cashdog"
+
 TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.twilio.gateway.Twilio'
-TWILIO_ACCOUNT_SID = 'AC23dd8e609b832b631c6aa9566d74b845'
-TWILIO_AUTH_TOKEN = '53600442413ae60366e2a7644c9ef8ea'
-TWILIO_CALLER_ID = "+12058090359"
+TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+TWILIO_CALLER_ID = os.environ.get('TWILIO_CALLER_ID')
 PHONENUMBER_DEFAULT_REGION = "US"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/

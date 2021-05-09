@@ -41,13 +41,6 @@ LOGIN_URL = 'two_factor:login'
 # this one is optional
 LOGIN_REDIRECT_URL = 'two_factor:profile'
 LOGOUT_REDIRECT_URL = "/"
-TWILIO_CALLER_ID = "Cashdog"
-
-TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.twilio.gateway.Twilio'
-TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
-TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
-# TWILIO_CALLER_ID = "+12058090359"
-PHONENUMBER_DEFAULT_REGION = "US"
 
 
 MIDDLEWARE = [
