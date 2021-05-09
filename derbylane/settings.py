@@ -119,3 +119,8 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+
+CRONJOBS = [
+    ('* * * * * cd /home/greg/derbylane/dl_env/derbylane && source $HOME/.profile;', 'miner.cron.my_cron_job')
+]

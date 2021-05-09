@@ -17,5 +17,5 @@ DATABASES = {
 }
 
 CRONJOBS = [
-    ('* * * * *', 'miner.cron.my_cron_job')
+    ('* * * * * source $HOME/.profile;', 'miner.cron.my_cron_job')
 ]
