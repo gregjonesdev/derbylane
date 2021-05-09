@@ -18,8 +18,7 @@ STATICFILES_DIRS = (
 #     '144.126.219.241',
 #     'localhost',
 #     '127.0.0.1']
-print("allowed hosts:")
-print(ALLOWED_HOSTS)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -29,10 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_otp',
-    'django_otp.plugins.otp_static',
-    'django_otp.plugins.otp_totp',
-    'two_factor',
+    'codes',
+    'users',
     'miner',
     'rawdat',
     'derbylane',
@@ -47,8 +44,8 @@ LOGOUT_REDIRECT_URL = "/"
 TWILIO_CALLER_ID = "Cashdog"
 
 TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.twilio.gateway.Twilio'
-TWILIO_ACCOUNT_SID = ''
-TWILIO_AUTH_TOKEN = ''
+TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
 # TWILIO_CALLER_ID = "+12058090359"
 PHONENUMBER_DEFAULT_REGION = "US"
 

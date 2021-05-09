@@ -1,1 +1,13 @@
-Welcome
+{% extends '_base.html'%}
+
+{% block content %}
+{% if user.is_authenticated %}
+Welcome, {{ user }}
+
+{% else %}
+
+
+
+
+{% endif %}
+{% endblock content %}
