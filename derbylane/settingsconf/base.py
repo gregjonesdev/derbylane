@@ -59,11 +59,10 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django_otp.middleware.OTPMiddleware',
+    'two_factor.middleware.threadlocals.ThreadLocals',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-# ROOT_URLCONF = 'derbylane.urls'
 
 TEMPLATES = [
     {
@@ -108,6 +107,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.twilio.gateway.Twilio'
+TWILIO_ACCOUNT_SID = 'AC23dd8e609b832b631c6aa9566d74b845'
+TWILIO_AUTH_TOKEN = '53600442413ae60366e2a7644c9ef8ea'
+TWILIO_CALLER_ID = "+12058090359"
+PHONENUMBER_DEFAULT_REGION = "US"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/

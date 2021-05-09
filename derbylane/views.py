@@ -1,7 +1,10 @@
 from django.views.generic import View
 from django.shortcuts import render
 
-class Welcome(View):
+from two_factor.views.mixins import OTPRequiredMixin
+
+
+class Welcome(OTPRequiredMixin, View):
 
     template_name = "welcome.html"
     context = {}
