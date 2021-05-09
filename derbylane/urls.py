@@ -1,11 +1,14 @@
-from django.urls import path
 from django.conf.urls import url, include
+from django.contrib.auth import views as auth_views
+from django.urls import path
+
 from two_factor.urls import urlpatterns as tf_urls
 from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
+
 from derbylane.views import (
     Welcome,
+    FrontPage,
 )
-from django.contrib.auth import views as auth_views
 
 def buildURL(object_name):
     return (
@@ -20,6 +23,10 @@ urlpatterns = [
         r'^$',
         Welcome.as_view(),
         name='welcome'),
+    url(
+        r'^frontpage/$',
+        FrontPage.as_view(),
+        name='frontpage'),
     path('', include(tf_twilio_urls)),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

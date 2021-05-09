@@ -1,0 +1,36 @@
+:root {
+  --main-bg-color: coral;
+  --main-txt-color: blue;
+  --main-padding: 15px;
+  --primary: #BB86FC;
+  --seconday: #03DAC5;
+  --bg-primary: #121212;
+  --cashdog-blue: #00A8FF;
+  --error: #CF6679;
+  --bg-base: #000000;
+  --font-primary: #FFFFFF;
+  --font-style: Verdana, Geneva, sans-serif;
+  --medium-emphasis: 0.6;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--font-primary);
+  font-family: var(--font-style);
+  margin: 0 auto;
+}
+
+nav {
+  background-color: var(--bg-primary);
+}
+.main-content {
+    padding: 10px;
+}
+
+.card {
+  background-color: inherit;
+}
+
+.card-header {
+  background-color: #212121;
+}
