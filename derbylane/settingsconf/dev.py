@@ -15,3 +15,7 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+CRONJOBS = [
+    ('* * * * *', 'miner.cron.my_cron_job')
+]

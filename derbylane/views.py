@@ -27,5 +27,5 @@ class FrontPage(OTPRequiredMixin, View):
         myDate = datetime.now()
         active_venues = Venue.objects.filter(is_active=True)
         self.context["venues"] = active_venues
-        self.context["today"] = myDate.strftime("%A %B %d")
+        self.context["today"] = myDate.strftime("%A, %B %-d")
         return render(request, self.template_name, self.context)
