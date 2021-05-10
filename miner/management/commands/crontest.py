@@ -5,7 +5,6 @@ from rawdat.models import CronJob
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        print("fawk")
         new_job = CronJob(
             type="Success"
         )

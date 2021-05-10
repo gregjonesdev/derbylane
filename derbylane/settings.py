@@ -97,3 +97,7 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+CRONJOBS = [
+    ('* * * * * cd /home/greg/derbylane/dl_env/derbylane && ../bin/python manage.py crontest')
+]
