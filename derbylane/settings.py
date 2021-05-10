@@ -101,7 +101,7 @@ DATABASES = {
         'PORT': '',
     }
 }
-
+print(os.path.dirname(BASE_DIR))
 CRONJOBS = [
     ('* * * * * cd {}'.format(os.path.dirname(BASE_DIR)), 'miner.cron.jobs.test',  '>> ~/cron_job.log')
 ]
