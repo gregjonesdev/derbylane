@@ -1,40 +1,18 @@
 import os
 from .settingsconf.base import *
-ROOT_URLCONF = "derbylane.urls"
+# ROOT_URLCONF = "derbylane.urls"
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'staticfiles'),
-)
-# ALLOWED_HOSTS = [
-#     'www.cashdog.life',
-#     'cashdog.life',
-#     '144.126.219.241',
-#     'localhost',
-#     '127.0.0.1']
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'staticfiles'),
+# )
 
-# Application definition
-
-# INSTALLED_APPS = [
-#     'django.contrib.admin',
-#     'django.contrib.auth',
-#     'django.contrib.contenttypes',
-#     'django.contrib.sessions',
-#     'django.contrib.messages',
-#     'django.contrib.staticfiles',
-#     'codes',
-#     'users',
-#     'miner',
-#     'rawdat',
-#     'derbylane',
-#     'pww',
-# ]
 
 LOGIN_URL = 'two_factor:login'
 
@@ -119,8 +97,3 @@ DATABASES = {
         'PORT': '',
     }
 }
-
-
-CRONJOBS = [
-    ('* * * * * cd /home/greg/derbylane/dl_env/derbylane && source $HOME/.profile;', 'miner.cron.my_cron_job')
-]

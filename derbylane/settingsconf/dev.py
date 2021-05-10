@@ -15,7 +15,3 @@ DATABASES = {
         'PORT': '',
     }
 }
-
-CRONJOBS = [
-    ('* * * * * source $HOME/.profile;', 'miner.cron.my_cron_job')
-]
