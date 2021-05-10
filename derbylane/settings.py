@@ -86,9 +86,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-DEBUG = True
-
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DATABASES = {
@@ -102,6 +99,5 @@ DATABASES = {
     }
 }
 CRONJOBS = [
-('* * * * * cd {} && source /home/greg/environment;'.format(os.path.dirname(BASE_DIR)), 'miner.cron.jobs.test', '>> /tmp/super_cron_job.log'),
-    # ('* * * * * cd {}'.format(os.path.dirname(BASE_DIR)), 'miner.cron.jobs.test',  '>> /tmp/crony_job.log')
+('* * * * * cd {} && source /home/greg/environment;'.format(os.path.dirname(BASE_DIR)), 'miner.cron.jobs.test', '>/dev/null 2>&1'),
 ]
