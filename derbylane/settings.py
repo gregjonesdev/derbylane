@@ -102,6 +102,6 @@ DATABASES = {
     }
 }
 CRONJOBS = [
-('* * * * * cd {} && source $HOME/.profile;'.format(os.path.dirname(BASE_DIR)), 'miner.cron.jobs.test',  '>> /tmp/crony_job.log'),
+('* * * * * cd {} && source $HOME/.profile;'.format(os.path.dirname(BASE_DIR)), 'miner.cron.jobs.test'),
     # ('* * * * * cd {}'.format(os.path.dirname(BASE_DIR)), 'miner.cron.jobs.test',  '>> /tmp/crony_job.log')
 ]
