@@ -17,5 +17,5 @@ DATABASES = {
 }
 
 CRONJOBS = [
-    ('* * * * * cd {}'.format(os.path.dirname(BASE_DIR)), 'derbylane.cron.my_cron_job',  '>> ~/cron_job.log')
+    ('* * * * * cd {}'.format(os.path.dirname(BASE_DIR)), 'miner.cron.jobs.test',  '>> ~/cron_job.log')
 ]
