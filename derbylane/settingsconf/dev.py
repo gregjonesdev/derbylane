@@ -15,3 +15,7 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+CRONJOBS = [
+    ('* * * * * cd {}'.format(os.path.dirname(BASE_DIR)), 'derbylane.cron.my_cron_job',  '>> ~/cron_job.log')
+]

@@ -68,7 +68,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# INSTALLED_APPS += 'django_crontab'
 
+# CRONJOBS = [
+#     ('* * * * * source $HOME/.profile;', 'miner.cron.jobs.test'),
+# ]
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
