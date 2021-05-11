@@ -183,25 +183,50 @@ def process_combo_bets(race, target_url):
     print("process combo bets")
     for each in get_node_elements(target_url, '//p'):
         split_text = each.text.split()
-        print("{} {}".format(len(split_text), split_text))
+        bet_prices = []
         if len(split_text) > 0:
-            combo_name = get_combo_name(split_text[1].upper())
-            # posts = []
-            # cost =
-            # payout =
+            print(split_text)
+            for string in split_text:
+                if "$" in string or "." in string:
+                    bet_prices.append(string)
+                elif string.isalpha() and not 'paid' in string.lower():
+                    combo_name = get_combo_name(string.upper())
+                elif "/" in string:
+                    posts = string.split("/")
 
+            # posts = [1,2,3]
 
-            if combo_name == "Exacta":
-                create_exacta(race, posts, cost, payout)
-            elif combo_name == "Quiniela":
-                create_quiniela(race, posts, cost, payout)
-            elif combo_name == "Trifecta":
-                create_trifecta(race, posts, cost, payout)
-            elif combo_name == "Superfecta":
-                create_superfecta(race, posts, cost, payout)
+            cost = get_dollar_amount(bet_prices[0])
+            payout = get_dollar_amount(bet_prices[1])
+
+            if cost and payout and bet_prices and posts:
+                print("cost: {}".format(cost))
+                print("payout: {}".format(payout))
+                print("name: {}".format(combo_name))
+                print("posts: {}".format(posts))
+            else:
+                print("uh oh @ 203: {}".format(split_text))
+                raise SystemExit(0)
+
+            # READY
+            # if combo_name == "Exacta":
+            #     create_exacta(race, posts, cost, payout)
+            # elif combo_name == "Quiniela":
+            #     create_quiniela(race, posts, cost, payout)
+            # elif combo_name == "Trifecta":
+            #     create_trifecta(race, posts, cost, payout)
+            # elif combo_name == "Superfecta":
+            #     create_superfecta(race, posts, cost, payout)
 
 
     # raise SystemExit(0)
+
+def get_dollar_amount(string):
+    try:
+        return float(string.replace("$", "").replace(",", ""))
+    except:
+        print("get_dollar_amt: couldnt float {}".format(string))
+        raise SystemExit(0)
 
 def get_combo_name(text):
     if 'EX' in text:
