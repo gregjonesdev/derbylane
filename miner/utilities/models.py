@@ -31,6 +31,30 @@ from miner.utilities.urls import (
     dog_root,
 )
 
+def create_quiniela(race, posts, cost, payout):
+    entrants = [
+        get_participant_from_post(race, int(posts[0])),
+        get_participant_from_post(race, int(posts[1]))
+        ]
+    try:
+        bet = Quiniela.objects.get(
+          left__in=entrants,
+          right__in=entrants
+        )
+    except ObjectDoesNotExist:
+        new_bet = Quiniela(
+          left=entrants[0],
+          right=entrants[1]
+        )
+        new_bet.set_fields_to_base()
+        bet = new_bet
+    if cost:
+        bet.cost = cost
+    if payout:
+        bet.payout = payout
+    bet.save()
+
+
 def get_participant_from_post(race, post):
     return Participant.objects.get(
         race=race,
@@ -60,28 +84,7 @@ def create_exacta(race, posts, cost, payout):
         bet.payout = payout
     bet.save()
 
-def create_quiniela(race, posts, cost, payout):
-    entrants = [
-        get_participant_from_post(race, int(posts[0]),
-        get_participant_from_post(race, int(posts[1])
-        ]
-    try:
-        bet = Quiniela.objects.get(
-          left__in=entrants,
-          right__in=entrants
-        )
-    except ObjectDoesNotExist:
-        new_bet = Quiniela(
-          left=entrants[0],
-          right=entrants[1]
-        )
-        new_bet.set_fields_to_base()
-        bet = new_bet
-    if cost:
-        bet.cost = cost
-    if payout:
-        bet.payout = payout
-    bet.save()
+
 
 
 def create_trifecta(race, posts, cost, payout):
