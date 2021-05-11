@@ -391,7 +391,7 @@ class Bet(CoreModel):
     cost = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        null=True)
+        default=2.00)
     payout = models.DecimalField(
         max_digits=10,
         decimal_places=2,

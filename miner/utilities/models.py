@@ -5,7 +5,10 @@ from rawdat.models import (
     Program,
     Race,
     Participant,
-    # Combination,
+    Quiniela,
+    Exacta,
+    Trifecta,
+    Superfecta,
     BetType,
     Grade,
     Single,
@@ -20,11 +23,125 @@ from miner.utilities.constants import (
     distance_converter
 )
 
-from miner.utilities.common import get_node_elements
+from miner.utilities.common import (
+    get_node_elements,
+)
 
 from miner.utilities.urls import (
     dog_root,
 )
+
+def get_participant_from_post(race, post):
+    return Participant.objects.get(
+        race=race,
+        post=post
+    )
+
+def create_exacta(race, posts, cost, payout):
+    win = get_participant_from_post(race, int(posts[0]))
+    place = get_participant_from_post(race, int(posts[1]))
+    try:
+        bet = Exacta.objects.get(
+            race=race,
+            win=win,
+            place=place,
+        )
+    except ObjectDoesNotExist:
+        new_bet = Exacta(
+            race=race,
+            win=win,
+            place=place,
+        )
+        new_bet.set_fields_to_base()
+        bet = new_bet
+    if cost:
+        bet.cost = cost
+    if payout:
+        bet.payout = payout
+    bet.save()
+
+def create_quiniela(race, posts, cost, payout):
+    entrants = [
+        get_participant_from_post(race, int(posts[0]),
+        get_participant_from_post(race, int(posts[1])
+        ]
+    try:
+        bet = Quiniela.objects.get(
+          left__in=entrants,
+          right__in=entrants
+        )
+    except ObjectDoesNotExist:
+        new_bet = Quiniela(
+          left=entrants[0],
+          right=entrants[1]
+        )
+        new_bet.set_fields_to_base()
+        bet = new_bet
+    if cost:
+        bet.cost = cost
+    if payout:
+        bet.payout = payout
+    bet.save()
+
+
+def create_trifecta(race, posts, cost, payout):
+    win = get_participant_from_post(race, int(posts[0]))
+    place = get_participant_from_post(race, int(posts[1]))
+    show = get_participant_from_post(race, int(posts[2]))
+    try:
+        bet = Trifecta.objects.get(
+            race=race,
+            win=win,
+            place=place,
+            show=show
+        )
+    except ObjectDoesNotExist:
+        new_bet = Trifecta(
+            race=race,
+            win=win,
+            place=place,
+            show=show
+        )
+        new_bet.set_fields_to_base()
+        bet = new_bet
+    if cost:
+        bet.cost = cost
+    if payout:
+        bet.payout = payout
+    bet.save()
+
+def create_superfecta(race, posts, cost, payout):
+    win = get_participant_from_post(race, int(posts[0]))
+    place = get_participant_from_post(race, int(posts[1]))
+    show = get_participant_from_post(race, int(posts[2]))
+    take = get_participant_from_post(race, int(posts[3]))
+    try:
+        bet = Superfecta.objects.get(
+            race=race,
+            win=win,
+            place=place,
+            show=show,
+            take=take
+        )
+    except ObjectDoesNotExist:
+        new_bet = Superfecta(
+            race=race,
+            win=win,
+            place=place,
+            show=show,
+            take=take
+        )
+        new_bet.set_fields_to_base()
+        bet = new_bet
+    if cost:
+        bet.cost = cost
+    if payout:
+        bet.payout = payout
+    bet.save()
+
+
+
+
 
 
 def save_dog_info(dog):

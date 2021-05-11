@@ -32,6 +32,10 @@ from miner.utilities.models import (
     get_dog,
     get_bettype,
     get_grade,
+    create_exacta,
+    create_quiniela,
+    create_trifecta,
+    create_superfecta,
 )
 
 from miner.utilities.common import get_node_elements
@@ -181,10 +185,25 @@ def process_combo_bets(race, target_url):
         split_text = each.text.split()
         print("{} {}".format(len(split_text), split_text))
         if len(split_text) > 0:
-            print(get_bet_name(split_text[1].upper()))
+            combo_name = get_combo_name(split_text[1].upper())
+            # posts = []
+            # cost =
+            # payout =
+
+
+            if combo_name == "Exacta":
+                create_exacta(race, posts, cost, payout)
+            elif combo_name == "Quiniela":
+                create_quiniela(race, posts, cost, payout)
+            elif combo_name == "Trifecta":
+                create_trifecta(race, posts, cost, payout)
+            elif combo_name == "Superfecta":
+                create_superfecta(race, posts, cost, payout)
+
+
     # raise SystemExit(0)
 
-def get_bet_name(text):
+def get_combo_name(text):
     if 'EX' in text:
         return "Exacta"
     elif 'QU' in text:
@@ -200,8 +219,9 @@ def get_bet_name(text):
     elif 'TWIN' in text:
         return None
     else:
-        print("Check on exotic: {}".format(text))
-        raise SystemExit(0)
+        return None
+        # print("Check on exotic: {}".format(text))
+        # raise SystemExit(0)
 
 def process_dog_bets(race, page_data):
     print("process dog betz *********************************************************************")
