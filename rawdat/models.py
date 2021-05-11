@@ -383,16 +383,7 @@ class Participant(CoreModel):
         max_length=256)
 
 
-class BetType(CoreModel):
-    class Meta:
-        verbose_name = 'BetType'
-
-    name = models.CharField(
-        max_length=64
-    )
-
-
-class Payout(CoreModel):
+class Bet(CoreModel):
 
     class Meta:
         abstract = True
@@ -401,37 +392,113 @@ class Payout(CoreModel):
         max_digits=10,
         decimal_places=2,
         null=True)
-    amount = models.DecimalField(
+    payout = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         null=True)
+
+
+class BetType(CoreModel):
+    class Meta:
+        verbose_name = 'BetType'
+
+    name = models.CharField(
+        max_length=64
+    )
+
+class Single(Bet):
+
+    class Meta:
+        verbose_name = 'SingleBet'
+
+    participant = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        null=True)
+
     type = models.ForeignKey(
         BetType,
         on_delete=models.CASCADE,
         null=True)
 
-class Combination(Payout):
+
+class Combo(Bet):
 
     class Meta:
-        verbose_name = 'CombinationPayout'
+        abstract = True
 
     race = models.ForeignKey(
         Race,
-        on_delete=models.CASCADE,
-        null=True
-    )
+        on_delete=models.CASCADE)
 
-
-class Single(Payout):
+class Quiniela(Combo):
 
     class Meta:
-        verbose_name = 'DogPayout'
+        verbose_name = 'Quiniela'
 
-    participant = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        null=True
-    )
+    left = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='quiniela_left')
+    right = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='quiniela_right')
+
+class Exacta(Combo):
+
+    class Meta:
+        verbose_name = 'Exacta'
+
+    win = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='exacta_win')
+    place = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='exacta_place')
+
+class Trifecta(Combo):
+
+    class Meta:
+        verbose_name = 'Trifecta'
+
+    win = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='trifecta_win')
+    place = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='trifecta_place')
+    show = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='trifecta_show')
+
+class Superfecta(Combo):
+
+    class Meta:
+        verbose_name = 'Superfecta'
+
+    win = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='superfecta_win')
+    place = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='superfecta_place')
+    show = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='superfecta_show')
+    take = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='superfecta_take')
+
 
 class VenueScan(CoreModel):
 

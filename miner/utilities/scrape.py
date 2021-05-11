@@ -169,14 +169,54 @@ def get_results(div_tds, race):
         if len(row) is 10:
             parse_row(row, race)
 
-def check_for_results(race, page_data, div_tds):
+def check_for_results(target_url, race, page_data):
+    div_tds = get_node_elements(target_url, '//td//div')
     td_count = len(page_data)
     print(td_count)
     if td_count > 50:
-        print('process results')
         get_results(div_tds, race)
         if td_count > 110:
-            print('process bets')
+            print("exotix")
+            for each in get_node_elements(target_url, '//p'):
+                print(each.text)
+            process_dog_bets(race, page_data)
+
+
+
+def process_dog_bets(race, page_data):
+    print("process dog betz *********************************************************************")
+    for each in page_data:
+        print("{}: {}".format(page_data.index(each), each.text))
+    finisher_indices = [16, 22, 28]
+    for index in finisher_indices:
+        if isinstance(page_data[index].text, str):
+            dog = get_dog(page_data[index].text.strip())
+            participant = get_participant(race, dog)
+            if participant:
+                chart = race.chart
+                program = chart.program
+                print("{} / {} / {} / {}".format(
+                    participant.dog.name,
+                    page_data[index+1].text,
+                    page_data[index+2].text,
+                    page_data[index+3].text))
+                print(build_results_url(
+                    race.chart.program.venue.code,
+                    program.date.year,
+                    program.date.month,
+                    program.date.day,
+                    chart.time,
+                    race.number))
+                raise SystemExit(0)
+
+                # process_singlepayouts(
+                #     participant,
+                #     [page_data[index+1].text,
+                #     page_data[index+2].text,
+                #     page_data[index+3].text])
+
+
+
 
 def get_race_heading(target_url):
         for td in get_node_elements(target_url, '//td'):
@@ -273,8 +313,7 @@ def scan_chart_times(venue, year, month, day):
                 race = build_race(venue, year, month, day, time, number)
                 anchor_elements = get_node_elements(target_url, '//a')
                 process_race(race, page_data, anchor_elements)
-                div_tds = get_node_elements(target_url, '//td//div')
-                check_for_results(race, page_data, div_tds)
+                check_for_results(target_url, race, page_data)
             else:
                 failed_attempts += 1
             number += 1
