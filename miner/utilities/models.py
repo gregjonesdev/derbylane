@@ -5,7 +5,7 @@ from rawdat.models import (
     Program,
     Race,
     Participant,
-    Combination,
+    # Combination,
     BetType,
     Grade,
     Single,
@@ -263,21 +263,21 @@ def get_participant(race, dog):
         participant = new_participant
     return participant
 
-def create_combination(race, cost, type, amount):
-    try:
-        combination = Combination.objects.get(
-            race=race,
-            type=type
-        )
-    except ObjectDoesNotExist:
-        new_combination = Combination(
-            race=race,
-            type=type,
-            cost=cost,
-            amount=amount
-        )
-        new_combination.set_fields_to_base()
-        new_combination.save()
+# def create_combination(race, cost, type, amount):
+#     try:
+#         combination = Combination.objects.get(
+#             race=race,
+#             type=type
+#         )
+#     except ObjectDoesNotExist:
+#         new_combination = Combination(
+#             race=race,
+#             type=type,
+#             cost=cost,
+#             amount=amount
+#         )
+#         new_combination.set_fields_to_base()
+#         new_combination.save()
 
 def save_sex_and_color(dog, elements):
     try:

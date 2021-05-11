@@ -28,7 +28,6 @@ from miner.utilities.models import (
     save_post_weight,
     save_race_info,
     get_participant,
-    create_combination,
     create_single,
     get_dog,
     get_bettype,
@@ -158,11 +157,6 @@ def parse_row(row, race):
         row[9].text.strip())
 
 
-
-
-
-
-
 def get_results(div_tds, race):
     race_rows = get_race_rows(div_tds)
     for row in race_rows:
@@ -176,12 +170,38 @@ def check_for_results(target_url, race, page_data):
     if td_count > 50:
         get_results(div_tds, race)
         if td_count > 110:
-            print("exotix")
-            for each in get_node_elements(target_url, '//p'):
-                print(each.text)
+            process_combo_bets(race, target_url)
+
             process_dog_bets(race, page_data)
 
 
+def process_combo_bets(race, target_url):
+    print("process combo bets")
+    for each in get_node_elements(target_url, '//p'):
+        split_text = each.text.split()
+        print("{} {}".format(len(split_text), split_text))
+        if len(split_text) > 0:
+            print(get_bet_name(split_text[1].upper()))
+    # raise SystemExit(0)
+
+def get_bet_name(text):
+    if 'EX' in text:
+        return "Exacta"
+    elif 'QU' in text:
+        return "Quiniela"
+    elif 'TRI' in text:
+        return "Trifecta"
+    elif 'SUP' in text:
+        return "Superfecta"
+    elif 'DOUB' in text:
+        return None
+    elif 'PIC' in text:
+        return None
+    elif 'TWIN' in text:
+        return None
+    else:
+        print("Check on exotic: {}".format(text))
+        raise SystemExit(0)
 
 def process_dog_bets(race, page_data):
     print("process dog betz *********************************************************************")
@@ -207,7 +227,7 @@ def process_dog_bets(race, page_data):
                     program.date.day,
                     chart.time,
                     race.number))
-                raise SystemExit(0)
+                # raise SystemExit(0)
 
                 # process_singlepayouts(
                 #     participant,
