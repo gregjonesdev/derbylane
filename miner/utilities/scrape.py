@@ -194,8 +194,6 @@ def process_combo_bets(race, target_url):
                 elif "/" in string:
                     posts = string.split("/")
 
-            # posts = [1,2,3]
-
             cost = get_dollar_amount(bet_prices[0])
             payout = get_dollar_amount(bet_prices[1])
 
@@ -208,15 +206,14 @@ def process_combo_bets(race, target_url):
                 print("uh oh @ 203: {}".format(split_text))
                 raise SystemExit(0)
 
-            # READY
-            # if combo_name == "Exacta":
-            #     create_exacta(race, posts, cost, payout)
-            # elif combo_name == "Quiniela":
-            #     create_quiniela(race, posts, cost, payout)
-            # elif combo_name == "Trifecta":
-            #     create_trifecta(race, posts, cost, payout)
-            # elif combo_name == "Superfecta":
-            #     create_superfecta(race, posts, cost, payout)
+            if combo_name == "Exacta":
+                create_exacta(race, posts, cost, payout)
+            elif combo_name == "Quiniela":
+                create_quiniela(race, posts, cost, payout)
+            elif combo_name == "Trifecta":
+                create_trifecta(race, posts, cost, payout)
+            elif combo_name == "Superfecta":
+                create_superfecta(race, posts, cost, payout)
 
 
     # raise SystemExit(0)
