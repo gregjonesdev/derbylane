@@ -7,7 +7,7 @@ from rawdat.models import (
     Venue,
     )
 
-from miner.utilities.scrape import scan_chart_times
+from miner.utilities.scrape import scan_scheduled_charts
 
 class Command(BaseCommand):
 
@@ -16,7 +16,7 @@ class Command(BaseCommand):
         dates = self.get_dates()
         for venue in Venue.objects.filter(is_active=True):
             for date in dates:
-                scan_chart_times(venue, date.year, date.month, date.day)
+                scan_scheduled_charts(venue, date.year, date.month, date.day)
 
     def get_dates(self):
         dates = []

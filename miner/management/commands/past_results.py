@@ -10,7 +10,7 @@ from rawdat.models import (
 
 from miner.utilities.scrape import scan_chart_times
 
-from miner.utilities.weather import save_weather
+from miner.utilities.weather import parse_for_weather
 
 class Command(BaseCommand):
 
@@ -24,7 +24,7 @@ class Command(BaseCommand):
             scan_chart_times(venue, year, month, day)
             try:
                 if zip_code and date:
-                    save_weather(program, venue.zip_code, date)
+                    parse_for_weather(program, venue.zip_code, date)
             except:
                 pass
             day += 1

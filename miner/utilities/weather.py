@@ -29,31 +29,44 @@ def get_forecast_url(program):
     print(target_url)
     r = requests.get(url = target_url)
     data = r.json()
-    day_index = self.get_day_index(data["dayOfWeek"], target_day)
+    day_index = get_day_index(data["dayOfWeek"], target_day)
     daypart = data["daypart"][0]
 
     if daypart:
         try:
-            daily_high = get_offset_index(day_index, data["calendarDayTemperatureMax"], 0)
+            max_temp = get_offset_index(day_index, data["calendarDayTemperatureMax"], 0)
         except:
-            daily_high = None
+            max_temp = None
         try:
-            daily_low = get_offset_index(day_index, data["calendarDayTemperatureMin"], 1)
+            min_temp = get_offset_index(day_index, data["calendarDayTemperatureMin"], 1)
         except:
-            daily_low = None
+            min_temp = None
         try:
-            rain = get_daynight_index(day_index, daypart["precipChance"])
+            percipitation = get_daynight_index(day_index, daypart["precipChance"])
         except:
-            rain = None
+            percipitation = None
         try:
-            relHumid = get_daynight_index(day_index, daypart["relativeHumidity"])
+            mean_rh = get_daynight_index(day_index, daypart["relativeHumidity"])
         except:
-            relHumid = None
+            mean_rh = None
         try:
             wind = get_daynight_index(day_index, daypart['windSpeed'])
         except:
             wind = None
-        save_forecast(program, daily_high, daily_low, rain, relHumid, wind)
+
+        weather_instance = get_weatherinstance(program)
+        update_weather(
+            weather_instance,
+            None,
+            min_temp,
+            None,
+            max_temp,
+            mean_rh,
+            None,
+            None,
+            percipitation,
+            None,
+            wind)
 
 def get_nightly_index(day_index, list):
     return list[day_index*2 + 1]
@@ -68,26 +81,26 @@ def get_day_index(days, target_day):
     return days.index(target_day)
 
 
-def save_forecast(program, daily_high, daily_low, rain, relHumid, wind):
-    try:
-            forecast = VenueForecast.objects.get(venue=venue, date=date)
-        except ObjectDoesNotExist:
-            new_forecast = VenueForecast(
-                venue=venue,
-                date=date
-                )
-            new_forecast.set_fields_to_base()
-            forecast = new_forecast
-        forecast.max_temp = daily_high
-        forecast.min_temp = daily_low
-        forecast.percipitation = rain
-        forecast.rh = relHumid
-        forecast.wind = wind
-        forecast.nightly_narrative = narrative
-        forecast.save()
+# def save_forecast(program, daily_high, daily_low, rain, relHumid, wind):
+#     try:
+#             forecast = VenueForecast.objects.get(venue=venue, date=date)
+#         except ObjectDoesNotExist:
+#             new_forecast = VenueForecast(
+#                 venue=venue,
+#                 date=date
+#                 )
+#             new_forecast.set_fields_to_base()
+#             forecast = new_forecast
+#         forecast.max_temp = daily_high
+#         forecast.min_temp = daily_low
+#         forecast.percipitation = rain
+#         forecast.rh = relHumid
+#         forecast.wind = wind
+#         forecast.nightly_narrative = narrative
+#         forecast.save()
 
 
-def save_weather(program, zip_code, date):
+def parse_for_weather(program, zip_code, date):
     if zip_code == '22024':
         zip_code = '92154' # closest US zip code to caliente
     target_url = "{}{}/{}".format(almanac_root, zip_code, date)
@@ -119,16 +132,9 @@ def process_rows(program, soup):
     except TypeError:
         pass
 
-    try:
-        weather = Weather.objects.get(program=program)
-    except ObjectDoesNotExist:
-        new_weather = Weather(
-            program=program)
-        new_weather.set_fields_to_base()
-        new_weather.save()
-        weather = new_weather
-
-    print("{} / {} / {} / {} / {} / {} / {} / {} / {} / {}".format(
+    weather_instance = get_weatherinstance(program)
+    update_weather(
+        weather_instance,
         dew_point,
         min_temp,
         mean_temp,
@@ -138,25 +144,45 @@ def process_rows(program, soup):
         pressure,
         percipitation,
         visibility,
-        wind
-    ))
+        wind)
+    # try:
+    #     weather = Weather.objects.get(program=program)
+    # except ObjectDoesNotExist:
+    #     new_weather = Weather(
+    #         program=program)
+    #     new_weather.set_fields_to_base()
+    #     new_weather.save()
+    #     weather = new_weather
+    #
+    # print("{} / {} / {} / {} / {} / {} / {} / {} / {} / {}".format(
+    #     dew_point,
+    #     min_temp,
+    #     mean_temp,
+    #     max_temp,
+    #     mean_rh,
+    #     max_rh,
+    #     pressure,
+    #     percipitation,
+    #     visibility,
+    #     wind
+    # ))
+    #
+    # try:
+    #     weather.dew_point = dew_point
+    #     weather.min_temp = min_temp
+    #     weather.mean_temp = mean_temp
+    #     weather.max_temp = max_temp
+    #     weather.mean_rh = mean_rh
+    #     weather.max_rh = max_rh
+    #     weather.pressure = pressure
+    #     weather.percipitation = percipitation
+    #     weather.visibility = visibility
+    #     weather.wind = wind
+    #     weather.save()
+    # except:
+    #     pass
 
-    try:
-        weather.dew_point = dew_point
-        weather.min_temp = min_temp
-        weather.mean_temp = mean_temp
-        weather.max_temp = max_temp
-        weather.mean_rh = mean_rh
-        weather.max_rh = max_rh
-        weather.pressure = pressure
-        weather.percipitation = percipitation
-        weather.visibility = visibility
-        weather.wind = wind
-        weather.save()
-    except:
-        pass
-
-def shit_weather():
+def get_weatherinstance(program):
     try:
         weather = Weather.objects.get(program=program)
     except ObjectDoesNotExist:
@@ -199,7 +225,7 @@ def update_weather(
         weather_instance.visibility = visibility
     if wind:
         weather_instance.wind = wind
-    weather_instance.save()  
+    weather_instance.save()
 
 
 def get_value(rows, target_attr):
@@ -211,19 +237,6 @@ def get_value(rows, target_attr):
                 if span_class_attr and 'value' in span_class_attr:
                     return span.contents[0]
 
-
-def get_weather(program):
-    name = name.upper()
-    try:
-        weather = Weather.objects.get(name=name)
-    except ObjectDoesNotExist:
-        new_bettype = BetType(
-            name=name
-        )
-        new_bettype.set_fields_to_base()
-        new_bettype.save()
-        bettype = new_bettype
-    return bettype
 
 def is_wind(num):
     if num:

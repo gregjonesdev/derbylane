@@ -1,12 +1,12 @@
 import re
-
+from django.core.exceptions import ObjectDoesNotExist
 from miner.utilities.urls import (
     results_url,
     all_race_results,
     all_race_suffix,
     entries_url,
 )
-
+from rawdat.models import Weather
 from miner.utilities.constants import (
     distance_converter,
     position_skips,
@@ -19,8 +19,7 @@ from miner.utilities.constants import (
     )
 
 from rawdat.utilities.methods import (
-    get_program,
-    get_chart,
+    get_date_from_ymd,
     get_race
 )
 
@@ -34,6 +33,8 @@ from miner.utilities.models import (
     get_dog,
     get_bettype,
     get_grade,
+    get_chart,
+    get_program,
     create_exacta,
     create_quiniela,
     create_trifecta,
@@ -171,16 +172,19 @@ def get_results(div_tds, race):
         if len(row) is 10:
             parse_row(row, race)
 
-def check_for_results(target_url, race, page_data):
-    div_tds = get_node_elements(target_url, '//td//div')
-    td_count = len(page_data)
-    print(td_count)
-    if td_count > 50:
-        get_results(div_tds, race)
-        if td_count > 110:
-            process_combo_bets(race, target_url)
-
-            process_dog_bets(race, page_data)
+def check_for_results(results_url, race):
+    print("check for results")
+    # div_tds = get_node_elements(results_url, '//td//div')
+    # td_count = len(div_tds)
+    # print(td_count)
+    # if td_count > 50:
+    #     get_results(div_tds, race)
+    #     for each in page_data:
+    #         print("{}: {}".format(page_data.index(each), each.text))
+    #     print(results_url)
+    #     if td_count > 110:
+    #         process_combo_bets(race, results_url)
+    #         process_dog_bets(race, page_data)
 
 
 def process_combo_bets(race, target_url):
@@ -299,12 +303,14 @@ def format_text(text):
     return text.replace("\n", "").replace("  ", "").strip().split()
 
 def build_race(venue, year, month, day, time, number):
+    formatted_date = get_date_from_ymd(year, month, day)
     program = get_program(
         venue,
-        year,
-        month,
-        day)
-    get_forecast_url(program)
+        formatted_date)
+    try:
+        weather_instance = Weather.objects.get(program=program)
+    except ObjectDoesNotExist:
+        get_forecast_url(program)
     chart = get_chart(program, time)
     return get_race(chart, number)
 
@@ -320,16 +326,21 @@ def process_race(race, page_data, anchor_elements, div_elements):
     save_race_info(
         race,
         get_raw_setting(page_data))
-    populate_race(
-        get_dognames(div_elements),
-        race)
+    for each in div_elements:
+        print(each)
+    dognames = get_dognames(div_elements)
+    print("len dognames: {}".format(len(dognames)))
+    # populate_race(
+    #     get_dognames(div_elements),
+    #     race)
 
 def get_dognames(div_elements):
     dognames = []
     for each in div_elements:
-        name = each.text
-        if not name in dognames:
-            dognames.append(name)
+        print(each.text)
+        # name = each.text
+        # if not name in dognames:
+        #     dognames.append(name)
     return dognames
 
 def get_raw_setting(tds):
@@ -364,29 +375,104 @@ def populate_race(dognames, race):
                 post_position)
         i += 1
 
-
-def scan_chart_times(venue, year, month, day):
+def scan_scheduled_charts(venue, year, month, day):
     for time in chart_times:
         number = 1
         failed_attempts = 0
         while failed_attempts <= allowed_attempts and number <= max_races_per_chart:
-            target_url = build_entries_url(
+            entries_url = build_entries_url(
                 venue.code,
                 year,
                 month,
                 day,
                 time,
                 number)
-            print(target_url)
-            page_data = get_node_elements(target_url, '//td')
+            page_data = get_node_elements(entries_url, '//td')
+            if len(page_data) > 20:
+                pass
+                # build race: create race object, save setting, populate
+                formatted_date = get_date_from_ymd(year, month, day)
+                program = get_program(
+                    venue,
+                    formatted_date)
+                print("A+")
+                print(program)
+                # build_entries_race(venue, year, month, day, time, number)
+
+                # race = build_race(venue, year, month, day, time, number)
+                # anchor_elements = get_node_elements(entries_url, '//a')
+                # save_race_info(
+                #     race,
+                #     get_raw_setting(page_data))
+                # dognames = get_dognames(div_elements)
+                # print("len dognames: {}".format(len(dognames)))
+                # populate_race(
+                #     get_dognames(div_elements),
+                #     race)
+            else:
+                failed_attempts += 1
+            number += 1    
+
+def build_entries_race():
+    # create race
+    # populate
+    pass
+
+# def build_common_race(venue, date, time, number)
+
+
+
+def build_results_race():
+    # create race
+    # populate
+    pass
+
+def scan_history_charts(venue, year, month, day):
+    # load up results url
+    # if has race
+    # build race: create, save, populate
+    # get results
+    pass
+
+
+def scan_chart_times(venue, year, month, day):
+    for time in chart_times:
+        number = 1
+        failed_attempts = 0
+        while failed_attempts <= allowed_attempts and number <= max_races_per_chart:
+            entries_url = build_entries_url(
+                venue.code,
+                year,
+                month,
+                day,
+                time,
+                number)
+            results_url = build_results_url(
+                venue.code,
+                year,
+                month,
+                day,
+                time,
+                number)
+            page_data = get_node_elements(entries_url, '//td')
+            print("-------------------------------------------------")
+            print(entries_url)
+            print(results_url)
+            print("-------------------------------------------------")
             if has_race(page_data):
                 print("has race data")
                 race = build_race(venue, year, month, day, time, number)
-                anchor_elements = get_node_elements(target_url, '//a')
-                div_elements = get_node_elements(target_url, '//div[@style="text-overflow:ellipsis;white-space:nowrap;width:5em;overflow:hidden;"]')
+                anchor_elements = get_node_elements(entries_url, '//a')
+                process_race(race, page_data, anchor_elements)
+                check_for_results(results_url, race)
+                # div_elements = get_node_elements(results_url, '//div[@style="text-overflow:ellipsis;white-space:nowrap;width:5em;overflow:hidden;"]')
 
-                process_race(race, page_data, anchor_elements, div_elements)
-                check_for_results(target_url, race, page_data)
+                # for each in div_elements:
+                #     print(each)
+
+
+                raise SystemExit(0)
+                print(entries_url)
             else:
                 failed_attempts += 1
             number += 1
@@ -414,8 +500,6 @@ def build_results_url(venue_code, year, month, day, time, race_number):
 
 
 def has_race(page_data):
-    td_count = len(page_data)
-    print(td_count)
     return len(page_data) > 20
 
 def save_race_data(url):

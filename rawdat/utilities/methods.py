@@ -5,21 +5,27 @@ from rawdat.models import (
     Program,
     Race)
 
-def get_chart(program, time):
-    try:
-        chart = Chart.objects.get(
-            time=time,
-            program=program
-        )
-    except ObjectDoesNotExist:
-        new_chart = Chart(
-            time=time,
-            program=program
-        )
-        new_chart.set_fields_to_base()
-        new_chart.save()
-        chart = new_chart
-    return chart
+def get_date_from_ymd(year, month, day):
+    return "{}-{}-{}".format(
+        year,
+        str(month).zfill(2),
+        str(day).zfill(2))
+
+# def get_chart(program, time):
+#     try:
+#         chart = Chart.objects.get(
+#             time=time,
+#             program=program
+#         )
+#     except ObjectDoesNotExist:
+#         new_chart = Chart(
+#             time=time,
+#             program=program
+#         )
+#         new_chart.set_fields_to_base()
+#         new_chart.save()
+#         chart = new_chart
+#     return chart
 
 def get_program(venue, year, month, day):
     formatted_date = "{}-{}-{}".format(

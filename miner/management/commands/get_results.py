@@ -10,7 +10,7 @@ from miner.utilities.scrape import (
     )
 
 from miner.utilities.common import get_node_elements
-from miner.utilities.weather import save_weather
+from miner.utilities.weather import parse_for_weather
 
 class Command(BaseCommand):
 
@@ -25,7 +25,7 @@ class Command(BaseCommand):
             venue = program.venue
             try:
                 if venue.zip_code:
-                    save_weather(program, venue.zip_code, date)
+                    parse_for_weather(program, venue.zip_code, date)
             except:
                 pass
             for chart in program.chart_set.all():
