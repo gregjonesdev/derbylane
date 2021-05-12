@@ -4,6 +4,7 @@ from miner.utilities.urls import (
     results_url,
     all_race_results,
     all_race_suffix,
+    entries_url,
 )
 
 from miner.utilities.constants import (
@@ -14,6 +15,7 @@ from miner.utilities.constants import (
     max_races_per_chart,
     art_skips,
     no_greyhound_names,
+    raw_types,
     )
 
 from rawdat.utilities.methods import (
@@ -37,6 +39,8 @@ from miner.utilities.models import (
     create_trifecta,
     create_superfecta,
 )
+
+from miner.utilities.weather import get_forecast_url
 
 from miner.utilities.common import get_node_elements
 
@@ -226,29 +230,31 @@ def get_dollar_amount(string):
         raise SystemExit(0)
 
 def get_combo_name(text):
-    if 'EX' in text:
-        return "Exacta"
-    elif 'QU' in text:
-        return "Quiniela"
-    elif 'TRI' in text:
-        return "Trifecta"
-    elif 'SUP' in text:
-        return "Superfecta"
+
+    if 'TRI SUPER' in text:
+        return None
     elif 'DOUB' in text:
         return None
     elif 'PIC' in text:
         return None
     elif 'TWIN' in text:
         return None
+    elif 'QU' in text:
+        return "Quiniela"
+    elif 'TRI' in text:
+        return "Trifecta"
+    elif 'SUPERF' in text:
+        return "Superfecta"
+    elif 'EX' in text:
+        return "Exacta"
+
     else:
         return None
         # print("Check on exotic: {}".format(text))
         # raise SystemExit(0)
 
 def process_dog_bets(race, page_data):
-    print("process dog betz *********************************************************************")
-    for each in page_data:
-        print("{}: {}".format(page_data.index(each), each.text))
+    print("process dog betz ************")
     finisher_indices = [16, 22, 28]
     for index in finisher_indices:
         if isinstance(page_data[index].text, str):
@@ -262,22 +268,22 @@ def process_dog_bets(race, page_data):
                     page_data[index+1].text,
                     page_data[index+2].text,
                     page_data[index+3].text))
-                print(build_results_url(
-                    race.chart.program.venue.code,
-                    program.date.year,
-                    program.date.month,
-                    program.date.day,
-                    chart.time,
-                    race.number))
-                # raise SystemExit(0)
 
-                # process_singlepayouts(
-                #     participant,
-                #     [page_data[index+1].text,
-                #     page_data[index+2].text,
-                #     page_data[index+3].text])
+                process_singlepayouts(
+                    participant,
+                    [page_data[index+1].text,
+                    page_data[index+2].text,
+                    page_data[index+3].text])
 
-
+def process_singlepayouts(participant, amounts):
+    i = 0
+    while i < 3:
+        if isinstance(amounts[i], str):
+            if amounts[i].strip():
+                type = get_bettype(raw_types[i])
+                amount = amounts[i]
+                create_single(participant, type, amount)
+        i += 1
 
 
 def get_race_heading(target_url):
@@ -298,6 +304,7 @@ def build_race(venue, year, month, day, time, number):
         year,
         month,
         day)
+    get_forecast_url(program)
     chart = get_chart(program, time)
     return get_race(chart, number)
 
@@ -309,22 +316,21 @@ def is_race_heading_cell(text):
                     if not re.search('[a-zA-Z]', text[1]):
                         return True
 
-def process_race(race, page_data, anchor_elements):
+def process_race(race, page_data, anchor_elements, div_elements):
     save_race_info(
         race,
         get_raw_setting(page_data))
     populate_race(
-        get_dognames(anchor_elements),
+        get_dognames(div_elements),
         race)
 
-def get_dognames(table):
-        dognames = []
-        for item in table:
-            if item.text:
-                if not re.search('[0-9]', item.text):
-                    if not re.search('▼', item.text):
-                        dognames.append(item.text.strip())
-        return dognames
+def get_dognames(div_elements):
+    dognames = []
+    for each in div_elements:
+        name = each.text
+        if not name in dognames:
+            dognames.append(name)
+    return dognames
 
 def get_raw_setting(tds):
     for td in tds:
@@ -343,17 +349,20 @@ def set_post(participant, post_position):
 
 
 def populate_race(dognames, race):
-        i = 0
-        for name in dognames:
-            if not name in no_greyhound_names:
-                dog = get_dog(dognames[i])
-                print(dog)
-                post_position = i + 1
-                participant = get_participant(race, dog)
-                set_post(
-                    participant,
-                    post_position)
-            i += 1
+    print("populate race")
+    print(dognames)
+    i = 0
+    for name in dognames:
+        if name and not name in no_greyhound_names:
+            dog = get_dog(dognames[i])
+            print(dog)
+            post_position = i + 1
+            print(post_position)
+            participant = get_participant(race, dog)
+            set_post(
+                participant,
+                post_position)
+        i += 1
 
 
 def scan_chart_times(venue, year, month, day):
@@ -361,7 +370,7 @@ def scan_chart_times(venue, year, month, day):
         number = 1
         failed_attempts = 0
         while failed_attempts <= allowed_attempts and number <= max_races_per_chart:
-            target_url = build_results_url(
+            target_url = build_entries_url(
                 venue.code,
                 year,
                 month,
@@ -374,11 +383,23 @@ def scan_chart_times(venue, year, month, day):
                 print("has race data")
                 race = build_race(venue, year, month, day, time, number)
                 anchor_elements = get_node_elements(target_url, '//a')
-                process_race(race, page_data, anchor_elements)
+                div_elements = get_node_elements(target_url, '//div[@style="text-overflow:ellipsis;white-space:nowrap;width:5em;overflow:hidden;"]')
+
+                process_race(race, page_data, anchor_elements, div_elements)
                 check_for_results(target_url, race, page_data)
             else:
                 failed_attempts += 1
             number += 1
+
+def build_entries_url(venue_code, year, month, day, time, race_number):
+    return "{}G{}${}{}{}{}{}".format(
+        entries_url,
+        venue_code,
+        year,
+        str(month).zfill(2),
+        str(day).zfill(2),
+        time,
+        str(race_number).zfill(2))
 
 def build_results_url(venue_code, year, month, day, time, race_number):
     return "{}G{}${}{}{}{}{}".format(
@@ -394,8 +415,8 @@ def build_results_url(venue_code, year, month, day, time, race_number):
 
 def has_race(page_data):
     td_count = len(page_data)
-    if td_count > 20:
-        return True
+    print(td_count)
+    return len(page_data) > 20
 
 def save_race_data(url):
     print("save_race_data")

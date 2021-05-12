@@ -500,6 +500,62 @@ class Superfecta(Combo):
             related_name='superfecta_take')
 
 
+class Weather(CoreModel):
+
+    program = models.ForeignKey(Program, on_delete=models.CASCADE, null=True)
+    dew_point = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        null=True
+    )
+    min_temp = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        null=True
+    )
+    mean_temp = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        null=True
+    )
+    max_temp = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        null=True
+    )
+    mean_rh = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        null=True
+    )
+    max_rh = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        null=True
+    )
+    pressure = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        null=True
+    )
+    percipitation = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        null=True
+    )
+    visibility = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        null=True
+    )
+    wind = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        null=True
+    )
+
+
+
 class VenueScan(CoreModel):
 
     class Meta:

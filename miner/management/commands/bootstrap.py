@@ -82,6 +82,7 @@ class Command(BaseCommand):
                 is_active=venue['is_active'],
                 city=venue['city'],
                 state=venue['state'],
+                zip_code=venue['zip_code'],
                 country=venue['country'],
                 weatherlookup=weather
             )

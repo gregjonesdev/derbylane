@@ -17,6 +17,7 @@ race_conditions = [
 ]
 
 cost = 2.0
+raw_types = ["WIN", "PLACE", "SHOW"]
 grade_skips = ["--"]
 position_skips = ['.', '-', 'S', 'f', 'X', 'x', '0', 'O', 'N', '0', '+', 'D']
 art_skips = ['.', '-', 'f', 'X', 'x', '0', '+', 'D', 'OOP', 'DNF']
@@ -36,3 +37,13 @@ chart_times = [
 
 allowed_attempts = 3
 max_races_per_chart = 30
+
+days_of_week = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+]

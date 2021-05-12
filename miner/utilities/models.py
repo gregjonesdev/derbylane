@@ -31,6 +31,8 @@ from miner.utilities.urls import (
     dog_root,
 )
 
+
+
 def create_quiniela(race, posts, cost, payout):
     entrants = [
         get_participant_from_post(race, int(posts[0])),
@@ -38,13 +40,15 @@ def create_quiniela(race, posts, cost, payout):
         ]
     try:
         bet = Quiniela.objects.get(
-          left__in=entrants,
-          right__in=entrants
+            race=race,
+            left__in=entrants,
+            right__in=entrants
         )
     except ObjectDoesNotExist:
         new_bet = Quiniela(
-          left=entrants[0],
-          right=entrants[1]
+            race=race,
+            left=entrants[0],
+            right=entrants[1]
         )
         new_bet.set_fields_to_base()
         bet = new_bet
@@ -56,12 +60,21 @@ def create_quiniela(race, posts, cost, payout):
 
 
 def get_participant_from_post(race, post):
+    print(race)
+    print(post)
+    for part in race.participant_set.all():
+        print("{}: {}".format(part.post, part.dog.name))
     return Participant.objects.get(
         race=race,
-        post=post
+        post=int(post)
     )
 
+
 def create_exacta(race, posts, cost, payout):
+    print(race.participant_set.all())
+    print("--------------------")
+    for part in race.participant_set.all():
+        print("{} {}".format(part.post, part.dog.name))
     win = get_participant_from_post(race, int(posts[0]))
     place = get_participant_from_post(race, int(posts[1]))
     try:
@@ -215,7 +228,7 @@ def get_grade(raw_grade):
     else:
         return None
 
-def create_single(participant, type, amount):
+def create_single(participant, type, payout):
     try:
         single = Single.objects.get(
             participant=participant,
@@ -226,7 +239,7 @@ def create_single(participant, type, amount):
             participant=participant,
             type=type,
             cost=cost,
-            amount=amount
+            payout=payout
         )
         new_single.set_fields_to_base()
         new_single.save()
@@ -383,7 +396,7 @@ def get_participant(race, dog):
         participant = new_participant
     return participant
 
-# def create_combination(race, cost, type, amount):
+# def create_combination(race, cost, type, payout):
 #     try:
 #         combination = Combination.objects.get(
 #             race=race,
@@ -394,7 +407,7 @@ def get_participant(race, dog):
 #             race=race,
 #             type=type,
 #             cost=cost,
-#             amount=amount
+#             payout=payout
 #         )
 #         new_combination.set_fields_to_base()
 #         new_combination.save()

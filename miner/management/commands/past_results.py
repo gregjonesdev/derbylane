@@ -10,7 +10,7 @@ from rawdat.models import (
 
 from miner.utilities.scrape import scan_chart_times
 
-
+from miner.utilities.weather import save_weather
 
 class Command(BaseCommand):
 
@@ -22,7 +22,11 @@ class Command(BaseCommand):
         day = 1
         while day <= 31:
             scan_chart_times(venue, year, month, day)
-            # save weather
+            try:
+                if zip_code and date:
+                    save_weather(program, venue.zip_code, date)
+            except:
+                pass
             day += 1
         # self.create_venue_scan(venue, year, month)
 
