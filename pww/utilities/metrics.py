@@ -1,20 +1,16 @@
 from pww.models import Metric, Prediction
 
-def get_prior_participations(dog, target_date, distance, number):
-    print("get priors for: {}".format(dog.name))
-    raw_priors = dog.participant_set.filter(
+past_race_count = 7
+minimum_participations = 2
+
+def get_prior_participations(dog, target_date, distance, race_count):
+    return dog.participant_set.filter(
         race__chart__program__date__lt=target_date,
         race__distance=distance,
         race__condition="F",
         final__isnull=False).order_by(
-            '-race__chart__program__date')[:number]
-    filtered_priors = []
-    for part in raw_priors:
-        print(part.finish)
-        # if part.final and part.race.distance:
-        #     if min_distance <= part.race.distance <= max_distance:
-        #         filtered_priors.append(part)
-    return filtered_priors
+            '-race__chart__program__date')[:race_count]
+
 
 def get_raw_participant_metrics(participant, distance):
     target_grade_value = participant.race.grade.value
@@ -24,11 +20,27 @@ def get_raw_participant_metrics(participant, distance):
         dog,
         target_date,
         distance,
-        7)
-    if len(participations)>1:
+        past_race_count)
+    if len(participations) >= minimum_participations:
         raw_metrics = {
-            "raw_fastest_time": None
-
+            "raw_fastest_time": None,
+            "win_percent": None,
+            "place_percent": None,
+            "show_percent": None,
+            "break_avg": None,
+            "eighth_avg": None,
+            "straight_avg": None,
+            "finish_avg": None,
+            "grade_avg": None,
+            "time_seven": None,
+            "time_three": None,
+            "upgrade": None,
+            "age": None,
+            "sex": None,
+            "set_weight": None,
+            "post_factor": None,
+            "temp_factor": None,
+            "rh_factor": None,
         }
         # raw_metrics = []
         # raw_metrics.append(str(participant.uuid))
