@@ -17,9 +17,8 @@ from miner.utilities.constants import (
     raw_types,
     )
 
-from rawdat.utilities.methods import (
-    get_date_from_ymd
-)
+from rawdat.utilities.methods import get_date_from_ymd
+
 
 from miner.utilities.models import (
     update_participant,
@@ -46,6 +45,7 @@ from miner.utilities.weather import (
 from miner.utilities.common import (
     get_node_elements,
     get_attribute_elements,
+    force_datetime
 )
 
 def split_position_lengths(entry):
@@ -292,17 +292,17 @@ def format_text(text):
     return text.replace("\n", "").replace("  ", "").strip().split()
 
 
-def build_race(venue, year, month, day, time, number):
-    formatted_date = get_date_from_ymd(year, month, day)
-    program = get_program(
-        venue,
-        formatted_date)
-    try:
-        weather_instance = Weather.objects.get(program=program)
-    except ObjectDoesNotExist:
-        get_forecast_url(program)
-    chart = get_chart(program, time)
-    return get_race(chart, number)
+# def build_race(venue, year, month, day, time, number):
+#     formatted_date = get_date_from_ymd(year, month, day)
+#     program = get_program(
+#         venue,
+#         formatted_date)
+#     try:
+#         weather_instance = Weather.objects.get(program=program)
+#     except ObjectDoesNotExist:
+#         get_forecast_url(program)
+#     chart = get_chart(program, time)
+#     return get_race(chart, number)
 
 
 def is_race_heading_cell(text):
@@ -344,25 +344,22 @@ def populate_race(dognames, race):
         i += 1
 
 
-def scan_scheduled_charts(venue, year, month, day):
+def scan_scheduled_charts(venue, program):
     for time in chart_times:
         number = 1
         failed_attempts = 0
         while failed_attempts <= allowed_attempts and number <= max_races_per_chart:
+            program_date = force_datetime(program.date)
             entries_url = build_entries_url(
                 venue.code,
-                year,
-                month,
-                day,
+                program_date.year,
+                program_date.month,
+                program_date.day,
                 time,
                 number)
             page_data = get_node_elements(entries_url, '//td')
             if len(page_data) > 20:
-                formatted_date = get_date_from_ymd(year, month, day)
-                program = get_program(
-                    venue,
-                    formatted_date)
-                build_weather_from_forecast(program)
+                print(entries_url)
                 chart = get_chart(program, time)
                 race = get_race(chart, number)
                 save_race_info(
@@ -432,7 +429,7 @@ def scan_history_charts(venue, year, month, day):
                 program = get_program(
                     venue,
                     formatted_date)
-                build_weather_from_almanac(program)    
+                build_weather_from_almanac(program)
                 race = get_race(
                     get_chart(program, time),
                     number)

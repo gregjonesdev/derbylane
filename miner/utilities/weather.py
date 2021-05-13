@@ -7,7 +7,7 @@ from rawdat.models import (
 )
 from bs4 import BeautifulSoup
 import time
-from miner.utilities.common import get_node_elements
+from miner.utilities.common import get_node_elements, force_datetime
 from miner.utilities.urls import (
     almanac_root,
     build_forecast_url,)
@@ -17,15 +17,8 @@ from miner.utilities.constants import (
 
 
 def build_weather_from_forecast(program):
-    if not program.weather:
-        print(program.date)
-        print(type(program.date))
-        if isinstance(program.date, str):
-            print(":(")
-            print(program.uuid)
-            program_date = date(program.date, "%Y-%m-%d")
-        else:
-            program_date = program.date
+    if not Weather.objects.filter(program=program).count():
+        program_date = force_datetime(program.date)
         index = program_date.weekday()
         target_day = days_of_week[index]
         r = requests.get(build_forecast_url(program))
