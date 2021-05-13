@@ -1,6 +1,7 @@
 from pww.models import Metric, Prediction
 
 def get_prior_participations(dog, target_date, distance, number):
+    print("get priors for: {}".format(dog.name))
     raw_priors = dog.participant_set.filter(
         race__chart__program__date__lt=target_date,
         race__distance=distance,

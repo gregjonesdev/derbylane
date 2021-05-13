@@ -21,7 +21,7 @@ class Command(BaseCommand):
         while day <= 31:
             scan_history_charts(venue, year, month, day)
             day += 1
-        # self.create_venue_scan(venue, year, month)
+        self.create_venue_scan(venue, year, month)
 
     def create_venue_scan(self, venue, year, month):
         try:

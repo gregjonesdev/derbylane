@@ -197,27 +197,27 @@ def process_combo_bets(race, target_url):
         print("{}: {}".format(part.post, part.dog.name))
     for each in get_node_elements(target_url, '//p'):
         split_text = each.text.split()
-        bet_prices = []
         if len(split_text) > 0:
-            for string in split_text:
-                if "$" in string or "." in string:
-                    bet_prices.append(string)
-                elif string.isalpha() and not 'paid' in string.lower():
-                    combo_name = get_combo_name(string.upper())
-                elif "/" in string:
-                    posts = string.split("/")
-
-            cost = get_dollar_amount(bet_prices[0])
-            payout = get_dollar_amount(bet_prices[1])
-
-            if cost and payout and bet_prices and posts:
-                print("cost: {}".format(cost))
-                print("payout: {}".format(payout))
-                print("name: {}".format(combo_name))
-                print("posts: {}".format(posts))
+            cost = get_dollar_amount(split_text[0])
+            if split_text[2].isalpha():
+                combo_name = get_combo_name("{} {}".format(
+                    split_text[1],
+                    split_text[2]))
+                posts_index = 3
             else:
-                print("uh oh @ 203: {}".format(split_text))
-                raise SystemExit(0)
+                combo_name = get_combo_name(split_text[1].upper())
+                posts_index = 2
+            posts = split_text[posts_index].split("/")
+            payout = get_dollar_amount(split_text[-1])
+
+            # if cost and payout and combo_name and posts:
+            #     print("cost: {}".format(cost))
+            #     print("payout: {}".format(payout))
+            #     print("combo name: {}".format(combo_name))
+            #     print("posts: {}".format(posts))
+            # else:
+            #     print("uh oh @ 203: {}".format(split_text))
+            #     raise SystemExit(0)
 
             if combo_name == "Exacta":
                 create_exacta(race, posts, cost, payout)
@@ -238,7 +238,9 @@ def get_dollar_amount(string):
 
 
 def get_combo_name(text):
-
+    print("---")
+    print(text)
+    print("---")
     if 'TRI SUPER' in text:
         return None
     elif 'DOUB' in text:
@@ -415,6 +417,7 @@ def parse_results_url(results_url, race, page_data):
     save_race_info(
         race,
         get_raw_setting(page_data))
+    print(results_url)
     populate_race(
         get_result_dognames(results_url),
         race)
