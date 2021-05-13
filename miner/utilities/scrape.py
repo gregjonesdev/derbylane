@@ -45,7 +45,7 @@ from miner.utilities.weather import (
 
 from miner.utilities.common import (
     get_node_elements,
-    get_attribute_node,
+    get_attribute_elements,
 )
 
 def split_position_lengths(entry):
@@ -80,6 +80,7 @@ def get_final_and_lengths_behind(split_final):
         lengths_behind = None
     return [final, lengths_behind]
 
+
 def get_positions(row):
     positions = []
     i = 2
@@ -98,6 +99,7 @@ def get_race_rows(div_tds):
     for div_td in div_tds:
         race_rows.append(div_td.getparent().getparent())
     return race_rows
+
 
 def get_post_weight(dog_name, date):
     target_url = build_dog_results_url(dog_name)
@@ -135,6 +137,7 @@ def get_position(raw_position):
     else:
         return None
 
+
 def get_time(entry):
     if isinstance(entry, str):
         entry = entry.strip()
@@ -144,6 +147,7 @@ def get_time(entry):
         return float(entry)
     except ValueError:
         return None
+
 
 def parse_row(row, race):
     positions = get_positions(row)
@@ -175,28 +179,15 @@ def get_results(div_tds, race):
         if len(row) is 10:
             parse_row(row, race)
 
-def check_for_results(results_url, race, page_data):
-    print("check for results")
-    div_tds = get_node_elements(results_url, '//td//div')
-    td_count = len(div_tds)
-    print(td_count)
-    # if td_count > 50:
-    #     get_results(div_tds, race)
-    #     for each in page_data:
-    #         print("{}: {}".format(page_data.index(each), each.text))
-    #     print(results_url)
-    #     if td_count > 110:
-    #         process_combo_bets(race, results_url)
-    #         process_dog_bets(race, page_data)
-
 
 def process_combo_bets(race, target_url):
     print("process combo bets")
+    for part in race.participant_set.all():
+        print("{}: {}".format(part.post, part.dog.name))
     for each in get_node_elements(target_url, '//p'):
         split_text = each.text.split()
         bet_prices = []
         if len(split_text) > 0:
-            print(split_text)
             for string in split_text:
                 if "$" in string or "." in string:
                     bet_prices.append(string)
@@ -227,14 +218,13 @@ def process_combo_bets(race, target_url):
                 create_superfecta(race, posts, cost, payout)
 
 
-    # raise SystemExit(0)
-
 def get_dollar_amount(string):
     try:
         return float(string.replace("$", "").replace(",", ""))
     except:
         print("get_dollar_amt: couldnt float {}".format(string))
         raise SystemExit(0)
+
 
 def get_combo_name(text):
 
@@ -260,8 +250,8 @@ def get_combo_name(text):
         # print("Check on exotic: {}".format(text))
         # raise SystemExit(0)
 
+
 def process_dog_bets(race, page_data):
-    print("process dog betz ************")
     finisher_indices = [16, 22, 28]
     for index in finisher_indices:
         if isinstance(page_data[index].text, str):
@@ -270,17 +260,12 @@ def process_dog_bets(race, page_data):
             if participant:
                 chart = race.chart
                 program = chart.program
-                print("{} / {} / {} / {}".format(
-                    participant.dog.name,
-                    page_data[index+1].text,
-                    page_data[index+2].text,
-                    page_data[index+3].text))
-
                 process_singlepayouts(
                     participant,
                     [page_data[index+1].text,
                     page_data[index+2].text,
                     page_data[index+3].text])
+
 
 def process_singlepayouts(participant, amounts):
     i = 0
@@ -302,8 +287,10 @@ def get_race_heading(target_url):
             except AttributeError:
                 pass
 
+
 def format_text(text):
     return text.replace("\n", "").replace("  ", "").strip().split()
+
 
 def build_race(venue, year, month, day, time, number):
     formatted_date = get_date_from_ymd(year, month, day)
@@ -317,6 +304,7 @@ def build_race(venue, year, month, day, time, number):
     chart = get_chart(program, time)
     return get_race(chart, number)
 
+
 def is_race_heading_cell(text):
         if len(text) > 0:
             first_lower = text[0].lower()
@@ -325,27 +313,6 @@ def is_race_heading_cell(text):
                     if not re.search('[a-zA-Z]', text[1]):
                         return True
 
-def process_race(race, page_data, anchor_elements, div_elements):
-    save_race_info(
-        race,
-        get_raw_setting(page_data))
-    for each in div_elements:
-        print(each)
-    dognames = get_dognames(div_elements)
-    print("len dognames: {}".format(len(dognames)))
-    # populate_race(
-    #     get_dognames(div_elements),
-    #     race)
-
-def get_dognames(div_elements):
-    print('get dognames')
-    dognames = []
-    for each in div_elements:
-        print(each.text)
-        # name = each.text
-        # if not name in dognames:
-        #     dognames.append(name)
-    return dognames
 
 def get_raw_setting(tds):
     for td in tds:
@@ -357,6 +324,7 @@ def get_raw_setting(tds):
         except UnicodeDecodeError:
             pass
 
+
 def set_post(participant, post_position):
         if post_position:
             participant.post = post_position
@@ -364,20 +332,17 @@ def set_post(participant, post_position):
 
 
 def populate_race(dognames, race):
-    print("populate race")
-    print(dognames)
     i = 0
     for name in dognames:
         if name and not name in no_greyhound_names:
             dog = get_dog(dognames[i])
-            print(dog)
             post_position = i + 1
-            print(post_position)
             participant = get_participant(race, dog)
             set_post(
                 participant,
                 post_position)
         i += 1
+
 
 def scan_scheduled_charts(venue, year, month, day):
     for time in chart_times:
@@ -404,13 +369,13 @@ def scan_scheduled_charts(venue, year, month, day):
                     race,
                     get_raw_setting(page_data))
                 populate_race(
-                    get_entries_dognames(results_url),
+                    get_entries_dognames(entries_url),
                     race)
             else:
                 failed_attempts += 1
             number += 1
 
-def get_entry_dognames(url):
+def get_entries_dognames(url):
     dognames = []
     anchor_elements = get_node_elements(url, '//a')
     for each in anchor_elements:
@@ -422,33 +387,21 @@ def get_entry_dognames(url):
 
 
 def get_result_dognames(url):
-    print("get_results dognames")
-
-    nodes = get_attribute_node(
+    dognames = []
+    elements = get_attribute_elements(
         url,
-        "div",
-        "style",
-        "text-overflow:ellipsis;white-space:nowrap;width:5em;overflow:hidden;")
-    for node in nodes:
-        print(" % % % % % % % %% % % % %% %")
+        'div',
+        'style',
+        "text-overflow:ellipsis;white-space:nowrap;width:5em;overflow:hidden;"
+    )
+    for element in elements:
+        text = element.text
+        if not re.search('[0-9]', text):
+            dognames.append(text.strip())
+    return dognames
 
-
-def build_entries_race():
-    # create race
-    # populate
-    pass
-
-# def build_common_race(venue, date, time, number)
-
-
-
-def build_results_race():
-    # create race
-    # populate
-    pass
 
 def parse_results_url(results_url, race, page_data):
-
     build_weather_from_almanac(race.chart.program)
     save_race_info(
         race,
@@ -459,6 +412,7 @@ def parse_results_url(results_url, race, page_data):
     if len(page_data) > 115:
         process_combo_bets(race, results_url)
         process_dog_bets(race, page_data)
+
 
 def scan_history_charts(venue, year, month, day):
     for time in chart_times:
@@ -473,7 +427,6 @@ def scan_history_charts(venue, year, month, day):
                 time,
                 number)
             page_data = get_node_elements(results_url, '//td')
-            print("[ {} ]: {}".format(len(page_data), results_url))
             if len(page_data) > 85:
                 formatted_date = get_date_from_ymd(year, month, day)
                 program = get_program(

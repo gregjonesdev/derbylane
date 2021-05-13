@@ -60,10 +60,7 @@ def create_quiniela(race, posts, cost, payout):
 
 
 def get_participant_from_post(race, post):
-    print(race)
-    print(post)
-    for part in race.participant_set.all():
-        print("{}: {}".format(part.post, part.dog.name))
+
     return Participant.objects.get(
         race=race,
         post=int(post)
@@ -71,10 +68,6 @@ def get_participant_from_post(race, post):
 
 
 def create_exacta(race, posts, cost, payout):
-    print(race.participant_set.all())
-    print("--------------------")
-    for part in race.participant_set.all():
-        print("{} {}".format(part.post, part.dog.name))
     win = get_participant_from_post(race, int(posts[0]))
     place = get_participant_from_post(race, int(posts[1]))
     try:

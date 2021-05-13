@@ -12,8 +12,11 @@ def get_node(url):
     return html.fromstring(data)
 
 
-def get_attribute_node(url, element, attribute, value):
-    query_string = "{}[@{}={}]".format(element, attribute, value)
+def get_attribute_elements(url, element, attribute, value):
+    query_string = '//{}[@{}="{}"]'.format(
+        element,
+        attribute,
+        value)
     return get_node_elements(
         url,
         query_string)
