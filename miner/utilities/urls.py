@@ -42,7 +42,7 @@ def build_race_results_url(venue_code, year, month, day, time, race_number):
         str(race_number).zfill(2))
 
 def build_dog_results_url(dog_name):
-    "{}{}{}".format(all_race_results, dog_name, all_race_suffix)
+    return "{}{}{}".format(all_race_results, dog_name, all_race_suffix)
 
 def build_forecast_url(program):
     return "{}{}&geocode={}{}".format(

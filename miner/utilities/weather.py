@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 import time
 from miner.utilities.common import get_node_elements, force_datetime
 from miner.utilities.urls import (
-    almanac_root,
+    build_almanac_url,
     build_forecast_url,)
 from miner.utilities.constants import (
     days_of_week,

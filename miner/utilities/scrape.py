@@ -94,17 +94,14 @@ def get_positions(row):
     return positions
 
 
-def get_race_rows(div_tds):
-    race_rows = []
-    for div_td in div_tds:
-        race_rows.append(div_td.getparent().getparent())
-    return race_rows
+
 
 
 def get_post_weight(dog_name, date):
     target_url = build_dog_results_url(dog_name)
     string_date = "{}".format(date)
-    entries = get_node_elements(target_url, '//td[@class="raceline"]')
+    # entries = get_node_elements(target_url, '//td[@class="raceline"]')
+    entries = get_attribute_elements(target_url, 'td', 'class', 'raceline')
     entries = get_node_elements(target_url, '//tr')
     for entry in entries:
         date = entry[0][0].text.strip().split()[0]
@@ -173,11 +170,25 @@ def parse_row(row, race):
         row[9].text.strip())
 
 
-def get_results(div_tds, race):
+def get_results(target_url, page_data, race):
+    div_tds = get_node_elements(target_url, '//td//div')
     race_rows = get_race_rows(div_tds)
     for row in race_rows:
         if len(row) is 10:
             parse_row(row, race)
+
+#
+# def get_results(div_tds, race):
+#     race_rows = get_race_rows(div_tds)
+#     for row in race_rows:
+#         if len(row) is 10:
+#             parse_row(row, race)
+
+def get_race_rows(div_tds):
+    race_rows = []
+    for div_td in div_tds:
+        race_rows.append(div_td.getparent().getparent())
+    return race_rows
 
 
 def process_combo_bets(race, target_url):
@@ -398,6 +409,7 @@ def get_result_dognames(url):
     return dognames
 
 
+
 def parse_results_url(results_url, race, page_data):
     build_weather_from_almanac(race.chart.program)
     save_race_info(
@@ -406,6 +418,7 @@ def parse_results_url(results_url, race, page_data):
     populate_race(
         get_result_dognames(results_url),
         race)
+    get_results(results_url, page_data, race)
     if len(page_data) > 115:
         process_combo_bets(race, results_url)
         process_dog_bets(race, page_data)

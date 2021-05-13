@@ -26,11 +26,11 @@ class Command(BaseCommand):
             print("Grade: {}\tDistance: {} yds".format(race.grade.name, race.distance))
             print("-------------------------------------------")
             for p in race.participant_set.all():
-                print("{}\t{}\t{}".format(
+                print("{}\t{}\t{}\t{}".format(
                     p.post,
                     p.dog.name,
                     p.post_weight,
-
+                    p.final,
                 ))
             weather = program.weather
             print("Weather:")
