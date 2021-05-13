@@ -43,7 +43,10 @@ from miner.utilities.weather import (
     build_weather_from_almanac,
 )
 
-from miner.utilities.common import get_node_elements
+from miner.utilities.common import (
+    get_node_elements,
+    get_attribute_node,
+)
 
 def split_position_lengths(entry):
     if entry:
@@ -172,11 +175,11 @@ def get_results(div_tds, race):
         if len(row) is 10:
             parse_row(row, race)
 
-def check_for_results(results_url, race):
+def check_for_results(results_url, race, page_data):
     print("check for results")
-    # div_tds = get_node_elements(results_url, '//td//div')
-    # td_count = len(div_tds)
-    # print(td_count)
+    div_tds = get_node_elements(results_url, '//td//div')
+    td_count = len(div_tds)
+    print(td_count)
     # if td_count > 50:
     #     get_results(div_tds, race)
     #     for each in page_data:
@@ -335,6 +338,7 @@ def process_race(race, page_data, anchor_elements, div_elements):
     #     race)
 
 def get_dognames(div_elements):
+    print('get dognames')
     dognames = []
     for each in div_elements:
         print(each.text)
@@ -400,7 +404,7 @@ def scan_scheduled_charts(venue, year, month, day):
                     race,
                     get_raw_setting(page_data))
                 populate_race(
-                    get_entry_dognames(entries_url),
+                    get_entries_dognames(results_url),
                     race)
             else:
                 failed_attempts += 1
@@ -418,7 +422,16 @@ def get_entry_dognames(url):
 
 
 def get_result_dognames(url):
-    pass
+    print("get_results dognames")
+
+    nodes = get_attribute_node(
+        url,
+        "div",
+        "style",
+        "text-overflow:ellipsis;white-space:nowrap;width:5em;overflow:hidden;")
+    for node in nodes:
+        print(" % % % % % % % %% % % % %% %")
+
 
 def build_entries_race():
     # create race
@@ -434,6 +447,19 @@ def build_results_race():
     # populate
     pass
 
+def parse_results_url(results_url, race, page_data):
+
+    build_weather_from_almanac(race.chart.program)
+    save_race_info(
+        race,
+        get_raw_setting(page_data))
+    populate_race(
+        get_result_dognames(results_url),
+        race)
+    if len(page_data) > 115:
+        process_combo_bets(race, results_url)
+        process_dog_bets(race, page_data)
+
 def scan_history_charts(venue, year, month, day):
     for time in chart_times:
         number = 1
@@ -447,23 +473,16 @@ def scan_history_charts(venue, year, month, day):
                 time,
                 number)
             page_data = get_node_elements(results_url, '//td')
+            print("[ {} ]: {}".format(len(page_data), results_url))
             if len(page_data) > 85:
                 formatted_date = get_date_from_ymd(year, month, day)
                 program = get_program(
                     venue,
                     formatted_date)
-                build_weather_from_almanac(program)
-                chart = get_chart(program, time)
-                race = get_race(chart, number)
-                save_race_info(
-                    race,
-                    get_raw_setting(page_data))
-                populate_race(
-                    get_entry_dognames(results_url),
-                    race)
-                if len(page_data) > 115:
-                    # bets
-                    pass
+                race = get_race(
+                    get_chart(program, time),
+                    number)
+                parse_results_url(results_url, race, page_data)
             else:
                 failed_attempts += 1
             number += 1
