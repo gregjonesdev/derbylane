@@ -57,7 +57,7 @@ class Venue(CoreModel):
         max_length=3,
         default='USA',
     )
-    weatherlookup = models.ForeignKey(
+    weatherlookup = models.OneToOneField(
         WeatherLookup,
         on_delete=models.CASCADE,
         null=True
@@ -74,7 +74,7 @@ class Venue(CoreModel):
 
 
 class SocialMedia(CoreModel):
-    venue = models.ForeignKey(
+    venue = models.OneToOneField(
         Venue,
         on_delete=models.CASCADE
     )
@@ -502,7 +502,7 @@ class Superfecta(Combo):
 
 class Weather(CoreModel):
 
-    program = models.ForeignKey(Program, on_delete=models.CASCADE, null=True)
+    program = models.OneToOneField(Program, on_delete=models.CASCADE, null=True)
     dew_point = models.DecimalField(
         max_digits=4,
         decimal_places=2,

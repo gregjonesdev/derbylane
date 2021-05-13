@@ -432,6 +432,7 @@ def scan_history_charts(venue, year, month, day):
                 program = get_program(
                     venue,
                     formatted_date)
+                build_weather_from_almanac(program)    
                 race = get_race(
                     get_chart(program, time),
                     number)

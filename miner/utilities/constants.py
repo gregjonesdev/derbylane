@@ -22,7 +22,7 @@ grade_skips = ["--"]
 position_skips = ['.', '-', 'S', 'f', 'X', 'x', '0', 'O', 'N', '0', '+', 'D']
 art_skips = ['.', '-', 'f', 'X', 'x', '0', '+', 'D', 'OOP', 'DNF']
 no_greyhound_names = ["NO+GREYHOUND", "NO GREYHOUND", "*", "[EMAIL PROTECTED]"]
-
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
 chart_times = [
  "A",
  "E",

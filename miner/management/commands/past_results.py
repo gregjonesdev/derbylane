@@ -10,8 +10,6 @@ from rawdat.models import (
 
 from miner.utilities.scrape import scan_history_charts
 
-from miner.utilities.weather import build_weather_from_almanac
-
 class Command(BaseCommand):
 
     def add_arguments(self, parser):

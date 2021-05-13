@@ -1,5 +1,5 @@
 import requests
-from datetime import date
+from datetime import date, datetime
 from django.core.exceptions import ObjectDoesNotExist
 from rawdat.models import (
     Program,
@@ -10,63 +10,64 @@ import time
 from miner.utilities.common import get_node_elements
 from miner.utilities.urls import (
     almanac_root,
-    json_suffix,
-    base_url,
-    api_key)
-from miner.utilities.constants import days_of_week
+    build_forecast_url,)
+from miner.utilities.constants import (
+    days_of_week,
+    user_agent)
 
 
 def build_weather_from_forecast(program):
-    prog_date = program.date
-    new_date = date(prog_date.year, prog_date.month, prog_date.day)
-    index = new_date.weekday()
-    target_day = days_of_week[index]
-    target_url = "{}{}&geocode={}{}".format(
-        base_url,
-        api_key,
-        program.venue.weatherlookup.geocode,
-        json_suffix)
-    print(target_url)
-    r = requests.get(url = target_url)
-    data = r.json()
-    day_index = get_day_index(data["dayOfWeek"], target_day)
-    daypart = data["daypart"][0]
+    if not program.weather:
+        print(program.date)
+        print(type(program.date))
+        if isinstance(program.date, str):
+            print(":(")
+            print(program.uuid)
+            program_date = date(program.date, "%Y-%m-%d")
+        else:
+            program_date = program.date
+        index = program_date.weekday()
+        target_day = days_of_week[index]
+        r = requests.get(build_forecast_url(program))
+        data = r.json()
+        day_index = get_day_index(data["dayOfWeek"], target_day)
+        daypart = data["daypart"][0]
 
-    if daypart:
-        try:
-            max_temp = get_offset_index(day_index, data["calendarDayTemperatureMax"], 0)
-        except:
-            max_temp = None
-        try:
-            min_temp = get_offset_index(day_index, data["calendarDayTemperatureMin"], 1)
-        except:
-            min_temp = None
-        try:
-            percipitation = get_daynight_index(day_index, daypart["precipChance"])
-        except:
-            percipitation = None
-        try:
-            mean_rh = get_daynight_index(day_index, daypart["relativeHumidity"])
-        except:
-            mean_rh = None
-        try:
-            wind = get_daynight_index(day_index, daypart['windSpeed'])
-        except:
-            wind = None
+        if daypart:
+            try:
+                max_temp = get_offset_index(day_index, data["calendarDayTemperatureMax"], 0)
+            except:
+                max_temp = None
+            try:
+                min_temp = get_offset_index(day_index, data["calendarDayTemperatureMin"], 1)
+            except:
+                min_temp = None
+            try:
+                percipitation = get_daynight_index(day_index, daypart["precipChance"])
+            except:
+                percipitation = None
+            try:
+                mean_rh = get_daynight_index(day_index, daypart["relativeHumidity"])
+            except:
+                mean_rh = None
+            try:
+                wind = get_daynight_index(day_index, daypart['windSpeed'])
+            except:
+                wind = None
 
-        weather_instance = get_weatherinstance(program)
-        update_weather(
-            weather_instance,
-            None,
-            min_temp,
-            None,
-            max_temp,
-            mean_rh,
-            None,
-            None,
-            percipitation,
-            None,
-            wind)
+            weather_instance = get_weatherinstance(program)
+            update_weather(
+                weather_instance,
+                None,
+                min_temp,
+                None,
+                max_temp,
+                mean_rh,
+                None,
+                None,
+                percipitation,
+                None,
+                wind)
 
 def get_nightly_index(day_index, list):
     return list[day_index*2 + 1]
@@ -81,36 +82,12 @@ def get_day_index(days, target_day):
     return days.index(target_day)
 
 
-# def save_forecast(program, daily_high, daily_low, rain, relHumid, wind):
-#     try:
-#             forecast = VenueForecast.objects.get(venue=venue, date=date)
-#         except ObjectDoesNotExist:
-#             new_forecast = VenueForecast(
-#                 venue=venue,
-#                 date=date
-#                 )
-#             new_forecast.set_fields_to_base()
-#             forecast = new_forecast
-#         forecast.max_temp = daily_high
-#         forecast.min_temp = daily_low
-#         forecast.percipitation = rain
-#         forecast.rh = relHumid
-#         forecast.wind = wind
-#         forecast.nightly_narrative = narrative
-#         forecast.save()
-
-
 def build_weather_from_almanac(program):
 
-    if program.venue.code == 'CA':
-        zip_code = '92154' # closest US zip code to caliente
-    else:
-        zip_code = program.venue.zip_code
-    date = program.date
-    target_url = "{}{}/{}".format(almanac_root, zip_code, date)
-    user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
     headers = {'User-Agent': user_agent}
-    response = requests.get(target_url, headers=headers)
+    response = requests.get(
+        build_almanac_url(program),
+        headers=headers)
     html_text = response.text
     soup = BeautifulSoup(html_text, 'html.parser')
     process_rows(program, soup)
@@ -148,42 +125,7 @@ def process_rows(program, soup):
         percipitation,
         visibility,
         wind)
-    # try:
-    #     weather = Weather.objects.get(program=program)
-    # except ObjectDoesNotExist:
-    #     new_weather = Weather(
-    #         program=program)
-    #     new_weather.set_fields_to_base()
-    #     new_weather.save()
-    #     weather = new_weather
-    #
-    # print("{} / {} / {} / {} / {} / {} / {} / {} / {} / {}".format(
-    #     dew_point,
-    #     min_temp,
-    #     mean_temp,
-    #     max_temp,
-    #     mean_rh,
-    #     max_rh,
-    #     pressure,
-    #     percipitation,
-    #     visibility,
-    #     wind
-    # ))
-    #
-    # try:
-    #     weather.dew_point = dew_point
-    #     weather.min_temp = min_temp
-    #     weather.mean_temp = mean_temp
-    #     weather.max_temp = max_temp
-    #     weather.mean_rh = mean_rh
-    #     weather.max_rh = max_rh
-    #     weather.pressure = pressure
-    #     weather.percipitation = percipitation
-    #     weather.visibility = visibility
-    #     weather.wind = wind
-    #     weather.save()
-    # except:
-    #     pass
+
 
 def get_weatherinstance(program):
     try:
@@ -195,6 +137,7 @@ def get_weatherinstance(program):
         new_weather.save()
         weather = new_weather
     return weather
+
 
 def update_weather(
     weather_instance,
@@ -264,14 +207,14 @@ def is_percipitation(num):
         else:
             print("Not a parcipitation: {}".format(num))
             return float(input("Enter correct value: "))
-
-def is_relhumid(num):
-    if num:
-        if 0<=float(num)<=100:
-            return num
-        else:
-            print("Not a relative humidity: {}".format(num))
-            return float(input("Enter correct value: "))
+#
+# def is_relhumid(num):
+#     if num:
+#         if 0<=float(num)<=100:
+#             return num
+#         else:
+#             print("Not a relative humidity: {}".format(num))
+#             return float(input("Enter correct value: "))
 
 def is_pressure(num):
     if num:

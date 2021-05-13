@@ -43,3 +43,17 @@ def build_race_results_url(venue_code, year, month, day, time, race_number):
 
 def build_dog_results_url(dog_name):
     "{}{}{}".format(all_race_results, dog_name, all_race_suffix)
+
+def build_forecast_url(program):
+    return "{}{}&geocode={}{}".format(
+        base_url,
+        api_key,
+        program.venue.weatherlookup.geocode,
+        json_suffix)
+
+def build_almanac_url(program):
+    if program.venue.code == 'CA':
+        zip_code = '92154' # closest US zip code to caliente
+    else:
+        zip_code = program.venue.zip_code
+    return "{}{}/{}".format(almanac_root, zip_code, program.date)

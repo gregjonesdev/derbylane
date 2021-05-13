@@ -2,14 +2,11 @@ import datetime
 
 from django.core.management.base import BaseCommand
 
-from rawdat.models import Program
-
+from miner.utilities.common import get_node_elements
 from miner.utilities.scrape import parse_results_url
 from miner.utilities.urls import build_race_results_url
-
 from rawdat.models import Race
 
-from miner.utilities.common import get_node_elements
 
 class Command(BaseCommand):
 
