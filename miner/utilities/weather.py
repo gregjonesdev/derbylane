@@ -16,7 +16,7 @@ from miner.utilities.urls import (
 from miner.utilities.constants import days_of_week
 
 
-def get_forecast_url(program):
+def build_weather_from_forecast(program):
     prog_date = program.date
     new_date = date(prog_date.year, prog_date.month, prog_date.day)
     index = new_date.weekday()
@@ -100,11 +100,14 @@ def get_day_index(days, target_day):
 #         forecast.save()
 
 
-def parse_for_weather(program, zip_code, date):
-    if zip_code == '22024':
+def build_weather_from_almanac(program):
+
+    if program.venue.code == 'CA':
         zip_code = '92154' # closest US zip code to caliente
+    else:
+        zip_code = program.venue.zip_code
+    date = program.date
     target_url = "{}{}/{}".format(almanac_root, zip_code, date)
-    target_url = "https://www.almanac.com/weather/history/zipcode/92154/2021-05-08"
     user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
     headers = {'User-Agent': user_agent}
     response = requests.get(target_url, headers=headers)

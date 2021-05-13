@@ -19,3 +19,27 @@ australia_attempt = "https://old.thedogs.com.au/Racing/RacingFormFields.aspx?mee
 json_suffix = "&language=en-US&units=e&format=json"
 base_url = "https://api.weather.com/v3/wx/forecast/daily/7day?apiKey="
 api_key = "6532d6454b8aa370768e63d6ba5a832e"
+
+
+def build_entries_url(venue_code, year, month, day, time, race_number):
+    return "{}G{}${}{}{}{}{}".format(
+        entries_url,
+        venue_code,
+        year,
+        str(month).zfill(2),
+        str(day).zfill(2),
+        time,
+        str(race_number).zfill(2))
+
+def build_race_results_url(venue_code, year, month, day, time, race_number):
+    return "{}G{}${}{}{}{}{}".format(
+        results_url,
+        venue_code,
+        year,
+        str(month).zfill(2),
+        str(day).zfill(2),
+        time,
+        str(race_number).zfill(2))
+
+def build_dog_results_url(dog_name):
+    "{}{}{}".format(all_race_results, dog_name, all_race_suffix)

@@ -8,9 +8,9 @@ from rawdat.models import (
     VenueScan,
     )
 
-from miner.utilities.scrape import scan_chart_times
+from miner.utilities.scrape import scan_history_charts
 
-from miner.utilities.weather import parse_for_weather
+from miner.utilities.weather import build_weather_from_almanac
 
 class Command(BaseCommand):
 
@@ -21,12 +21,7 @@ class Command(BaseCommand):
     def scan_month(self, venue, month, year):
         day = 1
         while day <= 31:
-            scan_chart_times(venue, year, month, day)
-            try:
-                if zip_code and date:
-                    parse_for_weather(program, venue.zip_code, date)
-            except:
-                pass
+            scan_history_charts(venue, year, month, day)
             day += 1
         # self.create_venue_scan(venue, year, month)
 

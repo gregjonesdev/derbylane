@@ -1,10 +1,9 @@
 import re
 from django.core.exceptions import ObjectDoesNotExist
 from miner.utilities.urls import (
-    results_url,
-    all_race_results,
-    all_race_suffix,
-    entries_url,
+    build_entries_url,
+    build_race_results_url,
+    build_dog_results_url,
 )
 from rawdat.models import Weather
 from miner.utilities.constants import (
@@ -19,18 +18,16 @@ from miner.utilities.constants import (
     )
 
 from rawdat.utilities.methods import (
-    get_date_from_ymd,
-    get_race
+    get_date_from_ymd
 )
 
 from miner.utilities.models import (
     update_participant,
-    save_sex,
-    save_post_weight,
     save_race_info,
     get_participant,
     create_single,
     get_dog,
+    get_race,
     get_bettype,
     get_grade,
     get_chart,
@@ -41,7 +38,10 @@ from miner.utilities.models import (
     create_superfecta,
 )
 
-from miner.utilities.weather import get_forecast_url
+from miner.utilities.weather import (
+    build_weather_from_forecast,
+    build_weather_from_almanac,
+)
 
 from miner.utilities.common import get_node_elements
 
@@ -97,7 +97,7 @@ def get_race_rows(div_tds):
     return race_rows
 
 def get_post_weight(dog_name, date):
-    target_url = "{}{}{}".format(all_race_results, dog_name, all_race_suffix)
+    target_url = build_dog_results_url(dog_name)
     string_date = "{}".format(date)
     entries = get_node_elements(target_url, '//td[@class="raceline"]')
     entries = get_node_elements(target_url, '//tr')
@@ -389,29 +389,36 @@ def scan_scheduled_charts(venue, year, month, day):
                 number)
             page_data = get_node_elements(entries_url, '//td')
             if len(page_data) > 20:
-                pass
-                # build race: create race object, save setting, populate
                 formatted_date = get_date_from_ymd(year, month, day)
                 program = get_program(
                     venue,
                     formatted_date)
-                print("A+")
-                print(program)
-                # build_entries_race(venue, year, month, day, time, number)
-
-                # race = build_race(venue, year, month, day, time, number)
-                # anchor_elements = get_node_elements(entries_url, '//a')
-                # save_race_info(
-                #     race,
-                #     get_raw_setting(page_data))
-                # dognames = get_dognames(div_elements)
-                # print("len dognames: {}".format(len(dognames)))
-                # populate_race(
-                #     get_dognames(div_elements),
-                #     race)
+                build_weather_from_forecast(program)
+                chart = get_chart(program, time)
+                race = get_race(chart, number)
+                save_race_info(
+                    race,
+                    get_raw_setting(page_data))
+                populate_race(
+                    get_entry_dognames(entries_url),
+                    race)
             else:
                 failed_attempts += 1
-            number += 1    
+            number += 1
+
+def get_entry_dognames(url):
+    dognames = []
+    anchor_elements = get_node_elements(url, '//a')
+    for each in anchor_elements:
+        text = each.text
+        if text:
+            if not re.search('[0-9]', text) and not re.search('▼', text):
+                dognames.append(text.strip())
+    return dognames
+
+
+def get_result_dognames(url):
+    pass
 
 def build_entries_race():
     # create race
@@ -428,80 +435,35 @@ def build_results_race():
     pass
 
 def scan_history_charts(venue, year, month, day):
-    # load up results url
-    # if has race
-    # build race: create, save, populate
-    # get results
-    pass
-
-
-def scan_chart_times(venue, year, month, day):
     for time in chart_times:
         number = 1
         failed_attempts = 0
         while failed_attempts <= allowed_attempts and number <= max_races_per_chart:
-            entries_url = build_entries_url(
+            results_url = build_race_results_url(
                 venue.code,
                 year,
                 month,
                 day,
                 time,
                 number)
-            results_url = build_results_url(
-                venue.code,
-                year,
-                month,
-                day,
-                time,
-                number)
-            page_data = get_node_elements(entries_url, '//td')
-            print("-------------------------------------------------")
-            print(entries_url)
-            print(results_url)
-            print("-------------------------------------------------")
-            if has_race(page_data):
-                print("has race data")
-                race = build_race(venue, year, month, day, time, number)
-                anchor_elements = get_node_elements(entries_url, '//a')
-                process_race(race, page_data, anchor_elements)
-                check_for_results(results_url, race)
-                # div_elements = get_node_elements(results_url, '//div[@style="text-overflow:ellipsis;white-space:nowrap;width:5em;overflow:hidden;"]')
-
-                # for each in div_elements:
-                #     print(each)
-
-
-                raise SystemExit(0)
-                print(entries_url)
+            page_data = get_node_elements(results_url, '//td')
+            if len(page_data) > 85:
+                formatted_date = get_date_from_ymd(year, month, day)
+                program = get_program(
+                    venue,
+                    formatted_date)
+                build_weather_from_almanac(program)
+                chart = get_chart(program, time)
+                race = get_race(chart, number)
+                save_race_info(
+                    race,
+                    get_raw_setting(page_data))
+                populate_race(
+                    get_entry_dognames(results_url),
+                    race)
+                if len(page_data) > 115:
+                    # bets
+                    pass
             else:
                 failed_attempts += 1
             number += 1
-
-def build_entries_url(venue_code, year, month, day, time, race_number):
-    return "{}G{}${}{}{}{}{}".format(
-        entries_url,
-        venue_code,
-        year,
-        str(month).zfill(2),
-        str(day).zfill(2),
-        time,
-        str(race_number).zfill(2))
-
-def build_results_url(venue_code, year, month, day, time, race_number):
-    return "{}G{}${}{}{}{}{}".format(
-        results_url,
-        venue_code,
-        year,
-        str(month).zfill(2),
-        str(day).zfill(2),
-        time,
-        str(race_number).zfill(2))
-
-
-
-def has_race(page_data):
-    return len(page_data) > 20
-
-def save_race_data(url):
-    print("save_race_data")
-    print(url)

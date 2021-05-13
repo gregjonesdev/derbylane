@@ -5,12 +5,12 @@ from django.core.management.base import BaseCommand
 from rawdat.models import Program
 
 from miner.utilities.scrape import (
-    build_results_url,
+    build_race_results_url,
     check_for_results,
     )
 
 from miner.utilities.common import get_node_elements
-from miner.utilities.weather import parse_for_weather
+from miner.utilities.weather import build_weather_from_almanac
 
 class Command(BaseCommand):
 
@@ -25,13 +25,13 @@ class Command(BaseCommand):
             venue = program.venue
             try:
                 if venue.zip_code:
-                    parse_for_weather(program, venue.zip_code, date)
+                    build_weather_from_almanac(program, venue.zip_code, date)
             except:
                 pass
             for chart in program.chart_set.all():
                 time = chart.time
                 for race in chart.race_set.all():
-                    target_url = build_results_url(
+                    target_url = build_race_results_url(
                         venue.code,
                         date.year,
                         date.month,
