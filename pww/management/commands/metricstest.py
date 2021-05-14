@@ -15,17 +15,19 @@ def objective(x, a, b, c, d):
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-
+        list = [(1,2), (3,4)]
+        for each in list:
+            print(each[0])
+        raise SystemExit(0)
         races = Race.objects.filter(chart__program__date="2021-05-13", chart__program__venue__code="WD")[:1]
         # print(races)
         # calculate_scaled_race_metrics(races[0])
-        for p in races[0].participant_set.all():
-            target_date = p.race.chart.program.date
-            whelp_date = p.dog.whelp_date
-            age = target_date - target_date
-            print(age.days)
-            print(type(target_date))
-        raise SystemExit(0)
+        # for p in races[0].participant_set.all():
+        #     target_date = p.race.chart.program.date
+        #     whelp_date = p.dog.whelp_date
+        #     age = target_date - target_date
+        #     print(age.days)
+        #     print(type(target_date))
 
 
 

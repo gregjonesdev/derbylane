@@ -3,12 +3,48 @@ import datetime
 
 past_race_count = 7
 minimum_participations = 2
+x_values = [1, 2, 3, 4, 5, 6, 7, 8]
 
 
-get_postfactor(participations):
-    pass
+def normalize(obj):
+    max_avg = max(obj.values()):
+    min_avg = min(obj.values()):
 
-get_postweight_average(participations):
+
+def build_avg_obj(posts_obj):
+    avg_obj = {}
+    for each in posts_obj.keys():
+        avg_obj[each] = get_average(posts_obj[each])
+    return avg_obj
+
+
+def build_posts_obj(participations):
+    posts_obj = {}
+    for item in participations:
+        post = item.post
+        final = item.final
+        if final and post:
+            str_post = str([post])
+            if not str_post in posts_obj.keys():
+                posts_obj[str_post] = []
+            posts_obj[str_post] += final
+    return posts_obj
+
+
+
+
+def get_postfactor(target_post, participations):
+    print("get postfactor")
+    for p in participations:
+        print("{}: {}").format(p.post, p.final)
+    posts_obj = build_posts_obj(participations)
+    avg_obj = build_avg_obj(posts_obj)
+    normalized_obj = normalize(avg_obj)
+
+
+
+
+def get_postweight_average(participations):
     values = []
     for item in participations:
         post_weight = item.post_weight
@@ -137,7 +173,7 @@ def get_raw_participant_metrics(participant, distance):
             "age": get_age(participant),
             "sex": participant.dog.sex,
             "post_weight_avg": get_postweight_average(participations),
-            "post_factor": get_postfactor(participations),
+            "post_factor": get_postfactor(participant.post, participations),
             "temp_factor": None,
             "rh_factor": None,
         }

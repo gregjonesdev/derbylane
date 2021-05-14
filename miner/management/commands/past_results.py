@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 month=month
             )
         except ObjectDoesNotExist:
-            new_scan = VenueScan.objects.get(
+            new_scan = VenueScan(
                 venue=venue,
                 year=year,
                 month=month
