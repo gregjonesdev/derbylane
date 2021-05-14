@@ -423,7 +423,7 @@ class Combo(CoreModel):
         max_digits=10,
         decimal_places=2,
         null=True)
-    race = models.OneToOneField(
+    race = models.ForeignKey(
         Race,
         on_delete=models.CASCADE)
 

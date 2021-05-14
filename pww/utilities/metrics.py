@@ -3,6 +3,16 @@ from pww.models import Metric, Prediction
 past_race_count = 7
 minimum_participations = 2
 
+def get_raw_fastest_time(participations):
+      fastest_time = None
+      for participation in participations:
+          current_time = participation.actual_running_time
+          if current_time:
+              if not fastest_time or current_time < fastest_time:
+                  fastest_time = current_time
+      return fastest_time
+      
+
 def get_prior_participations(dog, target_date, distance, race_count):
     return dog.participant_set.filter(
         race__chart__program__date__lt=target_date,
@@ -23,7 +33,7 @@ def get_raw_participant_metrics(participant, distance):
         past_race_count)
     if len(participations) >= minimum_participations:
         raw_metrics = {
-            "raw_fastest_time": None,
+            "raw_fastest_time": get_raw_fastest_time(participations),
             "win_percent": None,
             "place_percent": None,
             "show_percent": None,

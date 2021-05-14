@@ -27,7 +27,7 @@ from miner.utilities.models import (
     # create_single,
     get_dog,
     get_race,
-    # get_bettype,
+    get_straightwager,
     get_grade,
     get_chart,
     get_program,
@@ -210,15 +210,6 @@ def process_combo_bets(race, target_url):
             posts = split_text[posts_index].split("/")
             payout = get_dollar_amount(split_text[-1])
 
-            # if cost and payout and combo_name and posts:
-            #     print("cost: {}".format(cost))
-            #     print("payout: {}".format(payout))
-            #     print("combo name: {}".format(combo_name))
-            #     print("posts: {}".format(posts))
-            # else:
-            #     print("uh oh @ 203: {}".format(split_text))
-            #     raise SystemExit(0)
-
             if combo_name == "Exacta":
                 create_exacta(race, posts, cost, payout)
             elif combo_name == "Quiniela":
@@ -230,11 +221,16 @@ def process_combo_bets(race, target_url):
 
 
 def get_dollar_amount(string):
-    try:
-        return float(string.replace("$", "").replace(",", ""))
-    except:
-        print("get_dollar_amt: couldnt float {}".format(string))
-        raise SystemExit(0)
+    stripped = string.strip()
+    if stripped:
+        try:
+            return float(stripped.replace("$", "").replace(",", ""))
+        except:
+            print("get_dollar_amt: couldnt float {}".format(string))
+            raise SystemExit(0)
+    else:
+        return 0.00        
+
 
 
 def get_combo_name(text):
@@ -260,8 +256,6 @@ def get_combo_name(text):
 
     else:
         return None
-        # print("Check on exotic: {}".format(text))
-        # raise SystemExit(0)
 
 
 def process_dog_bets(race, page_data):
@@ -273,25 +267,24 @@ def process_dog_bets(race, page_data):
             if participant:
                 chart = race.chart
                 program = chart.program
-                process_singlepayouts(
+                process_straightwagers(
                     participant,
-                    [page_data[index+1].text,
+                    page_data[index+1].text,
                     page_data[index+2].text,
-                    page_data[index+3].text])
+                    page_data[index+3].text)
 
 
-def process_singlepayouts(participant, amounts):
+def process_straightwagers(participant, win_amount, place_amount, show_amount):
     print("process single payout")
-
-    raise SystemExit(0)
-    # i = 0
-    # while i < 3:
-    #     if isinstance(amounts[i], str):
-    #         if amounts[i].strip():
-    #             # type = get_bettype(raw_types[i])
-    #             # amount = amounts[i]
-    #             # create_single(participant, type, amount)
-    #     i += 1
+    straight_wager = get_straightwager(participant)
+    print(win_amount)
+    print(place_amount)
+    print(show_amount)
+    straight_wager = get_straightwager(participant)
+    straight_wager.win = get_dollar_amount(win_amount)
+    straight_wager.place = get_dollar_amount(place_amount)
+    straight_wager.show = get_dollar_amount(show_amount)
+    straight_wager.save()
 
 
 def get_race_heading(target_url):
@@ -306,19 +299,6 @@ def get_race_heading(target_url):
 
 def format_text(text):
     return text.replace("\n", "").replace("  ", "").strip().split()
-
-
-# def build_race(venue, year, month, day, time, number):
-#     formatted_date = get_date_from_ymd(year, month, day)
-#     program = get_program(
-#         venue,
-#         formatted_date)
-#     try:
-#         weather_instance = Weather.objects.get(program=program)
-#     except ObjectDoesNotExist:
-#         get_forecast_url(program)
-#     chart = get_chart(program, time)
-#     return get_race(chart, number)
 
 
 def is_race_heading_cell(text):

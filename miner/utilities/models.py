@@ -154,30 +154,43 @@ def get_parent_name(url, class_attr):
         url,'//td[@class="{}"]//a'.format(class_attr))[0].text
 
 
+def get_straightwager(participant):
+    try:
+        straight_wager = Straight_Wager.objects.get(
+            participant=participant
+        )
+    except ObjectDoesNotExist:
+        new_straight = Straight_Wager(
+            participant = participant
+        )
+        new_straight.set_fields_to_base()
+        new_straight.save()
+        straight_wager = new_straight
+    return straight_wager
+
+
 
 def save_dog_info(dog):
-    print("save dog infor")
     url = build_dog_profile_url(dog.name)
-    print(url)
-    sire_name = get_parent_name(url, "it2")
-    sire, dam = None, None
-    if sire_name:
-        sire = get_dog(sire_name)
-    dam_name = get_parent_name(url, "it4")
-    if dam_name:
-        dam = get_dog(dam_name)
     whelp_date = get_node_elements(url, '//td[@class="it4"]//em')[0].text
     dog.whelp_date = whelp_date
     dog.save()
-    # whelp_date = datetime.datetime.strptime(raw_date,'%Y-%m-%d')
-    print("Whelp Date: {}".format(whelp_date))
-    if sire and dam and whelp_date:
-        litter = get_litter(sire, dam, whelp_date)
-        dog.litter = litter
-        dog.save()
-        save_sex_and_color(
-            dog,
-            get_node_elements(url, '//td[@class="it2"]//em'))
+    print(url)
+    if not dog.litter:
+        sire_name = get_parent_name(url, "it2")
+        sire, dam = None, None
+        if sire_name:
+            sire = get_dog(sire_name)
+        dam_name = get_parent_name(url, "it4")
+        if dam_name:
+            dam = get_dog(dam_name)
+        if sire and dam and whelp_date:
+            litter = get_litter(sire, dam, whelp_date)
+            dog.litter = litter
+            dog.save()
+    save_sex_and_color(
+        dog,
+        get_node_elements(url, '//td[@class="it2"]//em'))
 
 
 
