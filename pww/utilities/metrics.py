@@ -1,7 +1,46 @@
 from pww.models import Metric, Prediction
+import datetime
 
 past_race_count = 7
 minimum_participations = 2
+
+
+get_postfactor(participations):
+    pass
+
+get_postweight_average(participations):
+    values = []
+    for item in participations:
+        post_weight = item.post_weight
+        if post_weight:
+            values.append(post_weight)
+    return get_average(values)
+
+
+def get_age(participant):
+    target_date = participant.race.chart.program.date
+    whelp_date = participant.dog.whelp_date
+    age = target_date - target_date
+    return age.days
+
+
+def time_average(participations):
+    values = []
+    for item in participations:
+        actual_running_time = item.actual_running_time
+        if actual_running_time:
+            values.append(actual_running_time)
+    return get_average(values)
+
+
+def grade_average(participations):
+    # the average racing grade of the dog (A-D) of the last 7 races
+    values = []
+    for item in participations:
+        if item.race.grade:
+            values.append(item.race.grade.value)
+    return get_average(values)
+
 
 def get_break_average(participations):
     # the dog’s average position out of the starting box
@@ -91,14 +130,14 @@ def get_raw_participant_metrics(participant, distance):
             "eighth_avg": get_eighth_average(participations),
             "straight_avg": get_straight_average(participations),
             "finish_avg": get_finish_average(participations),
-            "grade_avg": None,
-            "time_seven": None,
-            "time_three": None,
-            "upgrade": None,
-            "age": None,
-            "sex": None,
-            "set_weight": None,
-            "post_factor": None,
+            "grade_avg": grade_average(participations),
+            "time_seven": time_average(participations[:7]),
+            "time_three": time_average(participations[:3]),
+            "upgrade": upgrade(participations[:3], target_grade_value),
+            "age": get_age(participant),
+            "sex": participant.dog.sex,
+            "post_weight_avg": get_postweight_average(participations),
+            "post_factor": get_postfactor(participations),
             "temp_factor": None,
             "rh_factor": None,
         }
