@@ -57,3 +57,6 @@ def build_almanac_url(program):
     else:
         zip_code = program.venue.zip_code
     return "{}{}/{}".format(almanac_root, zip_code, program.date)
+
+def build_dog_profile_url(dog_name):
+    return "{}{}".format(dog_root, dog_name.replace(" ", "+"))    

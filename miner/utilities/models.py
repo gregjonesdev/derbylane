@@ -9,9 +9,9 @@ from rawdat.models import (
     Exacta,
     Trifecta,
     Superfecta,
-    BetType,
+    # BetType,
     Grade,
-    Single,
+    Straight_Wager,
     Dog,
     Litter
 )
@@ -28,7 +28,7 @@ from miner.utilities.common import (
 )
 
 from miner.utilities.urls import (
-    dog_root,
+    build_dog_profile_url,
 )
 
 
@@ -149,30 +149,40 @@ def create_superfecta(race, posts, cost, payout):
     bet.save()
 
 
-
+def get_parent_name(url, class_attr):
+    return get_node_elements(
+        url,'//td[@class="{}"]//a'.format(class_attr))[0].text
 
 
 
 def save_dog_info(dog):
-    url = "{}{}".format(dog_root, dog.name.replace(" ", "+"))
-    try:
-        sire = get_dog(get_node_elements(url, '//td[@class="it2"]//a')[0].text)
-        dam = get_dog(get_node_elements(url, '//td[@class="it4"]//a')[0].text)
-        whelp_date = get_node_elements(url, '//td[@class="it4"]//em')[0].text
-        # whelp_date = datetime.datetime.strptime(raw_date,'%Y-%m-%d')
-        if sire and dam and whelp_date:
-            litter = get_litter(sire, dam, whelp_date)
-            dog.litter = litter
-            dog.save()
-            save_sex_and_color(
+    print("save dog infor")
+    url = build_dog_profile_url(dog.name)
+    print(url)
+    sire_name = get_parent_name(url, "it2")
+    sire, dam = None, None
+    if sire_name:
+        sire = get_dog(sire_name)
+    dam_name = get_parent_name(url, "it4")
+    if dam_name:
+        dam = get_dog(dam_name)
+    whelp_date = get_node_elements(url, '//td[@class="it4"]//em')[0].text
+    dog.whelp_date = whelp_date
+    dog.save()
+    # whelp_date = datetime.datetime.strptime(raw_date,'%Y-%m-%d')
+    print("Whelp Date: {}".format(whelp_date))
+    if sire and dam and whelp_date:
+        litter = get_litter(sire, dam, whelp_date)
+        dog.litter = litter
+        dog.save()
+        save_sex_and_color(
             dog,
             get_node_elements(url, '//td[@class="it2"]//em'))
-    except:
-        pass
 
 
 
 def get_dog(name):
+    print(name)
     try:
         dog = Dog.objects.get(name=name.upper())
     except ObjectDoesNotExist:
@@ -221,21 +231,21 @@ def get_grade(raw_grade):
     else:
         return None
 
-def create_single(participant, type, payout):
-    try:
-        single = Single.objects.get(
-            participant=participant,
-            type=type
-        )
-    except ObjectDoesNotExist:
-        new_single = Single(
-            participant=participant,
-            type=type,
-            cost=cost,
-            payout=payout
-        )
-        new_single.set_fields_to_base()
-        new_single.save()
+# def create_single(participant, type, payout):
+#     try:
+#         single = Single.objects.get(
+#             participant=participant,
+#             type=type
+#         )
+#     except ObjectDoesNotExist:
+#         new_single = Single(
+#             participant=participant,
+#             type=type,
+#             cost=cost,
+#             payout=payout
+#         )
+#         new_single.set_fields_to_base()
+#         new_single.save()
 
 def update_participant(
     participant,
@@ -258,7 +268,7 @@ def update_participant(
     print(actual_running_time)
     print(lengths_behind)
     print(comment)
-    
+
     if post_weight:
         participant.post_weight = post_weight
     if post:

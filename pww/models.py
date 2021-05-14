@@ -54,7 +54,7 @@ class Metric(CoreModel):
     upgrade = models.IntegerField()
     # age
     # sex
-    # set_weight
+    # post_weight_avg
     # post_factor
     # temp_factor
     # rh_factor

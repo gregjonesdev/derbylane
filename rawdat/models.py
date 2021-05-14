@@ -383,7 +383,34 @@ class Participant(CoreModel):
         max_length=256)
 
 
-class Bet(CoreModel):
+
+class Straight_Wager(CoreModel):
+    class Meta:
+        verbose_name = 'Straight'
+
+    cost = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=2.00)
+    participant = models.OneToOneField(
+        Participant,
+        on_delete=models.CASCADE)
+    win = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0.00)
+    place = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0.00)
+    show = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0.00)
+
+
+
+class Combo(CoreModel):
 
     class Meta:
         abstract = True
@@ -396,38 +423,7 @@ class Bet(CoreModel):
         max_digits=10,
         decimal_places=2,
         null=True)
-
-
-class BetType(CoreModel):
-    class Meta:
-        verbose_name = 'BetType'
-
-    name = models.CharField(
-        max_length=64
-    )
-
-class Single(Bet):
-
-    class Meta:
-        verbose_name = 'SingleBet'
-
-    participant = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        null=True)
-
-    type = models.ForeignKey(
-        BetType,
-        on_delete=models.CASCADE,
-        null=True)
-
-
-class Combo(Bet):
-
-    class Meta:
-        abstract = True
-
-    race = models.ForeignKey(
+    race = models.OneToOneField(
         Race,
         on_delete=models.CASCADE)
 

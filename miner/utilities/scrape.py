@@ -24,10 +24,10 @@ from miner.utilities.models import (
     update_participant,
     save_race_info,
     get_participant,
-    create_single,
+    # create_single,
     get_dog,
     get_race,
-    get_bettype,
+    # get_bettype,
     get_grade,
     get_chart,
     get_program,
@@ -281,14 +281,17 @@ def process_dog_bets(race, page_data):
 
 
 def process_singlepayouts(participant, amounts):
-    i = 0
-    while i < 3:
-        if isinstance(amounts[i], str):
-            if amounts[i].strip():
-                type = get_bettype(raw_types[i])
-                amount = amounts[i]
-                create_single(participant, type, amount)
-        i += 1
+    print("process single payout")
+
+    raise SystemExit(0)
+    # i = 0
+    # while i < 3:
+    #     if isinstance(amounts[i], str):
+    #         if amounts[i].strip():
+    #             # type = get_bettype(raw_types[i])
+    #             # amount = amounts[i]
+    #             # create_single(participant, type, amount)
+    #     i += 1
 
 
 def get_race_heading(target_url):
