@@ -32,40 +32,50 @@ def normalize(value, list):
         return factor
 
 
-def build_avg_obj(posts_obj):
+def build_avg_obj(orig_object):
     avg_obj = {}
-    for each in posts_obj.keys():
-        avg_obj[each] = get_average(posts_obj[each])
+    for each in orig_object.keys():
+        avg_obj[each] = get_average(orig_object[each])
     return avg_obj
 
+def add_to_obj(value, key, target_obj):
+    str_key = str(key)
+    if not str_key in target_obj.keys():
+        target_obj[str_key] = []
+    target_obj[str_key].append(value)
+    return target_obj
 
-def build_posts_obj(participations):
-    posts_obj = {}
+
+def build_posts_object(participations):
+    posts_object = {}
     for item in participations:
         post = item.post
         final = item.final
         if final and post:
-            str_post = str(post)
-            if not str_post in posts_obj.keys():
-                posts_obj[str_post] = []
-            posts_obj[str_post].append(final)
-    return posts_obj
+            posts_object = add_to_obj(final, post, posts_object)
+    return posts_object
 
 
-def build_temp_obj(participations):
-    print('build temp obj')
-    posts_obj = {}
+def build_temp_object(participations):
+    temp_object = {}
     for item in participations:
-        print(item.race.chart.get_rh())
-        print(item.race.chart.get_racetemp())
-        # post = item.post
-        # final = item.final
-        # if final and post:
-        #     str_post = str(post)
-        #     if not str_post in posts_obj.keys():
-        #         posts_obj[str_post] = []
-        #     posts_obj[str_post].append(final)
-    return posts_obj
+        post = item.post
+        temp = item.race.chart.get_racetemp()
+        final = item.final
+        if final and temp:
+            temp_object = add_to_obj(final, temp, temp_object)
+    return temp_object
+
+
+def build_rh_object(participations):
+    rh_object = {}
+    for item in participations:
+        post = item.post
+        rh = item.race.chart.get_rh()
+        final = item.final
+        if final and rh:
+            rh_object = add_to_obj(final, rh, rh_object)
+    return rh_object
 
 
 def curve_fitting(value, x_values, y_values):
@@ -80,8 +90,6 @@ def curve_fitting(value, x_values, y_values):
 
 def get_factor(initial_x, x_values, y_values):
 
-
-
     if str(initial_x) in x_values:
         index = x_values.index(target_post)
         target_value = y_values[index]
@@ -91,9 +99,12 @@ def get_factor(initial_x, x_values, y_values):
 
 
 
-def calculate_factor(target_post, posts_obj):
-    avg_obj = build_avg_obj(posts_obj)
-    post_avg = get_factor(target_post, avg_obj)
+def calculate_factor(target_post, posts_object):
+
+    avg_obj = build_avg_obj(posts_object)
+    print(avg_obj.keys())
+    raise SystemExit(0)
+    post_avg = get_factor(target_post, avg_obj.keys(), avg_obj.values())
     for each in sorted(avg_obj.keys()):
         print("{}: {}".format(each, avg_obj[each]))
     print("---- Calculated factor ----")
@@ -249,7 +260,21 @@ def get_raw_participant_metrics(participant, distance):
         target_date,
         distance,
         past_race_count)
-    build_temp_obj(participations)
+
+    calculate_factor(
+        participant.post,
+        build_posts_object(participations))
+
+    calculate_factor(
+        participant.post,
+        build_posts_object(participations))
+
+    calculate_factor(
+        participant.post,
+        build_posts_object(participations))
+
+
+
     raise SystemExit(0)
     if len(participations) >= minimum_participations:
         raw_metrics = {
@@ -270,7 +295,7 @@ def get_raw_participant_metrics(participant, distance):
             "post_weight_avg": get_postweight_average(participations),
             "post_factor": calculate_factor(
                 participant.post,
-                build_posts_obj(participations)),
+                build_posts_object(participations)),
             # "temp_factor": None,
             # "rh_factor": None,
             "final": participant.final,
