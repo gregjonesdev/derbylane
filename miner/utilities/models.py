@@ -60,7 +60,8 @@ def create_quiniela(race, posts, cost, payout):
 
 
 def get_participant_from_post(race, post):
-
+    print(race)
+    print(post)
     return Participant.objects.get(
         race=race,
         post=int(post)
@@ -174,7 +175,6 @@ def save_dog_info(dog):
     url = build_dog_profile_url(dog.name)
     whelp_date = get_node_elements(url, '//td[@class="it4"]//em')[0].text
     dog.whelp_date = whelp_date
-    dog.save()
     print(url)
     if not dog.litter:
         sire_name = get_parent_name(url, "it2")
@@ -187,7 +187,7 @@ def save_dog_info(dog):
         if sire and dam and whelp_date:
             litter = get_litter(sire, dam, whelp_date)
             dog.litter = litter
-            dog.save()
+    dog.save()
     save_sex_and_color(
         dog,
         get_node_elements(url, '//td[@class="it2"]//em'))

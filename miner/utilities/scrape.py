@@ -83,7 +83,7 @@ def get_final_and_lengths_behind(split_final):
 
 def get_positions(row):
     positions = []
-    i = 2
+    i = 1
     while i < 5:
         split_position = split_position_lengths(row[i].text)
         if len(split_position) > 0:
@@ -147,6 +147,8 @@ def get_time(entry):
 
 
 def parse_row(row, race):
+    for each in row:
+        print(each.text)
     positions = get_positions(row)
     final_lengths = get_final_and_lengths_behind(
         split_position_lengths(row[5].text))
@@ -157,13 +159,14 @@ def parse_row(row, race):
     post_weight = get_post_weight(
         participant.dog.name,
         race.chart.program.date)
+
     update_participant(
         participant,
         post_weight,
-        get_position(positions[0]),
-        get_position(row[1].text),
-        get_position(positions[1]),
-        get_position(positions[2]),
+        get_position(positions[0]), #post
+        get_position(row[1].text), # off
+        get_position(positions[1]), # eighth
+        get_position(positions[2]), # straight
         get_position(final),
         get_time(row[6].text),
         lengths_behind,
@@ -196,28 +199,29 @@ def process_combo_bets(race, target_url):
     for part in race.participant_set.all():
         print("{}: {}".format(part.post, part.dog.name))
     for each in get_node_elements(target_url, '//p'):
-        split_text = each.text.split()
-        if len(split_text) > 0:
-            cost = get_dollar_amount(split_text[0])
-            if split_text[2].isalpha():
-                combo_name = get_combo_name("{} {}".format(
-                    split_text[1],
-                    split_text[2]))
-                posts_index = 3
-            else:
-                combo_name = get_combo_name(split_text[1].upper())
-                posts_index = 2
-            posts = split_text[posts_index].split("/")
-            payout = get_dollar_amount(split_text[-1])
+        if each.text:
+            split_text = each.text.split()
+            if len(split_text) > 0:
+                cost = get_dollar_amount(split_text[0])
+                if split_text[2].isalpha():
+                    combo_name = get_combo_name("{} {}".format(
+                        split_text[1],
+                        split_text[2]))
+                    posts_index = 3
+                else:
+                    combo_name = get_combo_name(split_text[1].upper())
+                    posts_index = 2
+                posts = split_text[posts_index].split("/")
+                payout = get_dollar_amount(split_text[-1])
 
-            if combo_name == "Exacta":
-                create_exacta(race, posts, cost, payout)
-            elif combo_name == "Quiniela":
-                create_quiniela(race, posts, cost, payout)
-            elif combo_name == "Trifecta":
-                create_trifecta(race, posts, cost, payout)
-            elif combo_name == "Superfecta":
-                create_superfecta(race, posts, cost, payout)
+                if combo_name == "Exacta":
+                    create_exacta(race, posts, cost, payout)
+                elif combo_name == "Quiniela":
+                    create_quiniela(race, posts, cost, payout)
+                elif combo_name == "Trifecta":
+                    create_trifecta(race, posts, cost, payout)
+                elif combo_name == "Superfecta":
+                    create_superfecta(race, posts, cost, payout)
 
 
 def get_dollar_amount(string):
@@ -229,7 +233,7 @@ def get_dollar_amount(string):
             print("get_dollar_amt: couldnt float {}".format(string))
             raise SystemExit(0)
     else:
-        return 0.00        
+        return 0.00
 
 
 

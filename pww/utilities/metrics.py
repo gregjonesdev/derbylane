@@ -6,9 +6,23 @@ minimum_participations = 2
 x_values = [1, 2, 3, 4, 5, 6, 7, 8]
 
 
+from scipy.optimize import curve_fit
+from numpy import arange
+
+def objective(x, a, b, c, d):
+    return a*x + b*x**2 + c*x**3 + d
+
+
+
+
 def normalize(obj):
-    max_avg = max(obj.values()):
-    min_avg = min(obj.values()):
+    max_avg = max(obj.values())
+    min_avg = min(obj.values())
+    print(max_avg)
+    diff_avg = max_avg - min_avg
+    # normal_obj = {}
+    # for key in obj.keys():
+    #     normal_obj[key] = obj[key]/
 
 
 def build_avg_obj(posts_obj):
@@ -24,22 +38,51 @@ def build_posts_obj(participations):
         post = item.post
         final = item.final
         if final and post:
-            str_post = str([post])
+            str_post = str(post)
             if not str_post in posts_obj.keys():
                 posts_obj[str_post] = []
-            posts_obj[str_post] += final
+            posts_obj[str_post].append(final)
     return posts_obj
 
+def curve_fitting():
+    print("time for curve fitting")
+    x_values = [1, 2, 3, 5, 6]
+    y_values = [2, 4, 6, 10, 12]
+
+    popt, _ = curve_fit(objective, x_values, y_values)
+
+    a, b, c, d = popt
+    y = objective(4, float(a), float(b), float(c), float(d))
+    print(y)
 
 
+
+def get_post_average(target_post, avg_obj):
+    print(avg_obj.keys())
+    if str(target_post) in avg_obj.keys():
+        return avg_obj[str(target_post)]
+    else:
+        curve_fitting()
 
 def get_postfactor(target_post, participations):
     print("get postfactor")
+    print(target_post)
     for p in participations:
-        print("{}: {}").format(p.post, p.final)
+        print("{}: {}".format(p.post, p.final))
     posts_obj = build_posts_obj(participations)
     avg_obj = build_avg_obj(posts_obj)
-    normalized_obj = normalize(avg_obj)
+    # normalized_obj = normalize (avg_obj)
+    post_avg = get_post_average(target_post, avg_obj)
+    for each in sorted(avg_obj.keys()):
+        print("{}: {}".format(each, avg_obj[each]))
+    print("---- Calculated factor ----")
+    print("{}: {}".format(target_post, post_avg))
+
+
+    # raise SystemExit(0)
+    # max_avg = max(avg_obj.values())
+    # normalized_obj = normalize(avg_obj)
+
 
 
 
@@ -58,6 +101,19 @@ def get_age(participant):
     whelp_date = participant.dog.whelp_date
     age = target_date - target_date
     return age.days
+
+
+def upgrade(participations, target_grade):
+    upgrade = 3
+    for each in participations:
+        grade = each.race.grade
+        if grade and isinstance(grade.value, int):
+            if target_grade < grade.value:
+                return upgrade
+            upgrade -= 1
+            if upgrade < 1:
+                return 0
+    return upgrade
 
 
 def time_average(participations):
@@ -118,6 +174,15 @@ def get_finish_average(participations):
     return get_average(values)
 
 
+def get_average(data_list):
+    Not_none_values = filter(None.__ne__, data_list)
+    list_of_values = list(Not_none_values)
+
+    if len(list_of_values) > 0:
+        return float(sum(list_of_values)/len(list_of_values))
+    return None
+
+
 def get_raw_fastest_time(participations):
       fastest_time = None
       for participation in participations:
@@ -147,6 +212,17 @@ def get_prior_participations(dog, target_date, distance, race_count):
             '-race__chart__program__date')[:race_count]
 
 
+def is_complete(participant_metrics):
+    count = 0
+    for each in participant_metrics.values():
+        print(each)
+        if not each == None:
+            count += 1
+    print(count)
+    print(len(participant_metrics.keys()))
+    return count == len(participant_metrics.keys())
+
+
 def get_raw_participant_metrics(participant, distance):
     target_grade_value = participant.race.grade.value
     dog = participant.dog
@@ -173,10 +249,11 @@ def get_raw_participant_metrics(participant, distance):
             "age": get_age(participant),
             "sex": participant.dog.sex,
             "post_weight_avg": get_postweight_average(participations),
-            "post_factor": get_postfactor(participant.post, participations),
-            "temp_factor": None,
-            "rh_factor": None,
+            # "post_factor": get_postfactor(participant.post, participations),
+            # "temp_factor": None,
+            # "rh_factor": None,
         }
+        print(is_complete(raw_metrics))
         # raw_metrics = []
         # raw_metrics.append(str(participant.uuid))
         # raw_metrics.append(
@@ -210,11 +287,12 @@ def get_raw_participant_metrics(participant, distance):
         #         participations[:3],
         #         target_grade_value)
         # )
-        if is_complete:
-            raw_metrics.append(participant.final)
-        else:
-            raw_metrics.append(scheduled_final_value)
-        return raw_metrics
+
+        # if is_complete:
+        #     raw_metrics.append(participant.final)
+        # else:
+        #     raw_metrics.append(scheduled_final_value)
+        # return raw_metrics
     else:
         return None
 
