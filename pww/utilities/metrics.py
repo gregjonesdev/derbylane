@@ -8,18 +8,26 @@ x_values = [1, 2, 3, 4, 5, 6, 7, 8]
 
 from scipy.optimize import curve_fit
 from numpy import arange
-
+#
 def objective(x, a, b, c, d):
     return a*x + b*x**2 + c*x**3 + d
 
+def objective3(x, a, b, c):
+    return a*x + b*x**2 + c
 
+
+def objective2(x, a, b):
+    return a*x + b
 
 
 def normalize(value, obj):
     max_avg = max(obj.values())
     min_avg = min(obj.values())
-    print(max_avg)
+    # print(max_avg)
+    # print(min_avg)
     diff_avg = max_avg - min_avg
+    # print((value - min_avg)/(max_avg - min_avg))
+    # print(value)
     return (value - min_avg)/(max_avg - min_avg)
     # normal_obj = {}
     # for key in obj.keys():
@@ -54,33 +62,46 @@ def curve_fitting(value, obj):
         y_values.append(float(obj[each]))
     # x_values = [1, 2, 3, 5, 6]
     # y_values = [2, 4, 6, 10, 12]
-    print(x_values)
-    print(y_values)
+    # x_values = [1, 2, 3, 5]
+    # y_values = [2, 4, 6, 10]
+    # x_values = [1, 2, 3]
+    # y_values = [2, 4, 6]
+    # print(x_values)
+    # print(y_values)
 
-    raise SystemExit(0)
+    # raise SystemExit(0)
+    if len(x_values) < 2:
+        return y_values[0]
+    elif len(x_values) < 3:
+        popt, _ = curve_fit(objective2, x_values, y_values)
+        a, b = popt
+        y = objective2(value, float(a), float(b))
+    elif len(x_values) < 4:
+        popt, _ = curve_fit(objective3, x_values, y_values)
+        a, b, c = popt
+        y = objective3(value, float(a), float(b), float(c))
+    else:
+        popt, _ = curve_fit(objective, x_values, y_values)
+        a, b, c, d = popt
+        y = objective(value, float(a), float(b), float(c), float(d))
 
-    popt, _ = curve_fit(objective, x_values, y_values)
+    # return y
 
-    a, b, c, d = popt
-    y = objective(4, float(a), float(b), float(c), float(d))
-    print(y)
-
+def normalize_obj_values(obj):
+    pass
 
 
 def get_post_average(target_post, avg_obj):
-    curve_fitting(target_post, avg_obj)
-    raise SystemExit(0)
-    print(avg_obj.keys())
     if str(target_post) in avg_obj.keys():
         return avg_obj[str(target_post)]
     else:
-        return self.curve_fitting(target_post, avg_obj)
-
+        value = curve_fitting(target_post, avg_obj)
+        print("**** * * * * * {} ".format(value))
 def get_postfactor(target_post, participations):
-    print("get postfactor")
-    print(target_post)
-    for p in participations:
-        print("{}: {}".format(p.post, p.final))
+    print("\n\nget postfactor")
+    # print(target_post)
+    # for p in participations:
+    #     print("{}: {}".format(p.post, p.final))
     posts_obj = build_posts_obj(participations)
     avg_obj = build_avg_obj(posts_obj)
     # normalized_obj = normalize (avg_obj)
@@ -266,7 +287,7 @@ def get_raw_participant_metrics(participant, distance):
             # "rh_factor": None,
             "final": participant.final,
         }
-        print(is_complete(raw_metrics))
+        # print(is_complete(raw_metrics))
         # raw_metrics = []
         # raw_metrics.append(str(participant.uuid))
         # raw_metrics.append(
