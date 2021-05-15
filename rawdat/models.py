@@ -236,6 +236,37 @@ class Chart(CoreModel):
     )
     is_cancelled = models.BooleanField(default=False)
 
+    def get_rh(self):
+        weather = self.program.weather
+        if weather:
+            max_rh = weather.max_rh
+            mean_rh = weather.mean_rh
+            try:
+                if max_rh and self.time in ["M", "A"]:
+                    return int(max_rh*100)
+                elif mean_rh:
+                    return int(mean_rh*100)
+                else:
+                    return None
+            except:
+                return None
+
+
+    def get_racetemp(self):
+        weather = self.program.weather
+        if weather:
+            max_temp = weather.max_temp
+            mean_temp = weather.mean_temp
+            if self.time in ["M", "A"]:
+                float_temp = max_temp
+            else:
+                float_temp = mean_temp
+            try:
+                return int(float_temp)
+            except:
+                pass
+
+
 class Grade(CoreModel):
 
     name = models.CharField(

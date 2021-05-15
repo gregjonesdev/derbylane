@@ -20,18 +20,16 @@ def objective2(x, a, b):
     return a*x + b
 
 
-def normalize(value, obj):
-    max_avg = max(obj.values())
-    min_avg = min(obj.values())
-    # print(max_avg)
-    # print(min_avg)
-    diff_avg = max_avg - min_avg
-    # print((value - min_avg)/(max_avg - min_avg))
-    # print(value)
-    return (value - min_avg)/(max_avg - min_avg)
-    # normal_obj = {}
-    # for key in obj.keys():
-    #     normal_obj[key] = obj[key]/
+def normalize(value, list):
+    max_avg = max(list)
+    min_avg = min(list)
+    factor = (max_avg - value)/(max_avg - min_avg)
+    if value >= max_avg:
+        return 1
+    elif value <= min_avg:
+        return 0
+    else:
+        return factor
 
 
 def build_avg_obj(posts_obj):
@@ -53,68 +51,54 @@ def build_posts_obj(participations):
             posts_obj[str_post].append(final)
     return posts_obj
 
+
+def build_temp_obj(participations):
+    print('build temp obj')
+    posts_obj = {}
+    for item in participations:
+        print(item.race.chart.get_rh())
+        print(item.race.chart.get_racetemp())
+        # post = item.post
+        # final = item.final
+        # if final and post:
+        #     str_post = str(post)
+        #     if not str_post in posts_obj.keys():
+        #         posts_obj[str_post] = []
+        #     posts_obj[str_post].append(final)
+    return posts_obj
+
+
 def curve_fitting(value, obj):
-    print("time for curve fitting")
     x_values = []
     y_values = []
     for each in obj.keys():
         x_values.append(int(each))
         y_values.append(float(obj[each]))
-    # x_values = [1, 2, 3, 5, 6]
-    # y_values = [2, 4, 6, 10, 12]
-    # x_values = [1, 2, 3, 5]
-    # y_values = [2, 4, 6, 10]
-    # x_values = [1, 2, 3]
-    # y_values = [2, 4, 6]
-    # print(x_values)
-    # print(y_values)
-
-    # raise SystemExit(0)
     if len(x_values) < 2:
         return y_values[0]
-    elif len(x_values) < 3:
+    else:
         popt, _ = curve_fit(objective2, x_values, y_values)
         a, b = popt
         y = objective2(value, float(a), float(b))
-    elif len(x_values) < 4:
-        popt, _ = curve_fit(objective3, x_values, y_values)
-        a, b, c = popt
-        y = objective3(value, float(a), float(b), float(c))
-    else:
-        popt, _ = curve_fit(objective, x_values, y_values)
-        a, b, c, d = popt
-        y = objective(value, float(a), float(b), float(c), float(d))
-
-    # return y
-
-def normalize_obj_values(obj):
-    pass
+    return normalize(y, y_values)
 
 
 def get_post_average(target_post, avg_obj):
     if str(target_post) in avg_obj.keys():
-        return avg_obj[str(target_post)]
+        return normalize(avg_obj[str(target_post)], avg_obj.values())
     else:
-        value = curve_fitting(target_post, avg_obj)
-        print("**** * * * * * {} ".format(value))
-def get_postfactor(target_post, participations):
-    print("\n\nget postfactor")
-    # print(target_post)
-    # for p in participations:
-    #     print("{}: {}".format(p.post, p.final))
-    posts_obj = build_posts_obj(participations)
+        return curve_fitting(target_post, avg_obj)
+
+
+
+def calculate_factor(target_post, posts_obj):
     avg_obj = build_avg_obj(posts_obj)
-    # normalized_obj = normalize (avg_obj)
     post_avg = get_post_average(target_post, avg_obj)
     for each in sorted(avg_obj.keys()):
         print("{}: {}".format(each, avg_obj[each]))
     print("---- Calculated factor ----")
     print("{}: {}".format(target_post, post_avg))
-
-
-    # raise SystemExit(0)
-    # max_avg = max(avg_obj.values())
-    # normalized_obj = normalize(avg_obj)
+    return post_avg
 
 
 
@@ -265,6 +249,8 @@ def get_raw_participant_metrics(participant, distance):
         target_date,
         distance,
         past_race_count)
+    build_temp_obj(participations)
+    raise SystemExit(0)
     if len(participations) >= minimum_participations:
         raw_metrics = {
             "raw_fastest_time": get_raw_fastest_time(participations),
@@ -282,7 +268,9 @@ def get_raw_participant_metrics(participant, distance):
             "age": get_age(participant),
             "sex": participant.dog.sex,
             "post_weight_avg": get_postweight_average(participations),
-            "post_factor": get_postfactor(participant.post, participations),
+            "post_factor": calculate_factor(
+                participant.post,
+                build_posts_obj(participations)),
             # "temp_factor": None,
             # "rh_factor": None,
             "final": participant.final,
