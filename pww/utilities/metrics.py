@@ -68,32 +68,32 @@ def build_temp_obj(participations):
     return posts_obj
 
 
-def curve_fitting(value, obj):
-    x_values = []
-    y_values = []
-    for each in obj.keys():
-        x_values.append(int(each))
-        y_values.append(float(obj[each]))
+def curve_fitting(value, x_values, y_values):
     if len(x_values) < 2:
         return y_values[0]
     else:
         popt, _ = curve_fit(objective2, x_values, y_values)
         a, b = popt
-        y = objective2(value, float(a), float(b))
-    return normalize(y, y_values)
+        return objective2(value, float(a), float(b))
 
 
-def get_post_average(target_post, avg_obj):
-    if str(target_post) in avg_obj.keys():
-        return normalize(avg_obj[str(target_post)], avg_obj.values())
+
+def get_factor(initial_x, x_values, y_values):
+
+
+
+    if str(initial_x) in x_values:
+        index = x_values.index(target_post)
+        target_value = y_values[index]
     else:
-        return curve_fitting(target_post, avg_obj)
+        target_value = curve_fitting(initial_x, x_values, y_values)
+    return normalize(target_value, y_values)
 
 
 
 def calculate_factor(target_post, posts_obj):
     avg_obj = build_avg_obj(posts_obj)
-    post_avg = get_post_average(target_post, avg_obj)
+    post_avg = get_factor(target_post, avg_obj)
     for each in sorted(avg_obj.keys()):
         print("{}: {}".format(each, avg_obj[each]))
     print("---- Calculated factor ----")
