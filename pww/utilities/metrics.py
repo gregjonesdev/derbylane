@@ -15,11 +15,12 @@ def objective(x, a, b, c, d):
 
 
 
-def normalize(obj):
+def normalize(value, obj):
     max_avg = max(obj.values())
     min_avg = min(obj.values())
     print(max_avg)
     diff_avg = max_avg - min_avg
+    return (value - min_avg)/(max_avg - min_avg)
     # normal_obj = {}
     # for key in obj.keys():
     #     normal_obj[key] = obj[key]/
@@ -44,10 +45,19 @@ def build_posts_obj(participations):
             posts_obj[str_post].append(final)
     return posts_obj
 
-def curve_fitting():
+def curve_fitting(value, obj):
     print("time for curve fitting")
-    x_values = [1, 2, 3, 5, 6]
-    y_values = [2, 4, 6, 10, 12]
+    x_values = []
+    y_values = []
+    for each in obj.keys():
+        x_values.append(int(each))
+        y_values.append(float(obj[each]))
+    # x_values = [1, 2, 3, 5, 6]
+    # y_values = [2, 4, 6, 10, 12]
+    print(x_values)
+    print(y_values)
+
+    raise SystemExit(0)
 
     popt, _ = curve_fit(objective, x_values, y_values)
 
@@ -58,11 +68,13 @@ def curve_fitting():
 
 
 def get_post_average(target_post, avg_obj):
+    curve_fitting(target_post, avg_obj)
+    raise SystemExit(0)
     print(avg_obj.keys())
     if str(target_post) in avg_obj.keys():
         return avg_obj[str(target_post)]
     else:
-        curve_fitting()
+        return self.curve_fitting(target_post, avg_obj)
 
 def get_postfactor(target_post, participations):
     print("get postfactor")
@@ -215,11 +227,11 @@ def get_prior_participations(dog, target_date, distance, race_count):
 def is_complete(participant_metrics):
     count = 0
     for each in participant_metrics.values():
-        print(each)
+        # print(each)
         if not each == None:
             count += 1
-    print(count)
-    print(len(participant_metrics.keys()))
+    # print(count)
+    # print(len(participant_metrics.keys()))
     return count == len(participant_metrics.keys())
 
 
@@ -249,9 +261,10 @@ def get_raw_participant_metrics(participant, distance):
             "age": get_age(participant),
             "sex": participant.dog.sex,
             "post_weight_avg": get_postweight_average(participations),
-            # "post_factor": get_postfactor(participant.post, participations),
+            "post_factor": get_postfactor(participant.post, participations),
             # "temp_factor": None,
             # "rh_factor": None,
+            "final": participant.final,
         }
         print(is_complete(raw_metrics))
         # raw_metrics = []
@@ -300,8 +313,8 @@ def get_raw_race_metrics(race):
     raw_race_metrics = []
     for participant in race.participant_set.all():
         raw_metrics = get_raw_participant_metrics(participant, race.distance)
-        if raw_metrics:
-            raw_race_metrics.append(raw_metrics)
+        # if raw_metrics:
+        #     raw_race_metrics.append(raw_metrics)
     return raw_race_metrics
 
 
