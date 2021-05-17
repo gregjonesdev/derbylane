@@ -248,11 +248,8 @@ def get_prior_participations(dog, target_date, distance, race_count):
 def is_complete(participant_metrics):
     count = 0
     for each in participant_metrics.values():
-        # print(each)
         if not each == None:
             count += 1
-    # print(count)
-    # print(len(participant_metrics.keys()))
     return count == len(participant_metrics.keys())
 
 
@@ -296,58 +293,44 @@ def get_raw_participant_metrics(participant, distance):
                 build_rh_object(participations)),
             "final": participant.final,
         }
-        # print(is_complete(raw_metrics))
-        # raw_metrics = []
-        # raw_metrics.append(str(participant.uuid))
-        # raw_metrics.append(
-        #     get_raw_fastest_time(participations))
-        # raw_metrics.append(
-        #     get_position_percent(participations, 1)
-        # )
-        # raw_metrics.append(
-        #     get_position_percent(participations, 2)
-        # )
-        # raw_metrics.append(
-        #     get_position_percent(participations, 3)
-        # )
-        # raw_metrics.append(
-        #     get_break_average(participations)
-        # )
-        # raw_metrics.append(
-        #     get_finish_average(participations)
-        # )
-        # raw_metrics.append(
-        #     grade_average(participations)
-        # )
-        # raw_metrics.append(
-        #     time_average(participations[:7])
-        # )
-        # raw_metrics.append(
-        #     time_average(participations[:3])
-        # )
-        # raw_metrics.append(
-        #     upgrade(
-        #         participations[:3],
-        #         target_grade_value)
-        # )
+        if is_complete(raw_metrics):
+            return raw_metrics
 
-        # if is_complete:
-        #     raw_metrics.append(participant.final)
-        # else:
-        #     raw_metrics.append(scheduled_final_value)
-        # return raw_metrics
+def scale_metrics(raw_metrics):
+    slowest_time = get_slowest_raw_time(raw_metrics)
+    print(slowest_time)
+    scaled_metrics = raw_metrics
+    for metric in scaled_metrics:
+        if metric["raw_fastest_time"]:
+            metric["raw_fastest_time"] = metric["raw_fastest_time"] - slowest_time
+        else:
+            metric["raw_fastest_time"] = slowest_time
+    return scaled_metrics
+
+def get_slowest_raw_time(raw_race_metrics):
+    raw_times = []
+    for metric in raw_race_metrics:
+        current_raw_time = metric["raw_fastest_time"]
+        print("Time: {}".format(current_raw_time))
+        if current_raw_time:
+            raw_times.append(current_raw_time)
+    if len(raw_times) > 0:
+        return max(raw_times)
     else:
         return None
+
 
 def get_raw_race_metrics(race):
     raw_race_metrics = []
     for participant in race.participant_set.all():
         raw_metrics = get_raw_participant_metrics(participant, race.distance)
-        # if raw_metrics:
-        #     raw_race_metrics.append(raw_metrics)
+        if raw_metrics:
+            raw_race_metrics.append(raw_metrics)
     return raw_race_metrics
 
 
 # START HERE
 def calculate_scaled_race_metrics(race):
     raw_race_metrics = get_raw_race_metrics(race)
+    scaled_race_metrics = scale_metrics(raw_race_metrics)
+    print(scaled_race_metrics)
