@@ -368,6 +368,7 @@ def scan_scheduled_charts(venue, program):
                 populate_race(
                     get_entries_dognames(entries_url),
                     race)
+                # build race metrics    
             else:
                 failed_attempts += 1
             number += 1
