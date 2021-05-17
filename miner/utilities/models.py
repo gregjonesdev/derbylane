@@ -475,16 +475,3 @@ def save_sex(dog, raw_sex):
         else:
             print("Sex Not Found!")
             print("{}{}".format(dog_root, dog.name.replace(" ", "+")))
-
-def get_bettype(name):
-    name = name.upper()
-    try:
-        bettype = BetType.objects.get(name=name)
-    except ObjectDoesNotExist:
-        new_bettype = BetType(
-            name=name
-        )
-        new_bettype.set_fields_to_base()
-        new_bettype.save()
-        bettype = new_bettype
-    return bettype

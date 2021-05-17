@@ -1,5 +1,6 @@
 from pww.models import Metric, Prediction
 import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 past_race_count = 7
 minimum_participations = 2
@@ -267,6 +268,7 @@ def get_raw_participant_metrics(participant, distance):
 
     if len(participations) >= minimum_participations:
         raw_metrics = {
+            "participant": participant,
             "raw_fastest_time": get_raw_fastest_time(participations),
             "win_percent": get_position_percent(participations, 1),
             "place_percent": get_position_percent(participations, 2),
@@ -302,9 +304,9 @@ def scale_metrics(raw_metrics):
     scaled_metrics = raw_metrics
     for metric in scaled_metrics:
         if metric["raw_fastest_time"]:
-            metric["raw_fastest_time"] = metric["raw_fastest_time"] - slowest_time
+            metric["scaled_fastest_time"] = metric["raw_fastest_time"] - slowest_time
         else:
-            metric["raw_fastest_time"] = slowest_time
+            metric["scaled_fastest_time"] = slowest_time
     return scaled_metrics
 
 def get_slowest_raw_time(raw_race_metrics):
@@ -329,8 +331,44 @@ def get_raw_race_metrics(race):
     return raw_race_metrics
 
 
-# START HERE
 def calculate_scaled_race_metrics(race):
     raw_race_metrics = get_raw_race_metrics(race)
-    scaled_race_metrics = scale_metrics(raw_race_metrics)
-    print(scaled_race_metrics)
+    return scale_metrics(raw_race_metrics)
+
+def save_metrics(metrics):
+    try:
+        existing_metric = Metric.objects.get(participant=metrics["participant"])
+    except ObjectDoesNotExist:
+        new_metric = Metric(
+            participant=metrics["participant"]
+        )
+        new_metric.set_fields_to_base()
+        existing_metric = new_metric
+    existing_metric.scaled_fastest_time = metrics["scaled_fastest_time"]
+    existing_metric.win = metrics["win_percent"]
+    existing_metric.place = metrics["place_percent"]
+    existing_metric.show = metrics["show_percent"]
+    existing_metric.break_avg = metrics["break_avg"]
+    existing_metric.eighth_avg = metrics["eighth_avg"]
+    existing_metric.straight_avg = metrics["straight_avg"]
+    existing_metric.finish_avg = metrics["finish_avg"]
+    existing_metric.grade_avg = metrics["grade_avg"]
+    existing_metric.time_seven = metrics["time_seven"]
+    existing_metric.time_three = metrics["time_three"]
+    existing_metric.upgrade = metrics["upgrade"]
+    existing_metric.age = metrics["age"]
+    existing_metric.sex = metrics["sex"]
+    existing_metric.post_weight_avg = metrics["post_weight_avg"]
+    existing_metric.post_factor = metrics["post_factor"]
+    existing_metric.temp_factor = metrics["temp_factor"]
+    existing_metric.rh_factor =  metrics["rh_factor"]
+    existing_metric.final = metrics["final"]
+    existing_metric.save()
+    print("GOOD")
+
+
+
+# START HERE
+def build_race_metrics(race):
+    for metrics in calculate_scaled_race_metrics(race):
+        save_metrics(metrics)
