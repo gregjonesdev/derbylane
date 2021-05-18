@@ -35,6 +35,8 @@ chart_times = [
  "Z"
 ]
 
+valued_grades = ["AA", "A", "B", "C", "D"]
+
 allowed_attempts = 3
 max_races_per_chart = 30
 
@@ -47,3 +49,11 @@ days_of_week = [
     "Saturday",
     "Sunday"
 ]
+
+venue_distances = {
+"SL": [660, 583, 334, 703, 820],
+"CA": [546, 690 ],
+"IG": [550, 330],
+"TS": [550, 677, 330],
+"WD": [330, 548, 678],
+}
