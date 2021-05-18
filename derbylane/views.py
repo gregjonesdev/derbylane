@@ -18,7 +18,7 @@ class Welcome(OTPRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.context)
 
-class FrontPage(View):
+class FrontPage(OTPRequiredMixin, View):
 
     template_name = 'frontpage.html'
     context = {}

@@ -280,7 +280,6 @@ def get_raw_participant_metrics(participant, distance):
         chart = participant.race.chart
 
         if len(participations) >= minimum_participations:
-            print("PROCEEED HERE")
             raw_metrics = {
                 "participant": participant,
                 "raw_fastest_time": get_raw_fastest_time(participations),
@@ -313,11 +312,7 @@ def get_raw_participant_metrics(participant, distance):
                 return raw_metrics
 
 def scale_metrics(raw_metrics):
-    print("fastest times")
-    for metric in raw_metrics:
-        print(metric["raw_fastest_time"])
     slowest_time = get_slowest_raw_time(raw_metrics)
-    print(slowest_time)
     scaled_metrics = raw_metrics
     for metric in scaled_metrics:
         if metric["raw_fastest_time"]:
@@ -330,7 +325,6 @@ def get_slowest_raw_time(raw_race_metrics):
     raw_times = []
     for metric in raw_race_metrics:
         current_raw_time = metric["raw_fastest_time"]
-        print("Time: {}".format(current_raw_time))
         if current_raw_time:
             raw_times.append(current_raw_time)
     if len(raw_times) > 0:
@@ -350,13 +344,9 @@ def get_raw_race_metrics(race):
 
 def calculate_scaled_race_metrics(race):
     raw_race_metrics = get_raw_race_metrics(race)
-    print('349')
-    print(len(raw_race_metrics))
-    print("Scaled metrics: {}".format(len(scale_metrics(raw_race_metrics))))
     return scale_metrics(raw_race_metrics)
 
 def save_metrics(metrics):
-    print("SAVE METRIX")
     try:
         existing_metric = Metric.objects.get(participant=metrics["participant"])
     except ObjectDoesNotExist:
@@ -385,7 +375,6 @@ def save_metrics(metrics):
     existing_metric.rh_factor =  metrics["rh_factor"]
     # existing_metric.final = metrics["final"]
     existing_metric.save()
-    print("GOOD")
 
 
 
