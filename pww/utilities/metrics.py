@@ -6,6 +6,7 @@ past_race_count = 7
 minimum_participations = 2
 x_values = [1, 2, 3, 4, 5, 6, 7, 8]
 
+from miner.utilities.models import save_dog_info
 
 from scipy.optimize import curve_fit
 from numpy import arange
@@ -132,9 +133,20 @@ def get_postweight_average(participations):
 
 def get_age(participant):
     target_date = participant.race.chart.program.date
-    whelp_date = participant.dog.litter.whelp_date
+    print(participant.dog.name)
+    try:
+        whelp_date = participant.dog.litter.whelp_date
+    except AttributeError:
+        save_dog_info(participant.dog)
+        whelp_date = participant.dog.litter.whelp_date
+
     age = target_date - target_date
     return age.days
+
+def get_sex(participant):
+    if not participant.dog.sex:
+        save_dog_info(participant.dog)
+    return participant.dog.sex
 
 
 def upgrade(participations, target_grade):

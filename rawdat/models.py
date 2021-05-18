@@ -4,7 +4,6 @@ from django.db import models
 
 from derbylane.applib.models import CoreModel
 
-
 class WeatherLookup(CoreModel):
     """ Specific to wunderground. """
     wunderground = models.CharField(
@@ -145,7 +144,6 @@ class Dog(CoreModel):
 
     name = models.CharField(
         max_length=128)
-    whelp_date = models.DateField(null=True)
     sex = models.CharField(
         null=True,
         max_length=1,
@@ -153,19 +151,6 @@ class Dog(CoreModel):
     )
     color = models.ForeignKey(
         Color,
-        null=True,
-        on_delete=models.CASCADE)
-    kennel = models.CharField(
-        null=True,
-        max_length=128)
-    sire = models.ForeignKey(
-        'self',
-        related_name='father',
-        null=True,
-        on_delete=models.CASCADE)
-    dam = models.ForeignKey(
-        'self',
-        related_name='mother',
         null=True,
         on_delete=models.CASCADE)
     litter = models.ForeignKey(
@@ -180,7 +165,6 @@ class Dog(CoreModel):
         null=True,
         max_digits=4,
         decimal_places=2)
-    last_scanned = models.DateTimeField(null=True)
 
     def get_litters(self):
         if self.sex == 'F':
