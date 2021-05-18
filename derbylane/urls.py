@@ -30,5 +30,4 @@ urlpatterns = [
         name='frontpage'),
     path('', include(tf_twilio_urls)),
     path('accounts/', include('django.contrib.auth.urls')),
-    url(r'load_charts/$', load_charts, name='load_charts'),
 ]

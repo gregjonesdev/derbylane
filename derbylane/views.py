@@ -34,14 +34,3 @@ class FrontPage(OTPRequiredMixin, View):
         self.context["today"] = today.strftime("%A, %B %-d")
 
         return render(request, self.template_name, self.context)
-
-def load_charts(request):
-    venue = Venue.objects.get(
-        code=request.GET.get('venue_code'))
-    charts = Chart.objects.filter(
-        program__venue=venue,
-        program__date=datetime.now()
-    )
-    return render(
-        request,
-        'load_charts.html', {'charts': charts, })
