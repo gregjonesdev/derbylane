@@ -35,25 +35,7 @@ class Command(BaseCommand):
                     print("{} Grade {} {} yds".format(venue.name, grade_name, distance))
                     print("----------------------------------")
                     relevant_metrics = self.get_relevant_metrics(venue, grade_name, distance)
+                    completed_metrics = relevant_metrics.filter(final__isnull=False)
+                    scheduled_metrics = relevant_metrics.filter(final__isnull=True)
                     print(len(relevant_metrics))
                     print("\n")
-
-        #     for program in Program.objects.filter(
-        #         date=datetime.date.today(),
-        #         venue=venue):
-
-        #
-        raise SystemExit(0)
-        # races = Race.objects.filter(
-        #     chart__program__date=datetime.date.today(),
-        #     grade__in=[valued_grades],
-        #     ):
-        #     relevant_metrics = self.get_relevant_metrics(race)
-        #     completed_metrics = relevant_metrics.filter(final__isnull=False)
-        #     scheduled_metrics = relevant_metrics.filter(final__isnull=True)
-        #     print("{} Grade {} {} yds".format(
-        #         race.chart.program.venue.name,
-        #         race.grade.name,
-        #         race.distance))
-        #     print("-----------------------------")
-        #     print("We have {} metrics to compare\n".format(len(results_csv)))
