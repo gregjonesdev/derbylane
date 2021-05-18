@@ -368,7 +368,7 @@ def scan_scheduled_charts(venue, program):
                 populate_race(
                     get_entries_dognames(entries_url),
                     race)
-                # build race metrics    
+                # build race metrics
             else:
                 failed_attempts += 1
             number += 1
@@ -410,6 +410,8 @@ def parse_results_url(results_url, race, page_data):
         get_result_dognames(results_url),
         race)
     get_results(results_url, page_data, race)
+    # METRICS
+    
     if len(page_data) > 115:
         process_combo_bets(race, results_url)
         process_dog_bets(race, page_data)

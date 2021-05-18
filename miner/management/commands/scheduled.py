@@ -26,7 +26,6 @@ class Command(BaseCommand):
                 build_weather_from_forecast(program)
                 print("Scanning {}/{} Charts".format(date.month, date.day))
                 scan_scheduled_charts(venue, program)
-        # create predictions        
 
     def get_dates(self):
         dates = []
