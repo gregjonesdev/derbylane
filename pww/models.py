@@ -52,6 +52,7 @@ class Metric(CoreModel):
         decimal_places=4,
     )
     upgrade = models.IntegerField()
+    final = models.IntegerField(null=True)
     age = models.IntegerField(null=True)
     sex = models.CharField(
         max_length=16,
