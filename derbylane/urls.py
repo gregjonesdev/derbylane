@@ -8,7 +8,6 @@ from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from derbylane.views import (
     Welcome,
     FrontPage,
-    load_charts,
 )
 
 def buildURL(object_name):
