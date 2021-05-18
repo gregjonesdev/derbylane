@@ -1,4 +1,4 @@
-
+{% load static %}
   <div class="pos-f-t">
     <nav class="navbar navbar-dark">
       <button
@@ -11,6 +11,46 @@
         aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <div class="pull-right">
+        {% if user.is_authenticated %}
+
+        <span
+          class="btn dropdown-toggle"
+          style="padding:2px 10px; color:#CCC"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">
+          <b>{{ user.username }}</b>
+        </span>
+        <div
+          class="dropdown-menu dropdown-menu-right"
+          style=" margin-right:95px;"
+          aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+        </div>
+        {% else %}
+        <span style="vertical-align:middle">
+          <a href="{% url 'two_factor:login' %}">login</a>
+        </span>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <a
+          class="navbar-brand"
+          href="{% url 'frontpage' %}"
+          style="margin-left: 10px">
+          <img
+            id="navbar-logo"
+            src="{% static 'img/bootstrap-logo.png' %}"
+            height="30"
+            style="display:inline"
+            class="pull-right"
+            alt="Cashdog Logo">
+        </a>
+        {% endif %}
+      </div>
     </nav>
     <div class="collapse" id="navbarToggleExternalContent">
       <div class="p-4">
@@ -18,4 +58,5 @@
         <span class="text-muted">Toggleable via the navbar brand.</span>
       </div>
     </div>
+
   </div>
