@@ -134,18 +134,14 @@ def get_postweight_average(participations):
 
 
 def get_age(participant):
+    save_dog_info(participant.dog)
     target_date = force_datetime(participant.race.chart.program.date)
-    print(participant.dog.name)
     dog = participant.dog
-    try:
-        whelp_date = dog.litter.whelp_date
-    except AttributeError:
-        save_dog_info(participant.dog)
-        if dog.litter:
-            whelp_date = dog.litter.whelp_date
+    if dog.litter:
+        whelp_date = force_datetime(dog.litter.whelp_date)
+        age = target_date - whelp_date
+        return age.days
 
-            age = target_date - datetime.date(force_datetime(whelp_date))
-            return age.days
 
 def get_sex(participant):
     if not participant.dog.sex:
@@ -395,6 +391,5 @@ def save_metrics(metrics):
 
 # START HERE
 def build_race_metrics(race):
-    print(" *********************************************** BUILD RACE METRICS")
     for metrics in calculate_scaled_race_metrics(race):
         save_metrics(metrics)

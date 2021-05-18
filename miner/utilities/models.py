@@ -173,10 +173,9 @@ def get_straightwager(participant):
 
 def save_dog_info(dog):
     url = build_dog_profile_url(dog.name)
-    whelp_date = get_node_elements(url, '//td[@class="it4"]//em')[0].text
-    dog.whelp_date = whelp_date
     print(url)
     if not dog.litter:
+        whelp_date = get_node_elements(url, '//td[@class="it4"]//em')[0].text
         sire_name = get_parent_name(url, "it2")
         sire, dam = None, None
         if sire_name:

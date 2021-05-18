@@ -6,7 +6,7 @@ from django.shortcuts import render
 from two_factor.views.mixins import OTPRequiredMixin
 
 from rawdat.models import (
-    Venue,
+    Venue, Chart
 )
 
 
@@ -24,9 +24,13 @@ class FrontPage(View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-        active_venues = Venue.objects.filter(is_active=True)
-        myDate = datetime.now()
-        self.context["venues"] = active_venues
-        self.context["today"] = myDate.strftime("%A, %B %-d")
+        today = datetime.now()
+        venues = []
+        for chart in Chart.objects.filter(program__date = today):
+            venue = chart.program.venue
+            if not venue in venues:
+                venues.append(venue)
+        self.context["venues"] = venues
+        self.context["today"] = today.strftime("%A, %B %-d")
 
         return render(request, self.template_name, self.context)
