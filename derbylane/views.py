@@ -10,7 +10,7 @@ from rawdat.models import (
 )
 
 
-class Welcome(View):
+class Welcome(OTPRequiredMixin, View):
 
     template_name = "welcome.html"
     context = {}
@@ -18,19 +18,30 @@ class Welcome(View):
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.context)
 
-class FrontPage(View):
+class FrontPage(OTPRequiredMixin, View):
 
     template_name = 'frontpage.html'
     context = {}
 
     def get(self, request, *args, **kwargs):
         today = datetime.now()
-        # venues = []
-        # for chart in Chart.objects.filter(program__date = today):
-        #     venue = chart.program.venue
-        #     if not venue in venues:
-        #         venues.append(venue)
-        # self.context["venues"] = venues
-        # self.context["today"] = today.strftime("%A, %B %-d")
+        venues = []
+        for chart in Chart.objects.filter(program__date = today):
+            venue = chart.program.venue
+            if not venue in venues:
+                venues.append(venue)
+        self.context["venues"] = venues
+        self.context["today"] = today.strftime("%A, %B %-d")
 
         return render(request, self.template_name, self.context)
+
+def load_charts(request):
+    venue = Venue.objects.get(
+        code=request.GET.get('venue_code'))
+    charts = Chart.objects.filter(
+        program__venue=venue,
+        program__date=datetime.now()
+    )
+    return render(
+        request,
+        'load_charts.html', {'charts': charts, })
