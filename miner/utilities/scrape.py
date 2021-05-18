@@ -19,6 +19,7 @@ from miner.utilities.constants import (
 
 from rawdat.utilities.methods import get_date_from_ymd
 
+from pww.utilities.metrics import build_race_metrics
 
 from miner.utilities.models import (
     update_participant,
@@ -38,7 +39,6 @@ from miner.utilities.models import (
 )
 
 from miner.utilities.weather import (
-    build_weather_from_forecast,
     build_weather_from_almanac,
 )
 
@@ -368,7 +368,8 @@ def scan_scheduled_charts(venue, program):
                 populate_race(
                     get_entries_dognames(entries_url),
                     race)
-                # build race metrics
+                build_race_metrics(race)
+
             else:
                 failed_attempts += 1
             number += 1
@@ -411,7 +412,7 @@ def parse_results_url(results_url, race, page_data):
         race)
     get_results(results_url, page_data, race)
     # METRICS
-    
+
     if len(page_data) > 115:
         process_combo_bets(race, results_url)
         process_dog_bets(race, page_data)
@@ -440,6 +441,7 @@ def scan_history_charts(venue, year, month, day):
                     get_chart(program, time),
                     number)
                 parse_results_url(results_url, race, page_data)
+                build_race_metrics(race)
             else:
                 failed_attempts += 1
             number += 1

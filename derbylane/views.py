@@ -18,14 +18,15 @@ class Welcome(OTPRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.context)
 
-class FrontPage(OTPRequiredMixin, View):
+class FrontPage(View):
 
     template_name = 'frontpage.html'
     context = {}
 
     def get(self, request, *args, **kwargs):
-        myDate = datetime.now()
         active_venues = Venue.objects.filter(is_active=True)
+        myDate = datetime.now()
         self.context["venues"] = active_venues
         self.context["today"] = myDate.strftime("%A, %B %-d")
+
         return render(request, self.template_name, self.context)

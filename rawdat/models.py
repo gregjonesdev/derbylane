@@ -68,6 +68,20 @@ class Venue(CoreModel):
         null=True
     )
 
+    def todays_charts(self):
+        return Chart.objects.filter(
+            program__venue=self,
+            program__date=datetime.date.today()
+        )
+        # try:
+        #     program = Program.objects.get(
+        #         venue=self,
+        #         date=datetime.date.today())
+        #     if program.chart_set.count() > 0:
+        #         return program
+        # except:
+        #     pass
+
     def __str__(self):
         return self.name
 

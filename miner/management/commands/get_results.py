@@ -33,4 +33,8 @@ class Command(BaseCommand):
             page_data = get_node_elements(results_url, '//td')
             if len(page_data) > 85:
                 parse_results_url(results_url, race, page_data)
-                
+                for participant in race.participant_set.all():
+                    print("Saving participant: {} with final {}".format(participant.uuid, participant.final))
+                    metric = Metric.objects.get(participant=participant)
+                    metric.final = participant.final
+                    matric.save()

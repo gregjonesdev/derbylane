@@ -2,12 +2,15 @@
 
 {% block content %}
 
-<div class="card m-3">
   <h5 class="card-header text-center"><b><i>{{ today }}</i></b></h5>
   <div class="card-body">
-    <h5 class="card-title">Special title treatment</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    {% for venue in venues %}
+      {% if venue.todays_charts.count > 0 %}
+      {{ venue.name }}<br>
+      {% for chart in venue.todays_charts%}
+        {{ chart.time }}<br>
+      {% endfor %}
+      {% endif %}
+    {% endfor %}
   </div>
-</div>
 {% endblock content%}
