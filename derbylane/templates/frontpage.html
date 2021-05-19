@@ -15,39 +15,55 @@
       class="form-control frontpage-select"
       id="chart-select">
     </select>
-
+    <div id="bets" style="overflow-y: scroll;"></div>
 
 
   <script id="json-chart-data" type="application/json">
     {
+      "bets_url": "{% url 'load_bets' %}",
       "charts_url": "{% url 'load_charts' %}"
     }
   </script>
 <script>
   venue_select = document.getElementById("venue-select")
+  chart_select = document.getElementById("chart-select")
 
   text_content = document.getElementById("json-chart-data").textContent
   chart_json_data = JSON.parse(text_content)
-  charts_url = chart_json_data["charts_url"]
+
   load_charts = () => {
     venue_code = venue_select.value
     $.ajax({
-      url: charts_url,
+      url: chart_json_data["charts_url"],
       dataType: "html",
       data: {
         "venue_code": venue_code,
-
       },
       success: function(data) {
         $("#chart-select").html(data)
-
+        load_bets()
       }
     })
   }
+  load_bets = () => {
+      const chart_id = chart_select.value
+      $.ajax({
+        url: chart_json_data["bets_url"],
+        dataType: "html",
+        data: {
+          "chart_id": chart_id,
+        },
+        success: function(data) {
+          $("#bets").html(data)
+        }
+      })
+    }
   window.onload = (event) => {
     load_charts(venue_select.value)
 
   };
   venue_select.addEventListener("change", load_charts)
+  chart_select.addEventListener("change", load_bets)
+
 </script>
 {% endblock content %}

@@ -9,6 +9,7 @@ from derbylane.views import (
     Welcome,
     FrontPage,
     load_charts,
+    load_bets,
     logout_view,
 )
 
@@ -33,4 +34,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     url(r'logout/$', logout_view, name='logout'),
     url(r'load_charts/$', load_charts, name='load_charts'),
+    url(r'load_bets/$', load_bets, name='load_bets'),
 ]

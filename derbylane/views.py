@@ -48,6 +48,17 @@ def load_charts(request):
         request,
         'load_charts.html', {'charts': charts, })
 
+def load_bets(request):
+    chart = Chart.objects.get(
+        uuid=request.GET.get('chart_id'))
+    races = chart.race_set.all()
+    return render(
+        request,
+        'load_bets.html', {
+            'races': races,
+            'program': chart.program,
+            'venue': chart.program.venue })        
+
 
 def logout_view(request):
     logout(request)

@@ -1,0 +1,20 @@
+<table
+  id="bets_table"
+  class="table table-sm table-borderless">
+  {% for race in races %}
+    <tr>
+      <td style="text-align: left">
+          Race {{ race.number }}
+      </td>
+      <td style="" >
+        <span style="color:white">{{ race.grade.name }}</span>
+      </td>
+      <td style="" >
+        <span style="color:white">{{ race.distance }} yd</span>
+      </td>
+      <td style="width: 50%;" >
+        <span > 5 / 3 / 1 / 2 </span>
+      </td>
+    </tr>
+  {% endfor %}
+</table>

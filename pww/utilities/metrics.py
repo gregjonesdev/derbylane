@@ -100,12 +100,13 @@ def convert_dictlist_to_list(dict_list):
     return list
 
 def get_factor(initial_x, x_values, y_values):
-    if float(initial_x) in x_values:
-        index = x_values.index(initial_x)
-        target_value = y_values[index]
-    else:
-        target_value = curve_fitting(initial_x, x_values, y_values)
-    return normalize(target_value, y_values)
+    if initial_x:
+        if float(initial_x) in x_values:
+            index = x_values.index(initial_x)
+            target_value = y_values[index]
+        else:
+            target_value = curve_fitting(initial_x, x_values, y_values)
+        return normalize(target_value, y_values)
 
 
 
