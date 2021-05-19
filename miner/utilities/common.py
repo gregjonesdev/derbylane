@@ -23,6 +23,6 @@ def get_attribute_elements(url, element, attribute, value):
 
 def force_date(input):
     if isinstance(input, str):
-        return date.strptime(input, "%Y-%m-%d")
+        return datetime.strptime(input, "%Y-%m-%d").date()
     else:
         return input

@@ -36,10 +36,11 @@ nav {
   background-color: #212121;
 }
 
-#venue-select {
+#venue-select, #chart-select {
   background-color: var(--bg-primary);
   color: var(--font-primary);
   text-align: center;
+  margin: 10px auto;
 }
 
 h1 {
