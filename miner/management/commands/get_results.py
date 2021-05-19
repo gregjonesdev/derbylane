@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from miner.utilities.common import get_node_elements
 from miner.utilities.scrape import parse_results_url
 from miner.utilities.urls import build_race_results_url
-from rawdat.models import Race
+from rawdat.models import Race, CronJob
 from pww.models import Metric
 
 from pww.utilities.metrics import build_race_metrics
@@ -40,9 +40,12 @@ class Command(BaseCommand):
                 for participant in race.participant_set.all():
                     try:
                         metric = Metric.objects.get(participant=participant)
-                        print("YEAH YEAH ")
                         metric.final = participant.final
                         matric.save()
-                        raise SystemExit(0)
                     except:
                         pass
+        new_job = CronJob(
+            type="Results"
+        )
+        new_job.set_fields_to_base()
+        new_job.save()
