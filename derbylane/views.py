@@ -1,4 +1,6 @@
+from django.contrib.auth import logout
 from datetime import datetime
+from django.shortcuts import redirect
 
 from django.views.generic import View
 from django.shortcuts import render
@@ -18,7 +20,7 @@ class Welcome(OTPRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.context)
 
-class FrontPage(View):
+class FrontPage(OTPRequiredMixin, View):
 
     template_name = 'frontpage.html'
     context = {}
@@ -45,3 +47,9 @@ def load_charts(request):
     return render(
         request,
         'load_charts.html', {'charts': charts, })
+
+
+def logout_view(request):
+    logout(request)
+    response = redirect('/')
+    return response

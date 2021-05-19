@@ -6,7 +6,7 @@ LOGIN_URL = 'two_factor:login'
 
 # this one is optional
 LOGIN_REDIRECT_URL = 'frontpage'
-LOGOUT_REDIRECT_URL = "/"
+
 
 
 SECRET_KEY = os.environ.get('SECRET_KEY')

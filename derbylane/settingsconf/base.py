@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = '/login/'
-
+LOGOUT_REDIRECT_URL = "/"
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

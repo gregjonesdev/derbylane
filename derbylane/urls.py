@@ -9,6 +9,7 @@ from derbylane.views import (
     Welcome,
     FrontPage,
     load_charts,
+    logout_view,
 )
 
 def buildURL(object_name):
@@ -30,5 +31,6 @@ urlpatterns = [
         name='frontpage'),
     path('', include(tf_twilio_urls)),
     path('accounts/', include('django.contrib.auth.urls')),
+    url(r'logout/$', logout_view, name='logout'),
     url(r'load_charts/$', load_charts, name='load_charts'),
 ]
