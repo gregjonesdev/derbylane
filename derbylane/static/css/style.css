@@ -37,7 +37,7 @@ nav {
 }
 
 #venue-select {
-  background-color: inherit;
+  background-color: var(--bg-primary);
   color: var(--font-primary);
   text-align: center;
 }

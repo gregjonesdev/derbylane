@@ -134,12 +134,18 @@ def get_postweight_average(participations):
 
 
 def get_age(participant):
+    print('get_age')
     save_dog_info(participant.dog)
     target_date = force_datetime(participant.race.chart.program.date)
     dog = participant.dog
     if dog.litter:
         whelp_date = force_datetime(dog.litter.whelp_date)
+        print(target_date)
+        print(whelp_date)
+
         age = target_date - whelp_date
+        print(age)
+        print(age.days)
         return age.days
 
 
