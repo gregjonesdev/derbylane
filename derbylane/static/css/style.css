@@ -41,3 +41,15 @@ nav {
   color: var(--font-primary);
   text-align: center;
 }
+
+h1 {
+  font-size: 2em;
+}
+
+.dropdown-item {
+  color: var(--font-primary);
+}
+
+#navbarToggleExternalContent {
+    background-color: var(--secondary);
+}

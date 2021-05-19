@@ -1,4 +1,5 @@
 import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.core.management.base import BaseCommand
 
@@ -6,6 +7,9 @@ from miner.utilities.common import get_node_elements
 from miner.utilities.scrape import parse_results_url
 from miner.utilities.urls import build_race_results_url
 from rawdat.models import Race
+from pww.models import Metric
+
+from pww.utilities.metrics import build_race_metrics
 
 
 class Command(BaseCommand):
@@ -34,7 +38,11 @@ class Command(BaseCommand):
             if len(page_data) > 85:
                 parse_results_url(results_url, race, page_data)
                 for participant in race.participant_set.all():
-                    print("Saving participant: {} with final {}".format(participant.uuid, participant.final))
-                    metric = Metric.objects.get(participant=participant)
-                    metric.final = participant.final
-                    matric.save()
+                    try:
+                        metric = Metric.objects.get(participant=participant)
+                        print("YEAH YEAH ")
+                        metric.final = participant.final
+                        matric.save()
+                        raise SystemExit(0)
+                    except:
+                        pass

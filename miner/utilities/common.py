@@ -1,5 +1,5 @@
 import requests
-from datetime import datetime
+from datetime import datetime, date
 from lxml import html
 
 
@@ -21,8 +21,8 @@ def get_attribute_elements(url, element, attribute, value):
         url,
         query_string)
 
-def force_datetime(input):
+def force_date(input):
     if isinstance(input, str):
-        return datetime.strptime(input, "%Y-%m-%d")
+        return date.strptime(input, "%Y-%m-%d")
     else:
         return input

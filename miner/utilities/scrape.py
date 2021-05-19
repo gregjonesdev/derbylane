@@ -45,7 +45,7 @@ from miner.utilities.weather import (
 from miner.utilities.common import (
     get_node_elements,
     get_attribute_elements,
-    force_datetime
+    force_date
 )
 
 def split_position_lengths(entry):
@@ -349,7 +349,7 @@ def scan_scheduled_charts(venue, program):
         number = 1
         failed_attempts = 0
         while failed_attempts <= allowed_attempts and number <= max_races_per_chart:
-            program_date = force_datetime(program.date)
+            program_date = force_date(program.date)
             entries_url = build_entries_url(
                 venue.code,
                 program_date.year,
@@ -411,7 +411,9 @@ def parse_results_url(results_url, race, page_data):
         get_result_dognames(results_url),
         race)
     get_results(results_url, page_data, race)
-    # METRICS
+    for participant in race.participant_set.all():
+        print(participant.uuid)
+
 
     if len(page_data) > 115:
         process_combo_bets(race, results_url)
