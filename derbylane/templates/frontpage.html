@@ -11,43 +11,13 @@
         <option value="{{ venue.code}}">{{ venue }}</option>
       {% endfor %}
     </select>
-    <select
-      class="form-control frontpage-select"
-      id="chart-select">
-    </select>
 
   </div>
-
-  <script id="json-chart-data" type="application/json">
-    {
-      "charts_url": "{% url 'load_charts' %}"
-    }
-  </script>
 <script>
   venue_select = document.getElementById("venue-select")
-
-  text_content = document.getElementById("json-chart-data").textContent
-  chart_json_data = JSON.parse(text_content)
-  charts_url = chart_json_data["charts_url"]
-  load_charts = () => {
-    venue_code = venue_select.value
-    $.ajax({
-      url: charts_url,
-      dataType: "html",
-      data: {
-        "venue_code": venue_code,
-
-      },
-      success: function(data) {
-        $("#chart-select").html(data)
-
-      }
-    })
-  }
-  window.onload = (event) => {
-    load_charts(venue_select.value)
-
-  };
-  venue_select.addEventListener("change", load_charts)
+  // window.onload = (event) => {
+  //   load_charts(venue_select.value)
+  //
+  // };
 </script>
 {% endblock content %}

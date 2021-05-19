@@ -36,9 +36,8 @@ nav {
   background-color: #212121;
 }
 
-#venue-select, #chart-select {
+#venue-select {
   background-color: inherit;
   color: var(--font-primary);
   text-align: center;
-  margin-bottom: 15px;
 }

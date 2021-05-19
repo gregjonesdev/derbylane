@@ -8,7 +8,6 @@ from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from derbylane.views import (
     Welcome,
     FrontPage,
-    load_charts,
 )
 
 def buildURL(object_name):
@@ -30,5 +29,4 @@ urlpatterns = [
         name='frontpage'),
     path('', include(tf_twilio_urls)),
     path('accounts/', include('django.contrib.auth.urls')),
-    url(r'load_charts/$', load_charts, name='load_charts'),
 ]
