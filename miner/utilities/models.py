@@ -151,6 +151,7 @@ def create_superfecta(race, posts, cost, payout):
 
 
 def get_parent_name(url, class_attr):
+    print(url)
     return get_node_elements(
         url,'//td[@class="{}"]//a'.format(class_attr))[0].text
 
