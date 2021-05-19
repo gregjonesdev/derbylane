@@ -430,14 +430,14 @@ def get_participant(race, dog):
 def save_sex_and_color(dog, elements):
     try:
         text = elements[0].text
+        sex_and_color = text.split("/")
+        save_sex(dog, sex_and_color[0])
+        save_color(dog, sex_and_color[1])
     except:
         print("Error saving sex and color")
         print(dog.name)
         for element in elements:
             print(element.text)
-    sex_and_color = text.split("/")
-    save_sex(dog, sex_and_color[0])
-    save_color(dog, sex_and_color[1])
 
 
 def get_color(name):
