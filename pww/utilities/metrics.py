@@ -1,5 +1,6 @@
 from pww.models import Metric, Prediction
 import datetime
+from rawdat.models import Participant
 from django.core.exceptions import ObjectDoesNotExist
 
 past_race_count = 7
@@ -96,7 +97,7 @@ def convert_dictlist_to_list(dict_list):
     list = []
     for each in dict_list:
         list.append(float(each))
-    print(list)
+    # print(list)
     return list
 
 def get_factor(initial_x, x_values, y_values):
@@ -118,10 +119,10 @@ def calculate_factor(target_y, raw_object):
         convert_dictlist_to_list(avg_obj.keys()),
         convert_dictlist_to_list(avg_obj.values()))
 
-    for each in sorted(avg_obj.keys()):
-        print("{}: {}".format(each, avg_obj[each]))
-    print("---- Calculated factor ----")
-    print("{}: {}".format(target_y, factored_avg))
+    # for each in sorted(avg_obj.keys()):
+    #     print("{}: {}".format(each, avg_obj[each]))
+    # print("---- Calculated factor ----")
+    # print("{}: {}".format(target_y, factored_avg))
     return factored_avg
 
 
@@ -135,18 +136,18 @@ def get_postweight_average(participations):
 
 
 def get_age(participant):
-    print('get_age')
+    # print('get_age')
     save_dog_info(participant.dog)
     target_date = force_date(participant.race.chart.program.date)
     dog = participant.dog
     if dog.litter:
         whelp_date = force_date(dog.litter.whelp_date)
-        print(target_date)
-        print(whelp_date)
+        # print(target_date)
+        # print(whelp_date)
 
         age = target_date - whelp_date
-        print(age)
-        print(age.days)
+        # print(age)
+        # print(age.days)
         return age.days
 
 
@@ -285,7 +286,6 @@ def get_raw_participant_metrics(participant, distance):
             past_race_count)
 
         chart = participant.race.chart
-
         if len(participations) >= minimum_participations:
             raw_metrics = {
                 "participant": participant,
@@ -313,7 +313,7 @@ def get_raw_participant_metrics(participant, distance):
                 "rh_factor": calculate_factor(
                     chart.get_rh(),
                     build_rh_object(participations)),
-                "final": participant.final,
+                # "final": participant.final,
             }
             if is_complete(raw_metrics):
                 return raw_metrics
@@ -354,14 +354,18 @@ def calculate_scaled_race_metrics(race):
     return scale_metrics(raw_race_metrics)
 
 def save_metrics(metrics):
+    participant = metrics["participant"]
     try:
-        existing_metric = Metric.objects.get(participant=metrics["participant"])
+        existing_metric = Metric.objects.get(participant=participant)
     except ObjectDoesNotExist:
         new_metric = Metric(
             participant=metrics["participant"]
         )
         new_metric.set_fields_to_base()
         existing_metric = new_metric
+        print("CREATED NEW METRIC FOR: {}".format(participant.uuid))
+    print(participant.final)
+    # print("{} {} {} {}".format(participant.race.chart.program.date, participant.race.chart.program.venue.code, participant.race.grade.name, participant.race.distance ))
     existing_metric.scaled_fastest_time = metrics["scaled_fastest_time"]
     existing_metric.win = metrics["win_percent"]
     existing_metric.place = metrics["place_percent"]
@@ -380,12 +384,16 @@ def save_metrics(metrics):
     existing_metric.post_factor = metrics["post_factor"]
     existing_metric.temp_factor = metrics["temp_factor"]
     existing_metric.rh_factor =  metrics["rh_factor"]
-    # existing_metric.final = metrics["final"]
+    if participant.final:
+        existing_metric.final = participant.final
     existing_metric.save()
 
 
 
 # START HERE
 def build_race_metrics(race):
-    for metrics in calculate_scaled_race_metrics(race):
+    print("BUILD RACE METRICS *******************************************************************")
+    scaled_race_metrics = calculate_scaled_race_metrics(race)
+    print(len(scaled_race_metrics))
+    for metrics in scaled_race_metrics:
         save_metrics(metrics)

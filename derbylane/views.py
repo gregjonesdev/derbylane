@@ -1,4 +1,5 @@
 from django.contrib.auth import logout
+from django.contrib.auth import views as auth_views
 from datetime import datetime
 from django.shortcuts import redirect
 
@@ -37,6 +38,29 @@ class FrontPage(OTPRequiredMixin, View):
 
         return render(request, self.template_name, self.context)
 
+
+class ProfileView(OTPRequiredMixin, View):
+
+    template_name = 'profile.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+
+class ScanView(OTPRequiredMixin, View):
+
+    template_name = 'scans.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+
+class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):
+
+    context = {}
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+
 def load_charts(request):
     venue = Venue.objects.get(
         code=request.GET.get('venue_code'))
@@ -57,7 +81,7 @@ def load_bets(request):
         'load_bets.html', {
             'races': races,
             'program': chart.program,
-            'venue': chart.program.venue })        
+            'venue': chart.program.venue })
 
 
 def logout_view(request):

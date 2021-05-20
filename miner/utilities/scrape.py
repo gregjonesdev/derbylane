@@ -20,7 +20,7 @@ from miner.utilities.constants import (
 from rawdat.utilities.methods import get_date_from_ymd
 
 from pww.utilities.metrics import build_race_metrics
-
+from pww.models import Metric
 from miner.utilities.models import (
     update_participant,
     save_race_info,
@@ -173,6 +173,8 @@ def parse_row(row, race):
         row[9].text.strip())
 
 
+
+
 def get_results(target_url, page_data, race):
     div_tds = get_node_elements(target_url, '//td//div')
     race_rows = get_race_rows(div_tds)
@@ -180,12 +182,6 @@ def get_results(target_url, page_data, race):
         if len(row) is 10:
             parse_row(row, race)
 
-#
-# def get_results(div_tds, race):
-#     race_rows = get_race_rows(div_tds)
-#     for row in race_rows:
-#         if len(row) is 10:
-#             parse_row(row, race)
 
 def get_race_rows(div_tds):
     race_rows = []
@@ -368,7 +364,8 @@ def scan_scheduled_charts(venue, program):
                 populate_race(
                     get_entries_dognames(entries_url),
                     race)
-                build_race_metrics(race)
+                if race.grade and race.grade.value:
+                    build_race_metrics(race)
 
             else:
                 failed_attempts += 1
@@ -411,9 +408,7 @@ def parse_results_url(results_url, race, page_data):
         get_result_dognames(results_url),
         race)
     get_results(results_url, page_data, race)
-    for participant in race.participant_set.all():
-        print(participant.uuid)
-
+    build_race_metrics(race)
 
     if len(page_data) > 115:
         process_combo_bets(race, results_url)

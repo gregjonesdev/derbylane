@@ -17,6 +17,7 @@ from miner.utilities.constants import (
 
 
 def build_weather_from_forecast(program):
+    print("FAWK YEAH")
     if not Weather.objects.filter(program=program).count():
         program_date = force_date(program.date)
         index = program_date.weekday()
@@ -40,13 +41,14 @@ def build_weather_from_forecast(program):
             except:
                 percipitation = None
             try:
-                mean_rh = get_daynight_index(day_index, daypart["relativeHumidity"])
+                mean_rh = get_daynight_index(day_index, daypart["relativeHumidity"])/100
             except:
                 mean_rh = None
             try:
                 wind = get_daynight_index(day_index, daypart['windSpeed'])
             except:
                 wind = None
+
 
             weather_instance = get_weatherinstance(program)
             update_weather(
@@ -105,6 +107,9 @@ def process_rows(program, soup):
     except TypeError:
         pass
 
+    print(max_rh)
+    print(mean_rh)
+    raise SystemExit(0)
     weather_instance = get_weatherinstance(program)
     update_weather(
         weather_instance,
