@@ -147,8 +147,8 @@ def get_time(entry):
 
 
 def parse_row(row, race):
-    for each in row:
-        print(each.text)
+    # for each in row:
+    #     print(each.text)
     positions = get_positions(row)
     final_lengths = get_final_and_lengths_behind(
         split_position_lengths(row[5].text))
@@ -191,9 +191,9 @@ def get_race_rows(div_tds):
 
 
 def process_combo_bets(race, target_url):
-    print("process combo bets")
-    for part in race.participant_set.all():
-        print("{}: {}".format(part.post, part.dog.name))
+    # print("process combo bets")
+    # for part in race.participant_set.all():
+    #     print("{}: {}".format(part.post, part.dog.name))
     for each in get_node_elements(target_url, '//p'):
         if each.text:
             split_text = each.text.split()
@@ -234,9 +234,9 @@ def get_dollar_amount(string):
 
 
 def get_combo_name(text):
-    print("---")
-    print(text)
-    print("---")
+    # print("---")
+    # print(text)
+    # print("---")
     if 'TRI SUPER' in text:
         return None
     elif 'DOUB' in text:
@@ -275,11 +275,10 @@ def process_dog_bets(race, page_data):
 
 
 def process_straightwagers(participant, win_amount, place_amount, show_amount):
-    print("process single payout")
     straight_wager = get_straightwager(participant)
-    print(win_amount)
-    print(place_amount)
-    print(show_amount)
+    # print(win_amount)
+    # print(place_amount)
+    # print(show_amount)
     straight_wager = get_straightwager(participant)
     straight_wager.win = get_dollar_amount(win_amount)
     straight_wager.place = get_dollar_amount(place_amount)
@@ -403,7 +402,7 @@ def parse_results_url(results_url, race, page_data):
     save_race_info(
         race,
         get_raw_setting(page_data))
-    print(results_url)
+    # print(results_url)
     populate_race(
         get_result_dognames(results_url),
         race)

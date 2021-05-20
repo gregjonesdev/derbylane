@@ -60,8 +60,8 @@ def create_quiniela(race, posts, cost, payout):
 
 
 def get_participant_from_post(race, post):
-    print(race)
-    print(post)
+    # print(race)
+    # print(post)
     return Participant.objects.get(
         race=race,
         post=int(post)
@@ -151,7 +151,7 @@ def create_superfecta(race, posts, cost, payout):
 
 
 def get_parent_name(url, class_attr):
-    print(url)
+    # print(url)
     return get_node_elements(
         url,'//td[@class="{}"]//a'.format(class_attr))[0].text
 
@@ -174,7 +174,7 @@ def get_straightwager(participant):
 
 def save_dog_info(dog):
     url = build_dog_profile_url(dog.name)
-    print(url)
+    # print(url)
     if not dog.litter:
         whelp_date = get_node_elements(url, '//td[@class="it4"]//em')[0].text
         sire_name = get_parent_name(url, "it2")
@@ -195,7 +195,7 @@ def save_dog_info(dog):
 
 
 def get_dog(name):
-    print(name)
+    # print(name)
     try:
         dog = Dog.objects.get(name=name.upper())
     except ObjectDoesNotExist:
@@ -271,16 +271,16 @@ def update_participant(
     actual_running_time,
     lengths_behind,
     comment):
-    print(participant.dog.name)
-    print(post_weight)
-    print(post)
-    print(off)
-    print(eighth)
-    print(straight)
-    print(final)
-    print(actual_running_time)
-    print(lengths_behind)
-    print(comment)
+    # print(participant.dog.name)
+    # print(post_weight)
+    # print(post)
+    # print(off)
+    # print(eighth)
+    # print(straight)
+    # print(final)
+    # print(actual_running_time)
+    # print(lengths_behind)
+    # print(comment)
 
     if post_weight:
         participant.post_weight = post_weight
@@ -435,10 +435,7 @@ def save_sex_and_color(dog, elements):
         save_sex(dog, sex_and_color[0])
         save_color(dog, sex_and_color[1])
     except:
-        print("Error saving sex and color")
-        print(dog.name)
-        for element in elements:
-            print(element.text)
+        pass
 
 
 def get_color(name):

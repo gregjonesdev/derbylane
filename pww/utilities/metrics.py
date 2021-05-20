@@ -315,8 +315,8 @@ def get_raw_participant_metrics(participant, distance):
                     build_rh_object(participations)),
                 # "final": participant.final,
             }
-            if is_complete(raw_metrics):
-                return raw_metrics
+            # if is_complete(raw_metrics):
+            return raw_metrics
 
 def scale_metrics(raw_metrics):
     slowest_time = get_slowest_raw_time(raw_metrics)
@@ -363,8 +363,8 @@ def save_metrics(metrics):
         )
         new_metric.set_fields_to_base()
         existing_metric = new_metric
-        print("CREATED NEW METRIC FOR: {}".format(participant.uuid))
-    print(participant.final)
+        # print("CREATED NEW METRIC FOR: {}".format(participant.uuid))
+    # print(participant.final)
     # print("{} {} {} {}".format(participant.race.chart.program.date, participant.race.chart.program.venue.code, participant.race.grade.name, participant.race.distance ))
     existing_metric.scaled_fastest_time = metrics["scaled_fastest_time"]
     existing_metric.win = metrics["win_percent"]
@@ -392,8 +392,8 @@ def save_metrics(metrics):
 
 # START HERE
 def build_race_metrics(race):
-    print("BUILD RACE METRICS *******************************************************************")
+    # print("BUILD RACE METRICS *******************************************************************")
     scaled_race_metrics = calculate_scaled_race_metrics(race)
-    print(len(scaled_race_metrics))
+    # print(len(scaled_race_metrics))
     for metrics in scaled_race_metrics:
         save_metrics(metrics)

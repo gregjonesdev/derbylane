@@ -17,52 +17,51 @@ from miner.utilities.constants import (
 
 
 def build_weather_from_forecast(program):
-    print("FAWK YEAH")
-    if not Weather.objects.filter(program=program).count():
-        program_date = force_date(program.date)
-        index = program_date.weekday()
-        target_day = days_of_week[index]
-        r = requests.get(build_forecast_url(program))
-        data = r.json()
-        day_index = get_day_index(data["dayOfWeek"], target_day)
-        daypart = data["daypart"][0]
+    # print(program.uuid)
+    program_date = force_date(program.date)
+    index = program_date.weekday()
+    target_day = days_of_week[index]
+    r = requests.get(build_forecast_url(program))
+    data = r.json()
+    day_index = get_day_index(data["dayOfWeek"], target_day)
+    daypart = data["daypart"][0]
+    # print(daypart)
+    if daypart:
+        try:
+            max_temp = get_offset_index(day_index, data["calendarDayTemperatureMax"], 0)
+        except:
+            max_temp = None
+        try:
+            min_temp = get_offset_index(day_index, data["calendarDayTemperatureMin"], 1)
+        except:
+            min_temp = None
+        try:
+            percipitation = get_daynight_index(day_index, daypart["precipChance"])
+        except:
+            percipitation = None
+        try:
+            mean_rh = get_daynight_index(day_index, daypart["relativeHumidity"])/100
+        except:
+            mean_rh = None
+        try:
+            wind = get_daynight_index(day_index, daypart['windSpeed'])
+        except:
+            wind = None
 
-        if daypart:
-            try:
-                max_temp = get_offset_index(day_index, data["calendarDayTemperatureMax"], 0)
-            except:
-                max_temp = None
-            try:
-                min_temp = get_offset_index(day_index, data["calendarDayTemperatureMin"], 1)
-            except:
-                min_temp = None
-            try:
-                percipitation = get_daynight_index(day_index, daypart["precipChance"])
-            except:
-                percipitation = None
-            try:
-                mean_rh = get_daynight_index(day_index, daypart["relativeHumidity"])/100
-            except:
-                mean_rh = None
-            try:
-                wind = get_daynight_index(day_index, daypart['windSpeed'])
-            except:
-                wind = None
 
-
-            weather_instance = get_weatherinstance(program)
-            update_weather(
-                weather_instance,
-                None,
-                min_temp,
-                None,
-                max_temp,
-                mean_rh,
-                None,
-                None,
-                percipitation,
-                None,
-                wind)
+        weather_instance = get_weatherinstance(program)
+        update_weather(
+            weather_instance,
+            None,
+            min_temp,
+            None,
+            max_temp,
+            mean_rh,
+            None,
+            None,
+            percipitation,
+            None,
+            wind)
 
 def get_nightly_index(day_index, list):
     return list[day_index*2 + 1]
@@ -107,9 +106,6 @@ def process_rows(program, soup):
     except TypeError:
         pass
 
-    print(max_rh)
-    print(mean_rh)
-    raise SystemExit(0)
     weather_instance = get_weatherinstance(program)
     update_weather(
         weather_instance,

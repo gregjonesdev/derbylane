@@ -14,7 +14,6 @@ class Command(BaseCommand):
         self.stdout.write("Starting Scheduled script..")
         dates = self.get_dates()
         for venue in Venue.objects.filter(is_active=True):
-            print("Processing {}".format(venue.name))
             for date in dates:
                 formatted_date = get_date_from_ymd(
                     date.year,
@@ -24,7 +23,10 @@ class Command(BaseCommand):
                     venue,
                     formatted_date)
                 build_weather_from_forecast(program)
-                print("Scanning {}/{} Charts".format(date.month, date.day))
+                print("Scanning {} {}/{} Charts".format(
+                    venue.name,
+                    date.month,
+                    date.day))
                 scan_scheduled_charts(venue, program)
         new_job = CronJob(
             type="Scheduled"
