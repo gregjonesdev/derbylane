@@ -179,7 +179,7 @@ def get_results(target_url, page_data, race):
     div_tds = get_node_elements(target_url, '//td//div')
     race_rows = get_race_rows(div_tds)
     for row in race_rows:
-        if len(row) is 10:
+        if len(row) == 10:
             parse_row(row, race)
 
 
