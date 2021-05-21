@@ -2,5 +2,20 @@
 
 {% block content %}
 
-profile 
+<table class="table table-sm">
+  <thead>
+  <tr>
+    <th>Type</th>
+    <th>Date</th>
+  </tr>
+  </thead>
+  <tbody>
+    {% for scan in scans %}
+    <tr>
+      <td>{{ scan.type }}</td>
+      <td>{{ scan.created_at }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock content %}

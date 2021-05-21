@@ -9,7 +9,9 @@ from django.shortcuts import render
 from two_factor.views.mixins import OTPRequiredMixin
 
 from rawdat.models import (
-    Venue, Chart
+    Venue,
+    Chart,
+    CronJob,
 )
 
 
@@ -53,6 +55,7 @@ class ScanView(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
+        self.context["scans"] = CronJob.objects.all()
         return render(request, self.template_name, self.context)
 
 class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):
