@@ -333,9 +333,10 @@ def populate_race(dognames, race):
             dog = get_dog(dognames[i])
             post_position = i + 1
             participant = get_participant(race, dog)
-            set_post(
-                participant,
-                post_position)
+            if not participant in race.participant_set.all():
+                set_post(
+                    participant,
+                    post_position)
         i += 1
 
 
@@ -354,7 +355,6 @@ def scan_scheduled_charts(venue, program):
                 number)
             page_data = get_node_elements(entries_url, '//td')
             if len(page_data) > 20:
-                print(entries_url)
                 chart = get_chart(program, time)
                 race = get_race(chart, number)
                 save_race_info(
@@ -412,6 +412,8 @@ def parse_results_url(results_url, race, page_data):
     if len(page_data) > 115:
         process_combo_bets(race, results_url)
         process_dog_bets(race, page_data)
+
+
 
 
 def scan_history_charts(venue, year, month, day):

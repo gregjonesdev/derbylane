@@ -242,14 +242,16 @@ class Chart(CoreModel):
             try:
                 return float(mean_rh)
             except:
-                pass    
+                pass
 
 
     def get_racetemp(self):
-        print(self.program.uuid)
         weather = self.program.weather
         if weather:
-            return float(weather.max_temp)
+            try:
+                return float(weather.max_temp)
+            except:
+                pass
 
 class Grade(CoreModel):
 
