@@ -368,6 +368,7 @@ def save_metrics(metrics):
         new_metric = Metric(
             participant=metrics["participant"]
         )
+        print("new")
         new_metric.set_fields_to_base()
         existing_metric = new_metric
         # print("CREATED NEW METRIC FOR: {}".format(participant.uuid))

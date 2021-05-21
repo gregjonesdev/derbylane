@@ -439,7 +439,6 @@ def scan_history_charts(venue, year, month, day):
                     get_chart(program, time),
                     number)
                 parse_results_url(results_url, race, page_data)
-                build_race_metrics(race)
             else:
                 failed_attempts += 1
             number += 1
