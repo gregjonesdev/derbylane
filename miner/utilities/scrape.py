@@ -303,7 +303,7 @@ def format_text(text):
 def is_race_heading_cell(text):
         if len(text) > 0:
             first_lower = text[0].lower()
-            if first_lower.find('race') is 0:
+            if first_lower.find('race') == 0:
                 if first_lower.find('raced') < 0:
                     if not re.search('[a-zA-Z]', text[1]):
                         return True
