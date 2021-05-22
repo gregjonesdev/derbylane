@@ -113,21 +113,18 @@ def get_factor(initial_x, x_values, y_values):
 
 
 def calculate_factor(target_y, raw_object):
-    print("raw obj:")
-    print(raw_object)
-    avg_obj = build_avg_obj(raw_object)
-    print("average obj:")
-    print(avg_obj)
-    factored_avg = get_factor(
-        target_y,
-        convert_dictlist_to_list(avg_obj.keys()),
-        convert_dictlist_to_list(avg_obj.values()))
+    if len(raw_object.keys():
+        avg_obj = build_avg_obj(raw_object)
+        factored_avg = get_factor(
+            target_y,
+            convert_dictlist_to_list(avg_obj.keys()),
+            convert_dictlist_to_list(avg_obj.values()))
 
-    # for each in sorted(avg_obj.keys()):
-    #     print("{}: {}".format(each, avg_obj[each]))
-    # print("---- Calculated factor ----")
-    # print("{}: {}".format(target_y, factored_avg))
-    return factored_avg
+        # for each in sorted(avg_obj.keys()):
+        #     print("{}: {}".format(each, avg_obj[each]))
+        # print("---- Calculated factor ----")
+        # print("{}: {}".format(target_y, factored_avg))
+        return factored_avg
 
 
 def get_postweight_average(participations):
