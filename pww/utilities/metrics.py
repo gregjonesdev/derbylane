@@ -40,6 +40,7 @@ def normalize(value, list):
 def build_avg_obj(orig_object):
     avg_obj = {}
     for each in orig_object.keys():
+        print(get_average(orig_object[each]))
         avg_obj[each] = get_average(orig_object[each])
     return avg_obj
 
@@ -113,6 +114,7 @@ def get_factor(initial_x, x_values, y_values):
 
 def calculate_factor(target_y, raw_object):
     avg_obj = build_avg_obj(raw_object)
+    print("average obj:")
     print(avg_obj)
     factored_avg = get_factor(
         target_y,
