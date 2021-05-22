@@ -1,20 +1,31 @@
 <table
   id="bets_table"
   class="table table-sm table-borderless">
+  <thead>
+    <tr>
+      <th>Race</th>
+      <th>Grade</th>
+      <th>Wagers</th>
+    </tr>
+  </thead>
+  <tbody>
   {% for race in races %}
     <tr>
-      <td style="text-align: left">
-          Race {{ race.number }}
+      <td >
+          {{ race.number }}
       </td>
       <td style="" >
         <span style="color:white">{{ race.grade.name }}</span>
       </td>
       <td style="" >
-        <span style="color:white">{{ race.distance }} yd</span>
-      </td>
-      <td style="width: 50%;" >
-        <span > 5 / 3 / 1 / 2 </span>
+        <b>5:</b><span class="float-right"> W / P </span><br>
+        <b>3:</b><span class="float-right"> W / P / S </span><br>
+        <div style="border-top:1px solid white">
+        <b>Trifecta:</b><span class="float-right"> 5 / 3 / 1 </span><br>
+        <b>Exacta:</b><span class="float-right"> 5 / 3 </span><br>
+        </div>
       </td>
     </tr>
   {% endfor %}
+  </tbody>
 </table>

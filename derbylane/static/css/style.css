@@ -41,7 +41,7 @@ nav {
   background-color: var(--bg-primary);
   color: var(--font-primary);
   text-align: center;
-  margin: 10px auto;
+  margin: 10px 0px;
 }
 
 h1 {
