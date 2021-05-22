@@ -582,6 +582,7 @@ class CronJob(CoreModel):
 
     class Meta:
         verbose_name = 'CronJob'
+        ordering = ['-created_at']
 
     type = models.CharField(
         null=True,

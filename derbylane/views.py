@@ -55,7 +55,7 @@ class ScanView(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-        self.context["scans"] = CronJob.objects.all()
+        self.context["scans"] = CronJob.objects.all()[:10]
         return render(request, self.template_name, self.context)
 
 class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):

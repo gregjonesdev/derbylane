@@ -5,6 +5,7 @@
   --primary: #BB86FC;
   --seconday: #03DAC5;
   --bg-primary: #121212;
+  --bg-secondary: #212121;
   --cashdog-blue: #00A8FF;
   --error: #CF6679;
   --bg-base: #000000;
@@ -33,7 +34,7 @@ nav {
 }
 
 .card-header {
-  background-color: #212121;
+  background-color: var(--bg-secondary);
 }
 
 #venue-select, #chart-select {
@@ -52,5 +53,5 @@ h1 {
 }
 
 #navbarToggleExternalContent {
-    background-color: var(--secondary);
+  background-color: var(--bg-secondary);
 }

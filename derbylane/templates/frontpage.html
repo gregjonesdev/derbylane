@@ -3,18 +3,25 @@
 {% block content %}
 
   <h5 class="card-header text-center"><b><i>{{ today }}</i></b></h5>
-
-    <select
-      class="form-control frontpage-select"
-      id="venue-select">
-      {% for venue in venues %}
+    <div class="row">
+      <div class="col-6">
+        <select
+        class="form-control frontpage-select"
+        id="venue-select">
+        {% for venue in venues %}
         <option value="{{ venue.code}}">{{ venue.name }}</option>
-      {% endfor %}
-    </select>
-    <select
-      class="form-control frontpage-select"
-      id="chart-select">
-    </select>
+        {% endfor %}
+      </select>
+
+      </div>
+      <div class="col-6">
+        <select
+        class="form-control frontpage-select"
+        id="chart-select">
+      </select>
+
+      </div>
+    </div>
     <div id="bets" style="overflow-y: scroll;"></div>
 
 
