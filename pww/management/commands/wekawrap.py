@@ -12,15 +12,18 @@ confidence_vector = "0.3"
 data_dir = "./rawdat/arff/"
 class Command(BaseCommand):
 
+    def create_dataset(csv):
+        sft_att = Attribute.create_numeric("scaled_fastest_time")
+        sex_att = Attribute.create_nominal("sex", ["M", "F"])
+
+
     def handle(self, *args, **options):
-
-
-
         self.stdout.write("Starting Weka script..\n")
         jvm.start(packages=True, system_info=True)
         # data = conv.load_any_file("./rawdat/arff/weather.numeric.arff")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         data=loader.load_file(data_dir + "weather.numeric.arff")
+        # data=loader.load_file(data_dir + "weather.numeric.arff", class_index="last")
 
         data.class_is_last()
         cls = Classifier(
