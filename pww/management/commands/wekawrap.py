@@ -42,6 +42,39 @@ class Command(BaseCommand):
         # create_dataset
         # populate_dataset
         # build_classifier(data, "weka.classifiers.trees.J48", ["-C", "0.3"])
+        for index, inst in enumerate(data):
+            pred = cls.classify_instance(inst)
+            dist = cls.distribution_for_instance(inst)
+            print(
+                str(index+1) +
+                ": label index=" +
+                str(pred) +
+                ", class distribution=" +
+                str(dist))
+
+    def experiment():
+        datasets = ["iris.arff", "anneal.arff"]
+        classifiers = [Classifier(classname="weka.classifiers.rules.ZeroR"), Classifier(classname="weka.classifiers.trees.J48")]
+        outfile = "results-cv.arff"   # store results for later analysis
+        exp = SimpleCrossValidationExperiment(
+            classification=True,
+            runs=10,
+            folds=10,
+            datasets=datasets,
+            classifiers=classifiers,
+            result=outfile)
+        exp.setup()
+        exp.run()
+        # evaluate previous run
+        loader = converters.loader_for_file(outfile)
+        data   = loader.load_file(outfile)
+        matrix = ResultMatrix(classname="weka.experiment.ResultMatrixPlainText")
+        tester = Tester(classname="weka.experiment.PairedCorrectedTTester")
+        tester.resultmatrix = matrix
+        comparison_col = data.attribute_by_name("Percent_correct").index
+        tester.instances = data
+        print(tester.header(comparison_col))
+        print(tester.multi_resultset_full(0, comparison_col))
 
 
 
