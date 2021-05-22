@@ -37,11 +37,18 @@ nav {
   background-color: var(--bg-secondary);
 }
 
+.select-holder {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  padding: 15px 0px;
+}
+
 #venue-select, #chart-select {
   background-color: var(--bg-primary);
   color: var(--font-primary);
   text-align: center;
-  margin: 10px 0px;
+  margin: 0 5px;
 }
 
 h1 {
