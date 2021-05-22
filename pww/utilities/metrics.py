@@ -113,7 +113,7 @@ def get_factor(initial_x, x_values, y_values):
 
 
 def calculate_factor(target_y, raw_object):
-    if len(raw_object.keys():
+    if len(raw_object.keys()) > 0:
         avg_obj = build_avg_obj(raw_object)
         factored_avg = get_factor(
             target_y,
