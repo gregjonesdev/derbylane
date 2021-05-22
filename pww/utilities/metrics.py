@@ -113,6 +113,8 @@ def get_factor(initial_x, x_values, y_values):
 
 
 def calculate_factor(target_y, raw_object):
+    print("raw obj:")
+    print(raw_object)
     avg_obj = build_avg_obj(raw_object)
     print("average obj:")
     print(avg_obj)
