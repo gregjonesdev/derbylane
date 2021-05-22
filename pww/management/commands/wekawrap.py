@@ -12,9 +12,23 @@ confidence_vector = "0.3"
 data_dir = "./rawdat/arff/"
 class Command(BaseCommand):
 
-    def create_dataset(csv):
-        sft_att = Attribute.create_numeric("scaled_fastest_time")
-        sex_att = Attribute.create_nominal("sex", ["M", "F"])
+    def build_attributes():
+        attributes = []
+        attributes.append(
+            Attribute.create_numeric("scaled_fastest_time"))
+        attributes.append(Attribute.create_nominal("sex", ["M", "F"]))
+        return attributes
+
+    def create_dataset(dataset_name):
+        return Instances.create_instances(
+            dataset_name,
+            self.build_attributes(),
+            0)
+
+    def populate_dataset(query_instance):
+        for metric in metrics:
+        inst = Instance.create_instance(metrics)        
+        dataset.add_instance(inst)
 
 
     def handle(self, *args, **options):
