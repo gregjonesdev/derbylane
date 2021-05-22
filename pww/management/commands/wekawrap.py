@@ -25,10 +25,24 @@ class Command(BaseCommand):
             self.build_attributes(),
             0)
 
-    def populate_dataset(query_instance):
+    def populate_dataset(dataset = query_instance):
         for metric in metrics:
-        inst = Instance.create_instance(metrics)        
-        dataset.add_instance(inst)
+            inst = Instance.create_instance(metric)
+            dataset.add_instance(inst)
+        return dataset
+
+    def build_classifier(data, classname, options):
+        cls = Classifier(classname=classname, options=options)
+        cls.build_classifier(data)
+        return cls
+
+
+    def start_here(self, *args, **options):
+
+        # create_dataset
+        # populate_dataset
+        # build_classifier(data, "weka.classifiers.trees.J48", ["-C", "0.3"])
+
 
 
     def handle(self, *args, **options):
