@@ -31,69 +31,59 @@ class Command(BaseCommand):
             dataset.add_instance(inst)
         return dataset
 
-    def build_classifier(data, classname, options):
+    def build_classifier(self, data, classname, options):
         cls = Classifier(classname=classname, options=options)
         cls.build_classifier(data)
         return cls
 
-
-    def experiment():
-        datasets = ["iris.arff", "anneal.arff"]
-        classifiers = [Classifier(classname="weka.classifiers.rules.ZeroR"), Classifier(classname="weka.classifiers.trees.J48")]
-        outfile = "results-cv.arff"   # store results for later analysis
-        exp = SimpleCrossValidationExperiment(
-            classification=True,
-            runs=10,
-            folds=10,
-            datasets=datasets,
-            classifiers=classifiers,
-            result=outfile)
-        exp.setup()
-        exp.run()
-        # evaluate previous run
-        loader = converters.loader_for_file(outfile)
-        data   = loader.load_file(outfile)
-        matrix = ResultMatrix(classname="weka.experiment.ResultMatrixPlainText")
-        tester = Tester(classname="weka.experiment.PairedCorrectedTTester")
-        tester.resultmatrix = matrix
-        comparison_col = data.attribute_by_name("Percent_correct").index
-        tester.instances = data
-        print(tester.header(comparison_col))
-        print(tester.multi_resultset_full(0, comparison_col))
+    #
+    # def experiment():
+    #     datasets = ["iris.arff", "anneal.arff"]
+    #     classifiers = [Classifier(classname="weka.classifiers.rules.ZeroR"), Classifier(classname="weka.classifiers.trees.J48")]
+    #     outfile = "results-cv.arff"   # store results for later analysis
+    #     exp = SimpleCrossValidationExperiment(
+    #         classification=True,
+    #         runs=10,
+    #         folds=10,
+    #         datasets=datasets,
+    #         classifiers=classifiers,
+    #         result=outfile)
+    #     exp.setup()
+    #     exp.run()
+    #     # evaluate previous run
+    #     loader = converters.loader_for_file(outfile)
+    #     data   = loader.load_file(outfile)
+    #     matrix = ResultMatrix(classname="weka.experiment.ResultMatrixPlainText")
+    #     tester = Tester(classname="weka.experiment.PairedCorrectedTTester")
+    #     tester.resultmatrix = matrix
+    #     comparison_col = data.attribute_by_name("Percent_correct").index
+    #     tester.instances = data
+    #     print(tester.header(comparison_col))
+    #     print(tester.multi_resultset_full(0, comparison_col))
 
     def train_classifier_output_predictions(self, data):
-        cls = Classifier(
-            classname="weka.classifiers.trees.J48",
-            options=["-C", "0.3"])
-        cls.build_classifier(data)    
+        cls = self.build_classifier(
+            data,
+            "weka.classifiers.trees.J48",
+            ["-C", "0.3"])
         for index, inst in enumerate(data):
             print("{} | {}".format(index, inst))
             pred = cls.classify_instance(inst)
-            print(pred)
-        #     dist = cls.distribution_for_instance(inst)
-        #     print(
-        #         str(index+1) +
-        #         ": label index=" +
-        #         str(pred) +
-        #         ", class distribution=" +
-        #         str(dist))
+            # print(pred)
+            dist = cls.distribution_for_instance(inst)
+            print(
+                str(index+1) +
+                ": label index=" +
+                str(pred) +
+                ", class distribution=" +
+                str(dist))
 
 
     def handle(self, *args, **options):
         self.stdout.write("Starting Weka script..\n")
         jvm.start(packages=True, system_info=True)
-        # data = conv.load_any_file("./rawdat/arff/weather.numeric.arff")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         data=loader.load_file(data_dir + "weather.numeric.arff")
-        # data=loader.load_file(data_dir + "weather.numeric.arff", class_index="last")
-
         data.class_is_last()
         self.train_classifier_output_predictions(data)
-        # cls = Classifier(
-        #     classname="weka.classifiers.trees.J48",
-        #     options=["-C", "0.3"])
-        # evl = Evaluation(data)
-        # evl.crossvalidate_model(cls, data, 10, Random(1))
-        # self.stdout.write(evl.summary("=== J48 on weather (numeric): Stats ===", False))
-        # self.stdout.write(evl.matrix("=== J48 on weather (numeric): Confusion Matrix"))
         jvm.stop()
