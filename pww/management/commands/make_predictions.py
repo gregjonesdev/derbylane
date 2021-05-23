@@ -27,7 +27,6 @@ class Command(BaseCommand):
         for paricipant in race.participant_set.all():
             try:
                 metric = Metric.objects.get(partipant=participant)
-                pass
             except:
                 print("Metric not found for participant: {}".format(partipant.uuid))
 

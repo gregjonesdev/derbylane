@@ -25,7 +25,7 @@ class Command(BaseCommand):
             self.build_attributes(),
             0)
 
-    def populate_dataset(dataset = query_instance):
+    def populate_dataset(dataset):
         for metric in metrics:
             inst = Instance.create_instance(metric)
             dataset.add_instance(inst)
@@ -36,21 +36,6 @@ class Command(BaseCommand):
         cls.build_classifier(data)
         return cls
 
-
-    def start_here(self, *args, **options):
-
-        # create_dataset
-        # populate_dataset
-        # build_classifier(data, "weka.classifiers.trees.J48", ["-C", "0.3"])
-        for index, inst in enumerate(data):
-            pred = cls.classify_instance(inst)
-            dist = cls.distribution_for_instance(inst)
-            print(
-                str(index+1) +
-                ": label index=" +
-                str(pred) +
-                ", class distribution=" +
-                str(dist))
 
     def experiment():
         datasets = ["iris.arff", "anneal.arff"]
@@ -76,6 +61,22 @@ class Command(BaseCommand):
         print(tester.header(comparison_col))
         print(tester.multi_resultset_full(0, comparison_col))
 
+    def train_classifier_output_predictions(self, data):
+        cls = Classifier(
+            classname="weka.classifiers.trees.J48",
+            options=["-C", "0.3"])
+        cls.build_classifier(data)    
+        for index, inst in enumerate(data):
+            print("{} | {}".format(index, inst))
+            pred = cls.classify_instance(inst)
+            print(pred)
+        #     dist = cls.distribution_for_instance(inst)
+        #     print(
+        #         str(index+1) +
+        #         ": label index=" +
+        #         str(pred) +
+        #         ", class distribution=" +
+        #         str(dist))
 
 
     def handle(self, *args, **options):
@@ -87,11 +88,12 @@ class Command(BaseCommand):
         # data=loader.load_file(data_dir + "weather.numeric.arff", class_index="last")
 
         data.class_is_last()
-        cls = Classifier(
-            classname="weka.classifiers.trees.J48",
-            options=["-C", "0.3"])
-        evl = Evaluation(data)
-        evl.crossvalidate_model(cls, data, 10, Random(1))
-        self.stdout.write(evl.summary("=== J48 on weather (numeric): Stats ===", False))
-        self.stdout.write(evl.matrix("=== J48 on weather (numeric): Confusion Matrix"))
+        self.train_classifier_output_predictions(data)
+        # cls = Classifier(
+        #     classname="weka.classifiers.trees.J48",
+        #     options=["-C", "0.3"])
+        # evl = Evaluation(data)
+        # evl.crossvalidate_model(cls, data, 10, Random(1))
+        # self.stdout.write(evl.summary("=== J48 on weather (numeric): Stats ===", False))
+        # self.stdout.write(evl.matrix("=== J48 on weather (numeric): Confusion Matrix"))
         jvm.stop()
