@@ -10,6 +10,12 @@ from weka.core.classes import Random
 
 confidence_vector = "0.3"
 data_dir = "./rawdat/arff/"
+
+classifiers = [
+    "weka.classifiers.functions.SMO",
+    "weka.classifiers.trees.J48",
+    ]
+
 class Command(BaseCommand):
 
     def build_attributes():
@@ -31,10 +37,8 @@ class Command(BaseCommand):
             dataset.add_instance(inst)
         return dataset
 
-    def build_classifier(self, data, classname, options):
-        cls = Classifier(classname=classname, options=options)
-        cls.build_classifier(data)
-        return cls
+    # def build_classifier(self, data, classname, options):
+
 
     #
     # def experiment():
@@ -61,29 +65,34 @@ class Command(BaseCommand):
     #     print(tester.header(comparison_col))
     #     print(tester.multi_resultset_full(0, comparison_col))
 
-    def train_classifier_output_predictions(self, data):
-        cls = self.build_classifier(
-            data,
-            "weka.classifiers.trees.J48",
-            ["-C", "0.3"])
+    def train_classifier(self, data, classifier, options):
+        data.class_is_last()
+        cls = Classifier(classname=classifier, options=options)
+        cls.build_classifier(data)
+        return cls
+
+    def output_predictions(self, cls, data):
+        data.class_is_last()
         for index, inst in enumerate(data):
             print("{} | {}".format(index, inst))
             pred = cls.classify_instance(inst)
             # print(pred)
             dist = cls.distribution_for_instance(inst)
             print(
-                str(index+1) +
-                ": label index=" +
-                str(pred) +
-                ", class distribution=" +
-                str(dist))
+            str(index+1) +
+            ": label index=" +
+            str(pred) +
+            ", class distribution=" +
+            str(dist))
+
 
 
     def handle(self, *args, **options):
         self.stdout.write("Starting Weka script..\n")
-        jvm.start(packages=True, system_info=True)
+        jvm.start(packages=True, system_info=True, max_heap_size="512m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         data=loader.load_file(data_dir + "weather.numeric.arff")
-        data.class_is_last()
-        self.train_classifier_output_predictions(data)
+        cls = self.train_classifier(data, "weka.classifiers.trees.J48", ["-C", "0.3"])
+        self.output_predictions(cls, data)
+
         jvm.stop()
