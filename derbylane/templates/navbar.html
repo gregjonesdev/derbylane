@@ -3,6 +3,18 @@
 <div class="pos-f-t">
     <nav class="navbar navbar-dark">
       {% if user.is_authenticated %}
+      <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarToggleExternalContent"
+      aria-controls="navbarToggleExternalContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="pull-right">
+      <span style="font-size:1em"><b>{{ user.username }}</b></span>
         <a
           class="navbar-brand"
           href="{% url 'frontpage' %}"
@@ -16,17 +28,7 @@
             alt="Cashdog Logo">
         </a>
         {% endif %}
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarToggleExternalContent"
-        aria-controls="navbarToggleExternalContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
+        </div>
     </nav>
     <div class="collapse" id="navbarToggleExternalContent">
       <div class="p-1">
