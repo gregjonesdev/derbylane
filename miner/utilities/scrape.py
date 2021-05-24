@@ -227,7 +227,7 @@ def get_dollar_amount(string):
             return float(stripped.replace("$", "").replace(",", ""))
         except:
             print("get_dollar_amt: couldnt float {}".format(string))
-            raise SystemExit(0)
+            pass
     else:
         return 0.00
 
