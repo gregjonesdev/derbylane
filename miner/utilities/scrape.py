@@ -333,7 +333,7 @@ def populate_race(dognames, race):
             dog = get_dog(dognames[i])
             post_position = i + 1
             participant = get_participant(race, dog)
-            if not participant in race.participant_set.all():
+            if not participant.post():
                 set_post(
                     participant,
                     post_position)
