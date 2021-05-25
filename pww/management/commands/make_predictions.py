@@ -1,5 +1,6 @@
 import datetime
 import csv
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.core.management.base import BaseCommand
 from rawdat.models import Race, Venue
@@ -15,20 +16,13 @@ from pww.utilities.metrics import build_race_metrics
 
 class Command(BaseCommand):
 
-    def get_relevant_metrics(self, venue, grade_name, distance):
-        metrics = Metric.objects.filter(
-            participant__race__chart__program__venue=venue,
-            participant__race__distance=distance,
-            participant__race__grade__name=grade_name
-        )
-        return metrics
 
-    def analyze_participants(race):
-        for paricipant in race.participant_set.all():
+    def analyze_participants(self, race):
+        for participant in race.participant_set.all():
             try:
-                metric = Metric.objects.get(partipant=participant)
+                metric = Metric.objects.get(participant=participant)
             except:
-                print("Metric not found for participant: {}".format(partipant.uuid))
+                print("Metric not found for participant: {}".format(participant.uuid))
 
 
     def handle(self, *args, **options):
@@ -37,18 +31,30 @@ class Command(BaseCommand):
         #     reader = csv.reader(f)
         #     for row in reader:
         #         print(row)
+        today = datetime.date.today()
         for venue in Venue.objects.filter(is_active=True):
+            venue_metrics = Metric.objects.filter(
+                participant__race__chart__program__venue=venue)
             for distance in venue_distances[venue.code]:
+                distance_metrics = venue_metrics.filter(
+                    participant__race__distance=distance,
+                )
                 for grade_name in valued_grades:
-                    for race in Race.objects.filter(
-                        chart__program__date=datetime.date.today(),
-                        grade__name=grade_name,
-                        distance=distance):
-                        analyze_participants(race)
-        #             print("{} Grade {} {} yds".format(venue.name, grade_name, distance))
-        #             print("----------------------------------")
-        #             relevant_metrics = self.get_relevant_metrics(venue, grade_name, distance)
-        #             completed_metrics = relevant_metrics.filter(final__isnull=False)
-        #             scheduled_metrics = relevant_metrics.filter(final__isnull=True)
-        #             print(len(relevant_metrics))
-        #             print("\n")
+                    graded_metrics = distance_metrics.filter(
+                        participant__race__grade__name=grade_name,
+                    )
+                    # relevant_metrics = self.get_relevant_metrics(venue, grade_name, distance)
+                    print("{} Grade {} {} yds".format(venue.name, grade_name, distance))
+                    print(len(graded_metrics))
+                    # print(len(relevant_metrics))
+                    # relevant_metrics = self.get_relevant_metrics(venue, grade_name, distance)
+                    completed_metrics = graded_metrics.filter(final__isnull=False)
+                    scheduled_metrics = graded_metrics.filter(final__isnull=True)
+
+
+
+
+# get a list of participants in races for a specific venue, grade, and distance
+# get a list of metrics for each participant
+# get the relevant completed metrics
+# send the two lists to pww for prediction(s)
