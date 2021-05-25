@@ -1,7 +1,7 @@
 import datetime
 import csv
 from django.core.exceptions import ObjectDoesNotExist
-import os.path
+# import os.path
 from pathlib import Path
 from django.core.management.base import BaseCommand
 from rawdat.models import Race, Venue
@@ -11,8 +11,9 @@ from pww.models import Prediction, Metric
 from miner.utilities.constants import (
     valued_grades,
     chart_times,
-    venue_distances)
-from pww.utilities.metrics import build_race_metrics
+    venue_distances,
+    csv_columns,
+    )
 
 
 class Command(BaseCommand):
@@ -25,24 +26,27 @@ class Command(BaseCommand):
             except:
                 print("Metric not found for participant: {}".format(participant.uuid))
 
+
     def create_csv(self, filename, metrics):
         print("create csv()")
         print(filename)
         # nested_dir = date.replace("_", "/")
         #
-        #
-        # Path(csv_directory).mkdir(
-        #         parents=True,
-        #         exist_ok=True)
-        raise SystemExit(0)
+        csv_directory = "csv"
+        Path(csv_directory).mkdir(
+                parents=True,
+                exist_ok=True)
+        # raise SystemExit(0)
+
         with open("{}/{}".format(csv_directory, filename), 'w', newline='') as write_obj:
             csv_writer = csv.writer(write_obj)
-            csv_writer.writerow(get_column_names())
+            csv_writer.writerow(csv_columns)
             for metric in metrics:
-                while len(metric) < len(coded_columns):
-                    metric.append(0)
+                print(metric.build_csv_metric())
+            #     while len(metric) < len(coded_columns):
+            #         metric.append(0)
                 # print(metric)
-                csv_writer.writerow(metric)
+                csv_writer.writerow(metric.build_csv_metric())
         # print("done!")
 
 
@@ -71,7 +75,8 @@ class Command(BaseCommand):
                     print(len(completed_metrics))
                     print(len(scheduled_metrics))
                     race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
-                    self.create_csv("{}_scheduled.csv".format(race_key), scheduled_metrics)
+                    if len(scheduled_metrics) > 0:
+                        self.create_csv("{}_scheduled.csv".format(race_key), scheduled_metrics)
 
 
 

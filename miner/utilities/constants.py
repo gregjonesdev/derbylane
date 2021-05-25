@@ -7,6 +7,29 @@ distance_converter = {
     "9-16": 990,
 }
 
+csv_columns = [
+    "PID",
+    "SFT",
+    "W",
+    "P",
+    "S",
+    "B",
+    "E",
+    "St",
+    "F",
+    "G",
+    "T7",
+    "T3",
+    "U",
+    "A",
+    "Se",
+    "LB",
+    "PF",
+    "TF",
+    "RHF",
+    "Fi",
+]
+
 race_conditions = [
  "F",
  "G",

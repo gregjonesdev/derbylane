@@ -7,7 +7,6 @@ from miner.utilities.common import get_node_elements
 from miner.utilities.scrape import parse_results_url
 from miner.utilities.urls import build_race_results_url
 from rawdat.models import Race, CronJob
-from pww.models import Metric
 
 from pww.utilities.metrics import build_race_metrics
 

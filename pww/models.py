@@ -79,6 +79,32 @@ class Metric(CoreModel):
         null=True
     )
 
+    def build_csv_metric(self):
+         return [
+            self.participant.uuid,
+            self.scaled_fastest_time,
+            self.win,
+            self.place,
+            self.show,
+            self.break_avg,
+            self.eighth_avg,
+            self.straight_avg,
+            self.finish_avg,
+            self.grade_avg,
+            self.time_seven,
+            self.time_three,
+            self.upgrade,
+            self.age,
+            self.sex,
+            self.post_weight_avg,
+            self.post_factor,
+            self.temp_factor,
+            self.rh_factor,
+            self.final
+        ]
+
+
+
 class Prediction(CoreModel):
 
     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
