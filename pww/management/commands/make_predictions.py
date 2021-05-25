@@ -39,17 +39,21 @@ class Command(BaseCommand):
         arff_file.write("@data\n")
 
         for metric in metrics:
-            arff_file.writelines(metric.build_csv_metric())
+            csv_metric = metric.build_csv_metric()
+            if csv_metric:
+                arff_file.writelines(csv_metric)
 
         return filename
 
 
     def handle(self, *args, **options):
         arff_directory = "arff"
+
         Path(arff_directory).mkdir(
                 parents=True,
                 exist_ok=True)
         today = datetime.date.today()
+        arff_data = []
         for venue in Venue.objects.filter(is_active=True):
             venue_metrics = Metric.objects.filter(
                 participant__race__chart__program__venue=venue)
@@ -67,11 +71,12 @@ class Command(BaseCommand):
                     if len(scheduled_metrics) > 0:
                         scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
                         results_filename = "arff/{}_results.arff".format(race_key)
-
-                        make_predictions(
-                            self.create_arff(
+                        arff_data.append({
+                            "scheduled": self.create_arff(
                                 scheduled_filename,
                                 scheduled_metrics),
-                            self.create_arff(
+                            "results": self.create_arff(
                                 results_filename,
-                                completed_metrics))
+                                completed_metrics),
+                        })
+        make_predictions(arff_data)

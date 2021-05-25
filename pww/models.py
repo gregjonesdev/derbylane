@@ -84,27 +84,30 @@ class Metric(CoreModel):
         post_factor = self.post_factor if self.post_factor else 0.5
         temp_factor = self.temp_factor if self.temp_factor else 0.5
         rh_factor = self.rh_factor if self.rh_factor else 0.5
-        return "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
-            self.participant.uuid,
-            self.scaled_fastest_time,
-            self.win,
-            self.place,
-            self.show,
-            self.break_avg,
-            self.eighth_avg,
-            self.straight_avg,
-            self.finish_avg,
-            self.grade_avg,
-            self.time_seven,
-            self.time_three,
-            self.upgrade,
-            self.age,
-            self.sex,
-            self.post_weight_avg,
-            post_factor,
-            temp_factor,
-            rh_factor,
-            final)
+        age = self.age if self.age else 990 # 33 months
+        sex = self.sex if self.sex else "M"
+        if self.post_weight_avg:
+            return "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
+                self.participant.uuid,
+                self.scaled_fastest_time,
+                self.win,
+                self.place,
+                self.show,
+                self.break_avg,
+                self.eighth_avg,
+                self.straight_avg,
+                self.finish_avg,
+                self.grade_avg,
+                self.time_seven,
+                self.time_three,
+                self.upgrade,
+                age,
+                sex,
+                self.post_weight_avg,
+                post_factor,
+                temp_factor,
+                rh_factor,
+                final)
 
 
 
