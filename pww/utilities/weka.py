@@ -5,15 +5,15 @@ from weka.filters import Filter
 import weka.core.jvm as jvm
 import weka.core.converters as conv
 
-from weka.classifiers import Evaluation, Classifier
+from weka.classifiers import Evaluation, Classifier, FilteredClassifier
 from weka.core.classes import Random
 
 confidence_vector = "0.3"
 data_dir = "./rawdat/arff/"
 
 classifiers = [
-    "weka.classifiers.functions.SMO",
-    "weka.classifiers.trees.J48",
+    # "weka.classifiers.functions.SMO",
+    # "weka.classifiers.trees.J48",
     "weka.classifiers.rules.ZeroR",
     "weka.classifiers.functions.SMOreg",
     "weka.classifiers.trees.REPTree",
@@ -52,17 +52,25 @@ def train_classifier(data, classifier, options):
 def make_predictions(scheduled_csv, results_csv):
     print("make predcitions")
     jvm.start(packages=True, system_info=True, max_heap_size="512m")
-    # loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    # data=loader.load_file(results_csv)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    # data=loader.load_file(data_dir + "weather.numeric.arff")
-    data=loader.load_file(results_csv)
+    results_data=loader.load_file(results_csv)
     remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
-    remove.inputformat(data)     # let the filter know about the type of data to filter
-    filtered = remove.filter(data)   # filter the data
-    print(filtered)                  #
-    raise SystemExit(0)
-    cls = train_classifier(data, "weka.classifiers.trees.J48", ["-C", "0.3"])
-    output_predictions(cls, data)
+    remove.inputformat(results_data)
 
-    jvm.stop()
+
+
+    #
+    # scheduled_data=loader.load_file(scheduled_csv)
+    # remove.inputformat(scheduled_data)
+        # let the filter know about the type of data to filter
+    filtered_results = remove.filter(results_data)   # filter the data
+    # filtered_schedule = remove.filter(scheduled_data)
+    # print(filtered_results)
+    # jvm.stop()
+    print(results_data)
+    print("&")
+    # jvm.start(packages=True, system_info=True, max_heap_size="512m")
+    # loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+    print(loader.load_file(scheduled_csv))                #
+    cls = train_classifier(filtered_results, "weka.classifiers.functions.SMOreg", [])
+    # output_predictions(cls, filtered_schedule)
