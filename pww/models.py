@@ -80,7 +80,7 @@ class Metric(CoreModel):
     )
 
     def build_csv_metric(self):
-         return [
+         return "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
             self.participant.uuid,
             self.scaled_fastest_time,
             self.win,
@@ -100,8 +100,8 @@ class Metric(CoreModel):
             self.post_factor,
             self.temp_factor,
             self.rh_factor,
-            self.final
-        ]
+            self.final)
+
 
 
 
