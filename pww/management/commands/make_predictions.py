@@ -1,7 +1,8 @@
 import datetime
 import csv
 from django.core.exceptions import ObjectDoesNotExist
-
+import os.path
+from pathlib import Path
 from django.core.management.base import BaseCommand
 from rawdat.models import Race, Venue
 from pww.models import Prediction, Metric
@@ -24,6 +25,26 @@ class Command(BaseCommand):
             except:
                 print("Metric not found for participant: {}".format(participant.uuid))
 
+    def create_csv(self, filename, metrics):
+        print("create csv()")
+        print(filename)
+        # nested_dir = date.replace("_", "/")
+        #
+        #
+        # Path(csv_directory).mkdir(
+        #         parents=True,
+        #         exist_ok=True)
+        raise SystemExit(0)
+        with open("{}/{}".format(csv_directory, filename), 'w', newline='') as write_obj:
+            csv_writer = csv.writer(write_obj)
+            csv_writer.writerow(get_column_names())
+            for metric in metrics:
+                while len(metric) < len(coded_columns):
+                    metric.append(0)
+                # print(metric)
+                csv_writer.writerow(metric)
+        # print("done!")
+
 
     def handle(self, *args, **options):
         # filename = '/media/greg/85b2a17a-2087-4963-8d42-f1720b3be0d1/greg/work/derbylane/dl_env/derbylane/scheduled.csv'
@@ -43,13 +64,14 @@ class Command(BaseCommand):
                     graded_metrics = distance_metrics.filter(
                         participant__race__grade__name=grade_name,
                     )
-                    # relevant_metrics = self.get_relevant_metrics(venue, grade_name, distance)
                     print("{} Grade {} {} yds".format(venue.name, grade_name, distance))
-                    print(len(graded_metrics))
-                    # print(len(relevant_metrics))
-                    # relevant_metrics = self.get_relevant_metrics(venue, grade_name, distance)
+                    # print(len(graded_metrics))
                     completed_metrics = graded_metrics.filter(final__isnull=False)
                     scheduled_metrics = graded_metrics.filter(final__isnull=True)
+                    print(len(completed_metrics))
+                    print(len(scheduled_metrics))
+                    race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
+                    self.create_csv("{}_scheduled.csv".format(race_key), scheduled_metrics)
 
 
 
