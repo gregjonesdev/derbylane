@@ -1,7 +1,7 @@
 import os
 
 from django.core.management.base import BaseCommand
-
+from weka.filters import Filter
 import weka.core.jvm as jvm
 import weka.core.converters as conv
 
@@ -34,6 +34,14 @@ def output_predictions(cls, data):
         ", class distribution=" +
         str(dist))
 
+
+# EXCLUDE Attribute without removing:
+#  You can use the FilteredClassifier in conjunction with the Remove filter (weka.filters.unsupervised.attribute.Remove).
+# remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "1,2,3,4,5"])
+
+
+
+
 def train_classifier(data, classifier, options):
     data.class_is_last()
     cls = Classifier(classname=classifier, options=options)
@@ -49,7 +57,11 @@ def make_predictions(scheduled_csv, results_csv):
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     # data=loader.load_file(data_dir + "weather.numeric.arff")
     data=loader.load_file(results_csv)
-
+    remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
+    remove.inputformat(data)     # let the filter know about the type of data to filter
+    filtered = remove.filter(data)   # filter the data
+    print(filtered)                  #
+    raise SystemExit(0)
     cls = train_classifier(data, "weka.classifiers.trees.J48", ["-C", "0.3"])
     output_predictions(cls, data)
 
