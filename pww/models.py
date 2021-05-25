@@ -80,7 +80,11 @@ class Metric(CoreModel):
     )
 
     def build_csv_metric(self):
-         return "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
+        final = self.final if self.final else "?"
+        post_factor = self.post_factor if self.post_factor else 0.5
+        temp_factor = self.temp_factor if self.temp_factor else 0.5
+        rh_factor = self.rh_factor if self.rh_factor else 0.5
+        return "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
             self.participant.uuid,
             self.scaled_fastest_time,
             self.win,
@@ -97,10 +101,10 @@ class Metric(CoreModel):
             self.age,
             self.sex,
             self.post_weight_avg,
-            self.post_factor,
-            self.temp_factor,
-            self.rh_factor,
-            self.final)
+            post_factor,
+            temp_factor,
+            rh_factor,
+            final)
 
 
 
