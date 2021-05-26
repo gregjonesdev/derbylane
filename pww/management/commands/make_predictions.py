@@ -71,6 +71,7 @@ class Command(BaseCommand):
                     if len(scheduled_metrics) > 0:
                         scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
                         results_filename = "arff/{}_results.arff".format(race_key)
+
                         arff_data.append({
                             "scheduled": self.create_arff(
                                 scheduled_filename,
