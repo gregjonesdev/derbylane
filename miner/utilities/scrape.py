@@ -159,6 +159,9 @@ def parse_row(row, race):
     post_weight = get_post_weight(
         participant.dog.name,
         race.chart.program.date)
+    print(final)
+    print(post_weight)
+    print(lengths_behind)
 
     update_participant(
         participant,
@@ -176,6 +179,7 @@ def parse_row(row, race):
 
 
 def get_results(target_url, page_data, race):
+    print(target_url)
     div_tds = get_node_elements(target_url, '//td//div')
     race_rows = get_race_rows(div_tds)
     for row in race_rows:
