@@ -16,6 +16,10 @@ classifiers = [
     "weka.classifiers.trees.J48",
     ]
 
+    #"weka.classifiers.rules.ZeroR"),
+    #Classifier(classname="weka.classifiers.trees.J48"),
+    #Classifier(classname="weka.classifiers.trees.REPTree"
+
 class Command(BaseCommand):
 
     def build_attributes():

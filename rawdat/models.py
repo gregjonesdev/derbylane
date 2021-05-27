@@ -386,12 +386,12 @@ class Participant(CoreModel):
         null=True
     )
     lengths_behind = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
     actual_running_time = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
