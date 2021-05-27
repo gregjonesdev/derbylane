@@ -229,7 +229,7 @@ def get_dollar_amount(string):
             print("get_dollar_amt: couldnt float {}".format(string))
             pass
     else:
-        return 0.00
+        return 0.0
 
 
 
