@@ -213,15 +213,15 @@ def process_combo_bets(race, target_url):
                     posts_index = 2
                 posts = split_text[posts_index].split("/")
                 payout = get_dollar_amount(split_text[-1])
-
-                if combo_name == "Exacta":
-                    create_exacta(race, posts, cost, payout)
-                elif combo_name == "Quiniela":
-                    create_quiniela(race, posts, cost, payout)
-                elif combo_name == "Trifecta":
-                    create_trifecta(race, posts, cost, payout)
-                elif combo_name == "Superfecta":
-                    create_superfecta(race, posts, cost, payout)
+                if payout:
+                    if combo_name == "Exacta":
+                        create_exacta(race, posts, cost, payout)
+                    elif combo_name == "Quiniela":
+                        create_quiniela(race, posts, cost, payout)
+                    elif combo_name == "Trifecta":
+                        create_trifecta(race, posts, cost, payout)
+                    elif combo_name == "Superfecta":
+                        create_superfecta(race, posts, cost, payout)
 
 
 def get_dollar_amount(string):
