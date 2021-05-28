@@ -159,9 +159,9 @@ def parse_row(row, race):
     post_weight = get_post_weight(
         participant.dog.name,
         race.chart.program.date)
-    print(final)
-    print(post_weight)
-    print(lengths_behind)
+    # print(final)
+    # print(post_weight)
+    # print(lengths_behind)
 
     update_participant(
         participant,
@@ -225,13 +225,14 @@ def process_combo_bets(race, target_url):
 
 
 def get_dollar_amount(string):
-    stripped = string.strip()
-    if stripped:
-        try:
-            return float(stripped.replace("$", "").replace(",", ""))
-        except:
-            print("get_dollar_amt: couldnt float {}".format(string))
-            pass
+    if string:
+        stripped = string.strip()
+        if stripped:
+            try:
+                return float(stripped.replace("$", "").replace(",", ""))
+            except:
+                print("get_dollar_amt: couldnt float {}".format(string))
+                pass
     else:
         return 0.0
 
