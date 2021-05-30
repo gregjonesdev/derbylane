@@ -21,12 +21,25 @@ from miner.utilities.constants import (
 class Command(BaseCommand):
 
 
-    def create_arff(self, filename, metrics):
+    def create_arff(self, filename, metrics, is_nominal):
         arff_file = open(filename, "w")
         arff_file.write("@relation Metric\n")
 
+        arff_file = self.write_headers(arff_file, is_nominal)
+
+        for metric in metrics:
+            csv_metric = metric.build_csv_metric()
+            if csv_metric:
+                arff_file.writelines(csv_metric)
+
+        return filename
+
+
+    def write_headers(self, arff_file, is_nominal):
         for each in csv_columns:
-            if each == "PID":
+            if is_nominal and each == "Fi":
+                arff_file.write("@attribute {} nominal\n".format(each))
+            elif each == "PID":
                 arff_file.write("@attribute PID string\n")
                 # csv_writer.writerow(["@attribute PID string"])
             elif each == "Se":
@@ -37,13 +50,8 @@ class Command(BaseCommand):
                 arff_file.write("@attribute {} numeric\n".format(each))
 
         arff_file.write("@data\n")
+        return arff_file
 
-        for metric in metrics:
-            csv_metric = metric.build_csv_metric()
-            if csv_metric:
-                arff_file.writelines(csv_metric)
-
-        return filename
 
 
     def handle(self, *args, **options):
@@ -75,9 +83,15 @@ class Command(BaseCommand):
                         arff_data.append({
                             "scheduled": self.create_arff(
                                 scheduled_filename,
-                                scheduled_metrics),
+                                scheduled_metrics,
+                                False),
                             "results": self.create_arff(
                                 results_filename,
-                                completed_metrics),
+                                completed_metrics,
+                                False),
+                            "nominal": self.create_arff(
+                                results_filename,
+                                completed_metrics,
+                                True),
                         })
         make_predictions(arff_data)

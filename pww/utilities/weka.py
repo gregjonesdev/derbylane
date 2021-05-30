@@ -58,11 +58,16 @@ def get_uuid_list(scheduled_csv):
             uuids.append(line.split(",")[0])
     return uuids
 
+
 def make_predictions(arff_data):
     print("make predcitions")
     jvm.start(packages=True, system_info=True, max_heap_size="512m")
+
+    super_classifiers = [
+        "weka.classifiers.functions.SMOreg"
+    ]
     for each in arff_data:
-        results_csv = each["results"]
+        results_csv = each["nominal"]
         scheduled_csv = each["scheduled"]
         print(scheduled_csv)
         print(results_csv)
@@ -70,19 +75,19 @@ def make_predictions(arff_data):
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         results_data=loader.load_file(results_csv)
         scheduled_data=loader.load_file(scheduled_csv)
+
+
+
+
+
         remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
         remove.inputformat(results_data)
         remove.inputformat(scheduled_data)
         filtered_results = remove.filter(results_data)   # filter the data
-        # filtered_schedule = remove.filter(scheduled_data)
-        # print(filtered_results)
+
         scheduled_data=loader.load_file(scheduled_csv)
         filtered_scheduled = remove.filter(scheduled_data)
-        # jvm.start(packages=True, system_info=True, max_heap_size="512m")
-        # loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-        # print(scheduled_csv)
-        # print(loader.load_file(scheduled_csv))                #
-        cls = train_classifier(filtered_results, "weka.classifiers.functions.SMOreg", [])
+        cls = train_classifier(filtered_results, "weka.classifiers.trees.J48", [])
         output_predictions(cls, filtered_scheduled, uuid_list)
 
     jvm.stop()
