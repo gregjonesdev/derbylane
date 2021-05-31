@@ -328,11 +328,6 @@ class Race(CoreModel):
     distance = models.IntegerField(
         choices=DISTANCE_CHOICES,
         null=True)
-    winning_time = models.DecimalField(
-        max_digits=4,
-        decimal_places=2,
-        null=True
-    )
 
     def get_next(self):
         current_number = self.number
@@ -520,52 +515,52 @@ class Weather(CoreModel):
 
     program = models.OneToOneField(Program, on_delete=models.CASCADE, null=True)
     dew_point = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
     min_temp = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
     mean_temp = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
     max_temp = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
     mean_rh = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
     max_rh = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
     pressure = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
     percipitation = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
     visibility = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
     wind = models.DecimalField(
-        max_digits=4,
+        max_digits=8,
         decimal_places=2,
         null=True
     )
