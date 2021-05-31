@@ -46,10 +46,12 @@ class Metric(CoreModel):
     time_seven = models.DecimalField(
         max_digits=8,
         decimal_places=4,
+        null=True
     )
     time_three = models.DecimalField(
         max_digits=8,
         decimal_places=4,
+        null=True
     )
     upgrade = models.IntegerField()
     final = models.IntegerField(null=True)
@@ -109,7 +111,7 @@ class Metric(CoreModel):
                 rh_factor,
                 final)
             if not "None" in metric_csv_string:
-                return metric_csv_string    
+                return metric_csv_string
 
 
 
