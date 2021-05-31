@@ -320,7 +320,10 @@ def get_raw_participant_metrics(participant, distance):
                     build_rh_object(participations)),
                 # "final": participant.final,
             }
-            # if is_complete(raw_metrics):
+            if is_complete(raw_metrics):
+                print("COMPLETE")
+            else:
+                print("Incomplete")    
             return raw_metrics
 
 def scale_metrics(raw_metrics):
