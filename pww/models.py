@@ -42,6 +42,7 @@ class Metric(CoreModel):
     grade_avg = models.DecimalField(
         max_digits=8,
         decimal_places=4,
+        null=True,
     )
     time_seven = models.DecimalField(
         max_digits=8,
