@@ -40,7 +40,7 @@ def normalize(value, list):
 def build_avg_obj(orig_object):
     avg_obj = {}
     for each in orig_object.keys():
-        print(get_average(orig_object[each]))
+        # print(get_average(orig_object[each]))
         avg_obj[each] = get_average(orig_object[each])
     return avg_obj
 
