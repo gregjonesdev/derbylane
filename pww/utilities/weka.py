@@ -62,7 +62,7 @@ def get_uuid_list(scheduled_csv):
 def process_classifier(name, options, uuid_list, results, scheduled):
     print("process {}".format("name"))
     cls = train_classifier(results, name, options)
-    output_predictions(cls, scheduled, uuid_list)
+    # output_predictions(cls, scheduled, uuid_list)
 
 
 
