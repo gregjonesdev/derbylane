@@ -59,16 +59,35 @@ def get_uuid_list(scheduled_csv):
     return uuids
 
 
+def process_classifier(name, options, uuid_list, results, scheduled):
+    print("process {}".format("name"))
+    cls = train_classifier(results, name, options)
+    output_predictions(cls, scheduled, uuid_list)
+
+
+
 def make_predictions(arff_data):
     print("make predcitions")
     jvm.start(packages=True, system_info=True, max_heap_size="512m")
 
     super_classifiers = [
-        "weka.classifiers.functions.SMOreg"
+        {
+            "name": "weka.classifiers.functions.SMOreg",
+            "options": [],
+            "is_nominal": False
+        },
+        # {
+        #     "name": "weka.classifiers.trees.J48",
+        #     "options": [],
+        #     "is_nominal": True
+        # },
+
+
     ]
     for each in arff_data:
-        results_csv = each["nominal"]
+        results_csv = each["results"]
         scheduled_csv = each["scheduled"]
+        nominal_csv = each["nominal"]
         print(scheduled_csv)
         print(results_csv)
         uuid_list = get_uuid_list(scheduled_csv)
@@ -76,18 +95,24 @@ def make_predictions(arff_data):
         results_data=loader.load_file(results_csv)
         scheduled_data=loader.load_file(scheduled_csv)
 
-
-
+        classifier = "weka.classifiers.functions.SMOreg"
 
 
         remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
         remove.inputformat(results_data)
         remove.inputformat(scheduled_data)
-        filtered_results = remove.filter(results_data)   # filter the data
 
-        scheduled_data=loader.load_file(scheduled_csv)
+        filtered_results = remove.filter(results_data)
         filtered_scheduled = remove.filter(scheduled_data)
-        cls = train_classifier(filtered_results, "weka.classifiers.trees.J48", [])
-        output_predictions(cls, filtered_scheduled, uuid_list)
+
+
+        for each in super_classifiers:
+            if not each["is_nominal"]:
+                process_classifier(each["name"], each["options"], uuid_list, filtered_results, filtered_scheduled)
+
+        # raise SystemExit(0)
+        #
+        # cls = train_classifier(filtered_results, classifier, [])
+        # output_predictions(cls, filtered_scheduled, uuid_list)
 
     jvm.stop()
