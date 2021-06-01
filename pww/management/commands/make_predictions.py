@@ -38,7 +38,7 @@ class Command(BaseCommand):
     def write_headers(self, arff_file, is_nominal):
         for each in csv_columns:
             if is_nominal and each == "Fi":
-                arff_file.write("@attribute {} nominal\n".format(each))
+                arff_file.write("@attribute Fi {1,2,3,4,5,6,7,8,9}\n")
             elif each == "PID":
                 arff_file.write("@attribute PID string\n")
                 # csv_writer.writerow(["@attribute PID string"])

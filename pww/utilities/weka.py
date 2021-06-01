@@ -92,7 +92,9 @@ def make_predictions(arff_data):
         print(results_csv)
         uuid_list = get_uuid_list(scheduled_csv)
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+
         results_data=loader.load_file(results_csv)
+        nominal_results_data = loader.load_file(nominal_csv)
         scheduled_data=loader.load_file(scheduled_csv)
 
         classifier = "weka.classifiers.functions.SMOreg"
@@ -100,15 +102,20 @@ def make_predictions(arff_data):
 
         remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
         remove.inputformat(results_data)
+        remove.inputformat(nominal_results_data)
         remove.inputformat(scheduled_data)
 
         filtered_results = remove.filter(results_data)
+        filtered_nominal_results = remove.filter(nominal_results_data)
         filtered_scheduled = remove.filter(scheduled_data)
 
 
         for each in super_classifiers:
-            if not each["is_nominal"]:
-                process_classifier(each["name"], each["options"], uuid_list, filtered_results, filtered_scheduled)
+            if each["is_nominal"]:
+                results = filtered_nominal_results
+            else:
+                results = filtered_results
+            process_classifier(each["name"], each["options"], uuid_list, results, filtered_scheduled)
 
         # raise SystemExit(0)
         #
