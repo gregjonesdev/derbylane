@@ -63,9 +63,10 @@ class Command(BaseCommand):
                 exist_ok=True)
         print("arff_directory")
         print(arff_directory)
-        # today = datetime.date.today()
-        # arff_data = []
-        # for venue in Venue.objects.filter(is_active=True):
+        today = datetime.date.today()
+        arff_data = []
+        for venue in Venue.objects.filter(code="SL"):
+            print(venue)
         #     venue_metrics = Metric.objects.filter(
         #         participant__race__chart__program__venue=venue)
         #     for distance in venue_distances[venue.code]:
