@@ -82,11 +82,9 @@ def make_predictions(arff_data):
     print(filtered_results)
     print(filtered_schedule)
     print('80')
-    # filtered_scheduled = remove.filter(scheduled_data)
-    # jvm.start(packages=True, system_info=True, max_heap_size="512m")
     # print(scheduled_csv)
     # print(loader.load_file(scheduled_csv))                #
-    # cls = train_classifier(filtered_results, "weka.classifiers.functions.SMOreg", [])
-    # output_predictions(cls, filtered_scheduled, uuid_list)
-
+    cls = train_classifier(filtered_results, "weka.classifiers.functions.SMOreg", [])
+    output_predictions(cls, filtered_scheduled, uuid_list)
+#
     jvm.stop()
