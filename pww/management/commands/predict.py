@@ -55,43 +55,45 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        arff_directory = "arff"
+        print("DONE")
+        raise SystemExit(0)
+        # arff_directory = "arff"
 
-        Path(arff_directory).mkdir(
-                parents=True,
-                exist_ok=True)
-        today = datetime.date.today()
-        arff_data = []
-        for venue in Venue.objects.filter(is_active=True):
-            venue_metrics = Metric.objects.filter(
-                participant__race__chart__program__venue=venue)
-            for distance in venue_distances[venue.code]:
-                distance_metrics = venue_metrics.filter(
-                    participant__race__distance=distance,
-                )
-                for grade_name in valued_grades:
-                    graded_metrics = distance_metrics.filter(
-                        participant__race__grade__name=grade_name,
-                    )
-                    completed_metrics = graded_metrics.filter(final__isnull=False)
-                    scheduled_metrics = graded_metrics.filter(final__isnull=True)
-                    race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
-                    if len(scheduled_metrics) > 0:
-                        scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
-                        results_filename = "arff/{}_results.arff".format(race_key)
-
-                        arff_data.append({
-                            "scheduled": self.create_arff(
-                                scheduled_filename,
-                                scheduled_metrics,
-                                False),
-                            "results": self.create_arff(
-                                results_filename,
-                                completed_metrics,
-                                False),
-                            "nominal": self.create_arff(
-                                results_filename,
-                                completed_metrics,
-                                True),
-                        })
-        make_predictions(arff_data)
+        # Path(arff_directory).mkdir(
+        #         parents=True,
+        #         exist_ok=True)
+        # today = datetime.date.today()
+        # arff_data = []
+        # for venue in Venue.objects.filter(is_active=True):
+        #     venue_metrics = Metric.objects.filter(
+        #         participant__race__chart__program__venue=venue)
+        #     for distance in venue_distances[venue.code]:
+        #         distance_metrics = venue_metrics.filter(
+        #             participant__race__distance=distance,
+        #         )
+        #         for grade_name in valued_grades:
+        #             graded_metrics = distance_metrics.filter(
+        #                 participant__race__grade__name=grade_name,
+        #             )
+        #             completed_metrics = graded_metrics.filter(final__isnull=False)
+        #             scheduled_metrics = graded_metrics.filter(final__isnull=True)
+        #             race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
+        #             if len(scheduled_metrics) > 0:
+        #                 scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
+        #                 results_filename = "arff/{}_results.arff".format(race_key)
+        #
+        #                 arff_data.append({
+        #                     "scheduled": self.create_arff(
+        #                         scheduled_filename,
+        #                         scheduled_metrics,
+        #                         False),
+        #                     "results": self.create_arff(
+        #                         results_filename,
+        #                         completed_metrics,
+        #                         False),
+        #                     "nominal": self.create_arff(
+        #                         results_filename,
+        #                         completed_metrics,
+        #                         True),
+        #                 })
+        # make_predictions(arff_data)
