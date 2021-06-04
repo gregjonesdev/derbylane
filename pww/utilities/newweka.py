@@ -45,9 +45,13 @@ def output_predictions(cls, data, uuid_list):
 
 
 def train_classifier(data, classifier, options):
+    print("train")
     data.class_is_last()
+    print("set class is last")
     cls = Classifier(classname=classifier, options=options)
+    print("build cls")
     cls.build_classifier(data)
+    print("build classifier")
     return cls
 
 def get_uuid_list(scheduled_csv):
