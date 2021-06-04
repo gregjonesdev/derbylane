@@ -69,6 +69,7 @@ class Command(BaseCommand):
             print(venue)
             venue_metrics = Metric.objects.filter(
                 participant__race__chart__program__venue=venue)[:1]
+            print(venue_metrics)    
         #     for distance in venue_distances[venue.code]:
         #         distance_metrics = venue_metrics.filter(
         #             participant__race__distance=distance,
