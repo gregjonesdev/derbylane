@@ -59,32 +59,33 @@ def get_uuid_list(scheduled_csv):
     return uuids
 
 def make_predictions(arff_data):
-    results_csv = arff["results"]
-    scheduled_csv = arff["scheduled"]
-    print("this is where you want to be")
     jvm.start(packages=True, max_heap_size="512m")
-    uuid_list = get_uuid_list(scheduled_csv)
-    print("make predcitions")
-    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    results_data=loader.load_file(results_csv)
-    print(results_data)
-    remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
-    remove.inputformat(results_data)
+    for each in arff_data:
+        results_csv = each["results"]
+        scheduled_csv = each["scheduled"]
+        print("this is where you want to be")
+        uuid_list = get_uuid_list(scheduled_csv)
+        print("make predcitions")
+        loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+        results_data=loader.load_file(results_csv)
+        print(results_data)
+        remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
+        remove.inputformat(results_data)
 
 
 
 
-    scheduled_data=loader.load_file(scheduled_csv)
-    remove.inputformat(scheduled_data)
-        # let the filter know about the type of data to filter
-    filtered_results = remove.filter(results_data)   # filter the data
-    filtered_schedule = remove.filter(scheduled_data)
-    print(filtered_results)
-    print(filtered_schedule)
-    print('80')
-    # print(scheduled_csv)
-    # print(loader.load_file(scheduled_csv))                #
-    cls = train_classifier(filtered_results, "weka.classifiers.functions.SMOreg", [])
-    output_predictions(cls, filtered_scheduled, uuid_list)
-#
+        scheduled_data=loader.load_file(scheduled_csv)
+        remove.inputformat(scheduled_data)
+            # let the filter know about the type of data to filter
+        filtered_results = remove.filter(results_data)   # filter the data
+        filtered_schedule = remove.filter(scheduled_data)
+        print(filtered_results)
+        print(filtered_schedule)
+        print('80')
+        # print(scheduled_csv)
+        # print(loader.load_file(scheduled_csv))                #
+        cls = train_classifier(filtered_results, "weka.classifiers.functions.SMOreg", [])
+        output_predictions(cls, filtered_scheduled, uuid_list)
+    #
     jvm.stop()
