@@ -70,10 +70,11 @@ class Command(BaseCommand):
             venue_metrics = Metric.objects.filter(
                 participant__race__chart__program__venue=venue)
             print(len(venue_metrics))
-        #     for distance in venue_distances[venue.code]:
-        #         distance_metrics = venue_metrics.filter(
-        #             participant__race__distance=distance,
-        #         )
+            for distance in venue_distances[venue.code]:
+                distance_metrics = venue_metrics.filter(
+                    participant__race__distance=distance,
+                )
+                print("Distance: {} Metrics: {}".format(distance, len(distance_metrics)))
         #         for grade_name in valued_grades:
         #             graded_metrics = distance_metrics.filter(
         #                 participant__race__grade__name=grade_name,
