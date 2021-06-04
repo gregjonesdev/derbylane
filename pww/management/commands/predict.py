@@ -103,6 +103,6 @@ class Command(BaseCommand):
         #                         results_filename,
         #                         completed_metrics,
         #                         True),
-        #                 })
+                        })
                     print("DONE")
         # make_predictions(arff_data)
