@@ -55,13 +55,14 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        print("DONE")
-        raise SystemExit(0)
-        # arff_directory = "arff"
+        print("Starting")
+        arff_directory = "arff"
 
-        # Path(arff_directory).mkdir(
-        #         parents=True,
-        #         exist_ok=True)
+        Path(arff_directory).mkdir(
+                parents=True,
+                exist_ok=True)
+        print("arff_directory")
+        print(arff_directory)
         # today = datetime.date.today()
         # arff_data = []
         # for venue in Venue.objects.filter(is_active=True):
