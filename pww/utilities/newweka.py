@@ -59,7 +59,7 @@ def get_uuid_list(scheduled_csv):
     return uuids
 
 def make_predictions(arff_data):
-    jvm.start(packages=True, max_heap_size="512m")
+    jvm.start(packages=True, max_heap_size="1024m")
     for each in arff_data:
         results_csv = each["results"]
         scheduled_csv = each["scheduled"]
