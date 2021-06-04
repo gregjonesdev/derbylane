@@ -68,7 +68,6 @@ def make_predictions(arff_data):
         print("make predcitions")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         results_data=loader.load_file(results_csv)
-        print(results_data)
         remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
         remove.inputformat(results_data)
 
