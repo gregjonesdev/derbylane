@@ -80,9 +80,9 @@ def make_predictions(arff_data):
             # let the filter know about the type of data to filter
         filtered_results = remove.filter(results_data)   # filter the data
         filtered_schedule = remove.filter(scheduled_data)
-        print(filtered_results)
-        print(filtered_schedule)
-        print('80')
+        # print(filtered_results)
+        # print(filtered_schedule)
+        # print('80')
         # print(scheduled_csv)
         # print(loader.load_file(scheduled_csv))                #
         cls = train_classifier(filtered_results, "weka.classifiers.functions.SMOreg", [])
