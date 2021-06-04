@@ -70,7 +70,8 @@ class Command(BaseCommand):
             venue_metrics = Metric.objects.filter(
                 participant__race__chart__program__venue=venue)
             print(len(venue_metrics))
-            for distance in venue_distances[venue.code]:
+            # for distance in venue_distances[venue.code]:
+            for distance in [583]:
                 distance_metrics = venue_metrics.filter(
                     participant__race__distance=distance,
                 )
@@ -80,8 +81,10 @@ class Command(BaseCommand):
                         participant__race__grade__name=grade_name,
                     )
                     print("Processing Grade {}. Metrics: {}".format(grade_name, len(graded_metrics)))
-        #             completed_metrics = graded_metrics.filter(final__isnull=False)
-        #             scheduled_metrics = graded_metrics.filter(final__isnull=True)
+                    completed_metrics = graded_metrics.filter(final__isnull=False)
+                    scheduled_metrics = graded_metrics.filter(final__isnull=True)
+                    print(len(completed_metrics))
+                    print(len(scheduled_metrics))
         #             race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
         #             if len(scheduled_metrics) > 0:
         #                 scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
