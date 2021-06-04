@@ -66,17 +66,18 @@ def make_predictions(arff_data):
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     results_data=loader.load_file(results_csv)
     print(results_data)
-    # remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
-    # remove.inputformat(results_data)
-    #
+    remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
+    remove.inputformat(results_data)
 
 
-    #
-    # remove.inputformat(scheduled_data)
+
+
+    remove.inputformat(scheduled_data)
         # let the filter know about the type of data to filter
-    # filtered_results = remove.filter(results_data)   # filter the data
-    # filtered_schedule = remove.filter(scheduled_data)
-    # print(filtered_results)
+    filtered_results = remove.filter(results_data)   # filter the data
+    filtered_schedule = remove.filter(scheduled_data)
+    print(filtered_results)
+    print('80')
     # scheduled_data=loader.load_file(scheduled_csv)
     # filtered_scheduled = remove.filter(scheduled_data)
     # jvm.start(packages=True, system_info=True, max_heap_size="512m")

@@ -104,5 +104,5 @@ class Command(BaseCommand):
         #                         completed_metrics,
         #                         True),
                         })
-                    print("DONE")
-        # make_predictions(arff_data)
+                    # print("DONE")
+        make_predictions(arff_data)
