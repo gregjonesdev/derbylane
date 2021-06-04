@@ -67,8 +67,8 @@ class Command(BaseCommand):
         arff_data = []
         for venue in Venue.objects.filter(code="SL"):
             print(venue)
-        #     venue_metrics = Metric.objects.filter(
-        #         participant__race__chart__program__venue=venue)
+            venue_metrics = Metric.objects.filter(
+                participant__race__chart__program__venue=venue)[:1]
         #     for distance in venue_distances[venue.code]:
         #         distance_metrics = venue_metrics.filter(
         #             participant__race__distance=distance,
