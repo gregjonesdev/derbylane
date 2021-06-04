@@ -75,10 +75,11 @@ class Command(BaseCommand):
                     participant__race__distance=distance,
                 )
                 print("Distance: {} Metrics: {}".format(distance, len(distance_metrics)))
-        #         for grade_name in valued_grades:
-        #             graded_metrics = distance_metrics.filter(
-        #                 participant__race__grade__name=grade_name,
-        #             )
+                for grade_name in valued_grades:
+                    graded_metrics = distance_metrics.filter(
+                        participant__race__grade__name=grade_name,
+                    )
+                    print("Processing Grade {}. Metrics: {}".format(grade_name, len(graded_metrics)))
         #             completed_metrics = graded_metrics.filter(final__isnull=False)
         #             scheduled_metrics = graded_metrics.filter(final__isnull=True)
         #             race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
