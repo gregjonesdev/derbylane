@@ -77,7 +77,7 @@ def make_predictions(arff_data):
         remove.inputformat(results_data)
         # remove.inputformat(scheduled_data)
         filtered_results = remove.filter(results_data)   # filter the data
-        filtered_schedule = remove.filter(scheduled_data)
+        filtered_scheduled = remove.filter(scheduled_data)
 
 
         print("so far so good")
