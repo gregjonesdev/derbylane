@@ -72,16 +72,16 @@ def make_predictions(arff_data):
 
 
 
+    scheduled_data=loader.load_file(scheduled_csv)
     remove.inputformat(scheduled_data)
         # let the filter know about the type of data to filter
     filtered_results = remove.filter(results_data)   # filter the data
     filtered_schedule = remove.filter(scheduled_data)
     print(filtered_results)
+    print(filtered_schedule)
     print('80')
-    # scheduled_data=loader.load_file(scheduled_csv)
     # filtered_scheduled = remove.filter(scheduled_data)
     # jvm.start(packages=True, system_info=True, max_heap_size="512m")
-    # loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     # print(scheduled_csv)
     # print(loader.load_file(scheduled_csv))                #
     # cls = train_classifier(filtered_results, "weka.classifiers.functions.SMOreg", [])
