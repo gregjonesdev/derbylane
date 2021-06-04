@@ -85,23 +85,24 @@ class Command(BaseCommand):
                     scheduled_metrics = graded_metrics.filter(final__isnull=True)
                     print(len(completed_metrics))
                     print(len(scheduled_metrics))
-        #             race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
-        #             if len(scheduled_metrics) > 0:
-        #                 scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
-        #                 results_filename = "arff/{}_results.arff".format(race_key)
+                    race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
+                    # if len(scheduled_metrics) > 0:
+                    scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
+                    results_filename = "arff/{}_results.arff".format(race_key)
         #
-        #                 arff_data.append({
-        #                     "scheduled": self.create_arff(
-        #                         scheduled_filename,
-        #                         scheduled_metrics,
-        #                         False),
-        #                     "results": self.create_arff(
-        #                         results_filename,
-        #                         completed_metrics,
-        #                         False),
+                    arff_data.append({
+                        "scheduled": self.create_arff(
+                            scheduled_filename,
+                            scheduled_metrics,
+                            False),
+                        "results": self.create_arff(
+                            results_filename,
+                            completed_metrics,
+                            False),
         #                     "nominal": self.create_arff(
         #                         results_filename,
         #                         completed_metrics,
         #                         True),
         #                 })
+                    print("DONE")
         # make_predictions(arff_data)
