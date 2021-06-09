@@ -34,29 +34,30 @@ from miner.utilities.urls import (
 
 
 def create_quiniela(race, posts, cost, payout):
-    entrants = [
-        get_participant_from_post(race, int(posts[0])),
-        get_participant_from_post(race, int(posts[1]))
-        ]
-    try:
-        bet = Quiniela.objects.get(
-            race=race,
-            left__in=entrants,
-            right__in=entrants
-        )
-    except ObjectDoesNotExist:
-        new_bet = Quiniela(
-            race=race,
-            left=entrants[0],
-            right=entrants[1]
-        )
-        new_bet.set_fields_to_base()
-        bet = new_bet
-    if cost:
-        bet.cost = cost
-    if payout:
-        bet.payout = payout
-    bet.save()
+    if posts[0].isnumeric() and posts[1].isnumeric():
+        entrants = [
+            get_participant_from_post(race, int(posts[0])),
+            get_participant_from_post(race, int(posts[1]))
+            ]
+        try:
+            bet = Quiniela.objects.get(
+                race=race,
+                left__in=entrants,
+                right__in=entrants
+            )
+        except ObjectDoesNotExist:
+            new_bet = Quiniela(
+                race=race,
+                left=entrants[0],
+                right=entrants[1]
+            )
+            new_bet.set_fields_to_base()
+            bet = new_bet
+        if cost:
+            bet.cost = cost
+        if payout:
+            bet.payout = payout
+        bet.save()
 
 
 def get_participant_from_post(race, post):
