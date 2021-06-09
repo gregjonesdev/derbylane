@@ -214,7 +214,7 @@ def process_combo_bets(race, target_url):
                 posts = split_text[posts_index].split("/")
                 print(posts)
                 payout = get_dollar_amount(split_text[-1])
-                if payout:
+                if payout and combo_name:
                     lower_combo_name = combo_name.lower()
                     if not "big" in lower_combo_name:
                         if lower_combo_name == "exacta":
