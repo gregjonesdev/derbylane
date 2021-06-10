@@ -214,12 +214,12 @@ def process_combo_bets(race, target_url):
                 posts = split_text[posts_index].split("/")
                 print(posts)
                 payout = get_dollar_amount(split_text[-1])
-                if payout and combo_name:
+                if payout:
                     lower_combo_name = combo_name.lower()
                     if not "big" in lower_combo_name:
                         if lower_combo_name == "exacta":
                             create_exacta(race, posts, cost, payout)
-                        elif lower_combo_name == "quiniela":
+                        elif "quin" in lower_combo_name:
                             create_quiniela(race, posts, cost, payout)
                         elif lower_combo_name == "trifecta":
                             create_trifecta(race, posts, cost, payout)
@@ -436,6 +436,7 @@ def scan_history_charts(venue, year, month, day):
                 day,
                 time,
                 number)
+            # results_url = "http://m.trackinfo.com//index.jsp?next=resultsrace&raceid=GSL$20180709T18"
             page_data = get_node_elements(results_url, '//td')
             if len(page_data) > 85:
                 formatted_date = get_date_from_ymd(year, month, day)

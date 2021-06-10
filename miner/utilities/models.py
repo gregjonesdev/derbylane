@@ -34,7 +34,10 @@ from miner.utilities.urls import (
 
 
 def create_quiniela(race, posts, cost, payout):
+    print("create quin")
     if posts[0].isnumeric() and posts[1].isnumeric():
+        print("{} is numeric".format(posts[0]))
+        print("{} is numeric".format(posts[1]))
         entrants = [
             get_participant_from_post(race, int(posts[0])),
             get_participant_from_post(race, int(posts[1]))
@@ -70,27 +73,29 @@ def get_participant_from_post(race, post):
 
 
 def create_exacta(race, posts, cost, payout):
-    win = get_participant_from_post(race, int(posts[0]))
-    place = get_participant_from_post(race, int(posts[1]))
-    try:
-        bet = Exacta.objects.get(
-            race=race,
-            win=win,
-            place=place,
-        )
-    except ObjectDoesNotExist:
-        new_bet = Exacta(
-            race=race,
-            win=win,
-            place=place,
-        )
-        new_bet.set_fields_to_base()
-        bet = new_bet
-    if cost:
-        bet.cost = cost
-    if payout:
-        bet.payout = payout
-    bet.save()
+    print("create exacta")
+    if posts[0].isnumeric() and posts[1].isnumeric():
+        win = get_participant_from_post(race, int(posts[0]))
+        place = get_participant_from_post(race, int(posts[1]))
+        try:
+            bet = Exacta.objects.get(
+                race=race,
+                win=win,
+                place=place,
+            )
+        except ObjectDoesNotExist:
+            new_bet = Exacta(
+                race=race,
+                win=win,
+                place=place,
+            )
+            new_bet.set_fields_to_base()
+            bet = new_bet
+        if cost:
+            bet.cost = cost
+        if payout:
+            bet.payout = payout
+        bet.save()
 
 
 
