@@ -101,10 +101,10 @@ def create_exacta(race, posts, cost, payout):
 
 
 def create_trifecta(race, posts, cost, payout):
-    win = get_participant_from_post(race, int(posts[0]))
-    place = get_participant_from_post(race, int(posts[1]))
-    show = get_participant_from_post(race, int(posts[2]))
-    if win.isnumeric() and place.isnumeric() and show.isnumeric():
+    if posts[0].isnumeric() and posts[1].isnumeric() and posts[2].isnumeric():
+        win = get_participant_from_post(race, int(posts[0]))
+        place = get_participant_from_post(race, int(posts[1]))
+        show = get_participant_from_post(race, int(posts[2]))
         try:
             bet = Trifecta.objects.get(
                 race=race,
@@ -128,33 +128,34 @@ def create_trifecta(race, posts, cost, payout):
         bet.save()
 
 def create_superfecta(race, posts, cost, payout):
-    win = get_participant_from_post(race, int(posts[0]))
-    place = get_participant_from_post(race, int(posts[1]))
-    show = get_participant_from_post(race, int(posts[2]))
-    take = get_participant_from_post(race, int(posts[3]))
-    try:
-        bet = Superfecta.objects.get(
-            race=race,
-            win=win,
-            place=place,
-            show=show,
-            take=take
-        )
-    except ObjectDoesNotExist:
-        new_bet = Superfecta(
-            race=race,
-            win=win,
-            place=place,
-            show=show,
-            take=take
-        )
-        new_bet.set_fields_to_base()
-        bet = new_bet
-    if cost:
-        bet.cost = cost
-    if payout:
-        bet.payout = payout
-    bet.save()
+    if posts[0].isnumeric() and posts[1].isnumeric() and posts[2].isnumeric() and posts[3].isnumeric():
+        win = get_participant_from_post(race, int(posts[0]))
+        place = get_participant_from_post(race, int(posts[1]))
+        show = get_participant_from_post(race, int(posts[2]))
+        take = get_participant_from_post(race, int(posts[3]))
+        try:
+            bet = Superfecta.objects.get(
+                race=race,
+                win=win,
+                place=place,
+                show=show,
+                take=take
+            )
+        except ObjectDoesNotExist:
+            new_bet = Superfecta(
+                race=race,
+                win=win,
+                place=place,
+                show=show,
+                take=take
+            )
+            new_bet.set_fields_to_base()
+            bet = new_bet
+        if cost:
+            bet.cost = cost
+        if payout:
+            bet.payout = payout
+        bet.save()
 
 
 def get_parent_name(url, class_attr):
