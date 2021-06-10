@@ -104,27 +104,28 @@ def create_trifecta(race, posts, cost, payout):
     win = get_participant_from_post(race, int(posts[0]))
     place = get_participant_from_post(race, int(posts[1]))
     show = get_participant_from_post(race, int(posts[2]))
-    try:
-        bet = Trifecta.objects.get(
-            race=race,
-            win=win,
-            place=place,
-            show=show
-        )
-    except ObjectDoesNotExist:
-        new_bet = Trifecta(
-            race=race,
-            win=win,
-            place=place,
-            show=show
-        )
-        new_bet.set_fields_to_base()
-        bet = new_bet
-    if cost:
-        bet.cost = cost
-    if payout:
-        bet.payout = payout
-    bet.save()
+    if win.isnumeric() and place.isnumeric() and show.isnumeric():
+        try:
+            bet = Trifecta.objects.get(
+                race=race,
+                win=win,
+                place=place,
+                show=show
+            )
+        except ObjectDoesNotExist:
+            new_bet = Trifecta(
+                race=race,
+                win=win,
+                place=place,
+                show=show
+            )
+            new_bet.set_fields_to_base()
+            bet = new_bet
+        if cost:
+            bet.cost = cost
+        if payout:
+            bet.payout = payout
+        bet.save()
 
 def create_superfecta(race, posts, cost, payout):
     win = get_participant_from_post(race, int(posts[0]))
