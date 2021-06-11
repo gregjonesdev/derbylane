@@ -14,6 +14,6 @@ from pww.utilities.metrics import build_race_metrics
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        for race in Race.obkects.all():
+        for race in Race.objects.all():
             if race.participant_set.count() > 10:
                 print(race.uuid)
