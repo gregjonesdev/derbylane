@@ -17,4 +17,5 @@ class Command(BaseCommand):
         for race in Race.objects.all():
             if race.participant_set.count() > 10:
                 print(race.uuid)
-                print("{} {}".format(race.chart.program.venue.code, race.chart.program.date))
+                for participant in race.participant_set.all():
+                    print("{}: {}".format(participant.post, participant.dog.name))
