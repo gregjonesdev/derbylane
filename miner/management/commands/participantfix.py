@@ -18,4 +18,5 @@ class Command(BaseCommand):
             if race.participant_set.count() > 10:
                 print(race.uuid)
                 for participant in race.participant_set.all():
-                    print("{}: {}".format(participant.post, participant.dog.name))
+                    participant.delete()
+                race.delete()    
