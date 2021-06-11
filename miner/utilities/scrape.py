@@ -154,26 +154,28 @@ def parse_row(row, race):
         split_position_lengths(row[5].text))
     final = final_lengths[0]
     lengths_behind = final_lengths[1]
-    dog = get_dog(row[0][0].text)
-    participant = get_participant(race, dog)
-    post_weight = get_post_weight(
-        participant.dog.name,
-        race.chart.program.date)
-    # print(final)
-    # print(post_weight)
-    # print(lengths_behind)
+    name = row[0][0].text
+    if not name.lower() in ["cet easi eli"]:
+        dog = get_dog(name)
+        participant = get_participant(race, dog)
+        post_weight = get_post_weight(
+            participant.dog.name,
+            race.chart.program.date)
+        # print(final)
+        # print(post_weight)
+        # print(lengths_behind)
 
-    update_participant(
-        participant,
-        post_weight,
-        get_position(positions[0]), #post
-        get_position(row[1].text), # off
-        get_position(positions[1]), # eighth
-        get_position(positions[2]), # straight
-        get_position(final),
-        get_time(row[6].text),
-        lengths_behind,
-        row[9].text.strip())
+        update_participant(
+            participant,
+            post_weight,
+            get_position(positions[0]), #post
+            get_position(row[1].text), # off
+            get_position(positions[1]), # eighth
+            get_position(positions[2]), # straight
+            get_position(final),
+            get_time(row[6].text),
+            lengths_behind,
+            row[9].text.strip())
 
 
 
@@ -270,16 +272,20 @@ def process_dog_bets(race, page_data):
     finisher_indices = [16, 22, 28]
     for index in finisher_indices:
         if isinstance(page_data[index].text, str):
-            dog = get_dog(page_data[index].text.strip())
-            participant = get_participant(race, dog)
-            if participant:
-                chart = race.chart
-                program = chart.program
-                process_straightwagers(
-                    participant,
-                    page_data[index+1].text,
-                    page_data[index+2].text,
-                    page_data[index+3].text)
+            name = page_data[index].text.strip()
+            if not name.lower() in ["cet easi eli"]:
+
+                dog = get_dog(name)
+
+                participant = get_participant(race, dog)
+                if participant:
+                    chart = race.chart
+                    program = chart.program
+                    process_straightwagers(
+                        participant,
+                        page_data[index+1].text,
+                        page_data[index+2].text,
+                        page_data[index+3].text)
 
 
 def process_straightwagers(participant, win_amount, place_amount, show_amount):
