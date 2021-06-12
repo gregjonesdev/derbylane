@@ -155,7 +155,8 @@ def parse_row(row, race):
     final = final_lengths[0]
     lengths_behind = final_lengths[1]
     name = row[0][0].text
-    if not name.lower() in ["cet easi eli"]:
+    print(name.lower())
+    if not name in ["Cet Easi Eli"]:
         dog = get_dog(name)
         participant = get_participant(race, dog)
         post_weight = get_post_weight(
@@ -273,7 +274,8 @@ def process_dog_bets(race, page_data):
     for index in finisher_indices:
         if isinstance(page_data[index].text, str):
             name = page_data[index].text.strip()
-            if not name.lower() in ["cet easi eli"]:
+            if name.lower().find("cet easi eli") > -1:
+                name = "Cet Easy Eli"
 
                 dog = get_dog(name)
 
@@ -442,7 +444,6 @@ def scan_history_charts(venue, year, month, day):
                 day,
                 time,
                 number)
-            # results_url = "http://m.trackinfo.com//index.jsp?next=resultsrace&raceid=GSL$20180709T18"
             page_data = get_node_elements(results_url, '//td')
             if len(page_data) > 85:
                 formatted_date = get_date_from_ymd(year, month, day)

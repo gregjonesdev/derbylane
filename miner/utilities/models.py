@@ -66,6 +66,9 @@ def create_quiniela(race, posts, cost, payout):
 def get_participant_from_post(race, post):
     # print(race)
     # print(post)
+    print("part:")
+    print(race.uuid)
+    print(post)
     try:
         return Participant.objects.get(
             race=race,
@@ -74,7 +77,7 @@ def get_participant_from_post(race, post):
     except:
         print("Error get part from post")
         print(race.uuid)
-        raise SystemExit(0)    
+        raise SystemExit(0)
 
 
 def create_exacta(race, posts, cost, payout):
