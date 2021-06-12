@@ -418,6 +418,7 @@ def get_result_dognames(url):
 
 
 def parse_results_url(results_url, race, page_data):
+    results_url ="http://m.trackinfo.com//index.jsp?next=resultsrace&raceid=GTS$20181111T12"
     build_weather_from_almanac(race.chart.program)
     save_race_info(
         race,
