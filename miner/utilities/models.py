@@ -76,7 +76,6 @@ def get_participant_from_post(race, post):
         )
     except:
         print("Error get part from post")
-        print(race.uuid)
         raise SystemExit(0)
 
 

@@ -393,7 +393,9 @@ def get_entries_dognames(url):
         text = each.text
         if text:
             if not re.search('[0-9]', text) and not re.search('▼', text):
-                dognames.append(text.strip())
+                dog_name = text.strip()
+                if dog_name not in ["Cet Easi Eli"]:
+                    dognames.append(text.strip())
     return dognames
 
 
@@ -408,7 +410,9 @@ def get_result_dognames(url):
     for element in elements:
         text = element.text
         if not re.search('[0-9]', text):
-            dognames.append(text.strip())
+            dog_name = text.strip()
+            if dog_name not in ["Cet Easi Eli"]:
+                dognames.append(text.strip())
     return dognames
 
 
