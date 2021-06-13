@@ -3,20 +3,14 @@ from django.core.management.base import BaseCommand
 from rawdat.models import Participant, Dog
 from miner.utilities.urls import build_race_results_url
 
+from pww.models import Metric
+
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        dog = Dog.objects.get(name="CET EASI ELI")
-        for part in dog.participant_set.all():
-            race = part.race
-            chart = race.chart
-            program = chart.program
-            venue = program.venue
-            print(build_race_results_url(
-                venue.code,
-                program.date.year,
-                program.date.month,
-                program.date.day,
-                chart.time,
-                race.number))
+        wrong = Dog.objects.get(name="CET EASI ELI")
+        right = Dog.objects.get(name="CET EASY ELI")
+        for participant in participant_set.all():
+            participant.dog_id = right.uuid
+            participant.save()

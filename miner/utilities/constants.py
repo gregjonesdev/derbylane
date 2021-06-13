@@ -39,6 +39,10 @@ race_conditions = [
  "W"
 ]
 
+dogname_corrections = {
+    "CET EASI ELI": "CET EASY ELI"
+}
+
 cost = 2.0
 raw_types = ["WIN", "PLACE", "SHOW"]
 grade_skips = ["--"]

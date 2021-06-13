@@ -15,6 +15,7 @@ from miner.utilities.constants import (
     art_skips,
     no_greyhound_names,
     raw_types,
+    dogname_corrections,
     )
 
 from rawdat.utilities.methods import get_date_from_ymd
@@ -147,6 +148,7 @@ def get_time(entry):
 
 
 def parse_row(row, race):
+    pritn("parse row")
     # for each in row:
     #     print(each.text)
     positions = get_positions(row)
@@ -155,28 +157,28 @@ def parse_row(row, race):
     final = final_lengths[0]
     lengths_behind = final_lengths[1]
     name = row[0][0].text
-    print(name.lower())
-    if not name in ["Cet Easi Eli"]:
-        dog = get_dog(name)
-        participant = get_participant(race, dog)
-        post_weight = get_post_weight(
-            participant.dog.name,
-            race.chart.program.date)
-        # print(final)
-        # print(post_weight)
-        # print(lengths_behind)
+    if name.upper() in dogname_corrections:
+        name = dogname_corrections[name]
+    dog = get_dog(name)
+    participant = get_participant(race, dog)
+    post_weight = get_post_weight(
+        participant.dog.name,
+        race.chart.program.date)
+    # print(final)
+    # print(post_weight)
+    # print(lengths_behind)
 
-        update_participant(
-            participant,
-            post_weight,
-            get_position(positions[0]), #post
-            get_position(row[1].text), # off
-            get_position(positions[1]), # eighth
-            get_position(positions[2]), # straight
-            get_position(final),
-            get_time(row[6].text),
-            lengths_behind,
-            row[9].text.strip())
+    update_participant(
+        participant,
+        post_weight,
+        get_position(positions[0]), #post
+        get_position(row[1].text), # off
+        get_position(positions[1]), # eighth
+        get_position(positions[2]), # straight
+        get_position(final),
+        get_time(row[6].text),
+        lengths_behind,
+        row[9].text.strip())
 
 
 
@@ -394,8 +396,10 @@ def get_entries_dognames(url):
         if text:
             if not re.search('[0-9]', text) and not re.search('▼', text):
                 dog_name = text.strip()
-                if dog_name not in ["Cet Easi Eli"]:
-                    dognames.append(text.strip())
+                if dog_name.upper() in dogname_corrections:
+                    dog_name = dogname_corrections[dog_name]
+                    if not dog_name in dognames:
+                        dognames.append(text.strip())
     return dognames
 
 
@@ -411,7 +415,10 @@ def get_result_dognames(url):
         text = element.text
         if not re.search('[0-9]', text):
             dog_name = text.strip()
-            if dog_name not in ["Cet Easi Eli"]:
+            if dog_name.upper() in dogname_corrections:
+                dog_name = dogname_corrections[dog_name]
+                if not dog_name in dognames:
+                    dognames.append(text.strip()):
                 dognames.append(text.strip())
     return dognames
 
