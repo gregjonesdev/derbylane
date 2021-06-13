@@ -148,7 +148,6 @@ def get_time(entry):
 
 
 def parse_row(row, race):
-    pritn("parse row")
     # for each in row:
     #     print(each.text)
     positions = get_positions(row)
