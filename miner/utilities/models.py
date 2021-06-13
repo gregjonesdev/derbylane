@@ -410,6 +410,11 @@ def get_race(chart, number):
 
 def get_participant(race, dog):
     print("SELECT * FROM rawdat_participant WHERE race_id='{}' and dog_id='{}'".format(race.uuid, dog.uuid))
+    for part in Participant.objects.filter(
+        race=race,
+        dog=dog):
+        print(part.uuid)
+
     try:
         participant = Participant.objects.get(
             race=race,
@@ -423,6 +428,7 @@ def get_participant(race, dog):
         new_participant.set_fields_to_base()
         new_participant.save()
         participant = new_participant
+
     return participant
 
 # def create_combination(race, cost, type, payout):
