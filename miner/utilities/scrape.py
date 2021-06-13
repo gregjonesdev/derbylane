@@ -189,7 +189,7 @@ def get_results(target_url, page_data, race):
     race_rows = get_race_rows(div_tds)
     for row in race_rows:
         if len(row) == 10:
-            print("race: {}".format(race.uuid))
+            # print("race: {}".format(race.uuid))
             parse_row(row, race)
 
 
