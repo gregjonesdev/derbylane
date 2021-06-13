@@ -409,6 +409,7 @@ def get_race(chart, number):
     return race
 
 def get_participant(race, dog):
+    print("SELECT * FROM rawdat_participant WHERE race_id={} and dog_id={}".format(race.uuid, dog.uuid))
     try:
         participant = Participant.objects.get(
             race=race,
