@@ -158,7 +158,7 @@ def parse_row(row, race):
     name = row[0][0].text
     upper_name = name.upper()
     if upper_name in dogname_corrections:
-        name = dogname_corrections[upper_name]
+        upper_name = dogname_corrections[upper_name]
     dog = get_dog(upper_name)
     participant = get_participant(race, dog)
     post_weight = get_post_weight(
@@ -396,7 +396,7 @@ def get_entries_dognames(url):
         if text:
             if not re.search('[0-9]', text) and not re.search('▼', text):
                 dog_name = text.strip()
-                upper_name = name.upper()
+                upper_name = dog_name.upper()
                 if upper_name in dogname_corrections:
                     upper_name = dogname_corrections[upper_name]
                 if not upper_name in dognames:
@@ -416,7 +416,7 @@ def get_result_dognames(url):
         text = element.text
         if not re.search('[0-9]', text):
             dog_name = text.strip()
-            upper_name = name.upper()
+            upper_name = dog_name.upper()
             if upper_name in dogname_corrections:
                 upper_name = dogname_corrections[upper_name]
             if not upper_name in dognames:
