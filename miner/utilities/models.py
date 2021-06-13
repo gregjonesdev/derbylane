@@ -66,9 +66,6 @@ def create_quiniela(race, posts, cost, payout):
 def get_participant_from_post(race, post):
     # print(race)
     # print(post)
-    print("part:")
-    print(race.uuid)
-    print(post)
     try:
         return Participant.objects.get(
             race=race,
