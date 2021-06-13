@@ -399,7 +399,7 @@ def get_entries_dognames(url):
                 if dog_name.upper() in dogname_corrections:
                     dog_name = dogname_corrections[dog_name]
                     if not dog_name in dognames:
-                        dognames.append(text.strip())
+                        dognames.append(dog_name)
     return dognames
 
 
@@ -418,8 +418,7 @@ def get_result_dognames(url):
             if dog_name.upper() in dogname_corrections:
                 dog_name = dogname_corrections[dog_name]
                 if not dog_name in dognames:
-                    dognames.append(text.strip()):
-                dognames.append(text.strip())
+                    dognames.append(dog_name))
     return dognames
 
 
