@@ -418,7 +418,7 @@ def get_result_dognames(url):
             if dog_name.upper() in dogname_corrections:
                 dog_name = dogname_corrections[dog_name]
                 if not dog_name in dognames:
-                    dognames.append(dog_name))
+                    dognames.append(dog_name)
     return dognames
 
 
