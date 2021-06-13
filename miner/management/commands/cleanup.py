@@ -11,6 +11,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         wrong = Dog.objects.get(name="CET EASI ELI")
         right = Dog.objects.get(name="CET EASY ELI")
-        for participant in participant_set.all():
+        for participant in wrong.participant_set.all():
             participant.dog_id = right.uuid
             participant.save()
