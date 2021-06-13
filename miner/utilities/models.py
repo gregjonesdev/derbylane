@@ -409,11 +409,11 @@ def get_race(chart, number):
     return race
 
 def get_participant(race, dog):
-    print("SELECT * FROM rawdat_participant WHERE race_id='{}' and dog_id='{}'".format(race.uuid, dog.uuid))
-    for part in Participant.objects.filter(
-        race=race,
-        dog=dog):
-        print(part.uuid)
+    # print("SELECT * FROM rawdat_participant WHERE race_id='{}' and dog_id='{}'".format(race.uuid, dog.uuid))
+    # for part in Participant.objects.filter(
+    #     race=race,
+    #     dog=dog):
+    #     print(part.uuid)
 
     try:
         participant = Participant.objects.get(
