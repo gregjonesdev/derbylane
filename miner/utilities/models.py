@@ -34,10 +34,10 @@ from miner.utilities.urls import (
 
 
 def create_quiniela(race, posts, cost, payout):
-    print("create quin")
+    # print("create quin")
     if posts[0].isnumeric() and posts[1].isnumeric():
-        print("{} is numeric".format(posts[0]))
-        print("{} is numeric".format(posts[1]))
+        # print("{} is numeric".format(posts[0]))
+        # print("{} is numeric".format(posts[1]))
         entrants = [
             get_participant_from_post(race, int(posts[0])),
             get_participant_from_post(race, int(posts[1]))
@@ -64,8 +64,8 @@ def create_quiniela(race, posts, cost, payout):
 
 
 def get_participant_from_post(race, post):
-    # print(race)
-    # print(post)
+    print(race)
+    print(post)
     try:
         return Participant.objects.get(
             race=race,
