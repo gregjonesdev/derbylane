@@ -34,6 +34,7 @@ class Metric(CoreModel):
     straight_avg = models.DecimalField(
         max_digits=8,
         decimal_places=4,
+        null=True
     )
     finish_avg = models.DecimalField(
         max_digits=8,

@@ -15,6 +15,7 @@ from miner.utilities.constants import (
     art_skips,
     no_greyhound_names,
     raw_types,
+    dogname_corrections,
     )
 
 from rawdat.utilities.methods import get_date_from_ymd
@@ -154,7 +155,11 @@ def parse_row(row, race):
         split_position_lengths(row[5].text))
     final = final_lengths[0]
     lengths_behind = final_lengths[1]
-    dog = get_dog(row[0][0].text)
+    name = row[0][0].text
+    upper_name = name.upper()
+    if upper_name in dogname_corrections:
+        upper_name = dogname_corrections[upper_name]
+    dog = get_dog(upper_name)
     participant = get_participant(race, dog)
     post_weight = get_post_weight(
         participant.dog.name,
@@ -184,6 +189,7 @@ def get_results(target_url, page_data, race):
     race_rows = get_race_rows(div_tds)
     for row in race_rows:
         if len(row) == 10:
+            # print("race: {}".format(race.uuid))
             parse_row(row, race)
 
 
@@ -212,16 +218,19 @@ def process_combo_bets(race, target_url):
                     combo_name = get_combo_name(split_text[1].upper())
                     posts_index = 2
                 posts = split_text[posts_index].split("/")
+                print(posts)
                 payout = get_dollar_amount(split_text[-1])
-                if payout:
-                    if combo_name == "Exacta":
-                        create_exacta(race, posts, cost, payout)
-                    elif combo_name == "Quiniela":
-                        create_quiniela(race, posts, cost, payout)
-                    elif combo_name == "Trifecta":
-                        create_trifecta(race, posts, cost, payout)
-                    elif combo_name == "Superfecta":
-                        create_superfecta(race, posts, cost, payout)
+                if payout and combo_name:
+                    lower_combo_name = combo_name.lower()
+                    if not "big" in lower_combo_name:
+                        if lower_combo_name == "exacta":
+                            create_exacta(race, posts, cost, payout)
+                        elif "quin" in lower_combo_name:
+                            create_quiniela(race, posts, cost, payout)
+                        elif lower_combo_name == "trifecta":
+                            create_trifecta(race, posts, cost, payout)
+                        elif lower_combo_name == "superfecta":
+                            create_superfecta(race, posts, cost, payout)
 
 
 def get_dollar_amount(string):
@@ -267,16 +276,21 @@ def process_dog_bets(race, page_data):
     finisher_indices = [16, 22, 28]
     for index in finisher_indices:
         if isinstance(page_data[index].text, str):
-            dog = get_dog(page_data[index].text.strip())
-            participant = get_participant(race, dog)
-            if participant:
-                chart = race.chart
-                program = chart.program
-                process_straightwagers(
-                    participant,
-                    page_data[index+1].text,
-                    page_data[index+2].text,
-                    page_data[index+3].text)
+            name = page_data[index].text.strip()
+            if name.lower().find("cet easi eli") > -1:
+                name = "Cet Easy Eli"
+
+                dog = get_dog(name)
+
+                participant = get_participant(race, dog)
+                if participant:
+                    chart = race.chart
+                    program = chart.program
+                    process_straightwagers(
+                        participant,
+                        page_data[index+1].text,
+                        page_data[index+2].text,
+                        page_data[index+3].text)
 
 
 def process_straightwagers(participant, win_amount, place_amount, show_amount):
@@ -382,7 +396,12 @@ def get_entries_dognames(url):
         text = each.text
         if text:
             if not re.search('[0-9]', text) and not re.search('▼', text):
-                dognames.append(text.strip())
+                dog_name = text.strip()
+                upper_name = dog_name.upper()
+                if upper_name in dogname_corrections:
+                    upper_name = dogname_corrections[upper_name]
+                if not upper_name in dognames:
+                    dognames.append(upper_name)
     return dognames
 
 
@@ -397,7 +416,12 @@ def get_result_dognames(url):
     for element in elements:
         text = element.text
         if not re.search('[0-9]', text):
-            dognames.append(text.strip())
+            dog_name = text.strip()
+            upper_name = dog_name.upper()
+            if upper_name in dogname_corrections:
+                upper_name = dogname_corrections[upper_name]
+            if not upper_name in dognames:
+                dognames.append(upper_name)
     return dognames
 
 
