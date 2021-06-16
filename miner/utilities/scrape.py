@@ -442,7 +442,37 @@ def parse_results_url(results_url, race, page_data):
         process_combo_bets(race, results_url)
         process_dog_bets(race, page_data)
 
+def extract_setting(url):
+    print(url)
 
+
+
+def scan_url(results_url):
+    print(results_url)
+    venue_code = None
+    index = results_url.index("$")
+    venue_code = results_url[index-2:index]
+    year = results_url[index+1:index+5]
+    print(year)
+    month = results_url[index+5:index+7]
+    print(month)
+    day = results_url[index+7:index+9]
+    print(day)
+    # number =
+    # time =
+    #
+    #
+    # page_data = get_node_elements(results_url, '//td')
+    # if len(page_data) > 85:
+    #     formatted_date = get_date_from_ymd(year, month, day)
+    #     program = get_program(
+    #         venue,
+    #         formatted_date)
+    #     build_weather_from_almanac(program)
+    #     race = get_race(
+    #         get_chart(program, time),
+    #         number)
+    #     parse_results_url(results_url, race, page_data)
 
 
 def scan_history_charts(venue, year, month, day):
