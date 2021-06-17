@@ -446,7 +446,6 @@ def extract_setting(url):
     print(url)
 
 
-
 def scan_url(results_url):
     print(results_url)
     venue_code = None
@@ -458,8 +457,10 @@ def scan_url(results_url):
     print(month)
     day = results_url[index+7:index+9]
     print(day)
-    # number =
-    # time =
+    time = results_url[index+9]
+    print(time)
+    number = results_url[index+10:index+12]
+    print(int(number))
     #
     #
     # page_data = get_node_elements(results_url, '//td')
