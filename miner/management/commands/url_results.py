@@ -2,7 +2,7 @@ import sys
 
 from django.core.management.base import BaseCommand
 
-from miner.utilities.scrape import scan_url
+from miner.utilities.scrape import single_url_test
 
 class Command(BaseCommand):
 
@@ -12,5 +12,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         url = sys.argv[3]
-        url = "https://m.trackinfo.com/index.jsp?next=resultsrace&raceid=GIG$20210616E01"
-        scan_url(url)
+        url = "https://m.trackinfo.com/index.jsp?next=resultsrace&raceid=GIG$20210613A03"
+        single_url_test(url)

@@ -427,7 +427,6 @@ def get_result_dognames(url):
 
 
 def parse_results_url(results_url, race, page_data):
-    build_weather_from_almanac(race.chart.program)
     save_race_info(
         race,
         get_raw_setting(page_data))
@@ -442,38 +441,18 @@ def parse_results_url(results_url, race, page_data):
         process_combo_bets(race, results_url)
         process_dog_bets(race, page_data)
 
-def extract_setting(url):
-    print(url)
+def single_url_test(results_url):
+    print("single test")
+    page_data = get_node_elements(results_url, '//td')
+    raw_setting = get_raw_setting(page_data) # Race, 1
+    dognames = get_result_dognames(results_url)
+    post = 1
+    print("Posts:")
+    for dogname in dognames:
+        print("{}: {}".format(post, dogname))
+        post += 1
 
 
-def scan_url(results_url):
-    print(results_url)
-    venue_code = None
-    index = results_url.index("$")
-    venue_code = results_url[index-2:index]
-    year = results_url[index+1:index+5]
-    print(year)
-    month = results_url[index+5:index+7]
-    print(month)
-    day = results_url[index+7:index+9]
-    print(day)
-    time = results_url[index+9]
-    print(time)
-    number = results_url[index+10:index+12]
-    print(int(number))
-    #
-    #
-    # page_data = get_node_elements(results_url, '//td')
-    # if len(page_data) > 85:
-    #     formatted_date = get_date_from_ymd(year, month, day)
-    #     program = get_program(
-    #         venue,
-    #         formatted_date)
-    #     build_weather_from_almanac(program)
-    #     race = get_race(
-    #         get_chart(program, time),
-    #         number)
-    #     parse_results_url(results_url, race, page_data)
 
 
 def scan_history_charts(venue, year, month, day):
@@ -498,6 +477,7 @@ def scan_history_charts(venue, year, month, day):
                 race = get_race(
                     get_chart(program, time),
                     number)
+                build_weather_from_almanac(race.chart.program)
                 parse_results_url(results_url, race, page_data)
             else:
                 failed_attempts += 1
