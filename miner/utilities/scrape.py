@@ -211,11 +211,11 @@ def get_results(target_url, page_data, race):
 
 
 def get_rows_of_length(page_rows, length):
-    race_rows = []
+    target_rows = []
     for row in page_rows:
         if len(row) == length:
-            race_rows.append(row)
-    return race_rows
+            target_rows.append(row)
+    return target_rows
 
 
 def process_combo_bets(race, target_url):
@@ -459,6 +459,13 @@ def parse_results_url(results_url, race, page_data):
         process_combo_bets(race, results_url)
         process_dog_bets(race, page_data)
 
+def get_exotic_bets(results_url):
+    exotics = []
+    exotic_ps = get_node_elements(results_url, '//p')
+    for each in exotic_ps:
+        if len(each.text) > 1:
+            print(each.text)
+
 def single_url_test(results_url):
     print("single test")
     print(results_url)
@@ -466,12 +473,15 @@ def single_url_test(results_url):
     raw_setting = get_raw_setting(page_data) # Race, 1
     # dognames = get_result_dognames(results_url)
     page_rows = get_node_elements(results_url, '//tr')
-    raise SystemExit(0)
-    div_tds = get_node_elements(results_url, '//td//div')
     race_rows = get_rows_of_length(page_rows, 10)
     bet_rows = get_rows_of_length(page_rows, 5)
-    post = 1
-    print("Posts:")
+    # div_tds = get_node_elements(results_url, '//td//div')
+    # post = 1
+    print("rows:")
+    print(len(race_rows))
+    print(len(bet_rows))
+    get_exotic_bets(results_url)
+    raise SystemExit(0)
     # for dogname in dognames:
     #     print("{}: {}".format(post, dogname))
     #     post += 1
