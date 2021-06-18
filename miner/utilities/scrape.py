@@ -472,7 +472,7 @@ def get_final_new():
 def get_lengths_behind_new():
     return None
 
-def single_url_test(results_url):
+def single_url_test(results_url, race):
     print(results_url)
     page_data = get_node_elements(results_url, '//td')
     raw_setting = get_raw_setting(page_data) # Race, 1
@@ -504,9 +504,10 @@ def single_url_test(results_url):
         lengths_behind = split_position_lengths(row[5].text)[1]
         actual_running_time = row[6].text
         comment = row[9].text
+        string = "{}...\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
 
-        print("{} {} {} {} {} {}-{} {} {}".format(
-            dogname,
+        print(string.format(
+            dogname[:10],
             post,
             off,
             eighth,
@@ -516,6 +517,8 @@ def single_url_test(results_url):
             actual_running_time,
             comment
         ))
+        if race:
+            print("proceed to save race data")
 
 
 

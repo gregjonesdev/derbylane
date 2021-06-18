@@ -13,4 +13,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         url = sys.argv[3]
         url = "https://m.trackinfo.com/index.jsp?next=resultsrace&raceid=GSL$20210617T16"
-        single_url_test(url)
+        race = None
+        single_url_test(url, race)
