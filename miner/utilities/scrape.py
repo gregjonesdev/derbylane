@@ -92,6 +92,9 @@ def get_positions(row):
         else:
             positions.append(None)
         i += 1
+    print("positions")
+    print(positions)
+    raise SystemExit(0)
     return positions
 
 
@@ -168,6 +171,11 @@ def parse_row(row, race):
     # print(post_weight)
     # print(lengths_behind)
 
+    return {
+        "post_weight": None,
+        "positions": positions
+    }
+
     update_participant(
         participant,
         post_weight,
@@ -180,23 +188,33 @@ def parse_row(row, race):
         lengths_behind,
         row[9].text.strip())
 
+# get_positions
+# get_final_and_lengths_behind
+# get_participant
+# get_post_weight
+# get_time
+# get_comment
+#
+# get participant data
+# update_participant
 
-
+# save participant data vs print participant data
 
 def get_results(target_url, page_data, race):
     print(target_url)
     div_tds = get_node_elements(target_url, '//td//div')
-    race_rows = get_race_rows(div_tds)
+    race_rows = get_race_rows(target_url)
     for row in race_rows:
         if len(row) == 10:
             # print("race: {}".format(race.uuid))
             parse_row(row, race)
 
 
-def get_race_rows(div_tds):
+def get_rows_of_length(page_rows, length):
     race_rows = []
-    for div_td in div_tds:
-        race_rows.append(div_td.getparent().getparent())
+    for row in page_rows:
+        if len(row) == length:
+            race_rows.append(row)
     return race_rows
 
 
@@ -443,14 +461,34 @@ def parse_results_url(results_url, race, page_data):
 
 def single_url_test(results_url):
     print("single test")
+    print(results_url)
     page_data = get_node_elements(results_url, '//td')
     raw_setting = get_raw_setting(page_data) # Race, 1
-    dognames = get_result_dognames(results_url)
+    # dognames = get_result_dognames(results_url)
+    page_rows = get_node_elements(results_url, '//tr')
+    raise SystemExit(0)
+    div_tds = get_node_elements(results_url, '//td//div')
+    race_rows = get_rows_of_length(page_rows, 10)
+    bet_rows = get_rows_of_length(page_rows, 5)
     post = 1
     print("Posts:")
-    for dogname in dognames:
-        print("{}: {}".format(post, dogname))
-        post += 1
+    # for dogname in dognames:
+    #     print("{}: {}".format(post, dogname))
+    #     post += 1
+
+    for row in race_rows:
+        if len(row) == 5:
+            print("BLAM")
+        if len(row) == 10:
+            dogname = row[0][0].text
+            post = row[1].text
+            off = row[2].text
+            eighth = row[3].text
+            straight = row[4].text
+            # final = get_final_new(row[5].text)
+            # lengths_behind = get_lengths_behind_new(row[5].text)
+            # actual_running_time = row[6].text
+            # comment = row[9].text
 
 
 
