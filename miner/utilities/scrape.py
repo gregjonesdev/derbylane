@@ -466,8 +466,13 @@ def get_exotic_bets(results_url):
         if len(each.text) > 1:
             print(each.text)
 
+def get_final_new():
+    return None
+
+def get_lengths_behind_new():
+    return None
+
 def single_url_test(results_url):
-    print("single test")
     print(results_url)
     page_data = get_node_elements(results_url, '//td')
     raw_setting = get_raw_setting(page_data) # Race, 1
@@ -481,25 +486,36 @@ def single_url_test(results_url):
     print(len(race_rows))
     print(len(bet_rows))
     get_exotic_bets(results_url)
-    raise SystemExit(0)
+    # raise SystemExit(0)
     # for dogname in dognames:
     #     print("{}: {}".format(post, dogname))
     #     post += 1
 
-    for row in race_rows:
-        if len(row) == 5:
-            print("BLAM")
-        if len(row) == 10:
-            dogname = row[0][0].text
-            post = row[1].text
-            off = row[2].text
-            eighth = row[3].text
-            straight = row[4].text
-            # final = get_final_new(row[5].text)
-            # lengths_behind = get_lengths_behind_new(row[5].text)
-            # actual_running_time = row[6].text
-            # comment = row[9].text
+    for row in bet_rows:
+        print(row)
 
+    for row in race_rows:
+        dogname = row[0][0].text
+        post = row[1].text
+        off = split_position_lengths(row[2].text)[0]
+        eighth = split_position_lengths(row[3].text)[0]
+        straight = split_position_lengths(row[4].text)[0]
+        final = split_position_lengths(row[5].text)[0]
+        lengths_behind = split_position_lengths(row[5].text)[1]
+        actual_running_time = row[6].text
+        comment = row[9].text
+
+        print("{} {} {} {} {} {}-{} {} {}".format(
+            dogname,
+            post,
+            off,
+            eighth,
+            straight,
+            final,
+            lengths_behind,
+            actual_running_time,
+            comment
+        ))
 
 
 
