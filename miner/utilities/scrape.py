@@ -466,59 +466,57 @@ def get_exotic_bets(results_url):
         if len(each.text) > 1:
             print(each.text)
 
-def get_final_new():
+def get_race_number():
     return None
 
-def get_lengths_behind_new():
-    return None
 
-def single_url_test(results_url, race):
+def single_url_test(results_url, chart):
     print(results_url)
-    page_data = get_node_elements(results_url, '//td')
-    raw_setting = get_raw_setting(page_data) # Race, 1
-    # dognames = get_result_dognames(results_url)
-    page_rows = get_node_elements(results_url, '//tr')
-    race_rows = get_rows_of_length(page_rows, 10)
-    bet_rows = get_rows_of_length(page_rows, 5)
-    # div_tds = get_node_elements(results_url, '//td//div')
-    # post = 1
-    print("rows:")
-    print(len(race_rows))
-    print(len(bet_rows))
-    get_exotic_bets(results_url)
-    # raise SystemExit(0)
-    # for dogname in dognames:
-    #     print("{}: {}".format(post, dogname))
-    #     post += 1
+    tds = get_node_elements(url, '//td')
+    if len(tds) > 20:
+        race_number = get_race_number(tds) # Race, 1
+        page_rows = get_node_elements(results_url, '//tr')
+        race_rows = get_rows_of_length(page_rows, 10)
+        bet_rows = get_rows_of_length(page_rows, 5)
+        # div_tds = get_node_elements(results_url, '//td//div')
+        # post = 1
+        print("rows:")
+        print(len(race_rows))
+        print(len(bet_rows))
+        # raise SystemExit(0)
+        # for dogname in dognames:
+        #     print("{}: {}".format(post, dogname))
+        #     post += 1
 
-    for row in bet_rows:
-        print(row)
+        for row in bet_rows:
+            print(row.text)
+        get_exotic_bets(results_url)
 
-    for row in race_rows:
-        dogname = row[0][0].text
-        post = row[1].text
-        off = split_position_lengths(row[2].text)[0]
-        eighth = split_position_lengths(row[3].text)[0]
-        straight = split_position_lengths(row[4].text)[0]
-        final = split_position_lengths(row[5].text)[0]
-        lengths_behind = split_position_lengths(row[5].text)[1]
-        actual_running_time = row[6].text
-        comment = row[9].text
-        string = "{}...\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
+        for row in race_rows:
+            dogname = row[0][0].text
+            post = row[1].text
+            off = split_position_lengths(row[2].text)[0]
+            eighth = split_position_lengths(row[3].text)[0]
+            straight = split_position_lengths(row[4].text)[0]
+            final = split_position_lengths(row[5].text)[0]
+            lengths_behind = split_position_lengths(row[5].text)[1]
+            actual_running_time = row[6].text
+            comment = row[9].text
+            string = "{}...\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
 
-        print(string.format(
-            dogname[:10],
-            post,
-            off,
-            eighth,
-            straight,
-            final,
-            lengths_behind,
-            actual_running_time,
-            comment
-        ))
-        if race:
-            print("proceed to save race data")
+            print(string.format(
+                dogname[:10],
+                post,
+                off,
+                eighth,
+                straight,
+                final,
+                lengths_behind,
+                actual_running_time,
+                comment
+            ))
+            if chart:
+                print("proceed to save race data")
 
 
 
