@@ -14,5 +14,5 @@ class Command(BaseCommand):
         url = sys.argv[3]
         url = "https://m.trackinfo.com/index.jsp?next=resultsrace&raceid=GSL$20210617T16"
         chart = None
-        race_number = url[-2:]
-        single_url_test(url, chart, race_number)
+
+        single_url_test(url, chart)

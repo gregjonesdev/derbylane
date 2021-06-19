@@ -483,7 +483,7 @@ def get_exotic_bets(results_url):
 #             pass
 
 
-def single_url_test(results_url, chart, race_number):
+def single_url_test(results_url, chart):
     print(results_url)
     tds = get_node_elements(results_url, '//td')
     if len(tds) > 20:
@@ -491,9 +491,19 @@ def single_url_test(results_url, chart, race_number):
         race_rows = get_rows_of_length(page_rows, 10)
         bet_rows = get_rows_of_length(page_rows, 5)
 
-
+        i = 1
+        while i <= 3:
+            current_row = bet_rows[i]
+            print("Dog: {}".format(current_row[1].text.strip()))
+            print("Win: {}".format(current_row[2].text.strip()))
+            print("Place: {}".format(current_row[3].text.strip()))
+            print("Show: {}".format(current_row[4].text.strip()))
+            i += 1
         # for row in bet_rows:
-        #     print(row.text)
+        #     for each in row:
+        #         if each.text:
+        #             print("{} {}".format(len(each.text), each.text.strip()))
+
         get_exotic_bets(results_url)
 
         for row in race_rows:
@@ -506,10 +516,10 @@ def single_url_test(results_url, chart, race_number):
             lengths_behind = split_position_lengths(row[5].text)[1]
             actual_running_time = row[6].text
             comment = row[9].text
-            string = "{}...\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
+            string = "{}\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
 
             print(string.format(
-                dogname[:10],
+                dogname[:15],
                 post,
                 off,
                 eighth,
@@ -521,6 +531,7 @@ def single_url_test(results_url, chart, race_number):
             ))
             if chart:
                 print("proceed to save race data")
+                race_number = url[-2:]
                 race = get_race(chart, race_number)
 
 
