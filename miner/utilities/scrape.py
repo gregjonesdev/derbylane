@@ -466,30 +466,34 @@ def get_exotic_bets(results_url):
         if len(each.text) > 1:
             print(each.text)
 
-def get_race_number():
-    return None
+# def get_race_number(tds):
+#     for td in tds:
+#         try:
+#             if td.text:
+#                 text = td.text
+#                 if "race" in text.lower() and re.search('[0-9]', text):
+#                     split_text = text.split()
+#                     for each in split_text:
+#                         try:
+#                             if 0 < int(each) < 30:
+#                                 return int(each)
+#                         except:
+#                             pass
+#         except UnicodeDecodeError:
+#             pass
 
 
-def single_url_test(results_url, chart):
+def single_url_test(results_url, chart, race_number):
     print(results_url)
-    tds = get_node_elements(url, '//td')
+    tds = get_node_elements(results_url, '//td')
     if len(tds) > 20:
-        race_number = get_race_number(tds) # Race, 1
         page_rows = get_node_elements(results_url, '//tr')
         race_rows = get_rows_of_length(page_rows, 10)
         bet_rows = get_rows_of_length(page_rows, 5)
-        # div_tds = get_node_elements(results_url, '//td//div')
-        # post = 1
-        print("rows:")
-        print(len(race_rows))
-        print(len(bet_rows))
-        # raise SystemExit(0)
-        # for dogname in dognames:
-        #     print("{}: {}".format(post, dogname))
-        #     post += 1
 
-        for row in bet_rows:
-            print(row.text)
+
+        # for row in bet_rows:
+        #     print(row.text)
         get_exotic_bets(results_url)
 
         for row in race_rows:
@@ -517,6 +521,7 @@ def single_url_test(results_url, chart):
             ))
             if chart:
                 print("proceed to save race data")
+                race = get_race(chart, race_number)
 
 
 

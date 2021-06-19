@@ -13,8 +13,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         url = sys.argv[3]
         url = "https://m.trackinfo.com/index.jsp?next=resultsrace&raceid=GSL$20210617T16"
-        # tds = get_node_elements(url, '//td')
-        # if len(page_data) > 20:
-        # raw_setting = get_raw_setting(page_data) # Race, 1
         chart = None
-        single_url_test(url, chart)
+        race_number = url[-2:]
+        single_url_test(url, chart, race_number)
