@@ -538,13 +538,18 @@ def single_url_test(results_url, chart):
         bet_rows = get_rows_of_length(page_rows, 5)
 
         i = 1
+        print("Runner\t\tWin\t\tPlace\t\tShow")
         while i <= 3:
             current_row = bet_rows[i]
-            print("Dog: {}".format(current_row[1].text.strip()))
-            print("Win: {}".format(current_row[2].text.strip()))
-            print("Place: {}".format(current_row[3].text.strip()))
-            print("Show: {}\n".format(current_row[4].text.strip()))
+            print("{}\t\t{}\t\t{}\t\t{}".format(
+                current_row[1].text.strip()[:5],
+                current_row[2].text.strip(),
+                current_row[3].text.strip(),
+                current_row[4].text.strip()
+                ))
             i += 1
+        print("\n")
+            
         # for row in bet_rows:
         #     for each in row:
         #         if each.text:
