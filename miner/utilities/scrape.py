@@ -5,10 +5,11 @@ from miner.utilities.urls import (
     build_race_results_url,
     build_dog_results_url,
 )
-from rawdat.models import Weather
+from rawdat.models import Weather, Grade
 from miner.utilities.constants import (
     distance_converter,
     position_skips,
+    race_conditions,
     chart_times,
     allowed_attempts,
     max_races_per_chart,
@@ -482,10 +483,55 @@ def get_exotic_bets(results_url):
 #         except UnicodeDecodeError:
 #             pass
 
+def get_race_setting(tds):
+    for td in tds:
+        try:
+            if td.text:
+                text = td.text
+                if "race" in text.lower() and re.search('[0-9]', text):
+                    return text.strip().replace("\n","").replace("\t", "").split()
+        except UnicodeDecodeError:
+            pass
+
+def is_grade(grade):
+    return Grade.objects.filter(name=grade.upper()).exists()
+
+def get_race_setting(raw_setting):
+    setting = {
+        "grade": None,
+        "distance": None,
+        "condition": None,
+    }
+    for item in raw_setting[:3]:
+        if is_grade(item):
+            setting["grade"] = get_grade(item)
+    for item in raw_setting:
+        if item in distance_converter:
+            item = distance_converter[item]
+        try:
+            item = int(item)
+            if 100 < item < 900:
+                setting["distance"] = int(item)
+        except:
+            pass
+    for item in raw_setting[3:]:
+        if item.upper() in race_conditions:
+            setting["condition"] = item.upper()
+    return setting
+
 
 def single_url_test(results_url, chart):
-    print(results_url)
+    print("\n{}\n".format(results_url))
     tds = get_node_elements(results_url, '//td')
+    raw_setting = get_raw_setting(tds)
+    race_setting = get_race_setting(raw_setting)
+    race_number = results_url[-2:]
+    print("Raw Setting: {}\n".format(raw_setting))
+    print("Race {}".format(race_number))
+    print("Grade: {}".format(race_setting["grade"].name))
+    print("Distance: {}".format(race_setting["distance"]))
+    print("Condition: {}".format(race_setting["condition"]))
+    print("\nSingle wagers:")
     if len(tds) > 20:
         page_rows = get_node_elements(results_url, '//tr')
         race_rows = get_rows_of_length(page_rows, 10)
@@ -497,7 +543,7 @@ def single_url_test(results_url, chart):
             print("Dog: {}".format(current_row[1].text.strip()))
             print("Win: {}".format(current_row[2].text.strip()))
             print("Place: {}".format(current_row[3].text.strip()))
-            print("Show: {}".format(current_row[4].text.strip()))
+            print("Show: {}\n".format(current_row[4].text.strip()))
             i += 1
         # for row in bet_rows:
         #     for each in row:
@@ -505,7 +551,7 @@ def single_url_test(results_url, chart):
         #             print("{} {}".format(len(each.text), each.text.strip()))
 
         get_exotic_bets(results_url)
-
+        print("\n")
         for row in race_rows:
             dogname = row[0][0].text
             post = row[1].text
@@ -531,8 +577,8 @@ def single_url_test(results_url, chart):
             ))
             if chart:
                 print("proceed to save race data")
-                race_number = url[-2:]
                 race = get_race(chart, race_number)
+                save_race_info(race, raw_setting)
 
 
 
