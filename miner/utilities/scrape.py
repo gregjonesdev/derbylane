@@ -559,7 +559,7 @@ def single_url_test(results_url, chart):
             print("Grade: {}".format(race_setting["grade"].name))
             print("Distance: {}".format(race_setting["distance"]))
             print("Condition: {}".format(race_setting["condition"]))
-            print("\nSingle wagers:")
+            print("\nSingle Wagers:")
 
             i = 1
             print("Runner\t\tWin\t\tPlace\t\tShow")
@@ -572,7 +572,7 @@ def single_url_test(results_url, chart):
                     current_row[4].text.strip()
                     ))
                 i += 1
-            print("\n")
+            print("\nExotic Wagers:")
             for exotic_bet in exotic_bets:
                 string = "{}\t"
                 if len(exotic_bet["name"]) < 8:
