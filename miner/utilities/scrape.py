@@ -599,30 +599,18 @@ def process_race_data(date, race_data):
         dog = get_dog(each["dogname"])
         participant = get_participant(race, dog)
 
-
-        post_weight = get_post_weight(
+        participant.post = each["post"]
+        participant.post_weight = get_post_weight(
             dog.name,
             date)
-
-        participant.post = each["post"]
         participant.off = each["off"]
         participant.eighth = each["eighth"]
         participant.straight = each["straight"]
         participant.final = each["final"]
         participant.lengths_behind = each["lengths_behind"]
-        participant.post = each["post"]
-        participant.post = each["post"]
-        # print(string.format(
-        #     each["dogname"][:15],
-        #     each["post"],
-        #     each["off"],
-        #     each["eighth"],
-        #     each["straight"],
-        #     each["final"],
-        #     each["lengths_behind"],
-        #     each["actual_running_time"],
-        #     each["comment"]
-        # ))
+        participant.actual_running_time = each["actual_running_time"]
+        participant.comment = each["comment"]
+        participant.save()
 
 
 def single_url_test(results_url, chart):
@@ -646,7 +634,7 @@ def single_url_test(results_url, chart):
             # save single bets(race,
             # save combo bets(race,
             # save race data(race,
-            # build metric(race,
+            build_race_metrics(race)
         else:
             print_race_setting(raw_setting, race_number, race_setting)
             print_single_bets(bet_rows)
