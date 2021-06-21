@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 
 from miner.utilities.common import get_node_elements
-from miner.utilities.scrape import parse_results_url
+from miner.utilities.scrape import single_url_test
 from miner.utilities.urls import build_race_results_url
 from rawdat.models import Race, CronJob
 
@@ -17,6 +17,7 @@ class Command(BaseCommand):
         self.stdout.write("Starting Get Results script..")
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
+        print(yesterday)
         for race in Race.objects.filter(
             chart__program__date__range=(
                 yesterday, today)):
@@ -32,10 +33,9 @@ class Command(BaseCommand):
                 date.day,
                 time,
                 race.number)
-            print(results_url)
-            page_data = get_node_elements(results_url, '//td')
-            if len(page_data) > 85:
-                parse_results_url(results_url, race, page_data)
+            print(program.date)
+            tds = get_node_elements(results_url, '//td')
+            single_url_test(results_url, tds, get_chart(program, time))
 
         new_job = CronJob(
             type="Results"

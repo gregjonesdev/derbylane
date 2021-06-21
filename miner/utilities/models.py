@@ -105,6 +105,7 @@ def create_exacta(race, posts, cost, payout):
 
 
 def create_trifecta(race, posts, cost, payout):
+    print("create trifecta")
     if posts[0].isnumeric() and posts[1].isnumeric() and posts[2].isnumeric():
         win = get_participant_from_post(race, int(posts[0]))
         place = get_participant_from_post(race, int(posts[1]))
@@ -340,25 +341,25 @@ def save_post_weight(participant, post_weight):
 def is_grade(grade):
     return Grade.objects.filter(name=grade.upper()).exists()
 
-def save_race_info(race, raw_setting):
-    if raw_setting:
-        for item in raw_setting[:3]:
-            if is_grade(item):
-                race.grade = get_grade(item)
-        for item in raw_setting:
-            if item in distance_converter:
-                item = distance_converter[item]
-            try:
-                item = int(item)
-                if 100 < item < 900:
-                    distance = int(item)
-                    race.distance = distance
-            except:
-                pass
-        for item in raw_setting[3:]:
-            if item.upper() in race_conditions:
-                race.condition = item.upper()
-        race.save()
+# def save_race_info(race, raw_setting):
+#     if raw_setting:
+#         for item in raw_setting[:3]:
+#             if is_grade(item):
+#                 race.grade = get_grade(item)
+#         for item in raw_setting:
+#             if item in distance_converter:
+#                 item = distance_converter[item]
+#             try:
+#                 item = int(item)
+#                 if 100 < item < 900:
+#                     distance = int(item)
+#                     race.distance = distance
+#             except:
+#                 pass
+#         for item in raw_setting[3:]:
+#             if item.upper() in race_conditions:
+#                 race.condition = item.upper()
+#         race.save()
 
 
 def get_chart(program, time):

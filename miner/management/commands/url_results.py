@@ -3,6 +3,7 @@ import sys
 from django.core.management.base import BaseCommand
 
 from miner.utilities.scrape import single_url_test
+from miner.utilities.common import get_node_elements
 
 class Command(BaseCommand):
 
@@ -14,5 +15,5 @@ class Command(BaseCommand):
         url = sys.argv[3]
         url = "https://m.trackinfo.com/index.jsp?next=resultsrace&raceid=GSL$20210617T16"
         chart = None
-
-        single_url_test(url, chart)
+        tds = get_node_elements(url, '//td')
+        single_url_test(url, tds, chart)

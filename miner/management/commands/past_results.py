@@ -10,7 +10,7 @@ from rawdat.models import (
     VenueScan,
     )
 
-from miner.utilities.scrape import scan_history_charts
+from miner.utilities.scrape import scan_history_charts, single_url_test
 
 class Command(BaseCommand):
 

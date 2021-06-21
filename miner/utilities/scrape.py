@@ -25,7 +25,6 @@ from pww.utilities.metrics import build_race_metrics
 from pww.models import Metric
 from miner.utilities.models import (
     update_participant,
-    save_race_info,
     get_participant,
     # create_single,
     get_dog,
@@ -49,6 +48,8 @@ from miner.utilities.common import (
     get_attribute_elements,
     force_date
 )
+
+focused_bets = ["EXACTA", "QUINELLA", "TRIFECTA", "SUPERFECTA"]
 
 def split_position_lengths(entry):
     if entry:
@@ -151,32 +152,6 @@ def get_time(entry):
         return None
 
 
-def parse_row(row, race):
-    # for each in row:
-    #     print(each.text)
-    positions = get_positions(row)
-    final_lengths = get_final_and_lengths_behind(
-        split_position_lengths(row[5].text))
-    final = final_lengths[0]
-    lengths_behind = final_lengths[1]
-    name = row[0][0].text
-    upper_name = name.upper()
-    if upper_name in dogname_corrections:
-        upper_name = dogname_corrections[upper_name]
-    dog = get_dog(upper_name)
-    participant = get_participant(race, dog)
-    post_weight = get_post_weight(
-        participant.dog.name,
-        race.chart.program.date)
-    # print(final)
-    # print(post_weight)
-    # print(lengths_behind)
-
-    return {
-        "post_weight": None,
-        "positions": positions
-    }
-
     update_participant(
         participant,
         post_weight,
@@ -189,27 +164,6 @@ def parse_row(row, race):
         lengths_behind,
         row[9].text.strip())
 
-# get_positions
-# get_final_and_lengths_behind
-# get_participant
-# get_post_weight
-# get_time
-# get_comment
-#
-# get participant data
-# update_participant
-
-# save participant data vs print participant data
-
-def get_results(target_url, page_data, race):
-    print(target_url)
-    div_tds = get_node_elements(target_url, '//td//div')
-    race_rows = get_race_rows(target_url)
-    for row in race_rows:
-        if len(row) == 10:
-            # print("race: {}".format(race.uuid))
-            parse_row(row, race)
-
 
 def get_rows_of_length(page_rows, length):
     target_rows = []
@@ -217,40 +171,6 @@ def get_rows_of_length(page_rows, length):
         if len(row) == length:
             target_rows.append(row)
     return target_rows
-
-
-def process_combo_bets(race, target_url):
-    # print("process combo bets")
-    # for part in race.participant_set.all():
-    #     print("{}: {}".format(part.post, part.dog.name))
-    for each in get_node_elements(target_url, '//p'):
-        if each.text:
-            split_text = each.text.split()
-            if len(split_text) > 0:
-                cost = get_dollar_amount(split_text[0])
-                if split_text[2].isalpha():
-                    combo_name = get_combo_name("{} {}".format(
-                        split_text[1],
-                        split_text[2]))
-                    posts_index = 3
-                else:
-                    combo_name = get_combo_name(split_text[1].upper())
-                    posts_index = 2
-                posts = split_text[posts_index].split("/")
-                print(posts)
-                payout = get_dollar_amount(split_text[-1])
-                if payout and combo_name:
-                    lower_combo_name = combo_name.lower()
-                    if not "big" in lower_combo_name:
-                        if lower_combo_name == "exacta":
-                            create_exacta(race, posts, cost, payout)
-                        elif "quin" in lower_combo_name:
-                            create_quiniela(race, posts, cost, payout)
-                        elif lower_combo_name == "trifecta":
-                            create_trifecta(race, posts, cost, payout)
-                        elif lower_combo_name == "superfecta":
-                            create_superfecta(race, posts, cost, payout)
-
 
 
 def get_dollar_amount(string):
@@ -267,64 +187,37 @@ def get_dollar_amount(string):
 
 
 
-def get_combo_name(text):
-    # print("---")
-    # print(text)
-    # print("---")
-    text = text.upper()
-    if 'BIG' in text:
-        return None
-    if 'TRI SUPER' in text:
-        return None
-    elif 'DOUB' in text:
-        return None
-    elif 'PIC' in text:
-        return None
-    elif 'TWIN' in text:
-        return None
-    elif 'QU' in text:
-        return "Quiniela"
-    elif 'TRI' in text:
-        return "Trifecta"
-    elif 'SUPERF' in text:
-        return "Superfecta"
-    elif 'EX' in text:
-        return "Exacta"
-    else:
-        return None
+# def process_dog_bets(race, page_data):
+#     finisher_indices = [16, 22, 28]
+#     for index in finisher_indices:
+#         if isinstance(page_data[index].text, str):
+#             name = page_data[index].text.strip()
+#             if name.lower().find("cet easi eli") > -1:
+#                 name = "Cet Easy Eli"
+#
+#                 dog = get_dog(name)
+#
+#                 participant = get_participant(race, dog)
+#                 if participant:
+#                     chart = race.chart
+#                     program = chart.program
+#                     process_straightwagers(
+#                         participant,
+#                         page_data[index+1].text,
+#                         page_data[index+2].text,
+#                         page_data[index+3].text)
 
-
-def process_dog_bets(race, page_data):
-    finisher_indices = [16, 22, 28]
-    for index in finisher_indices:
-        if isinstance(page_data[index].text, str):
-            name = page_data[index].text.strip()
-            if name.lower().find("cet easi eli") > -1:
-                name = "Cet Easy Eli"
-
-                dog = get_dog(name)
-
-                participant = get_participant(race, dog)
-                if participant:
-                    chart = race.chart
-                    program = chart.program
-                    process_straightwagers(
-                        participant,
-                        page_data[index+1].text,
-                        page_data[index+2].text,
-                        page_data[index+3].text)
-
-
-def process_straightwagers(participant, win_amount, place_amount, show_amount):
-    straight_wager = get_straightwager(participant)
-    # print(win_amount)
-    # print(place_amount)
-    # print(show_amount)
-    straight_wager = get_straightwager(participant)
-    straight_wager.win = get_dollar_amount(win_amount)
-    straight_wager.place = get_dollar_amount(place_amount)
-    straight_wager.show = get_dollar_amount(show_amount)
-    straight_wager.save()
+#
+# def process_straightwagers(participant, win_amount, place_amount, show_amount):
+#     straight_wager = get_straightwager(participant)
+#     # print(win_amount)
+#     # print(place_amount)
+#     # print(show_amount)
+#     straight_wager = get_straightwager(participant)
+#     straight_wager.win = get_dollar_amount(win_amount)
+#     straight_wager.place = get_dollar_amount(place_amount)
+#     straight_wager.show = get_dollar_amount(show_amount)
+#     straight_wager.save()
 
 
 def get_race_heading(target_url):
@@ -398,9 +291,12 @@ def scan_scheduled_charts(venue, program):
             if len(page_data) > 20:
                 chart = get_chart(program, time)
                 race = get_race(chart, number)
-                save_race_info(
+                raw_setting = get_raw_setting(page_data)
+
+                new_save_race_info(
                     race,
-                    get_raw_setting(page_data))
+                    get_race_setting(raw_setting))
+
                 populate_race(
                     get_entries_dognames(entries_url),
                     race)
@@ -447,24 +343,8 @@ def get_result_dognames(url):
     return dognames
 
 
-
-def parse_results_url(results_url, race, page_data):
-    save_race_info(
-        race,
-        get_raw_setting(page_data))
-    # print(results_url)
-    populate_race(
-        get_result_dognames(results_url),
-        race)
-    get_results(results_url, page_data, race)
-    build_race_metrics(race)
-
-    if len(page_data) > 115:
-        process_combo_bets(race, results_url)
-        process_dog_bets(race, page_data)
-
 def get_exotic_bets(results_url):
-    focused_bets = ["EXACTA", "QUINELLA", "TRIFECTA", "SUPERFECTA"]
+
     exotic_bets = []
     exotic_ps = get_node_elements(results_url, '//p')
     for each in exotic_ps:
@@ -574,26 +454,35 @@ def print_race_data(race_data):
             each["comment"]
         ))
 
-def print_single_bets(bet_rows):
+def print_single_bets(single_bets):
     print("\nSingle Wagers:")
-    i = 1
     print("Runner\t\tWin\t\tPlace\t\tShow")
+    for bet in single_bets:
+        print("{}\t\t{}\t\t{}\t\t{}".format(
+            bet["dog"].name[:5],
+            bet["win"],
+            bet["place"],
+            bet["show"]
+            ))
+
+def get_single_bets(bet_rows):
+    single_bets = []
+    i = 1
     while i <= 3:
         current_row = bet_rows[i]
-        print("{}\t\t{}\t\t{}\t\t{}".format(
-            current_row[1].text.strip()[:5],
-            current_row[2].text.strip(),
-            current_row[3].text.strip(),
-            current_row[4].text.strip()
-            ))
+        dogname = current_row[1].text.strip().lower()
+        if dogname in dogname_corrections:
+            dogname = dogname_corrections[dogname]
+        single_bets.append({
+            "dog": get_dog(dogname),
+            "win": get_dollar_amount(current_row[2].text),
+            "place": get_dollar_amount(current_row[3].text),
+            "show": get_dollar_amount(current_row[4].text)
+        })
         i += 1
+    return single_bets
 
-def build_participant(race, dog_name, data_row):
-    print("build_participant")
-    print(dog_name)
-    print(data_row)
-
-def process_race_data(date, race_data):
+def process_race_data(race, race_data):
     print("process race data")
     for each in race_data:
         dog = get_dog(each["dogname"])
@@ -602,7 +491,7 @@ def process_race_data(date, race_data):
         participant.post = each["post"]
         participant.post_weight = get_post_weight(
             dog.name,
-            date)
+            race.chart.program.date)
         participant.off = each["off"]
         participant.eighth = each["eighth"]
         participant.straight = each["straight"]
@@ -612,40 +501,55 @@ def process_race_data(date, race_data):
         participant.comment = each["comment"]
         participant.save()
 
+def save_exotic_bets(race, exotic_bets):
+    cost = 2.0
+    for bet in exotic_bets:
+        if bet["name"] == "EXACTA":
+            create_exacta(race, bet["posts"], cost, bet["payout"])
+        elif bet["name"] == "QUINELLA":
+            create_quiniela(race, bet["posts"], cost, bet["payout"])
+        elif bet["name"] == "TRIFECTA":
+            create_trifecta(race, bet["posts"], cost, bet["payout"])
+        elif bet["name"] == "SUPERFECTA":
+            create_superfecta(race, bet["posts"], cost, bet["payout"])
 
-def single_url_test(results_url, chart):
+def handle_race(race):
+    build_weather_from_almanac(race.chart.program)
+    new_save_race_info(race, race_setting)
+    process_race_data(race, race_data)
+    save_exotic_bets(race, exotic_bets)
+    if race.grade and race.grade.value:
+        build_race_metrics(race)
+
+def single_url_test(results_url, tds, chart):
     print("\n{}\n".format(results_url))
-    tds = get_node_elements(results_url, '//td')
+    # tds = get_node_elements(results_url, '//td')
     raw_setting = get_raw_setting(tds)
     race_setting = get_race_setting(raw_setting)
     race_number = results_url[-2:]
 
-    if len(tds) > 20:
-        page_rows = get_node_elements(results_url, '//tr')
-        race_rows = get_rows_of_length(page_rows, 10)
-        bet_rows = get_rows_of_length(page_rows, 5)
-        exotic_bets = get_exotic_bets(results_url)
-        race_data = get_race_data(race_rows)
+    page_rows = get_node_elements(results_url, '//tr')
+    race_rows = get_rows_of_length(page_rows, 10)
+    bet_rows = get_rows_of_length(page_rows, 5)
+    single_bets = get_single_bets(bet_rows)
+    exotic_bets = get_exotic_bets(results_url)
+    race_data = get_race_data(race_rows)
 
-        if chart:
-            print("proceed to save race data")
-            race = get_race(chart.program.date, race_number)
-            new_save_race_info(race, race_setting)
-            # save single bets(race,
-            # save combo bets(race,
-            # save race data(race,
-            if race.grade and race.grade.value:
-                build_race_metrics(race)
-        else:
-            print_race_setting(raw_setting, race_number, race_setting)
-            print_single_bets(bet_rows)
-            print_exotic_bets(exotic_bets)
-            print_race_data(race_data)
+    if chart:
+        print("proceed to save race data")
+        program = chart.program
+        race = get_race(chart, race_number)
+        handle_race(race, race_setting, race_data, exotic_bets)
+        print("DONE")
+    else:
+        print_race_setting(raw_setting, race_number, race_setting)
+        print_single_bets(single_bets)
+        print_exotic_bets(exotic_bets)
+        print_race_data(race_data)
 
 
 
 def new_save_race_info(race, race_setting):
-    print("new")
     race.condition = race_setting['condition']
     race.grade = race_setting['grade']
     race.distance = race_setting['distance']
@@ -664,18 +568,21 @@ def scan_history_charts(venue, year, month, day):
                 day,
                 time,
                 number)
-            page_data = get_node_elements(results_url, '//td')
-            if len(page_data) > 85:
-                formatted_date = get_date_from_ymd(year, month, day)
-                program = get_program(
-                    venue,
-                    formatted_date)
-                build_weather_from_almanac(program)
-                race = get_race(
-                    get_chart(program, time),
-                    number)
-                build_weather_from_almanac(race.chart.program)
-                parse_results_url(results_url, race, page_data)
+            formatted_date = get_date_from_ymd(year, month, day)
+            program = get_program(venue, formatted_date)
+            tds = get_node_elements(results_url, '//td')
+            if len(tds) > 85:
+                single_url_test(results_url, tds, get_chart(program, time))
+            #     formatted_date = get_date_from_ymd(year, month, day)
+            #     program = get_program(
+            #         venue,
+            #         formatted_date)
+            #     build_weather_from_almanac(program)
+            #     race = get_race(
+            #         get_chart(program, time),
+            #         number)
+            #     # build_weather_from_almanac(race.chart.program)
+            #     parse_results_url(results_url, race, page_data)
             else:
                 failed_attempts += 1
             number += 1

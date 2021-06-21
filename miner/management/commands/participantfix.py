@@ -4,7 +4,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 
 from miner.utilities.common import get_node_elements
-from miner.utilities.scrape import parse_results_url
 from miner.utilities.urls import build_race_results_url
 from rawdat.models import Race
 
@@ -19,4 +18,4 @@ class Command(BaseCommand):
                 print(race.uuid)
                 for participant in race.participant_set.all():
                     participant.delete()
-                race.delete()    
+                race.delete()

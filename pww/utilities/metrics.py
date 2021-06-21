@@ -216,7 +216,7 @@ def get_straight_average(participations):
         straight = item.straight
         if straight:
             values.append(straight)
-    print(values)
+    # print(values)
     return get_average(values)
 
 
@@ -374,8 +374,6 @@ def save_metrics(metrics):
         existing_metric = new_metric
         # print("CREATED NEW METRIC FOR: {}".format(participant.uuid))
     # print(participant.final)
-    print("& & & & ")
-    print(metrics)
     # print("{} {} {} {}".format(participant.race.chart.program.date, participant.race.chart.program.venue.code, participant.race.grade.name, participant.race.distance ))
     existing_metric.scaled_fastest_time = metrics["scaled_fastest_time"]
     existing_metric.win = metrics["win_percent"]
