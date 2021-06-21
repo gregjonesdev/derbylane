@@ -544,14 +544,16 @@ def get_race_data(race_rows):
     race_data = []
 
     for row in race_rows:
+        split_final = split_position_lengths(row[5].text)
+        final_and_lengths = get_final_and_lengths_behind(split_final)
         race_data.append({
             "dogname": row[0][0].text,
             "post": row[1].text,
             "off": split_position_lengths(row[2].text)[0],
             "eighth": split_position_lengths(row[3].text)[0],
             "straight": split_position_lengths(row[4].text)[0],
-            "final": split_position_lengths(row[5].text)[0],
-            "lengths_behind": split_position_lengths(row[5].text)[1],
+            "final": final_and_lengths[0],
+            "lengths_behind": final_and_lengths[1],
             "actual_running_time": row[6].text,
             "comment": row[9].text
         })
@@ -586,6 +588,43 @@ def print_single_bets(bet_rows):
             ))
         i += 1
 
+def build_participant(race, dog_name, data_row):
+    print("build_participant")
+    print(dog_name)
+    print(data_row)
+
+def process_race_data(date, race_data):
+    print("process race data")
+    for each in race_data:
+        dog = get_dog(each["dogname"])
+        participant = get_participant(race, dog)
+
+
+        post_weight = get_post_weight(
+            dog.name,
+            date)
+
+        participant.post = each["post"]
+        participant.off = each["off"]
+        participant.eighth = each["eighth"]
+        participant.straight = each["straight"]
+        participant.final = each["final"]
+        participant.lengths_behind = each["lengths_behind"]
+        participant.post = each["post"]
+        participant.post = each["post"]
+        # print(string.format(
+        #     each["dogname"][:15],
+        #     each["post"],
+        #     each["off"],
+        #     each["eighth"],
+        #     each["straight"],
+        #     each["final"],
+        #     each["lengths_behind"],
+        #     each["actual_running_time"],
+        #     each["comment"]
+        # ))
+
+
 def single_url_test(results_url, chart):
     print("\n{}\n".format(results_url))
     tds = get_node_elements(results_url, '//td')
@@ -602,7 +641,7 @@ def single_url_test(results_url, chart):
 
         if chart:
             print("proceed to save race data")
-            race = get_race(chart, race_number)
+            race = get_race(chart.program.date, race_number)
             new_save_race_info(race, race_setting)
             # save single bets(race,
             # save combo bets(race,
@@ -613,6 +652,8 @@ def single_url_test(results_url, chart):
             print_single_bets(bet_rows)
             print_exotic_bets(exotic_bets)
             print_race_data(race_data)
+
+
 
 def new_save_race_info(race, race_setting):
     print("new")
