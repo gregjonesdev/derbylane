@@ -252,6 +252,7 @@ def process_combo_bets(race, target_url):
                             create_superfecta(race, posts, cost, payout)
 
 
+
 def get_dollar_amount(string):
     if string:
         stripped = string.strip()
@@ -463,27 +464,21 @@ def parse_results_url(results_url, race, page_data):
         process_dog_bets(race, page_data)
 
 def get_exotic_bets(results_url):
-    exotics = []
+    focused_bets = ["EXACTA", "QUINELLA", "TRIFECTA", "SUPERFECTA"]
+    exotic_bets = []
     exotic_ps = get_node_elements(results_url, '//p')
     for each in exotic_ps:
         if len(each.text) > 1:
-            print(each.text)
+            split_data = each.text.split()
+            exotic_name = ' '.join(split_data[1:-3]).upper()
+            if exotic_name in focused_bets:
+                exotic_bets.append({
+                    "name": exotic_name,
+                    "posts": split_data[-3].split("/"),
+                    "payout": float(split_data[-1].replace("$", "").replace(",", ""))
+                })
+    return exotic_bets
 
-# def get_race_number(tds):
-#     for td in tds:
-#         try:
-#             if td.text:
-#                 text = td.text
-#                 if "race" in text.lower() and re.search('[0-9]', text):
-#                     split_text = text.split()
-#                     for each in split_text:
-#                         try:
-#                             if 0 < int(each) < 30:
-#                                 return int(each)
-#                         except:
-#                             pass
-#         except UnicodeDecodeError:
-#             pass
 
 def get_race_setting(tds):
     for td in tds:
@@ -534,7 +529,7 @@ def single_url_test(results_url, chart):
         race_rows = get_rows_of_length(page_rows, 10)
         bet_rows = get_rows_of_length(page_rows, 5)
 
-        get_exotic_bets(results_url)
+        exotic_bets = get_exotic_bets(results_url)
         race_data = []
 
         for row in race_rows:
@@ -577,6 +572,20 @@ def single_url_test(results_url, chart):
                     current_row[4].text.strip()
                     ))
                 i += 1
+            print("\n")
+            for exotic_bet in exotic_bets:
+                string = "{}\t"
+                if len(exotic_bet["name"]) < 8:
+                    string += "\t"
+                string += "{}\t"
+                if len(exotic_bet["posts"]) < 4:
+                    string += "\t"
+                string += "\t{}"
+                print(string.format(
+                    exotic_bet["name"],
+                    exotic_bet["posts"],
+                    exotic_bet["payout"]
+                ))
             print("\n")
 
             string = "{}\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
