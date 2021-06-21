@@ -634,7 +634,8 @@ def single_url_test(results_url, chart):
             # save single bets(race,
             # save combo bets(race,
             # save race data(race,
-            build_race_metrics(race)
+            if race.grade and race.grade.value:
+                build_race_metrics(race)
         else:
             print_race_setting(raw_setting, race_number, race_setting)
             print_single_bets(bet_rows)
