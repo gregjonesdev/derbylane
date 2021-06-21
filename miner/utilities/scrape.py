@@ -516,6 +516,75 @@ def get_race_setting(raw_setting):
             setting["condition"] = item.upper()
     return setting
 
+def print_exotic_bets(exotic_bets):
+    print("\nExotic Wagers:")
+    for exotic_bet in exotic_bets:
+        string = "{}\t"
+        if len(exotic_bet["name"]) < 8:
+            string += "\t"
+        string += "{}\t"
+        if len(exotic_bet["posts"]) < 4:
+            string += "\t"
+        string += "\t{}"
+        print(string.format(
+            exotic_bet["name"],
+            exotic_bet["posts"],
+            exotic_bet["payout"]
+        ))
+    print("\n")
+
+def print_race_setting(raw_setting, race_number, race_setting):
+    print("Raw Setting: {}\n".format(raw_setting))
+    print("Race {}".format(race_number))
+    print("Grade: {}".format(race_setting["grade"].name))
+    print("Distance: {}".format(race_setting["distance"]))
+    print("Condition: {}".format(race_setting["condition"]))
+
+def get_race_data(race_rows):
+    race_data = []
+
+    for row in race_rows:
+        race_data.append({
+            "dogname": row[0][0].text,
+            "post": row[1].text,
+            "off": split_position_lengths(row[2].text)[0],
+            "eighth": split_position_lengths(row[3].text)[0],
+            "straight": split_position_lengths(row[4].text)[0],
+            "final": split_position_lengths(row[5].text)[0],
+            "lengths_behind": split_position_lengths(row[5].text)[1],
+            "actual_running_time": row[6].text,
+            "comment": row[9].text
+        })
+    return race_data
+
+def print_race_data(race_data):
+    string = "{}\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
+    for each in race_data:
+        print(string.format(
+            each["dogname"][:15],
+            each["post"],
+            each["off"],
+            each["eighth"],
+            each["straight"],
+            each["final"],
+            each["lengths_behind"],
+            each["actual_running_time"],
+            each["comment"]
+        ))
+
+def print_single_bets(bet_rows):
+    print("\nSingle Wagers:")
+    i = 1
+    print("Runner\t\tWin\t\tPlace\t\tShow")
+    while i <= 3:
+        current_row = bet_rows[i]
+        print("{}\t\t{}\t\t{}\t\t{}".format(
+            current_row[1].text.strip()[:5],
+            current_row[2].text.strip(),
+            current_row[3].text.strip(),
+            current_row[4].text.strip()
+            ))
+        i += 1
 
 def single_url_test(results_url, chart):
     print("\n{}\n".format(results_url))
@@ -528,83 +597,29 @@ def single_url_test(results_url, chart):
         page_rows = get_node_elements(results_url, '//tr')
         race_rows = get_rows_of_length(page_rows, 10)
         bet_rows = get_rows_of_length(page_rows, 5)
-
         exotic_bets = get_exotic_bets(results_url)
-        race_data = []
-
-        for row in race_rows:
-            race_data.append({
-                "dogname": row[0][0].text,
-                "post": row[1].text,
-                "off": split_position_lengths(row[2].text)[0],
-                "eighth": split_position_lengths(row[3].text)[0],
-                "straight": split_position_lengths(row[4].text)[0],
-                "final": split_position_lengths(row[5].text)[0],
-                "lengths_behind": split_position_lengths(row[5].text)[1],
-                "actual_running_time": row[6].text,
-                "comment": row[9].text
-            })
+        race_data = get_race_data(race_rows)
 
         if chart:
             print("proceed to save race data")
             race = get_race(chart, race_number)
-            save_race_info(race, raw_setting)
-            # save single bets
-            # save combo bets
-            # save race data
-            # build metric
+            new_save_race_info(race, race_setting)
+            # save single bets(race,
+            # save combo bets(race,
+            # save race data(race,
+            # build metric(race,
         else:
-            print("Raw Setting: {}\n".format(raw_setting))
-            print("Race {}".format(race_number))
-            print("Grade: {}".format(race_setting["grade"].name))
-            print("Distance: {}".format(race_setting["distance"]))
-            print("Condition: {}".format(race_setting["condition"]))
-            print("\nSingle Wagers:")
+            print_race_setting(raw_setting, race_number, race_setting)
+            print_single_bets(bet_rows)
+            print_exotic_bets(exotic_bets)
+            print_race_data(race_data)
 
-            i = 1
-            print("Runner\t\tWin\t\tPlace\t\tShow")
-            while i <= 3:
-                current_row = bet_rows[i]
-                print("{}\t\t{}\t\t{}\t\t{}".format(
-                    current_row[1].text.strip()[:5],
-                    current_row[2].text.strip(),
-                    current_row[3].text.strip(),
-                    current_row[4].text.strip()
-                    ))
-                i += 1
-            print("\nExotic Wagers:")
-            for exotic_bet in exotic_bets:
-                string = "{}\t"
-                if len(exotic_bet["name"]) < 8:
-                    string += "\t"
-                string += "{}\t"
-                if len(exotic_bet["posts"]) < 4:
-                    string += "\t"
-                string += "\t{}"
-                print(string.format(
-                    exotic_bet["name"],
-                    exotic_bet["posts"],
-                    exotic_bet["payout"]
-                ))
-            print("\n")
-
-            string = "{}\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
-
-            for each in race_data:
-                print(string.format(
-                    each["dogname"][:15],
-                    each["post"],
-                    each["off"],
-                    each["eighth"],
-                    each["straight"],
-                    each["final"],
-                    each["lengths_behind"],
-                    each["actual_running_time"],
-                    each["comment"]
-                ))
-
-
-
+def new_save_race_info(race, race_setting):
+    print("new")
+    race.condition = race_setting['condition']
+    race.grade = race_setting['grade']
+    race.distance = race_setting['distance']
+    race.save()
 
 
 def scan_history_charts(venue, year, month, day):

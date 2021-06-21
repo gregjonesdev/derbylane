@@ -360,6 +360,7 @@ def save_race_info(race, raw_setting):
                 race.condition = item.upper()
         race.save()
 
+
 def get_chart(program, time):
     try:
         chart = Chart.objects.get(
