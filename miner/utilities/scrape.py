@@ -528,49 +528,16 @@ def single_url_test(results_url, chart):
     raw_setting = get_raw_setting(tds)
     race_setting = get_race_setting(raw_setting)
     race_number = results_url[-2:]
-    print("Raw Setting: {}\n".format(raw_setting))
-    print("Race {}".format(race_number))
-    print("Grade: {}".format(race_setting["grade"].name))
-    print("Distance: {}".format(race_setting["distance"]))
-    print("Condition: {}".format(race_setting["condition"]))
-    print("\nSingle wagers:")
+
     if len(tds) > 20:
         page_rows = get_node_elements(results_url, '//tr')
         race_rows = get_rows_of_length(page_rows, 10)
         bet_rows = get_rows_of_length(page_rows, 5)
 
-        i = 1
-        print("Runner\t\tWin\t\tPlace\t\tShow")
-        while i <= 3:
-            current_row = bet_rows[i]
-            print("{}\t\t{}\t\t{}\t\t{}".format(
-                current_row[1].text.strip()[:5],
-                current_row[2].text.strip(),
-                current_row[3].text.strip(),
-                current_row[4].text.strip()
-                ))
-            i += 1
-        print("\n")
-
-        # for row in bet_rows:
-        #     for each in row:
-        #         if each.text:
-        #             print("{} {}".format(len(each.text), each.text.strip()))
-
         get_exotic_bets(results_url)
-        print("\n")
         race_data = []
-        string = "{}\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
+
         for row in race_rows:
-            # dogname = row[0][0].text
-            # post = row[1].text
-            # off = split_position_lengths(row[2].text)[0]
-            # eighth = split_position_lengths(row[3].text)[0]
-            # straight = split_position_lengths(row[4].text)[0]
-            # final = split_position_lengths(row[5].text)[0]
-            # lengths_behind = split_position_lengths(row[5].text)[1]
-            # actual_running_time = row[6].text
-            # comment = row[9].text
             race_data.append({
                 "dogname": row[0][0].text,
                 "post": row[1].text,
@@ -582,18 +549,7 @@ def single_url_test(results_url, chart):
                 "actual_running_time": row[6].text,
                 "comment": row[9].text
             })
-        for each in race_data:
-            print(string.format(
-                each["dogname"][:15],
-                each["post"],
-                each["off"],
-                each["eighth"],
-                each["straight"],
-                each["final"],
-                each["lengths_behind"],
-                each["actual_running_time"],
-                each["comment"]
-            ))
+
         if chart:
             print("proceed to save race data")
             race = get_race(chart, race_number)
@@ -602,6 +558,43 @@ def single_url_test(results_url, chart):
             # save combo bets
             # save race data
             # build metric
+        else:
+            print("Raw Setting: {}\n".format(raw_setting))
+            print("Race {}".format(race_number))
+            print("Grade: {}".format(race_setting["grade"].name))
+            print("Distance: {}".format(race_setting["distance"]))
+            print("Condition: {}".format(race_setting["condition"]))
+            print("\nSingle wagers:")
+
+            i = 1
+            print("Runner\t\tWin\t\tPlace\t\tShow")
+            while i <= 3:
+                current_row = bet_rows[i]
+                print("{}\t\t{}\t\t{}\t\t{}".format(
+                    current_row[1].text.strip()[:5],
+                    current_row[2].text.strip(),
+                    current_row[3].text.strip(),
+                    current_row[4].text.strip()
+                    ))
+                i += 1
+            print("\n")
+
+            string = "{}\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
+
+            for each in race_data:
+                print(string.format(
+                    each["dogname"][:15],
+                    each["post"],
+                    each["off"],
+                    each["eighth"],
+                    each["straight"],
+                    each["final"],
+                    each["lengths_behind"],
+                    each["actual_running_time"],
+                    each["comment"]
+                ))
+
+
 
 
 
