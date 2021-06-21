@@ -270,6 +270,9 @@ def get_combo_name(text):
     # print("---")
     # print(text)
     # print("---")
+    text = text.upper()
+    if 'BIG' in text:
+        return None
     if 'TRI SUPER' in text:
         return None
     elif 'DOUB' in text:
@@ -286,7 +289,6 @@ def get_combo_name(text):
         return "Superfecta"
     elif 'EX' in text:
         return "Exacta"
-
     else:
         return None
 
@@ -549,7 +551,7 @@ def single_url_test(results_url, chart):
                 ))
             i += 1
         print("\n")
-            
+
         # for row in bet_rows:
         #     for each in row:
         #         if each.text:
@@ -557,33 +559,48 @@ def single_url_test(results_url, chart):
 
         get_exotic_bets(results_url)
         print("\n")
+        race_data = []
+        string = "{}\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
         for row in race_rows:
-            dogname = row[0][0].text
-            post = row[1].text
-            off = split_position_lengths(row[2].text)[0]
-            eighth = split_position_lengths(row[3].text)[0]
-            straight = split_position_lengths(row[4].text)[0]
-            final = split_position_lengths(row[5].text)[0]
-            lengths_behind = split_position_lengths(row[5].text)[1]
-            actual_running_time = row[6].text
-            comment = row[9].text
-            string = "{}\t{}\t{}\t{}\t{}\t{}-{}\t{}\t{}"
+            # dogname = row[0][0].text
+            # post = row[1].text
+            # off = split_position_lengths(row[2].text)[0]
+            # eighth = split_position_lengths(row[3].text)[0]
+            # straight = split_position_lengths(row[4].text)[0]
+            # final = split_position_lengths(row[5].text)[0]
+            # lengths_behind = split_position_lengths(row[5].text)[1]
+            # actual_running_time = row[6].text
+            # comment = row[9].text
+            race_data.append({
+                "dogname": row[0][0].text,
+                "post": row[1].text,
+                "off": split_position_lengths(row[2].text)[0],
+                "eighth": split_position_lengths(row[3].text)[0],
+                "straight": split_position_lengths(row[4].text)[0],
+                "final": split_position_lengths(row[5].text)[0],
+                "lengths_behind": split_position_lengths(row[5].text)[1],
+                "actual_running_time": row[6].text,
+                "comment": row[9].text
+            })
 
-            print(string.format(
-                dogname[:15],
-                post,
-                off,
-                eighth,
-                straight,
-                final,
-                lengths_behind,
-                actual_running_time,
-                comment
-            ))
+            # print(string.format(
+            #     dogname[:15],
+            #     post,
+            #     off,
+            #     eighth,
+            #     straight,
+            #     final,
+            #     lengths_behind,
+            #     actual_running_time,
+            #     comment
+            # ))
             if chart:
                 print("proceed to save race data")
                 race = get_race(chart, race_number)
                 save_race_info(race, raw_setting)
+                # save single bets
+                # save combo bets
+                # save race data
 
 
 
