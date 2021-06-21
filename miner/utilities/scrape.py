@@ -582,25 +582,26 @@ def single_url_test(results_url, chart):
                 "actual_running_time": row[6].text,
                 "comment": row[9].text
             })
-
-            # print(string.format(
-            #     dogname[:15],
-            #     post,
-            #     off,
-            #     eighth,
-            #     straight,
-            #     final,
-            #     lengths_behind,
-            #     actual_running_time,
-            #     comment
-            # ))
-            if chart:
-                print("proceed to save race data")
-                race = get_race(chart, race_number)
-                save_race_info(race, raw_setting)
-                # save single bets
-                # save combo bets
-                # save race data
+        for each in race_data:
+            print(string.format(
+                each["dogname"][:15],
+                each["post"],
+                each["off"],
+                each["eighth"],
+                each["straight"],
+                each["final"],
+                each["lengths_behind"],
+                each["actual_running_time"],
+                each["comment"]
+            ))
+        if chart:
+            print("proceed to save race data")
+            race = get_race(chart, race_number)
+            save_race_info(race, raw_setting)
+            # save single bets
+            # save combo bets
+            # save race data
+            # build metric
 
 
 
