@@ -270,28 +270,27 @@ def is_grade(grade):
 
 def get_race_setting(raw_setting):
     print("Raw setting: {}".format(raw_setting))
-    if raw_setting:
-        setting = {
-            "grade": None,
-            "distance": None,
-            "condition": None,
-        }
-        for item in raw_setting[:3]:
-            if is_grade(item):
-                setting["grade"] = get_grade(item)
-        for item in raw_setting:
-            if item in distance_converter:
-                item = distance_converter[item]
-            try:
-                item = int(item)
-                if 100 < item < 900:
-                    setting["distance"] = int(item)
-            except:
-                pass
-        for item in raw_setting[3:]:
-            if item.upper() in race_conditions:
-                setting["condition"] = item.upper()
-        return setting
+    setting = {
+        "grade": None,
+        "distance": None,
+        "condition": None,
+    }
+    for item in raw_setting[:3]:
+        if is_grade(item):
+            setting["grade"] = get_grade(item)
+    for item in raw_setting:
+        if item in distance_converter:
+            item = distance_converter[item]
+        try:
+            item = int(item)
+            if 100 < item < 900:
+                setting["distance"] = int(item)
+        except:
+            pass
+    for item in raw_setting[3:]:
+        if item.upper() in race_conditions:
+            setting["condition"] = item.upper()
+    return setting
 
 def print_exotic_bets(exotic_bets):
     print("\nExotic Wagers:")
@@ -311,7 +310,6 @@ def print_exotic_bets(exotic_bets):
     print("\n")
 
 def print_race_setting(raw_setting, race_number, race_setting):
-    print("Raw Setting: {}\n".format(raw_setting))
     print("Race {}".format(race_number))
     if race_setting:
         print("Grade: {}".format(race_setting["grade"].name))
@@ -446,41 +444,45 @@ def handle_race(race, race_setting, race_data, exotic_bets):
 def single_url_test(results_url, tds, chart):
     print("\n{}\n".format(results_url))
     raw_setting = get_raw_setting(tds)
-    race_setting = get_race_setting(raw_setting)
-    race_number = results_url[-2:]
-    if race_setting:
-        page_rows = get_node_elements(results_url, '//tr')
-        race_rows = get_rows_of_length(page_rows, 10)
-        bet_rows = get_rows_of_length(page_rows, 5)
-        print("Bet rows length: {}".format(len(bet_rows)))
-        single_bets = None
-        if len(bet_rows) > 1:
-            single_bets = get_single_bets(bet_rows)
-        exotic_bets = get_exotic_bets(results_url)
-        print("Exotic bets length: {}".format(len(exotic_bets)))
-        print("Race rows:")
-        race_data = get_race_data(race_rows)
-        print("Race data: {}".format(race_data))
-        # print(race_data)
-        # print("Chart: {}".format(chart))
-        if chart:
-            print("has chart")
-            program = chart.program
-            print("Program: {}".format(program))
-            if race_number.isnumeric():
-                race = get_race(chart, race_number)
-                if len(race_data) > 0:
-                    handle_race(race, race_setting, race_data, exotic_bets)
+    print("Raw Setting: {}\n".format(raw_setting))
+    if raw_setting:
+        race_setting = get_race_setting(raw_setting)
+        race_number = results_url[-2:]
+        if race_setting:
+            page_rows = get_node_elements(results_url, '//tr')
+            race_rows = get_rows_of_length(page_rows, 10)
+            bet_rows = get_rows_of_length(page_rows, 5)
+            print("Bet rows length: {}".format(len(bet_rows)))
+            single_bets = None
+            if len(bet_rows) > 1:
+                single_bets = get_single_bets(bet_rows)
+            exotic_bets = get_exotic_bets(results_url)
+            print("Exotic bets length: {}".format(len(exotic_bets)))
+            print("Race rows:")
+            race_data = get_race_data(race_rows)
+            print("Race data: {}".format(race_data))
+            # print(race_data)
+            # print("Chart: {}".format(chart))
+            if chart:
+                print("has chart")
+                program = chart.program
+                print("Program: {}".format(program))
+                if race_number.isnumeric():
+                    race = get_race(chart, race_number)
+                    if len(race_data) > 0:
+                        handle_race(race, race_setting, race_data, exotic_bets)
+                else:
+                    print("race number not numeric")
+                print("DONE")
             else:
-                print("race number not numeric")
-            print("DONE")
-        else:
-            print_race_setting(raw_setting, race_number, race_setting)
-            print_single_bets(single_bets)
-            print_exotic_bets(exotic_bets)
-            print(len(race_data))
-            if len(race_data) > 0:
-                print_race_data(race_data)
+                print_race_setting(raw_setting, race_number, race_setting)
+                print_single_bets(single_bets)
+                print_exotic_bets(exotic_bets)
+                print(len(race_data))
+                if len(race_data) > 0:
+                    print_race_data(race_data)
+    else:
+        print("No raw setting")
 
 
 
