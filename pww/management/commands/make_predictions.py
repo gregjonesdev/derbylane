@@ -63,36 +63,41 @@ class Command(BaseCommand):
         today = datetime.date.today()
         arff_data = []
         for venue in Venue.objects.filter(is_active=True):
+            print("Venue: {}".format(venue.name))
             venue_metrics = Metric.objects.filter(
                 participant__race__chart__program__venue=venue)
             for distance in venue_distances[venue.code]:
+                print("Distance: {}".format(distance))
                 distance_metrics = venue_metrics.filter(
                     participant__race__distance=distance,
                 )
                 for grade_name in valued_grades:
+                    print("Grade: {}".format(grade_name))
                     graded_metrics = distance_metrics.filter(
                         participant__race__grade__name=grade_name,
                     )
                     completed_metrics = graded_metrics.filter(final__isnull=False)
-                    scheduled_metrics = graded_metrics.filter(final__isnull=True)
-                    race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
-                    if len(scheduled_metrics) > 0:
-                        scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
-                        results_filename = "arff/{}_results.arff".format(race_key)
-                        nominal_filename = "arff/{}_nominal.arff".format(race_key)
-
-                        arff_data.append({
-                            "scheduled": self.create_arff(
-                                scheduled_filename,
-                                scheduled_metrics,
-                                False),
-                            "results": self.create_arff(
-                                results_filename,
-                                completed_metrics,
-                                False),
-                            "nominal": self.create_arff(
-                                nominal_filename,
-                                completed_metrics,
-                                True),
-                        })
-        make_predictions(arff_data)
+                    print("Completed Metrics: {}".format(len(completed_metrics)))
+        print("\n")
+        #             scheduled_metrics = graded_metrics.filter(final__isnull=True)
+        #             race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
+        #             if len(scheduled_metrics) > 0:
+        #                 scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
+        #                 results_filename = "arff/{}_results.arff".format(race_key)
+        #                 nominal_filename = "arff/{}_nominal.arff".format(race_key)
+        #
+        #                 arff_data.append({
+        #                     "scheduled": self.create_arff(
+        #                         scheduled_filename,
+        #                         scheduled_metrics,
+        #                         False),
+        #                     "results": self.create_arff(
+        #                         results_filename,
+        #                         completed_metrics,
+        #                         False),
+        #                     "nominal": self.create_arff(
+        #                         nominal_filename,
+        #                         completed_metrics,
+        #                         True),
+        #                 })
+        # make_predictions(arff_data)

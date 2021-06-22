@@ -323,7 +323,7 @@ def get_actual_running_time(text):
 
 def get_race_data(race_rows):
     race_data = []
-
+    posts = []
     for row in race_rows:
         split_final = split_position_lengths(row[5].text)
         final_and_lengths = get_final_and_lengths_behind(split_final)
@@ -331,17 +331,20 @@ def get_race_data(race_rows):
             final = None
         else:
             final = final_and_lengths[0]
-        race_data.append({
-            "dogname": row[0][0].text,
-            "post": row[1].text,
-            "off": split_position_lengths(row[2].text)[0],
-            "eighth": split_position_lengths(row[3].text)[0],
-            "straight": split_position_lengths(row[4].text)[0],
-            "final": final,
-            "lengths_behind": final_and_lengths[1],
-            "actual_running_time": get_actual_running_time(row[6].text),
-            "comment": row[9].text
-        })
+        current_post = row[1].text
+        if not current_post in posts:
+            posts.append(current_post)  
+            race_data.append({
+                "dogname": row[0][0].text,
+                "post": row[1].text,
+                "off": split_position_lengths(row[2].text)[0],
+                "eighth": split_position_lengths(row[3].text)[0],
+                "straight": split_position_lengths(row[4].text)[0],
+                "final": final,
+                "lengths_behind": final_and_lengths[1],
+                "actual_running_time": get_actual_running_time(row[6].text),
+                "comment": row[9].text
+            })
     return race_data
 
 def print_race_data(race_data):
