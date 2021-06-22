@@ -20,9 +20,10 @@ class Command(BaseCommand):
 
     def scan_month(self, venue, month, year):
         day = 1
-        while day <= 31:
+        while day <= 30:
             scan_history_charts(venue, year, month, day)
             day += 1
+        print("done scanning")
         self.create_venue_scan(venue, year, month)
 
     def create_venue_scan(self, venue, year, month):

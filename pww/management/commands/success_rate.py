@@ -67,11 +67,10 @@ class Command(BaseCommand):
         arff_data = []
         for venue in Venue.objects.filter(is_active=True):
             print("\n")
-            print(venue)
             venue_metrics = Metric.objects.filter(
                 participant__race__chart__program__venue=venue)
             for distance in venue_distances[venue.code]:
-                print("\nDistance: {} yd".format(distance))
+                print("\n{}: {} yd".format(venue.name, distance))
                 print("Grade\tTraining\tTest")
                 distance_metrics = venue_metrics.filter(
                     participant__race__distance=distance,
@@ -94,21 +93,21 @@ class Command(BaseCommand):
         #             scheduled_metrics = graded_metrics.filter(final__isnull=True)
         #             print(len(completed_metrics))
         #             print(len(scheduled_metrics))
-        #             race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
-        #             # if len(scheduled_metrics) > 0:
-        #             scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
-        #             results_filename = "arff/{}_results.arff".format(race_key)
+                    race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
+                    if len(training_metrics) > 50 and len(test_metrics) > 5:
+                        test_filename = "arff/{}_test.arff".format(race_key)
+                        training_filename = "arff/{}_training.arff".format(race_key)
         # #
-        #             arff_data.append({
-        #                 "scheduled": self.create_arff(
-        #                     scheduled_filename,
-        #                     scheduled_metrics,
-        #                     False),
-        #                 "results": self.create_arff(
-        #                     results_filename,
-        #                     completed_metrics,
-        #                     False),
-        #
-        #                 })
-        #             # print("DONE")
-        # make_predictions(arff_data)
+                        arff_data.append({
+                            "scheduled": self.create_arff(
+                                test_filename,
+                                test_metrics,
+                                False),
+                            "results": self.create_arff(
+                                training_filename,
+                                training_metrics,
+                                False),
+
+                            })
+                    # print("DONE")
+        make_predictions(arff_data)

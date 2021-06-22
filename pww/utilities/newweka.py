@@ -5,8 +5,10 @@ from weka.filters import Filter
 import weka.core.jvm as jvm
 import weka.core.converters as conv
 from rawdat.models import Participant
+from django.core.exceptions import ObjectDoesNotExist
 from weka.classifiers import Evaluation, Classifier, FilteredClassifier
 from weka.core.classes import Random
+from pww.models import Prediction
 
 confidence_vector = "0.3"
 data_dir = "./rawdat/arff/"
@@ -27,7 +29,23 @@ def output_predictions(cls, data, uuid_list):
         # print("{} | {}".format(index, inst))
         pred = cls.classify_instance(inst)
         participant = Participant.objects.get(uuid=uuid_list[index])
-        print("{}\t{}\t{}\t{}\t{}".format(participant.race.chart.program.date, participant.race.chart.time, participant.race.number, participant.dog.name, pred))
+        try:
+            prediction = Prediction.objects.get(participant=participant)
+        except ObjectDoesNotExist:
+            new_prediction = Prediction(
+                participant = participant
+            )
+            new_prediction.set_fields_to_base()
+            new_prediction.save()
+            prediction = new_prediction
+        prediction.smo = pred
+        prediction.save()
+        # print("{}\t{}\t{}\t{}\t{}".format(
+        #     participant.race.chart.program.date,
+        #     participant.race.chart.time,
+        #     participant.race.number,
+        #     participant.dog.name,
+        #     pred))
         # dist = cls.distribution_for_instance(inst)
         # print(
         # str(index+1) +
@@ -67,9 +85,7 @@ def make_predictions(arff_data):
     for each in arff_data:
         results_csv = each["results"]
         scheduled_csv = each["scheduled"]
-        print("this is where you want to be")
         uuid_list = get_uuid_list(scheduled_csv)
-        print("make predcitions")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         results_data=loader.load_file(results_csv)
         scheduled_data=loader.load_file(scheduled_csv)
@@ -78,16 +94,6 @@ def make_predictions(arff_data):
         # remove.inputformat(scheduled_data)
         filtered_results = remove.filter(results_data)   # filter the data
         filtered_scheduled = remove.filter(scheduled_data)
-
-
-        print("so far so good")
-
-            # let the filter know about the type of data to filter
-        # print(filtered_results)
-        # print(filtered_schedule)
-        # print('80')
-        # print(scheduled_csv)
-        # print(loader.load_file(scheduled_csv))                #
         cls = train_classifier(filtered_results, "weka.classifiers.functions.SMOreg", [])
         output_predictions(cls, filtered_scheduled, uuid_list)
     #
