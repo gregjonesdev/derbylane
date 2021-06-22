@@ -44,7 +44,7 @@ class Command(BaseCommand):
     def get_venue_results(self, venue):
         year = sys.argv[3]
         self.stdout.write("Processing {} {}".format(venue, year))
-        month = 1
+        month = 9
         while month <= 12:
             if not self.scan_complete(venue, month, year):
                 self.scan_month(venue, month, year)

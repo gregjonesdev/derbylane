@@ -316,9 +316,10 @@ def print_exotic_bets(exotic_bets):
 def print_race_setting(raw_setting, race_number, race_setting):
     print("Raw Setting: {}\n".format(raw_setting))
     print("Race {}".format(race_number))
-    print("Grade: {}".format(race_setting["grade"].name))
-    print("Distance: {}".format(race_setting["distance"]))
-    print("Condition: {}".format(race_setting["condition"]))
+    if race_setting:
+        print("Grade: {}".format(race_setting["grade"].name))
+        print("Distance: {}".format(race_setting["distance"]))
+        print("Condition: {}".format(race_setting["condition"]))
 
 def get_actual_running_time(text):
     print("--")
@@ -470,15 +471,18 @@ def single_url_test(results_url, tds, chart):
         print_race_setting(raw_setting, race_number, race_setting)
         print_single_bets(single_bets)
         print_exotic_bets(exotic_bets)
-        print_race_data(race_data)
+        print(len(race_data))
+        if len(race_data) > 0:
+            print_race_data(race_data)
 
 
 
 def save_race_info(race, race_setting):
-    race.condition = race_setting['condition']
-    race.grade = race_setting['grade']
-    race.distance = race_setting['distance']
-    race.save()
+    if race_setting:
+        race.condition = race_setting['condition']
+        race.grade = race_setting['grade']
+        race.distance = race_setting['distance']
+        race.save()
 
 
 def scan_history_charts(venue, year, month, day):
