@@ -459,7 +459,8 @@ def single_url_test(results_url, tds, chart):
         print("proceed to save race data")
         program = chart.program
         race = get_race(chart, race_number)
-        handle_race(race, race_setting, race_data, exotic_bets)
+        if len(race_data) > 0:
+            handle_race(race, race_setting, race_data, exotic_bets)
         print("DONE")
     else:
         print_race_setting(raw_setting, race_number, race_setting)
@@ -468,7 +469,7 @@ def single_url_test(results_url, tds, chart):
         print(len(race_data))
         if len(race_data) > 0:
             print_race_data(race_data)
-
+    print("really done")        
 
 
 def save_race_info(race, race_setting):
