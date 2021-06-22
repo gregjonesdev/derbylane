@@ -250,7 +250,6 @@ def get_entries_dognames(url):
 
 
 def get_exotic_bets(results_url):
-
     exotic_bets = []
     exotic_ps = get_node_elements(results_url, '//p')
     for each in exotic_ps:
@@ -374,7 +373,7 @@ def print_single_bets(single_bets):
                 bet["show"]
                 ))
     else:
-        print("None")            
+        print("None")
 
 def get_single_bets(bet_rows):
     single_bets = []
@@ -446,7 +445,6 @@ def handle_race(race, race_setting, race_data, exotic_bets):
 
 def single_url_test(results_url, tds, chart):
     print("\n{}\n".format(results_url))
-    # tds = get_node_elements(results_url, '//td')
     raw_setting = get_raw_setting(tds)
     race_setting = get_race_setting(raw_setting)
     race_number = results_url[-2:]
@@ -459,14 +457,18 @@ def single_url_test(results_url, tds, chart):
     if len(bet_rows) > 1:
         single_bets = get_single_bets(bet_rows)
     exotic_bets = get_exotic_bets(results_url)
-    race_data = get_race_data(race_rows)
+    print("Exotic bets length: {}".format(len(exotic_bets)))
 
+    race_data = get_race_data(race_rows)
+    print(race_data)
+    print("Chart: {}".format(chart))
     if chart:
         print("proceed to save race data")
         program = chart.program
-        race = get_race(chart, race_number)
-        if len(race_data) > 0:
-            handle_race(race, race_setting, race_data, exotic_bets)
+        if race_number.is_numeric():
+            race = get_race(chart, race_number)
+            if len(race_data) > 0:
+                handle_race(race, race_setting, race_data, exotic_bets)
         print("DONE")
     else:
         print_race_setting(raw_setting, race_number, race_setting)
@@ -475,7 +477,7 @@ def single_url_test(results_url, tds, chart):
         print(len(race_data))
         if len(race_data) > 0:
             print_race_data(race_data)
-    print("really done")
+    print("url complete")
 
 
 def save_race_info(race, race_setting):
