@@ -364,14 +364,17 @@ def print_race_data(race_data):
 
 def print_single_bets(single_bets):
     print("\nSingle Wagers:")
-    print("Runner\t\tWin\t\tPlace\t\tShow")
-    for bet in single_bets:
-        print("{}\t\t{}\t\t{}\t\t{}".format(
-            bet["dog"].name[:5],
-            bet["win"],
-            bet["place"],
-            bet["show"]
-            ))
+    if single_bets:
+        print("Runner\t\tWin\t\tPlace\t\tShow")
+        for bet in single_bets:
+            print("{}\t\t{}\t\t{}\t\t{}".format(
+                bet["dog"].name[:5],
+                bet["win"],
+                bet["place"],
+                bet["show"]
+                ))
+    else:
+        print("None")            
 
 def get_single_bets(bet_rows):
     single_bets = []
@@ -451,7 +454,10 @@ def single_url_test(results_url, tds, chart):
     page_rows = get_node_elements(results_url, '//tr')
     race_rows = get_rows_of_length(page_rows, 10)
     bet_rows = get_rows_of_length(page_rows, 5)
-    single_bets = get_single_bets(bet_rows)
+    print("Bet rows length: {}".format(len(bet_rows)))
+    single_bets = None
+    if len(bet_rows) > 1:
+        single_bets = get_single_bets(bet_rows)
     exotic_bets = get_exotic_bets(results_url)
     race_data = get_race_data(race_rows)
 
@@ -469,7 +475,7 @@ def single_url_test(results_url, tds, chart):
         print(len(race_data))
         if len(race_data) > 0:
             print_race_data(race_data)
-    print("really done")        
+    print("really done")
 
 
 def save_race_info(race, race_setting):
