@@ -460,15 +460,19 @@ def single_url_test(results_url, tds, chart):
         print("Exotic bets length: {}".format(len(exotic_bets)))
         print("Race rows:")
         race_data = get_race_data(race_rows)
+        print("Race data: {}".format(race_data))
         # print(race_data)
         # print("Chart: {}".format(chart))
         if chart:
-            print("proceed to save race data")
+            print("has chart")
             program = chart.program
+            print("Program: {}".format(program))
             if race_number.isnumeric():
                 race = get_race(chart, race_number)
                 if len(race_data) > 0:
                     handle_race(race, race_setting, race_data, exotic_bets)
+            else:
+                print("race number not numeric")
             print("DONE")
         else:
             print_race_setting(raw_setting, race_number, race_setting)
@@ -477,7 +481,7 @@ def single_url_test(results_url, tds, chart):
             print(len(race_data))
             if len(race_data) > 0:
                 print_race_data(race_data)
-    print("url complete")
+
 
 
 def save_race_info(race, race_setting):
