@@ -445,38 +445,39 @@ def handle_race(race, race_setting, race_data, exotic_bets):
 
 def single_url_test(results_url, tds, chart):
     print("\n{}\n".format(results_url))
-    raw_setting = get_raw_setting(tds)
-    race_setting = get_race_setting(raw_setting)
-    race_number = results_url[-2:]
+    if not "GWD20180915S05" in results_url:
+        raw_setting = get_raw_setting(tds)
+        race_setting = get_race_setting(raw_setting)
+        race_number = results_url[-2:]
 
-    page_rows = get_node_elements(results_url, '//tr')
-    race_rows = get_rows_of_length(page_rows, 10)
-    bet_rows = get_rows_of_length(page_rows, 5)
-    print("Bet rows length: {}".format(len(bet_rows)))
-    single_bets = None
-    if len(bet_rows) > 1:
-        single_bets = get_single_bets(bet_rows)
-    exotic_bets = get_exotic_bets(results_url)
-    print("Exotic bets length: {}".format(len(exotic_bets)))
+        page_rows = get_node_elements(results_url, '//tr')
+        race_rows = get_rows_of_length(page_rows, 10)
+        bet_rows = get_rows_of_length(page_rows, 5)
+        print("Bet rows length: {}".format(len(bet_rows)))
+        single_bets = None
+        if len(bet_rows) > 1:
+            single_bets = get_single_bets(bet_rows)
+        exotic_bets = get_exotic_bets(results_url)
+        print("Exotic bets length: {}".format(len(exotic_bets)))
 
-    race_data = get_race_data(race_rows)
-    print(race_data)
-    print("Chart: {}".format(chart))
-    if chart:
-        print("proceed to save race data")
-        program = chart.program
-        if race_number.isnumeric():
-            race = get_race(chart, race_number)
+        race_data = get_race_data(race_rows)
+        # print(race_data)
+        # print("Chart: {}".format(chart))
+        if chart:
+            print("proceed to save race data")
+            program = chart.program
+            if race_number.isnumeric():
+                race = get_race(chart, race_number)
+                if len(race_data) > 0:
+                    handle_race(race, race_setting, race_data, exotic_bets)
+            print("DONE")
+        else:
+            print_race_setting(raw_setting, race_number, race_setting)
+            print_single_bets(single_bets)
+            print_exotic_bets(exotic_bets)
+            print(len(race_data))
             if len(race_data) > 0:
-                handle_race(race, race_setting, race_data, exotic_bets)
-        print("DONE")
-    else:
-        print_race_setting(raw_setting, race_number, race_setting)
-        print_single_bets(single_bets)
-        print_exotic_bets(exotic_bets)
-        print(len(race_data))
-        if len(race_data) > 0:
-            print_race_data(race_data)
+                print_race_data(race_data)
     print("url complete")
 
 
