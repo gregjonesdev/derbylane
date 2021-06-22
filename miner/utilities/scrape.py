@@ -78,8 +78,6 @@ def get_final_and_lengths_behind(split_final):
         final = split_final[0]
         if len(split_final) > 1:
             lengths_behind = get_result_lengths_behind(split_final)
-            print("A")
-            print(lengths_behind)
         else:
             lengths_behind = None
     except IndexError:
@@ -322,8 +320,6 @@ def print_race_setting(raw_setting, race_number, race_setting):
         print("Condition: {}".format(race_setting["condition"]))
 
 def get_actual_running_time(text):
-    print("--")
-    print(text)
     if text.strip() not in art_skips:
         return text
 
@@ -398,7 +394,6 @@ def get_single_bets(bet_rows):
 def process_race_data(race, race_data):
     print("process race data")
     for each in race_data:
-        print(each["final"])
         dog = get_dog(each["dogname"])
         participant = get_participant(race, dog)
         post_weight = get_post_weight(
@@ -423,7 +418,6 @@ def process_race_data(race, race_data):
             except:
                 pass
         participant.comment = each["comment"]
-        print(participant.__dict__)
         participant.save()
 
 def save_exotic_bets(race, exotic_bets):
