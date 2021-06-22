@@ -445,11 +445,10 @@ def handle_race(race, race_setting, race_data, exotic_bets):
 
 def single_url_test(results_url, tds, chart):
     print("\n{}\n".format(results_url))
-    if not "GWD20180915S05" in results_url:
-        raw_setting = get_raw_setting(tds)
-        race_setting = get_race_setting(raw_setting)
-        race_number = results_url[-2:]
-
+    raw_setting = get_raw_setting(tds)
+    race_setting = get_race_setting(raw_setting)
+    race_number = results_url[-2:]
+    if race_setting:
         page_rows = get_node_elements(results_url, '//tr')
         race_rows = get_rows_of_length(page_rows, 10)
         bet_rows = get_rows_of_length(page_rows, 5)
@@ -459,7 +458,7 @@ def single_url_test(results_url, tds, chart):
             single_bets = get_single_bets(bet_rows)
         exotic_bets = get_exotic_bets(results_url)
         print("Exotic bets length: {}".format(len(exotic_bets)))
-
+        print("Race rows:")
         race_data = get_race_data(race_rows)
         # print(race_data)
         # print("Chart: {}".format(chart))
