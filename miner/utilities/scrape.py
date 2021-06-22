@@ -1,5 +1,5 @@
 import re
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from miner.utilities.urls import (
     build_entries_url,
     build_race_results_url,
