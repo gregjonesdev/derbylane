@@ -333,7 +333,7 @@ def get_race_data(race_rows):
             final = final_and_lengths[0]
         current_post = row[1].text
         if not current_post in posts:
-            posts.append(current_post)  
+            posts.append(current_post)
             race_data.append({
                 "dogname": row[0][0].text,
                 "post": row[1].text,
@@ -511,10 +511,15 @@ def scan_history_charts(venue, year, month, day):
                 time,
                 number)
             formatted_date = get_date_from_ymd(year, month, day)
-            program = get_program(venue, formatted_date)
-            tds = get_node_elements(results_url, '//td')
-            if len(tds) > 85:
-                single_url_test(results_url, tds, get_chart(program, time))
-            else:
-                failed_attempts += 1
-            number += 1
+            program = None
+            try:
+                program = get_program(venue, formatted_date)
+            except ValidationError:
+                pass
+            if program:
+                tds = get_node_elements(results_url, '//td')
+                if len(tds) > 85:
+                    single_url_test(results_url, tds, get_chart(program, time))
+                else:
+                    failed_attempts += 1
+                number += 1
