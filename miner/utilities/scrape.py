@@ -17,6 +17,8 @@ from miner.utilities.constants import (
     no_greyhound_names,
     raw_types,
     dogname_corrections,
+    cost,
+    focused_bets
     )
 
 from rawdat.utilities.methods import get_date_from_ymd
@@ -49,7 +51,7 @@ from miner.utilities.common import (
     force_date
 )
 
-focused_bets = ["EXACTA", "QUINELLA", "TRIFECTA", "SUPERFECTA"]
+
 
 def split_position_lengths(entry):
     if entry:
@@ -76,31 +78,14 @@ def get_final_and_lengths_behind(split_final):
         final = split_final[0]
         if len(split_final) > 1:
             lengths_behind = get_result_lengths_behind(split_final)
+            print("A")
+            print(lengths_behind)
         else:
             lengths_behind = None
     except IndexError:
         final = None
         lengths_behind = None
     return [final, lengths_behind]
-
-
-def get_positions(row):
-    positions = []
-    i = 1
-    while i < 5:
-        split_position = split_position_lengths(row[i].text)
-        if len(split_position) > 0:
-            positions.append(split_position[0])
-        else:
-            positions.append(None)
-        i += 1
-    print("positions")
-    print(positions)
-    raise SystemExit(0)
-    return positions
-
-
-
 
 
 def get_post_weight(dog_name, date):
@@ -292,10 +277,10 @@ def scan_scheduled_charts(venue, program):
                 chart = get_chart(program, time)
                 race = get_race(chart, number)
                 raw_setting = get_raw_setting(page_data)
-
-                new_save_race_info(
-                    race,
-                    get_race_setting(raw_setting))
+                if raw_setting:
+                    new_save_race_info(
+                        race,
+                        get_race_setting(raw_setting))
 
                 populate_race(
                     get_entries_dognames(entries_url),
@@ -374,27 +359,29 @@ def is_grade(grade):
     return Grade.objects.filter(name=grade.upper()).exists()
 
 def get_race_setting(raw_setting):
-    setting = {
-        "grade": None,
-        "distance": None,
-        "condition": None,
-    }
-    for item in raw_setting[:3]:
-        if is_grade(item):
-            setting["grade"] = get_grade(item)
-    for item in raw_setting:
-        if item in distance_converter:
-            item = distance_converter[item]
-        try:
-            item = int(item)
-            if 100 < item < 900:
-                setting["distance"] = int(item)
-        except:
-            pass
-    for item in raw_setting[3:]:
-        if item.upper() in race_conditions:
-            setting["condition"] = item.upper()
-    return setting
+    print("Raw setting: {}".format(raw_setting))
+    if raw_setting:
+        setting = {
+            "grade": None,
+            "distance": None,
+            "condition": None,
+        }
+        for item in raw_setting[:3]:
+            if is_grade(item):
+                setting["grade"] = get_grade(item)
+        for item in raw_setting:
+            if item in distance_converter:
+                item = distance_converter[item]
+            try:
+                item = int(item)
+                if 100 < item < 900:
+                    setting["distance"] = int(item)
+            except:
+                pass
+        for item in raw_setting[3:]:
+            if item.upper() in race_conditions:
+                setting["condition"] = item.upper()
+        return setting
 
 def print_exotic_bets(exotic_bets):
     print("\nExotic Wagers:")
@@ -420,21 +407,32 @@ def print_race_setting(raw_setting, race_number, race_setting):
     print("Distance: {}".format(race_setting["distance"]))
     print("Condition: {}".format(race_setting["condition"]))
 
+def get_actual_running_time(text):
+    print("--")
+    print(text)
+    if text.strip() not in art_skips:
+        return text
+
+
 def get_race_data(race_rows):
     race_data = []
 
     for row in race_rows:
         split_final = split_position_lengths(row[5].text)
         final_and_lengths = get_final_and_lengths_behind(split_final)
+        if final_and_lengths[0] in position_skips:
+            final = None
+        else:
+            final = final_and_lengths[0]
         race_data.append({
             "dogname": row[0][0].text,
             "post": row[1].text,
             "off": split_position_lengths(row[2].text)[0],
             "eighth": split_position_lengths(row[3].text)[0],
             "straight": split_position_lengths(row[4].text)[0],
-            "final": final_and_lengths[0],
+            "final": final,
             "lengths_behind": final_and_lengths[1],
-            "actual_running_time": row[6].text,
+            "actual_running_time": get_actual_running_time(row[6].text),
             "comment": row[9].text
         })
     return race_data
@@ -467,8 +465,9 @@ def print_single_bets(single_bets):
 
 def get_single_bets(bet_rows):
     single_bets = []
+
     i = 1
-    while i <= 3:
+    while i < len(bet_rows):
         current_row = bet_rows[i]
         dogname = current_row[1].text.strip().lower()
         if dogname in dogname_corrections:
@@ -485,24 +484,36 @@ def get_single_bets(bet_rows):
 def process_race_data(race, race_data):
     print("process race data")
     for each in race_data:
+        print(each["final"])
         dog = get_dog(each["dogname"])
         participant = get_participant(race, dog)
-
-        participant.post = each["post"]
-        participant.post_weight = get_post_weight(
+        post_weight = get_post_weight(
             dog.name,
             race.chart.program.date)
-        participant.off = each["off"]
-        participant.eighth = each["eighth"]
-        participant.straight = each["straight"]
-        participant.final = each["final"]
-        participant.lengths_behind = each["lengths_behind"]
-        participant.actual_running_time = each["actual_running_time"]
+        participant.post = each["post"]
+        if post_weight:
+            participant.post_weight = post_weight
+        if each["off"]:
+            participant.off = each["off"]
+        if each["eighth"]:
+            participant.eighth = each["eighth"]
+        if each["straight"]:
+            participant.straight = each["straight"]
+        if each["final"]:
+            participant.final = each["final"]
+        if each["lengths_behind"]:
+            participant.lengths_behind = each["lengths_behind"]
+        if each["actual_running_time"]:
+            try:
+                participant.actual_running_time = each["actual_running_time"]
+            except:
+                pass
         participant.comment = each["comment"]
+        print(participant.__dict__)
         participant.save()
 
 def save_exotic_bets(race, exotic_bets):
-    cost = 2.0
+
     for bet in exotic_bets:
         if bet["name"] == "EXACTA":
             create_exacta(race, bet["posts"], cost, bet["payout"])
@@ -513,9 +524,10 @@ def save_exotic_bets(race, exotic_bets):
         elif bet["name"] == "SUPERFECTA":
             create_superfecta(race, bet["posts"], cost, bet["payout"])
 
-def handle_race(race):
+def handle_race(race, race_setting, race_data, exotic_bets):
     build_weather_from_almanac(race.chart.program)
-    new_save_race_info(race, race_setting)
+    if race_setting:
+        new_save_race_info(race, race_setting)
     process_race_data(race, race_data)
     save_exotic_bets(race, exotic_bets)
     if race.grade and race.grade.value:
@@ -573,16 +585,6 @@ def scan_history_charts(venue, year, month, day):
             tds = get_node_elements(results_url, '//td')
             if len(tds) > 85:
                 single_url_test(results_url, tds, get_chart(program, time))
-            #     formatted_date = get_date_from_ymd(year, month, day)
-            #     program = get_program(
-            #         venue,
-            #         formatted_date)
-            #     build_weather_from_almanac(program)
-            #     race = get_race(
-            #         get_chart(program, time),
-            #         number)
-            #     # build_weather_from_almanac(race.chart.program)
-            #     parse_results_url(results_url, race, page_data)
             else:
                 failed_attempts += 1
             number += 1

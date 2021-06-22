@@ -14,6 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         url = sys.argv[3]
         url = "https://m.trackinfo.com/index.jsp?next=resultsrace&raceid=GSL$20210617T16"
+        url = "http://m.trackinfo.com/index.jsp?next=resultsrace&raceid=GTS$20180103E01"
         chart = None
         tds = get_node_elements(url, '//td')
         single_url_test(url, tds, chart)

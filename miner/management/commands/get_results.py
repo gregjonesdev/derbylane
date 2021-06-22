@@ -35,7 +35,7 @@ class Command(BaseCommand):
                 race.number)
             print(program.date)
             tds = get_node_elements(results_url, '//td')
-            single_url_test(results_url, tds, get_chart(program, time))
+            single_url_test(results_url, tds, chart)
 
         new_job = CronJob(
             type="Results"

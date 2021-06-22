@@ -1,8 +1,8 @@
 trackinfo_mobile_base = "http://m.trackinfo.com/"
 trackinfo_desktop_base = "https://www.trackinfo.com/"
 
-results_extension = "/index.jsp?next=resultsrace&raceid="
-entries_extension = "/index.jsp?next=entriesrace&raceid="
+results_extension = "index.jsp?next=resultsrace&raceid="
+entries_extension = "index.jsp?next=entriesrace&raceid="
 
 results_url = "{}{}".format(trackinfo_mobile_base, results_extension)
 entries_url = "{}{}".format(trackinfo_mobile_base, entries_extension)
@@ -59,4 +59,4 @@ def build_almanac_url(program):
     return "{}{}/{}".format(almanac_root, zip_code, program.date)
 
 def build_dog_profile_url(dog_name):
-    return "{}{}".format(dog_root, dog_name.replace(" ", "+"))    
+    return "{}{}".format(dog_root, dog_name.replace(" ", "+"))
