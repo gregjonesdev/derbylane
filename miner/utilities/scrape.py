@@ -171,63 +171,6 @@ def get_dollar_amount(string):
         return 0.0
 
 
-
-# def process_dog_bets(race, page_data):
-#     finisher_indices = [16, 22, 28]
-#     for index in finisher_indices:
-#         if isinstance(page_data[index].text, str):
-#             name = page_data[index].text.strip()
-#             if name.lower().find("cet easi eli") > -1:
-#                 name = "Cet Easy Eli"
-#
-#                 dog = get_dog(name)
-#
-#                 participant = get_participant(race, dog)
-#                 if participant:
-#                     chart = race.chart
-#                     program = chart.program
-#                     process_straightwagers(
-#                         participant,
-#                         page_data[index+1].text,
-#                         page_data[index+2].text,
-#                         page_data[index+3].text)
-
-#
-# def process_straightwagers(participant, win_amount, place_amount, show_amount):
-#     straight_wager = get_straightwager(participant)
-#     # print(win_amount)
-#     # print(place_amount)
-#     # print(show_amount)
-#     straight_wager = get_straightwager(participant)
-#     straight_wager.win = get_dollar_amount(win_amount)
-#     straight_wager.place = get_dollar_amount(place_amount)
-#     straight_wager.show = get_dollar_amount(show_amount)
-#     straight_wager.save()
-
-
-def get_race_heading(target_url):
-        for td in get_node_elements(target_url, '//td'):
-            try:
-                formatted_text = format_text(td.text)
-                if is_race_heading_cell(formatted_text):
-                    return formatted_text
-            except AttributeError:
-                pass
-
-
-def format_text(text):
-    return text.replace("\n", "").replace("  ", "").strip().split()
-
-
-def is_race_heading_cell(text):
-        if len(text) > 0:
-            first_lower = text[0].lower()
-            if first_lower.find('race') == 0:
-                if first_lower.find('raced') < 0:
-                    if not re.search('[a-zA-Z]', text[1]):
-                        return True
-
-
 def get_raw_setting(tds):
     for td in tds:
         try:
@@ -278,7 +221,7 @@ def scan_scheduled_charts(venue, program):
                 race = get_race(chart, number)
                 raw_setting = get_raw_setting(page_data)
                 if raw_setting:
-                    new_save_race_info(
+                    save_race_info(
                         race,
                         get_race_setting(raw_setting))
 
@@ -308,26 +251,6 @@ def get_entries_dognames(url):
     return dognames
 
 
-def get_result_dognames(url):
-    dognames = []
-    elements = get_attribute_elements(
-        url,
-        'div',
-        'style',
-        "text-overflow:ellipsis;white-space:nowrap;width:5em;overflow:hidden;"
-    )
-    for element in elements:
-        text = element.text
-        if not re.search('[0-9]', text):
-            dog_name = text.strip()
-            upper_name = dog_name.upper()
-            if upper_name in dogname_corrections:
-                upper_name = dogname_corrections[upper_name]
-            if not upper_name in dognames:
-                dognames.append(upper_name)
-    return dognames
-
-
 def get_exotic_bets(results_url):
 
     exotic_bets = []
@@ -344,16 +267,6 @@ def get_exotic_bets(results_url):
                 })
     return exotic_bets
 
-
-def get_race_setting(tds):
-    for td in tds:
-        try:
-            if td.text:
-                text = td.text
-                if "race" in text.lower() and re.search('[0-9]', text):
-                    return text.strip().replace("\n","").replace("\t", "").split()
-        except UnicodeDecodeError:
-            pass
 
 def is_grade(grade):
     return Grade.objects.filter(name=grade.upper()).exists()
@@ -527,7 +440,7 @@ def save_exotic_bets(race, exotic_bets):
 def handle_race(race, race_setting, race_data, exotic_bets):
     build_weather_from_almanac(race.chart.program)
     if race_setting:
-        new_save_race_info(race, race_setting)
+        save_race_info(race, race_setting)
     process_race_data(race, race_data)
     save_exotic_bets(race, exotic_bets)
     if race.grade and race.grade.value:
@@ -561,7 +474,7 @@ def single_url_test(results_url, tds, chart):
 
 
 
-def new_save_race_info(race, race_setting):
+def save_race_info(race, race_setting):
     race.condition = race_setting['condition']
     race.grade = race_setting['grade']
     race.distance = race_setting['distance']
