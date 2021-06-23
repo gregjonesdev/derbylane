@@ -19,11 +19,12 @@ class Command(BaseCommand):
 
     def scan_month(self, venue, month, year):
         day = 1
-        print("hey")
-        print(datetime.datetime(year, month, day))
-
         while day <= 31:
             try:
+                datetime.datetime(
+                    int(year),
+                    int(month),
+                    int(day))
                 scan_history_charts(venue, year, month, day)
             except:
                 pass
