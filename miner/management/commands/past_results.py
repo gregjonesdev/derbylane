@@ -1,8 +1,7 @@
 import sys
 import concurrent.futures
 from django.core.exceptions import ObjectDoesNotExist
-
-
+import datetime
 from django.core.management.base import BaseCommand
 
 from rawdat.models import (
@@ -20,8 +19,12 @@ class Command(BaseCommand):
 
     def scan_month(self, venue, month, year):
         day = 1
-        while day <= 30:
-            scan_history_charts(venue, year, month, day)
+        while day <= 31:
+            try:
+                datetime.datetime(year, month, day)
+                scan_history_charts(venue, year, month, day)
+            except:
+                pass
             day += 1
         print("done scanning")
         self.create_venue_scan(venue, year, month)
