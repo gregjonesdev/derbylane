@@ -52,11 +52,6 @@ class Command(BaseCommand):
         arff_file.write("@data\n")
         return arff_file
 
-    def evaluate(self):
-
-        for prediction in Prediction.objects.filter(smo__isnull=False):
-            print(prediction.participant.final)
-
 
 
     def handle(self, *args, **options):
@@ -80,7 +75,6 @@ class Command(BaseCommand):
                 distance_metrics = venue_metrics.filter(
                     participant__race__distance=distance,
                 )
-                # print("Distance: {} Metrics: {}".format(distance, len(distance_metrics)))
                 for grade_name in valued_grades:
                     graded_metrics = distance_metrics.filter(
                         participant__race__grade__name=grade_name,
@@ -93,16 +87,10 @@ class Command(BaseCommand):
                         grade_name,
                         len(training_metrics),
                         len(test_metrics)))
-
-        #             completed_metrics = graded_metrics.filter(final__isnull=False)
-        #             scheduled_metrics = graded_metrics.filter(final__isnull=True)
-        #             print(len(completed_metrics))
-        #             print(len(scheduled_metrics))
                     race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
                     if len(training_metrics) > 50 and len(test_metrics) > 5:
                         test_filename = "arff/{}_test.arff".format(race_key)
                         training_filename = "arff/{}_training.arff".format(race_key)
-        # #
                         arff_data.append({
                             "scheduled": self.create_arff(
                                 test_filename,
@@ -114,6 +102,4 @@ class Command(BaseCommand):
                                 False),
 
                             })
-                    # print("DONE")
         make_predictions(arff_data)
-        self.evaluate()

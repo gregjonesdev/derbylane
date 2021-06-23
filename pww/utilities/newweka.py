@@ -10,7 +10,7 @@ from weka.classifiers import Evaluation, Classifier, FilteredClassifier
 from weka.core.classes import Random
 from pww.models import Prediction
 
-confidence_vector = "0.3"
+# confidence_vector = "0.3"
 data_dir = "./rawdat/arff/"
 
 classifiers = [
