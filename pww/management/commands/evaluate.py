@@ -6,6 +6,30 @@ from pww.models import Prediction
 
 class Command(BaseCommand):
 
+    def print_report(self, bets):
+        print("{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
+            "Venue",
+            "Grade",
+            "Distance",
+            "Bets Made",
+            "Spent",
+            "Earned",
+            "Profit Per Bet"
+        ))
+        for venue_code in bets.keys():
+            for grade_name in bets[venue_code].keys():
+                for distance in bets[venue_code][grade_name].keys():
+                    venue_grade_distance = bets[venue_code][grade_name][distance]
+                    print("{}\t{}\t{}\t\t{}\t\t{}\t{}\t{}".format(
+                        venue_code,
+                        grade_name,
+                        distance,
+                        venue_grade_distance["bet_count"],
+                        venue_grade_distance["spent"],
+                        "--",
+                        "--"
+                    ))
+
     def get_bet_size(self, value):
         if value < 1:
             return 10.00
@@ -35,17 +59,37 @@ class Command(BaseCommand):
                 bets[venue_code] = {}
             if not grade_name in bets[venue_code].keys():
                 bets[venue_code][grade_name] = {}
-            if not str(distance) in bets[venue_code][grade_name].keys():
-                bets[venue_code][grade_name][str(distance)] = {
-                    "bet_count": 0
+            str_dist = str(distance)
+            if not str_dist in bets[venue_code][grade_name].keys():
+                bets[venue_code][grade_name][str_dist] = {
+                    "bet_count": 0,
+                    "spent": 0,
+                    "profit": 0
                 }
-            bets[venue_code][grade_name][str(distance)]["bet_count"] += 1
+            venue_grade_distance = bets[venue_code][grade_name][str_dist]
+            venue_grade_distance["bet_count"] += 1
+            # venue_grade_distance["spent"] += self.get_bet_size(prediction.smo)
 
 
-        print(bets)
 
-            # venue_grade_distance = bets['venue_code']['grade_name']['distance']
-            # if not venue_grade_distance['bet_count']:
-            #      venue_grade_distance['bet_count'] = 1
-            # else:
-            #     venue_grade_distance['bet_count'] += 1
+            # if not str(distance) in bets[venue_code][grade_name].keys():
+            #     bets[venue_code][grade_name][distance] = {
+            #         "bet_count": 0,
+            #         "spent": 0,
+            #         "profit": 0
+            #     }
+            # bets[venue_code][grade_name][distance]
+            # bets[venue_code][grade_name][distance]["bet_count"] += 1
+            # print(prediction.smo)
+            # bet_size = self.get_bet_size(prediction.smo)
+            # if bet_size:
+            #     print("bet {}".format(bet_size))
+            #     bets[venue_code][grade_name][distance]["spent"] += bet_size
+            #
+
+
+
+
+
+
+        self.print_report(bets)
