@@ -19,14 +19,16 @@ class Command(BaseCommand):
 
     def scan_month(self, venue, month, year):
         day = 1
-        while day <= 31:
-            try:
-                datetime.datetime(year, month, day)
-                scan_history_charts(venue, year, month, day)
-            except:
-                pass
-            day += 1
-        print("done scanning")
+        print("hey")
+        print(datetime.datetime(year, month, day))
+        #
+        # while day <= 31:
+        #     try:
+        #         scan_history_charts(venue, year, month, day)
+        #     except:
+        #         pass
+        #     day += 1
+        # print("done scanning")
         self.create_venue_scan(venue, year, month)
 
     def create_venue_scan(self, venue, year, month):
@@ -48,7 +50,7 @@ class Command(BaseCommand):
     def get_venue_results(self, venue):
         year = sys.argv[3]
         self.stdout.write("Processing {} {}".format(venue, year))
-        month = 9
+        month = 1
         while month <= 12:
             if not self.scan_complete(venue, month, year):
                 self.scan_month(venue, month, year)
