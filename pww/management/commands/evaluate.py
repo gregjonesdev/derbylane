@@ -7,7 +7,7 @@ from pww.models import Prediction
 class Command(BaseCommand):
 
     def print_report(self, bets):
-        print("{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
+        print("{}\t{}\t{}\t{}\t{}\t\t{}\t\t{}".format(
             "Venue",
             "Grade",
             "Distance",
@@ -20,7 +20,7 @@ class Command(BaseCommand):
             for grade_name in bets[venue_code].keys():
                 for distance in bets[venue_code][grade_name].keys():
                     venue_grade_distance = bets[venue_code][grade_name][distance]
-                    print("{}\t{}\t{}\t\t{}\t\t{}\t{}\t{}".format(
+                    print("{}\t{}\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
                         venue_code,
                         grade_name,
                         distance,
@@ -50,7 +50,8 @@ class Command(BaseCommand):
             smo__isnull=False,
             participant__final__isnull=False):
             # print(self.get_bet_size(prediction.smo))
-            race = prediction.participant.race
+            participant = prediction.participant
+            race = participant.race
             grade_name = race.grade.name
             distance = race.distance
             venue_code = race.chart.program.venue.code
@@ -69,7 +70,14 @@ class Command(BaseCommand):
             venue_grade_distance = bets[venue_code][grade_name][str_dist]
             venue_grade_distance["bet_count"] += 1
             # venue_grade_distance["spent"] += self.get_bet_size(prediction.smo)
-
+            bet_size = self.get_bet_size(prediction.smo)
+            if bet_size:
+                bets[venue_code][grade_name][str_dist]["spent"] += bet_size
+            try:
+                participant.straight_wager
+                print("OH BOY")
+            except:
+                pass
 
 
             # if not str(distance) in bets[venue_code][grade_name].keys():
@@ -81,10 +89,6 @@ class Command(BaseCommand):
             # bets[venue_code][grade_name][distance]
             # bets[venue_code][grade_name][distance]["bet_count"] += 1
             # print(prediction.smo)
-            # bet_size = self.get_bet_size(prediction.smo)
-            # if bet_size:
-            #     print("bet {}".format(bet_size))
-            #     bets[venue_code][grade_name][distance]["spent"] += bet_size
             #
 
 

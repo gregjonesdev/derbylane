@@ -440,6 +440,10 @@ def handle_race(race, race_setting, race_data, exotic_bets):
     if race_setting:
         save_race_info(race, race_setting)
     process_race_data(race, race_data)
+
+
+    # save single bets
+
     save_exotic_bets(race, exotic_bets)
     if race.grade and race.grade.value:
         build_race_metrics(race)
