@@ -52,6 +52,11 @@ class Command(BaseCommand):
         arff_file.write("@data\n")
         return arff_file
 
+    def evaluate(self):
+
+        for prediction in Prediction.objects.filter(smo__isnull=False):
+            print(prediction.participant.final)
+
 
 
     def handle(self, *args, **options):
@@ -83,7 +88,7 @@ class Command(BaseCommand):
                     training_metrics = graded_metrics.filter(
                         participant__race__chart__program__date__lt="2019-01-01")
                     test_metrics = graded_metrics.filter(
-                        participant__race__chart__program__date__gte="2019-01-01")
+                        participant__race__chart__program__date__range=["2019-01-01", "2019-12-31"])
                     print("{}\t{}\t\t{}".format(
                         grade_name,
                         len(training_metrics),
@@ -111,3 +116,4 @@ class Command(BaseCommand):
                             })
                     # print("DONE")
         make_predictions(arff_data)
+        self.evaluate()
