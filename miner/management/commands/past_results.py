@@ -21,14 +21,14 @@ class Command(BaseCommand):
         day = 1
         print("hey")
         print(datetime.datetime(year, month, day))
-        #
-        # while day <= 31:
-        #     try:
-        #         scan_history_charts(venue, year, month, day)
-        #     except:
-        #         pass
-        #     day += 1
-        # print("done scanning")
+
+        while day <= 31:
+            try:
+                scan_history_charts(venue, year, month, day)
+            except:
+                pass
+            day += 1
+        print("done scanning")
         self.create_venue_scan(venue, year, month)
 
     def create_venue_scan(self, venue, year, month):
