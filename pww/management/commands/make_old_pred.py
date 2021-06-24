@@ -65,17 +65,24 @@ class Command(BaseCommand):
         print(arff_directory)
         today = datetime.date.today()
         arff_data = []
-        for venue in Venue.objects.filter(is_active=True):
+        valued_grades = 'B'
+        venues = Venue.objects.filter(is_active=True)
+        venues = Venue.objects.filter(code='TS')
+        for venue in venues:
             print("\n")
             venue_metrics = Metric.objects.filter(
                 participant__race__chart__program__venue=venue)
-            for distance in venue_distances[venue.code]:
+            distances = venue_distances[venue.code]
+            distances = ['550']
+            for distance in distances:
                 print("\n{}: {} yd".format(venue.name, distance))
                 print("Grade\tTraining\tTest")
                 distance_metrics = venue_metrics.filter(
                     participant__race__distance=distance,
                 )
-                for grade_name in valued_grades:
+                grades = valued_grades
+                grades = ['B']
+                for grade_name in grades:
                     graded_metrics = distance_metrics.filter(
                         participant__race__grade__name=grade_name,
                     )
