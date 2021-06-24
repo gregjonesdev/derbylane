@@ -28,7 +28,7 @@ class Command(BaseCommand):
                         list_ppb.append(ppb)
                     except:
                         ppb = "N/A"
-                    print("{}\t{}\t{}\t\t{}\t\t{}\t\t{}\t{}".format(
+                    print("{}\t{}\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
                         venue_code,
                         grade_name,
                         distance,
@@ -37,7 +37,7 @@ class Command(BaseCommand):
                         str(round(ret, 2)),
                         str(round(ppb, 2))
                     ))
-        print("\t\t\t\t\t\t\t\tAverage:\t\t{}".format(str(round(sum(list_ppb)/len(list_ppb), 2))))
+        print("\t\t\t\t\t\t\t\tAverage:\t{}".format(str(round(sum(list_ppb)/len(list_ppb), 2))))
 
     def get_bet_size(self, value):
 
@@ -70,7 +70,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        print("Bet Scheme: $2 to win on an dog predict < 3")
+        print("Bet Scheme: $2 to place on an dog predict < 3")
         bets = {}
         for prediction in Prediction.objects.filter(
             smo__isnull=False,
@@ -98,7 +98,9 @@ class Command(BaseCommand):
             if bet_size:
                 vgd["bet_count"] += 1
                 vgd["spent"] += bet_size
-                vgd["return"] += self.get_win_return(participant, bet_size)
+                # vgd["return"] += self.get_win_return(participant, bet_size)
+                vgd["return"] += self.get_place_return(participant, bet_size)
+                # vgd["return"] += self.get_show_return(participant, bet_size)
             # print(prediction.smo)
 
         self.print_report(bets)

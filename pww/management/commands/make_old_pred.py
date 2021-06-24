@@ -88,7 +88,7 @@ class Command(BaseCommand):
                         len(training_metrics),
                         len(test_metrics)))
                     race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
-                    if len(training_metrics) > 50 and len(test_metrics) > 5:
+                    if len(training_metrics) > 50000 and len(test_metrics) > 5:
                         test_filename = "arff/{}_test.arff".format(race_key)
                         training_filename = "arff/{}_training.arff".format(race_key)
                         arff_data.append({
