@@ -5,7 +5,7 @@ from miner.utilities.urls import (
     build_race_results_url,
     build_dog_results_url,
 )
-from rawdat.models import Weather, Grade
+from rawdat.models import Weather, Grade, Straight_Wager
 from miner.utilities.constants import (
     distance_converter,
     position_skips,
@@ -383,6 +383,7 @@ def get_single_bets(bet_rows):
     while i < len(bet_rows):
         current_row = bet_rows[i]
         dogname = current_row[1].text.strip().lower()
+        print(dogname)
         if dogname in dogname_corrections:
             dogname = dogname_corrections[dogname]
         single_bets.append({
@@ -393,6 +394,31 @@ def get_single_bets(bet_rows):
         })
         i += 1
     return single_bets
+
+def save_single_bets(race, single_bets):
+    print("save single bets")
+    for each in single_bets:
+        # print(each)
+        participant = get_participant(
+            race,
+            each["dog"])
+        print(participant)
+        try:
+            straightwager = Straight_Wager.objects.get(
+                participant=participant
+            )
+        except ObjectDoesNotExist:
+            new_straightwager = Straight_Wager(
+                participant = participant
+            )
+            new_straightwager.set_fields_to_base()
+            new_straightwager.save()
+            straightwager = new_straightwager
+        straightwager.win = each["win"]
+        straightwager.place = each["place"]
+        straightwager.show = each["show"]
+        straightwager.save()
+
 
 def process_race_data(race, race_data):
     print("process race data")
@@ -435,13 +461,13 @@ def save_exotic_bets(race, exotic_bets):
         elif bet["name"] == "SUPERFECTA":
             create_superfecta(race, bet["posts"], cost, bet["payout"])
 
-def handle_race(race, race_setting, race_data, exotic_bets):
+def handle_race(race, race_setting, race_data, single_bets, exotic_bets):
     build_weather_from_almanac(race.chart.program)
     if race_setting:
         save_race_info(race, race_setting)
     process_race_data(race, race_data)
 
-
+    save_single_bets(race, single_bets)
     # save single bets
 
     save_exotic_bets(race, exotic_bets)
@@ -478,7 +504,7 @@ def single_url_test(results_url, tds, chart):
                     if race_number.isnumeric():
                         race = get_race(chart, race_number)
                         if len(race_data) > 0:
-                            handle_race(race, race_setting, race_data, exotic_bets)
+                            handle_race(race, race_setting, race_data, single_bets, exotic_bets)
                     else:
                         print("race number not numeric")
                     print("DONE")

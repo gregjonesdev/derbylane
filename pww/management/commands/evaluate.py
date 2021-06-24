@@ -20,14 +20,21 @@ class Command(BaseCommand):
             for grade_name in bets[venue_code].keys():
                 for distance in bets[venue_code][grade_name].keys():
                     venue_grade_distance = bets[venue_code][grade_name][distance]
+                    ret = venue_grade_distance["return"]
+                    bet = venue_grade_distance["bet_count"]
+                    spent = venue_grade_distance["spent"]
+                    try:
+                        ppb = (float(ret)-float(spent))/bet
+                    except:
+                        ppb = "N/A"
                     print("{}\t{}\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
                         venue_code,
                         grade_name,
                         distance,
-                        venue_grade_distance["bet_count"],
-                        venue_grade_distance["spent"],
-                        "--",
-                        "--"
+                        bet,
+                        spent,
+                        ret,
+                        ppb
                     ))
 
     def get_bet_size(self, value):
@@ -65,7 +72,7 @@ class Command(BaseCommand):
                 bets[venue_code][grade_name][str_dist] = {
                     "bet_count": 0,
                     "spent": 0,
-                    "profit": 0
+                    "return": 0
                 }
             venue_grade_distance = bets[venue_code][grade_name][str_dist]
             venue_grade_distance["bet_count"] += 1
@@ -74,26 +81,14 @@ class Command(BaseCommand):
             if bet_size:
                 bets[venue_code][grade_name][str_dist]["spent"] += bet_size
             try:
-                participant.straight_wager
-                print("OH BOY")
+                if participant.straight_wager.win:
+                    # print(participant.straight_wager.win)
+                    bets[venue_code][grade_name][str_dist]["return"] += participant.straight_wager.win
             except:
                 pass
 
-
-            # if not str(distance) in bets[venue_code][grade_name].keys():
-            #     bets[venue_code][grade_name][distance] = {
-            #         "bet_count": 0,
-            #         "spent": 0,
-            #         "profit": 0
-            #     }
-            # bets[venue_code][grade_name][distance]
-            # bets[venue_code][grade_name][distance]["bet_count"] += 1
+            bets[venue_code][grade_name][str_dist]
+            bets[venue_code][grade_name][str_dist]["bet_count"] += 1
             # print(prediction.smo)
-            #
-
-
-
-
-
 
         self.print_report(bets)
