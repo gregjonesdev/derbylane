@@ -5,12 +5,16 @@
           <span style="font-size: 2em">{{ race.number }}</span>
       </td>
       <td style="" >
-        <b><span>5 to Win-Place-Show</span></b><br>
-        <b><span>8 to Place-Show</span></b><br>
-        <div style="border-top:1px solid #444">
-        <b>Trifecta:</b><span class="float-right"> 5 / 3 / 1 </span><br>
-        <b>Exacta:</b><span class="float-right"> 5 / 3 </span><br>
-        </div>
+        {% for participant in race.participant_set.all %}
+        {% if participant.prediction %}
+        <span style="border: 1px solid white; margin: 3px; padding: 1px 3px">{{ participant.post }}</span>
+        <span> {{ participant.dog.name }}</span><span class="float-right"> {{ participant.prediction.smo|floatformat:2 }}</span><br>
+        {% endif %}
+        {% endfor %}
+        <!-- <div style="border-top:1px solid #444"> -->
+        <!-- <b>Trifecta:</b><span class="float-right"> 5 / 3 / 1 </span><br>
+        <b>Exacta:</b><span class="float-right"> 5 / 3 </span><br> -->
+        <!-- </div> -->
       </td>
     </tr>
   {% endfor %}

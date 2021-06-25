@@ -33,6 +33,7 @@ class Venue(CoreModel):
     code = models.CharField(
         max_length=128)
     is_active = models.BooleanField(default=False)
+    is_focused = models.BooleanField(default=False)
     street_number = models.CharField(
         null=True,
         max_length=128)
