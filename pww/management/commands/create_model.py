@@ -79,11 +79,11 @@ class Command(BaseCommand):
         print(len(metrics))
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
         print(race_key)
-        model_filename = "arff/{}_model.arff".format(race_key)
+        model_filename = "{}/{}_model.arff".format(arff_directory, race_key)
         print(model_filename)
         is_nominal = False
-        model_arff = self.create_arff(
+        arff_file = self.create_arff(
             model_filename,
             metrics,
             is_nominal)
-        create_model(model_arff)
+        create_model(arff_file, race_key)

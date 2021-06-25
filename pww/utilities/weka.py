@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 from weka.filters import Filter
 import weka.core.jvm as jvm
 import weka.core.converters as conv
+import weka.core.serialization as serialization
 from rawdat.models import Participant
 from weka.classifiers import Evaluation, Classifier, FilteredClassifier
 from weka.core.classes import Random
@@ -21,12 +22,25 @@ classifiers = [
     ]
 
 
-def create_model(model_arff):
+def create_model(model_arff, race_key):
+    jvm.start(packages=True, max_heap_size="2048m")
     print("weka create model")
+    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+    print("here")
+    unfiltered_data = loader.load_file(model_arff)
+    print(unfiltered_data)
+    remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
+    remove.inputformat(unfiltered_data)
+    filtered_data = remove.filter(unfiltered_data)
+    filtered_data.class_is_last()
+    cls = Classifier(classname="weka.classifiers.functions.SMOreg", options=[])
+    cls.build_classifier(filtered_data)
+
+    filename = "arff/{}.model".format(race_key)
     # classifier.build_classifier(...)
     # outfile = filename.model
-    # serialization.write(outfile, classifier)
-
+    serialization.write(filename, cls)
+    jvm.stop()
     # Read
     # model = Classifier(jobject=serialization.read(outfile))
 
