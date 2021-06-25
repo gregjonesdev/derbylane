@@ -21,7 +21,7 @@ classifiers = [
     ]
 
 
-def create_model():
+def create_model(model_arff):
     print("weka create model")
     # classifier.build_classifier(...)
     # outfile = filename.model
@@ -30,7 +30,7 @@ def create_model():
     # Read
     # model = Classifier(jobject=serialization.read(outfile))
 
-    
+
 def output_predictions(cls, data, uuid_list):
     data.class_is_last()
 
