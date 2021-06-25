@@ -42,12 +42,22 @@ def create_model(model_arff, race_key):
     serialization.write(filename, cls)
     jvm.stop()
 
-def predict(race_key):
+def predict(race_key, arff_data):
+    jvm.start(packages=True, max_heap_size="2048m")
     print("weka predict")
     print(race_key)
+    filename = "arff/{}.model".format(race_key)
     # Read
-    # model = Classifier(jobject=serialization.read(outfile))
+    uuid_list = get_uuid_list(arff_data)
 
+    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+    scheduled_data = loader.load_file(arff_data)
+    remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
+    remove.inputformat(scheduled_data)
+    filtered_scheduled = remove.filter(scheduled_data)
+    model = Classifier(jobject=serialization.read(filename))
+    output_predictions(model, filtered_scheduled, uuid_list)
+    jvm.stop()
 
 def output_predictions(cls, data, uuid_list):
     data.class_is_last()
@@ -79,8 +89,8 @@ def train_classifier(data, classifier, options):
     cls.build_classifier(data)
     return cls
 
-def get_uuid_list(scheduled_csv):
-    arff_file = open(scheduled_csv, "r")
+def get_uuid_list(filename):
+    arff_file = open(filename, "r")
     uuids = []
     for line in arff_file:
         if len(line) > 100:

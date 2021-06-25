@@ -63,8 +63,22 @@ class Command(BaseCommand):
                 parents=True,
                 exist_ok=True)
 
+        metrics = Metric.objects.filter(
+            final__isnull=True
+        )
 
-        predict("sample race key")
+        grade_name = 'B'
+        venue_code = 'TS'
+        distance = 550
+        race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
+        filename = "arff/{}_scheduled.arff".format(race_key)
+        print(len(metrics))
+        is_nominal = False
+        arff_data = self.create_arff(
+                                filename,
+                                metrics,
+                                is_nominal)
+        predict(race_key, arff_data)
         # today = datetime.date.today()
         # arff_data = []
         # for venue in Venue.objects.filter(is_focused=True):
