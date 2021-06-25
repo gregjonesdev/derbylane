@@ -61,8 +61,6 @@ class Command(BaseCommand):
         Path(arff_directory).mkdir(
                 parents=True,
                 exist_ok=True)
-        print("arff_directory")
-        print(arff_directory)
         today = datetime.date.today()
         arff_data = []
         valued_grades = 'B'

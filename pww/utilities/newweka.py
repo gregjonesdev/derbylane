@@ -23,6 +23,7 @@ classifiers = [
     ]
 
 def output_predictions(cls, data, uuid_list):
+    print("Output predictions...")
     data.class_is_last()
 
     for index, inst in enumerate(data):
@@ -63,13 +64,11 @@ def output_predictions(cls, data, uuid_list):
 
 
 def train_classifier(data, classifier, options):
-    print("train")
+    print("Training classifier...")
     data.class_is_last()
-    print("set class is last")
     cls = Classifier(classname=classifier, options=options)
-    print("build cls")
+    print("Building classifier...")
     cls.build_classifier(data)
-    print("build classifier")
     return cls
 
 def get_uuid_list(scheduled_csv):

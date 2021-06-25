@@ -77,6 +77,15 @@ days_of_week = [
     "Sunday"
 ]
 
+focused_distances = {
+    "SL": [583],
+    "CA": [546],
+    "TS": [550],
+    "WD": [548],
+}
+
+focused_venues = ["SL", "CA", "TS", "WD"]
+
 venue_distances = {
 "SL": [660, 583, 334, 703, 820],
 "CA": [546, 690 ],
