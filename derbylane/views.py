@@ -34,7 +34,8 @@ class FrontPage(OTPRequiredMixin, View):
         for chart in Chart.objects.filter(program__date = today):
             venue = chart.program.venue
             if not venue in venues:
-                venues.append(venue)
+                if venue.is_focused:
+                    venues.append(venue)
         self.context["venues"] = venues
         self.context["today"] = today.strftime("%A, %B %-d")
 
