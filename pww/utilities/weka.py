@@ -41,6 +41,10 @@ def create_model(model_arff, race_key):
     # outfile = filename.model
     serialization.write(filename, cls)
     jvm.stop()
+
+def predict(race_key):
+    print("weka predict")
+    print(race_key)
     # Read
     # model = Classifier(jobject=serialization.read(outfile))
 
