@@ -1,25 +1,29 @@
 import csv
-import datetime
+import sys
 
 from pathlib import Path
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 
-from pww.models import Prediction, Metric
-from rawdat.models import Race, Venue
+from pww.models import Metric
+from rawdat.models import Venue
 from pww.utilities.weka import create_model
 
 from miner.utilities.constants import (
-    valued_grades,
-    chart_times,
-    focused_distances,
-    focused_venues,
+    # valued_grades,
+    # chart_times,
+    # focused_distances,
+    # focused_venues,
     csv_columns,
     )
 
 
 class Command(BaseCommand):
+
+    def add_arguments(self, parser):
+        parser.add_argument('--venue', type=str)
+        parser.add_argument('--grade', type=str)
+        parser.add_argument('--distance', type=int)
 
 
     def create_arff(self, filename, metrics, is_nominal):
@@ -56,13 +60,15 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        print("Starting")
+        print("Create model")
+        print(sys.argv[3])
+        print(sys.argv[5])
+        print(sys.argv[7])
         arff_directory = "arff"
 
         Path(arff_directory).mkdir(
                 parents=True,
                 exist_ok=True)
-        today = datetime.date.today()
 
 
         distance = 550
@@ -103,7 +109,7 @@ class Command(BaseCommand):
         race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
         # if len(scheduled_metrics) > 0:
             # scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
-        model_filename = "arff/{}_results.arff".format(race_key)
+        model_filename = "arff/{}_model.arff".format(race_key)
         arff_data.append({
             # "scheduled": self.create_arff(
             #     scheduled_filename,

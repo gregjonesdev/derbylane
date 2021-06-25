@@ -56,7 +56,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        print("Starting")
+        print("Starting...")
         arff_directory = "arff"
 
         Path(arff_directory).mkdir(

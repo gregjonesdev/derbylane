@@ -22,8 +22,15 @@ classifiers = [
 
 
 def create_model():
-    print("weka create model")    
+    print("weka create model")
+    # classifier.build_classifier(...)
+    # outfile = filename.model
+    # serialization.write(outfile, classifier)
 
+    # Read
+    # model = Classifier(jobject=serialization.read(outfile))
+
+    
 def output_predictions(cls, data, uuid_list):
     data.class_is_last()
 
