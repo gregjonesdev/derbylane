@@ -64,8 +64,7 @@ class Command(BaseCommand):
                 exist_ok=True)
         today = datetime.date.today()
         arff_data = []
-        for venue_code in focused_venues:
-            venue = Venue.objects.get(code=venue_code)
+        for venue in Venue.objects.filter(is_focused=True):
             print(venue)
             venue_metrics = Metric.objects.filter(
                 participant__race__chart__program__venue=venue)
