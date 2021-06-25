@@ -20,6 +20,10 @@ classifiers = [
     "weka.clusterers.SimpleKMeans",
     ]
 
+
+def create_model():
+    print("weka create model")    
+
 def output_predictions(cls, data, uuid_list):
     data.class_is_last()
 
