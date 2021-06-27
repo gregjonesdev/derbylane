@@ -8,6 +8,8 @@ import weka.core.serialization as serialization
 from rawdat.models import Participant
 from weka.classifiers import Evaluation, Classifier, FilteredClassifier
 from weka.core.classes import Random
+from django.core.exceptions import ObjectDoesNotExist
+from pww.models import Prediction
 
 confidence_vector = "0.3"
 data_dir = "./rawdat/arff/"
@@ -56,8 +58,45 @@ def predict(race_key, arff_data):
     remove.inputformat(scheduled_data)
     filtered_scheduled = remove.filter(scheduled_data)
     model = Classifier(jobject=serialization.read(filename))
-    output_predictions(model, filtered_scheduled, uuid_list)
+    # output_predictions(model, filtered_scheduled, uuid_list)
+    make_predictions(model, filtered_scheduled, uuid_list)
     jvm.stop()
+
+def make_predictions(cls, data, uuid_list):
+    data.class_is_last()
+
+    for index, inst in enumerate(data):
+        # print("{} | {}".format(index, inst))
+        pred = cls.classify_instance(inst)
+        save_prediction(
+            Participant.objects.get(uuid=uuid_list[index]),
+            pred
+        )
+        # print("{}\t{}\t{}\t{}\t{}".format(participant.race.chart.program.date, participant.race.chart.time, participant.race.number, participant.dog.name, pred))
+        # dist = cls.distribution_for_instance(inst)
+        # print(
+        # str(index+1) +
+        # ": label index=" +
+        # str(pred) +
+        # ", class distribution=" +
+        # str(dist))
+
+def save_prediction(participant, pred):
+    try:
+        prediction = Prediction.objects.get(participant=participant)
+    except ObjectDoesNotExist:
+        new_prediction = Prediction(
+            participant = participant
+        )
+        new_prediction.set_fields_to_base()
+        new_prediction.save()
+        prediction = new_prediction
+    prediction.smo = pred
+    prediction.save()
+    print("Race {}\t{}:\t{}".format(
+        participant.race.number,
+        participant.dog.name[:8],
+        pred))
 
 def output_predictions(cls, data, uuid_list):
     data.class_is_last()
@@ -80,14 +119,14 @@ def output_predictions(cls, data, uuid_list):
 #  You can use the FilteredClassifier in conjunction with the Remove filter (weka.filters.unsupervised.attribute.Remove).
 # remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "1,2,3,4,5"])
 
-
-
-
-def train_classifier(data, classifier, options):
-    data.class_is_last()
-    cls = Classifier(classname=classifier, options=options)
-    cls.build_classifier(data)
-    return cls
+#
+#
+#
+# def train_classifier(data, classifier, options):
+#     data.class_is_last()
+#     cls = Classifier(classname=classifier, options=options)
+#     cls.build_classifier(data)
+#     return cls
 
 def get_uuid_list(filename):
     arff_file = open(filename, "r")
@@ -97,15 +136,15 @@ def get_uuid_list(filename):
             uuids.append(line.split(",")[0])
     return uuids
 
+#
+# def process_classifier(name, options, uuid_list, results, scheduled):
+#     print("process {}".format("name"))
+#     cls = train_classifier(results, name, options)
+#     # output_predictions(cls, scheduled, uuid_list)
 
-def process_classifier(name, options, uuid_list, results, scheduled):
-    print("process {}".format("name"))
-    cls = train_classifier(results, name, options)
-    # output_predictions(cls, scheduled, uuid_list)
 
 
-
-def make_predictions(arff_data):
+def old_make_predictions(arff_data):
     print("make predcitions")
     jvm.start(packages=True, system_info=True, max_heap_size="512m")
 
