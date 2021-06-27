@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from pww.models import Prediction
 
 confidence_vector = "0.3"
-data_dir = "./rawdat/arff/"
+# data_dir = "./rawdat/arff/"
 
 classifiers = [
     # "weka.classifiers.functions.SMO",
@@ -26,60 +26,39 @@ classifiers = [
 
 def create_model(model_arff, race_key):
     jvm.start(packages=True, max_heap_size="2048m")
-    print("weka create model")
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    print("here")
     unfiltered_data = loader.load_file(model_arff)
-    print(unfiltered_data)
     remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
     remove.inputformat(unfiltered_data)
     filtered_data = remove.filter(unfiltered_data)
     filtered_data.class_is_last()
     cls = Classifier(classname="weka.classifiers.functions.SMOreg", options=[])
     cls.build_classifier(filtered_data)
-
     filename = "arff/{}.model".format(race_key)
-    # classifier.build_classifier(...)
-    # outfile = filename.model
     serialization.write(filename, cls)
     jvm.stop()
 
 def predict(race_key, arff_data):
     jvm.start(packages=True, max_heap_size="2048m")
-    print("weka predict")
-    print(race_key)
     filename = "arff/{}.model".format(race_key)
-    # Read
     uuid_list = get_uuid_list(arff_data)
-
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     scheduled_data = loader.load_file(arff_data)
     remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
     remove.inputformat(scheduled_data)
     filtered_scheduled = remove.filter(scheduled_data)
     model = Classifier(jobject=serialization.read(filename))
-    # output_predictions(model, filtered_scheduled, uuid_list)
     make_predictions(model, filtered_scheduled, uuid_list)
     jvm.stop()
 
 def make_predictions(cls, data, uuid_list):
     data.class_is_last()
-
     for index, inst in enumerate(data):
-        # print("{} | {}".format(index, inst))
         pred = cls.classify_instance(inst)
         save_prediction(
             Participant.objects.get(uuid=uuid_list[index]),
             pred
         )
-        # print("{}\t{}\t{}\t{}\t{}".format(participant.race.chart.program.date, participant.race.chart.time, participant.race.number, participant.dog.name, pred))
-        # dist = cls.distribution_for_instance(inst)
-        # print(
-        # str(index+1) +
-        # ": label index=" +
-        # str(pred) +
-        # ", class distribution=" +
-        # str(dist))
 
 def save_prediction(participant, pred):
     try:
@@ -98,35 +77,6 @@ def save_prediction(participant, pred):
         participant.dog.name[:8],
         pred))
 
-def output_predictions(cls, data, uuid_list):
-    data.class_is_last()
-
-    for index, inst in enumerate(data):
-        # print("{} | {}".format(index, inst))
-        pred = cls.classify_instance(inst)
-        participant = Participant.objects.get(uuid=uuid_list[index])
-        print("{}\t{}\t{}\t{}\t{}".format(participant.race.chart.program.date, participant.race.chart.time, participant.race.number, participant.dog.name, pred))
-        # dist = cls.distribution_for_instance(inst)
-        # print(
-        # str(index+1) +
-        # ": label index=" +
-        # str(pred) +
-        # ", class distribution=" +
-        # str(dist))
-
-
-# EXCLUDE Attribute without removing:
-#  You can use the FilteredClassifier in conjunction with the Remove filter (weka.filters.unsupervised.attribute.Remove).
-# remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "1,2,3,4,5"])
-
-#
-#
-#
-# def train_classifier(data, classifier, options):
-#     data.class_is_last()
-#     cls = Classifier(classname=classifier, options=options)
-#     cls.build_classifier(data)
-#     return cls
 
 def get_uuid_list(filename):
     arff_file = open(filename, "r")
@@ -135,13 +85,6 @@ def get_uuid_list(filename):
         if len(line) > 100:
             uuids.append(line.split(",")[0])
     return uuids
-
-#
-# def process_classifier(name, options, uuid_list, results, scheduled):
-#     print("process {}".format("name"))
-#     cls = train_classifier(results, name, options)
-#     # output_predictions(cls, scheduled, uuid_list)
-
 
 
 def old_make_predictions(arff_data):
