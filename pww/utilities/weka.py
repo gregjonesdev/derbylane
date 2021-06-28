@@ -40,8 +40,6 @@ def create_model(model_arff, race_key):
 
 def predict_all(scheduled_data):
     jvm.start(packages=True, max_heap_size="2048m")
-
-    # predict
     print("weka: predict all")
     for race_key in scheduled_data:
         predict(race_key, scheduled_data[race_key])

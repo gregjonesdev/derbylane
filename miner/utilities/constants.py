@@ -85,7 +85,7 @@ focused_distances = {
 }
 
 focused_grades = {
-    "SL": ["A", "B", "C", "D"],
+    "SL": ["B", "C", "D"],
     "CA": ["A", "B", "C", "D"],
     "TS": ["A", "B", "C"],
     "WD": ["AA", "A", "B", "C"],
