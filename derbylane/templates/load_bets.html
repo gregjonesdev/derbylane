@@ -5,21 +5,22 @@
           <span style="font-size: 2em">{{ race.number }}</span><br>
       </td>
       <td>
-        {% for participant in race.participant_set.all %}
-          {% if participant.prediction %}
-          <span style="margin: 3px; padding: 1px 3px;">
-            {{ participant.post }}  {{ participant.dog.name }}</span>
+          <table class="table table-sm table-borderless" style="background-color:inherit">
+            {% for participant in race.participant_set.all %}
+            <tr class="prediction-row" style="width:100%">
+              {% if participant.prediction %}
+              <td style="border: none" width=90%>{{ participant.post }}  {{ participant.dog.name }}</td>
+              <td style="border: none; float-right">
+                <button type="button" style="padding:2px 5px" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" data-participant="sex">
+                    <small>{{ participant.prediction.smo|floatformat:2 }}</small>
+                  </button>
 
-          <span class="float-right">
 
-            {{ participant.prediction.smo|floatformat:2 }}
-          </span>
-          {% else %}
-          <span style="margin: 3px; padding: 1px 3px; color: #555">
-            {{ participant.post }}  {{ participant.dog.name }}</span>
-          {% endif %}
-          <br>
-        {% endfor %}
+              </td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </table>
       </td>
     </tr>
   {% endfor %}

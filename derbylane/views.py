@@ -1,3 +1,4 @@
+import os
 from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
 from datetime import datetime
@@ -57,6 +58,17 @@ class ScanView(OTPRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         self.context["scans"] = CronJob.objects.all()[:10]
+        return render(request, self.template_name, self.context)
+
+class DownloadsView(OTPRequiredMixin, View):
+
+    template_name = 'downloads.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        print("get")
+        print(os.listdir("arff"))
+        self.context["filenames"] = os.listdir("arff")
         return render(request, self.template_name, self.context)
 
 class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):

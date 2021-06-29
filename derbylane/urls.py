@@ -10,6 +10,7 @@ from derbylane.views import (
     FrontPage,
     ProfileView,
     ScanView,
+    DownloadsView,
     load_charts,
     load_bets,
     logout_view,
@@ -36,6 +37,10 @@ urlpatterns = [
         r'^scans/$',
         ScanView.as_view(),
         name='scans'),
+    url(
+        r'^downloads/$',
+        DownloadsView.as_view(),
+        name='downloads'),
     url(
         r'^profile/$',
         ProfileView.as_view(),
