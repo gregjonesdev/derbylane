@@ -1,4 +1,5 @@
 import os
+import py7zr
 from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
 from datetime import datetime
@@ -6,7 +7,7 @@ from django.shortcuts import redirect
 
 from django.views.generic import View
 from django.shortcuts import render
-
+from django.http import JsonResponse, HttpResponse, Http404
 from two_factor.views.mixins import OTPRequiredMixin
 
 from rawdat.models import (
@@ -73,9 +74,28 @@ class DownloadsView(OTPRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         print("post")
+        files = request.POST.getlist('files')
         # print(os.listdir("arff"))
         # self.context["filenames"] = os.listdir("arff")
-        return render(request, self.template_name, self.context)
+        file_path = 'downloads.7z'
+        if len(files) > 0:
+            with py7zr.SevenZipFile(
+                file_path,
+                'w',
+                # password=config('FILE_PASSWORD')) as archive:
+                password='') as archive:
+                for filename in files:
+                    archive.write("arff/{}".format(filename))
+            if os.path.exists(file_path):
+                with open(file_path, 'rb') as fh:
+                    response = HttpResponse(fh.read(), content_type="application/*")
+                    response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                    return response
+            raise Http404
+        else:
+            response = redirect('frontpage')
+            return response
+
 
 class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):
 

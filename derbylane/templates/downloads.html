@@ -2,24 +2,28 @@
 
 {% block content %}
 <div class="card-header">
-Downloads
+Arff Data
 </div>
-<div class="card-body">
 
 
 
 <form action="{% url 'downloads' %}" method="post">
   {% csrf_token %}
-  {% for filename in filenames %}
-  <div class="form-check">
-    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-    <label class="form-check-label" for="defaultCheck1">
-      {{ filename }}
-    </label>
+  <div class="card-body">
+    {% for filename in filenames %}
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value="{{ filename }}"
+        name="files"
+        id="defaultCheck1">
+      <label class="form-check-label" for="defaultCheck1">
+        {{ filename }}
+      </label>
+    </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-  <br>
   <button type="submit" class="btn btn-outline-success">Download</button>
 </form>
-</div>
 {% endblock content %}
