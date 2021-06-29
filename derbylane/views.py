@@ -71,6 +71,12 @@ class DownloadsView(OTPRequiredMixin, View):
         self.context["filenames"] = os.listdir("arff")
         return render(request, self.template_name, self.context)
 
+    def post(self, request, *args, **kwargs):
+        print("post")
+        # print(os.listdir("arff"))
+        # self.context["filenames"] = os.listdir("arff")
+        return render(request, self.template_name, self.context)
+
 class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):
 
     context = {}
