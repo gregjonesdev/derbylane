@@ -1,4 +1,4 @@
-import os
+import os, fnmatch
 import py7zr
 from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
@@ -68,8 +68,7 @@ class DownloadsView(OTPRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         print("get")
-        print(os.listdir("arff"))
-        self.context["filenames"] = os.listdir("arff")
+        self.context["filenames"] = fnmatch.filter(os.listdir('arff'), '*_model.arff')
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
