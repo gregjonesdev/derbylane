@@ -1,0 +1,51 @@
+{% extends '_base.html'%}
+
+{% block content %}
+<div class="card-header">
+Upload Files
+</div>
+
+<br>
+<button id="add-btn" class="float-right btn btn-outline-secondary">+</button>
+<form action="{% url 'uploads' %}" method="post">
+  {% csrf_token %}
+  <div id="form-body" class="card-body">
+
+  </div>
+  <button type="submit" class="btn btn-outline-success">Upload</button>
+</form>
+
+<script>
+
+add_field = () => {
+  form_body.appendChild(build_form_group())
+}
+
+build_input = () => {
+  new_input = document.createElement("input");
+  new_input.setAttribute("class", "upload-input");
+  new_input.setAttribute("type", "file");
+  new_input.setAttribute("id", "file-" + form_body.childElementCount);
+  new_input.setAttribute("name", "files");
+  return new_input;
+}
+
+build_delete_button = () => {
+  new_button = document.createElement("button");
+  new_button.setAttribute("class", "btn btn-sm btn-outline-danger delete-button");
+  new_button.style.margin = "0px 10px";
+  new_button.innerText = "X";
+  return new_button;
+}
+
+build_form_group = () => {
+  new_form_group = document.createElement("div");
+  new_form_group.setAttribute("class", "form-group");
+  new_form_group.appendChild(build_input())
+  new_form_group.appendChild(build_delete_button())
+  return new_form_group;
+}
+form_body = document.getElementById("form-body");
+document.getElementById("add-btn").addEventListener("click", add_field);
+</script>
+{% endblock content %}

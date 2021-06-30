@@ -95,6 +95,20 @@ class DownloadsView(OTPRequiredMixin, View):
             response = redirect('frontpage')
             return response
 
+class UploadsView(OTPRequiredMixin, View):
+
+    template_name = 'uploads.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        print("get uplaodz")
+
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        print("post uplaodz")
+        print(request.POST.getlist('files'))  
+
 
 class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):
 

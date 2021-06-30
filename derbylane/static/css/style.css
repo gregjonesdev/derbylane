@@ -62,3 +62,11 @@ h1 {
 #navbarToggleExternalContent {
   background-color: var(--bg-secondary);
 }
+
+.upload-input {
+  border: 1px solid #555;
+}
+
+/* .delete-button {
+  margin-left: 10px;
+} */
