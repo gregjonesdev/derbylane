@@ -5,22 +5,6 @@
   <h5 class="card-header text-center"><b><i>{{ today }}</i></b></h5>
     <br>
     <div>
-      {% for venue in venues %}
-      <div id="weather-{{ venue.code }}" class="weather-container" style="display:none">
-        <a
-          class="weatherwidget-io"
-          href="https://forecast7.com/en/{{ venue.weatherlookup.code }}/{{venue.weatherlookup.place }}/?unit=us"
-          data-label_1="{{ venue.city }}, {{ venue.state }}"
-          data-icons="Climacons Animated" data-days="3"
-          data-theme="original"
-          data-basecolor="#121212"
-          data-highcolor="#fd7e14"
-          data-lowcolor="#007bff"
-          data-suncolor="#fd7e14"
-          data-raincolor="#dfdede">
-        </a>
-      </div>
-      {% endfor %}
     </div>
     <div class="select-holder">
     <select
@@ -36,6 +20,22 @@
     </select>
     </div>
     <div style="height: 65vh; overflow-y:scroll;">
+      {% for venue in venues %}
+      <div id="weather-{{ venue.code }}" class="weather-container" style="display:none">
+        <a
+        class="weatherwidget-io"
+        href="https://forecast7.com/en/{{ venue.weatherlookup.code }}/{{venue.weatherlookup.place }}/?unit=us"
+        data-label_1="{{ venue.city }}, {{ venue.state }}"
+        data-icons="Climacons Animated" data-days="3"
+        data-theme="original"
+        data-basecolor="#121212"
+        data-highcolor="#fd7e14"
+        data-lowcolor="#007bff"
+        data-suncolor="#fd7e14"
+        data-raincolor="#dfdede">
+      </a>
+    </div>
+    {% endfor %}
     <table
       id="bets_table"
       class="table table-sm table-borderless" >
