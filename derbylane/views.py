@@ -144,6 +144,15 @@ def load_charts(request):
         request,
         'load_charts.html', {'charts': charts, })
 
+def make_bet(request):
+    print("make bets")
+    return render(
+        request,
+        'make_bet.html',
+        {
+            'test': 'hi'
+        })
+
 def load_bets(request):
     chart = Chart.objects.get(
         uuid=request.GET.get('chart_id'))
