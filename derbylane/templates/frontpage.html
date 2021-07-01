@@ -3,6 +3,25 @@
 {% block content %}
 
   <h5 class="card-header text-center"><b><i>{{ today }}</i></b></h5>
+    <br>
+    <div>
+      {% for venue in venues %}
+      <div id="weather-{{ venue.code }}" class="weather-container" style="display:none">
+        <a
+          class="weatherwidget-io"
+          href="https://forecast7.com/en/{{ venue.weatherlookup.code }}/{{venue.weatherlookup.place }}/?unit=us"
+          data-label_1="{{ venue.city }}, {{ venue.state }}"
+          data-icons="Climacons Animated" data-days="3"
+          data-theme="original"
+          data-basecolor="#121212"
+          data-highcolor="#fd7e14"
+          data-lowcolor="#007bff"
+          data-suncolor="#fd7e14"
+          data-raincolor="#dfdede">
+        </a>
+      </div>
+      {% endfor %}
+    </div>
     <div class="select-holder">
     <select
       class="form-control frontpage-select"
@@ -51,6 +70,9 @@
       "charts_url": "{% url 'load_charts' %}"
     }
   </script>
+  <script>
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+</script>
 <script>
   venue_select = document.getElementById("venue-select")
   chart_select = document.getElementById("chart-select")
@@ -71,6 +93,8 @@
       success: function(data) {
         $("#chart-select").html(data)
         load_bets()
+        $(".weather-container").hide()
+        $("#weather-" + venue_code).show()
       }
     })
   }

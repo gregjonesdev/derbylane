@@ -4,7 +4,7 @@ from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
 from datetime import datetime
 from django.shortcuts import redirect
-
+from django.core.files.storage import FileSystemStorage
 from django.views.generic import View
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse, Http404
@@ -107,8 +107,25 @@ class UploadsView(OTPRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         print("post uplaodz")
-        print(request.POST.getlist('files'))  
-
+        print(request.FILES)
+        # files = request.POST.getlist('files')
+        # print('o')
+        # folder='uploads/'
+        # fs = FileSystemStorage(location=folder) #defaults to   MEDIA_ROOT
+        # for file in files:
+        #     print("something")
+        #     print(file)
+        #     print(file.name)
+        #     # myfile = request.FILES['myfile']
+        #     # filename = fs.save(myfile.name, myfile)
+        #     # file_url = fs.url(filename)
+        #     # return render(request, 'upload.html', {
+        #     #     'file_url': file_url
+        #     # })
+        # else:
+        #      # return render(request, 'upload.html')
+        #      pass
+        #
 
 class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):
 
