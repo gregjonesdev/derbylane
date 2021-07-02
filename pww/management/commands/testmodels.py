@@ -67,7 +67,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        directory = "arff"
+        directory = "test_models"
 
         race_keys_to_test = self.get_race_keys_to_test(
             fnmatch.filter(os.listdir('arff'), '*.model'))

@@ -74,7 +74,7 @@ def evaluate_predictions(model_name, arff_data):
     remove.inputformat(test_data)
     filtered_test = remove.filter(test_data)
     filtered_test.class_is_last()
-    model = Classifier(jobject=serialization.read("arff/{}".format(model_name)))
+    model = Classifier(jobject=serialization.read("test_models/{}".format(model_name)))
     predictions = new_get_predictions(filtered_test, uuid_list, model)
 
     cutoff = 0.1
