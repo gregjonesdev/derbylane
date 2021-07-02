@@ -354,6 +354,7 @@ class Race(CoreModel):
                     return True
             except:
                 pass
+        return True        
 
 
 
