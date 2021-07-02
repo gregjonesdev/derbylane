@@ -61,14 +61,15 @@ def predict(race_key, arff_data):
     except:
         pass
 
-def evaluate_predictions(cls, data):
+def evaluate_predictions(model, data):
+    print("evaluate_predictions()")
     participant_count = 0
     bet_count = 0
 
 
     data.class_is_last()
     for index, inst in enumerate(data):
-        pred = cls.classify_instance(inst)
+        pred = model.classify_instance(inst)
 
 
 def make_predictions(cls, data, uuid_list):

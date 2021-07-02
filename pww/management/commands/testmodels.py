@@ -8,21 +8,12 @@ from django.core.management.base import BaseCommand
 
 from pww.models import Metric
 from rawdat.models import Venue
-# from pww.utilities.weka import create_model
+from pww.utilities.weka import evaluate_predictions
 
-from miner.utilities.constants import (
-    # valued_grades,
-    # chart_times,
-    # focused_distances,
-    # focused_venues,
-    csv_columns,
-    )
+from miner.utilities.constants import csv_columns
 
 
 class Command(BaseCommand):
-
-    # def add_arguments(self, parser):
-    #     parser.add_argument('--model', type=str)
 
     def create_arff(self, filename, metrics, is_nominal):
         arff_file = open(filename, "w")
@@ -44,12 +35,9 @@ class Command(BaseCommand):
                 arff_file.write("@attribute {} nominal\n".format(each))
             elif each == "PID":
                 arff_file.write("@attribute PID string\n")
-                # csv_writer.writerow(["@attribute PID string"])
             elif each == "Se":
                 arff_file.write("@attribute Se {M, F}\n")
-                # csv_writer.writerow(["@attribute Se {M, F}"])
             else:
-                # csv_writer.writerow(["@attribute {} numeric".format(each)])
                 arff_file.write("@attribute {} numeric\n".format(each))
 
         arff_file.write("@data\n")
@@ -63,50 +51,43 @@ class Command(BaseCommand):
             participant__race__grade__name=grade_name,
             final__isnull=False)
 
-    def get_metrics_to_test(self, models):
-        metrics_to_test = {}
+    def get_race_keys_to_test(self, models):
+        race_keys_to_test = {}
         for model in models:
             if "AA" in model.upper():
                 race_key = model[:9]
             else:
                 race_key = model[:8]
             print(race_key)
-            if not race_key in metrics_to_test.keys():
-                metrics_to_test[race_key] = []
-            metrics_to_test[race_key].append(model)
-        return metrics_to_test    
+            if not race_key in race_keys_to_test.keys():
+                race_keys_to_test[race_key] = []
+            race_keys_to_test[race_key].append(model)
+        return race_keys_to_test
+
+    def get_uuid_list(self, filename):
+        arff_file = open(filename, "r")
+        uuids = []
+        for line in arff_file:
+            if len(line) > 100:
+                uuids.append(line.split(",")[0])
+        return uuids
+
 
 
     def handle(self, *args, **options):
         directory = "arff"
 
-        venue_code = 'TS'
-        distance = 550
-        grade_name = 'A'
+        race_keys_to_test = self.get_race_keys_to_test(
+            fnmatch.filter(os.listdir('arff'), '*.model'))
 
-
-        print(self.get_metrics_to_test(
-            fnmatch.filter(os.listdir('arff'), '*.model')))
-        raise SystemExit(0)
-        metrics = self.get_metrics(venue_code, distance, grade_name)
-
-
-            # metrics_obj = {
-            #     "venue_code": model[:2],
-            #     "distance": int(model[3:6]),
-            #     "grade": model[7:9].replace(".", "")
-
-            # build scheduled arff
-            # weka > evaluate_predictions(model, data, uuid_list)
-        #
-        # print(len(metrics))
-        # race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
-        # print(race_key)
-        # model_filename = "{}/{}_model.arff".format(arff_directory, race_key)
-        # print(model_filename)
-        # is_nominal = False
-        # arff_file = self.create_arff(
-        #     model_filename,
-        #     metrics,
-        #     is_nominal)
-        # create_model(arff_file, race_key)
+        for race_key in race_keys_to_test:
+            for model in race_keys_to_test[race_key]:
+                venue_code = race_key[:2]
+                distance = int(race_key[3:6])
+                grade_name = race_key[7:]
+                metrics = self.get_metrics(venue_code, distance, grade_name)
+                is_nominal = False
+                test_arff = self.create_arff("test.arff", metrics, is_nominal)
+                uuid_list = self.get_uuid_list(test_arff)
+                print(uuid_list)
+                # self.evaluate_predictions(model, test_arff)
