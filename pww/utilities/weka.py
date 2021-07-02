@@ -61,6 +61,15 @@ def predict(race_key, arff_data):
     except:
         pass
 
+def evaluate_predictions(cls, data):
+    participant_count = 0
+    bet_count = 0
+
+
+    data.class_is_last()
+    for index, inst in enumerate(data):
+        pred = cls.classify_instance(inst)
+
 
 def make_predictions(cls, data, uuid_list):
     data.class_is_last()
@@ -96,62 +105,3 @@ def get_uuid_list(filename):
         if len(line) > 100:
             uuids.append(line.split(",")[0])
     return uuids
-
-
-def old_make_predictions(arff_data):
-    print("make predcitions")
-    jvm.start(packages=True, system_info=True, max_heap_size="512m")
-
-    super_classifiers = [
-        {
-            "name": "weka.classifiers.functions.SMOreg",
-            "options": [],
-            "is_nominal": False
-        },
-        # {
-        #     "name": "weka.classifiers.trees.J48",
-        #     "options": [],
-        #     "is_nominal": True
-        # },
-
-
-    ]
-    for each in arff_data:
-        results_csv = each["results"]
-        scheduled_csv = each["scheduled"]
-        nominal_csv = each["nominal"]
-        print(scheduled_csv)
-        print(results_csv)
-        uuid_list = get_uuid_list(scheduled_csv)
-        loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-
-        results_data=loader.load_file(results_csv)
-        nominal_results_data = loader.load_file(nominal_csv)
-        scheduled_data=loader.load_file(scheduled_csv)
-
-        classifier = "weka.classifiers.functions.SMOreg"
-
-
-        remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
-        remove.inputformat(results_data)
-        remove.inputformat(nominal_results_data)
-        remove.inputformat(scheduled_data)
-
-        filtered_results = remove.filter(results_data)
-        filtered_nominal_results = remove.filter(nominal_results_data)
-        filtered_scheduled = remove.filter(scheduled_data)
-
-
-        for each in super_classifiers:
-            if each["is_nominal"]:
-                results = filtered_nominal_results
-            else:
-                results = filtered_results
-            process_classifier(each["name"], each["options"], uuid_list, results, filtered_scheduled)
-
-        # raise SystemExit(0)
-        #
-        # cls = train_classifier(filtered_results, classifier, [])
-        # output_predictions(cls, filtered_scheduled, uuid_list)
-
-    jvm.stop()

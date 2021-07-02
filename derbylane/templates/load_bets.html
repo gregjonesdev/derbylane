@@ -11,15 +11,14 @@
               {% if not participant.prediction %}
               <td style="border: none" width=90%>{{ participant.post }}  {{ participant.dog.name }}</td>
               <td style="border: none; float-right">
-                <button
+                <a
+                  data-toggle="modal"
                   style="padding:2px 5px"
                   class="btn btn-primary btn-sm"
-                  data-toggle="modal"
-                  data-target="#bet_modal"
-                  name="{{ participant.uuid }}"
+                  data-target="#bet-modal"
                   >
                     <small>{% url 'make_bet' %}{{ participant.prediction.smo|floatformat:2 }}</small>
-                  </button>
+                  </a>
 
 
               </td>
@@ -30,22 +29,3 @@
       </td>
     </tr>
   {% endfor %}
-
-
-<script>
-
-$('.btn-sm').bind('click', handleButtonClick);
-
-function handleButtonClick() {
-  console.log("ok ()")
-  console.log(this.name)
-    //some functionality on click
-    // $(this).unbind('click');
-}
-
-
-
-test = (e) => {
-  console.log(e)
-}
-</script>

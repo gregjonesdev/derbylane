@@ -14,8 +14,7 @@ from miner.utilities.constants import (
     focused_grades,
     focused_distances,
     focused_venues,
-    csv_columns,
-    )
+    csv_columns)
 
 
 class Command(BaseCommand):
@@ -41,12 +40,9 @@ class Command(BaseCommand):
                 arff_file.write("@attribute {} nominal\n".format(each))
             elif each == "PID":
                 arff_file.write("@attribute PID string\n")
-                # csv_writer.writerow(["@attribute PID string"])
             elif each == "Se":
                 arff_file.write("@attribute Se {M, F}\n")
-                # csv_writer.writerow(["@attribute Se {M, F}"])
             else:
-                # csv_writer.writerow(["@attribute {} numeric".format(each)])
                 arff_file.write("@attribute {} numeric\n".format(each))
 
         arff_file.write("@data\n")
@@ -55,35 +51,6 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        print("Starting...")
-        # arff_directory = "arff"
-        #
-        # Path(arff_directory).mkdir(
-        #         parents=True,
-        #         exist_ok=True)
-        #
-        # metrics = Metric.objects.filter(
-        #     final__isnull=True
-        # )
-        #
-        # grade_name = 'B'
-        # venue_code = 'TS'
-        # distance = 550
-        # race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
-        # filename = "arff/{}_scheduled.arff".format(race_key)
-        # print(len(metrics))
-        # is_nominal = False
-        # arff_data = self.create_arff(
-        #                         filename,
-        #                         metrics,
-        #                         is_nominal)
-        # predict(race_key, arff_data)
-        #
-        #
-
-
-
-
         today = datetime.date.today()
         scheduled_data = {}
         for venue in Venue.objects.filter(is_focused=True):
@@ -106,31 +73,9 @@ class Command(BaseCommand):
                     print("Metrics Found: {}".format(len(scheduled_metrics)))
                     if len(scheduled_metrics) > 0:
                         race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
-
-
-
-
-
-
                         scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
                         scheduled_data[race_key] = self.create_arff(
                             scheduled_filename,
                             scheduled_metrics,
                             False)
-        #                 results_filename = "arff/{}_results.arff".format(race_key)
-        #                 arff_data.append({
-        #                     "scheduled": self.create_arff(
-        #                         scheduled_filename,
-        #                         scheduled_metrics,
-        #                         False),
-        #                     "results": self.create_arff(
-        #                         results_filename,
-        #                         completed_metrics,
-        #                         False),
-        #     #                     "nominal": self.create_arff(
-        #     #                         results_filename,
-        #     #                         completed_metrics,
-        #     #                         True),
-        #                     })
         predict_all(scheduled_data)
-        # make_predictions(arff_data)
