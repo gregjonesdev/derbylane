@@ -95,13 +95,13 @@ def evaluate_predictions(model_name, arff_data):
     while current_max < absolute_max:
         current_min = absolute_min
         while current_min < current_max:
-            range_bets = 0
+            current_bet_count = 0
             successful_bets = 0
             winnings = 0
 
             for prediction in predictions:
                 if current_min <= prediction["prediction"] <= current_max:
-                    range_bets += 1
+                    current_bet_count += 1
                     total_bets += 1
                     if prediction["participant"].final <= winning_position:
                         successful_bets += 1
@@ -109,15 +109,15 @@ def evaluate_predictions(model_name, arff_data):
                             winnings += prediction["participant"].straight_wager.win
                         except:
                             pass
-            if range_bets > 0:
-                current_profit_per_bet = winnings/range_bets
-                current_profit_scope = range_bets*float(current_profit_per_bet)
+            if current_bet_count > 0:
+                current_profit_per_bet = winnings/current_bet_count
+                current_profit_scope = current_bet_count*float(current_profit_per_bet)
                 if current_profit_scope > max_profit_scope:
                     max_profit_per_bet = current_profit_per_bet
                     max_profit_scope = current_profit_scope
                     ideal_min = current_min
                     ideal_max = current_max
-                    ideal_range_bet_count = range_bets
+                    ideal_range_bet_count = current_bet_count
 
             current_min += 0.1
         current_max +=0.1
