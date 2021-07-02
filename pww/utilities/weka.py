@@ -63,7 +63,7 @@ def predict(race_key, arff_data):
         pass
 
 def evaluate_predictions(model_name, arff_data):
-    print("{}:\n".format(model_name))
+    print("\n{}:\n".format(model_name))
     uuid_list = get_uuid_list(arff_data)
 
 
