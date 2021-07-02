@@ -77,40 +77,62 @@ def evaluate_predictions(model_name, arff_data):
     predictions = new_get_predictions(filtered_test, uuid_list, model)
 
     cutoff = 0.1
-    successful_bets = 0
-    total_bets = 0
+    # successful_bets = 0
+    # total_bets = 0
+    winnings = 0
     max_accuracy = 0
-    ideal_cutoff = 0
     current_min = 0.0
     current_max = 0.1
+    ideal_min = current_min
+    ideal_max = current_max
     absolute_max = 8.0
     absolute_min = 0.0
-    # cutoff_max = 5.0
-    # while cutoff_max > 0:
-    #     while cutoff < cutoff_max:
-    #         for prediction in predictions:
-    #             if prediction["prediction"] <= cutoff:
-    #                 total_bets += 1
-    #                 if prediction["participant"].final == 1:
-    #                     successful_bets += 1
-    #         if total_bets > 0:
-    #             accuracy = successful_bets/total_bets
-    #             if accuracy > max_accuracy:
-    #                 max_accuracy = accuracy
-    #                 ideal_cutoff = cutoff
-    #         cutoff = round(cutoff + 0.1, 2)
+    max_winnings = 0
+    max_profit = 0
+    winning_position = 1
 
+    stringformat = "{}\t|\t{}\t|\t{}"
+    print(stringformat.format(
+        "Min",
+        "Max",
+        "Bets"
+    ))
     while current_max < absolute_max:
         current_min = absolute_min
         while current_min < current_max:
-            print("{} - {}".format(current_min, current_max))
+            range_bets = 0
+            successful_bets = 0
+
+
+            for prediction in predictions:
+                if current_min <= prediction["prediction"] <= current_max:
+                    range_bets += 1
+                    if prediction["participant"].final == 1:
+                        successful_bets += 1
+                        try:
+                            winnings += prediction["participant"].straight_wager.win
+                        except:
+                            pass
+            if range_bets > 0:
+
+                # print(range_bets)
+                # win_per_bet = winnings/range_bets
+                # if winnings > max_profit:
+                #     max_winnings = winnings
+            #     accuracy = round(successful_bets/range_bets*100, 1)
+            #     print("{} - {}: {} {} ${}".format(current_min, current_max, accuracy, range_bets, winnings))
+            #     if accuracy > max_accuracy:
+            #         max_accuracy = accuracy
+                    ideal_min = current_min
+                    ideal_max = current_max
             current_min += 0.1
         current_max +=0.1
 
-    # print("Win Range: 0.0 - {} with {}% accuracy".format(
-    #     ideal_cutoff,
-    #     round(max_accuracy*100, 2)
-    # ))
+    print("Optimal Range: {} - {} with ${}/per bet return".format(
+        round(ideal_min, 3),
+        round(ideal_max, 3),
+        max_profit
+    ))
 
 
 
