@@ -77,10 +77,11 @@ class Command(BaseCommand):
         for race_key in race_keys_to_test:
             for model in race_keys_to_test[race_key]:
                 venue_code = race_key[:2]
-                distance = int(race_key[3:6])
-                grade_name = race_key[7:]
-                metrics = self.get_metrics(venue_code, distance, grade_name)
-                is_nominal = False
-                test_arff = self.create_arff("test.arff", metrics, is_nominal)
-                evaluate_predictions(model, test_arff)
+                if venue_code in ["TS", "WD", "SL"]:
+                    distance = int(race_key[3:6])
+                    grade_name = race_key[7:]
+                    metrics = self.get_metrics(venue_code, distance, grade_name)
+                    is_nominal = False
+                    test_arff = self.create_arff("test.arff", metrics, is_nominal)
+                    evaluate_predictions(model, test_arff)
         jvm.stop()

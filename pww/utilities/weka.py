@@ -148,7 +148,7 @@ def evaluate_predictions(model_name, arff_data):
     print("Optimal Range: {} - {} at avg return ${}/bet".format(
         round(ideal_min, 3),
         round(ideal_max, 3),
-        max_avg_profit
+        round(max_avg_profit, 2)
     ))
 
 
