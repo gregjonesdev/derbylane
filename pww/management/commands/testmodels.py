@@ -3,6 +3,7 @@ import sys
 import os
 import fnmatch
 from pathlib import Path
+import weka.core.jvm as jvm
 
 from django.core.management.base import BaseCommand
 
@@ -64,21 +65,14 @@ class Command(BaseCommand):
             race_keys_to_test[race_key].append(model)
         return race_keys_to_test
 
-    def get_uuid_list(self, filename):
-        arff_file = open(filename, "r")
-        uuids = []
-        for line in arff_file:
-            if len(line) > 100:
-                uuids.append(line.split(",")[0])
-        return uuids
-
-
 
     def handle(self, *args, **options):
         directory = "arff"
 
         race_keys_to_test = self.get_race_keys_to_test(
             fnmatch.filter(os.listdir('arff'), '*.model'))
+
+        jvm.start(packages=True, max_heap_size="2048m")
 
         for race_key in race_keys_to_test:
             for model in race_keys_to_test[race_key]:
@@ -88,6 +82,5 @@ class Command(BaseCommand):
                 metrics = self.get_metrics(venue_code, distance, grade_name)
                 is_nominal = False
                 test_arff = self.create_arff("test.arff", metrics, is_nominal)
-                uuid_list = self.get_uuid_list(test_arff)
-                print(uuid_list)
-                # self.evaluate_predictions(model, test_arff)
+                evaluate_predictions(model, test_arff)
+        jvm.stop()

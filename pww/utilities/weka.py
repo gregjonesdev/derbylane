@@ -61,15 +61,21 @@ def predict(race_key, arff_data):
     except:
         pass
 
-def evaluate_predictions(model, data):
+def evaluate_predictions(model, arff_data):
     print("evaluate_predictions()")
+    uuid_list = get_uuid_list(arff_data)
     participant_count = 0
     bet_count = 0
-
-
-    data.class_is_last()
-    for index, inst in enumerate(data):
-        pred = model.classify_instance(inst)
+    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+    test_data = loader.load_file(arff_data)
+    remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
+    remove.inputformat(test_data)
+    filtered_scheduled = remove.filter(test_data)
+    test_data.class_is_last()
+    for index, inst in enumerate(test_data):
+        participant = Participant.objects.get(uuid=uuid_list[index])
+        print(participant.dog.name)
+        # pred = model.classify_instance(inst)
 
 
 def make_predictions(cls, data, uuid_list):
