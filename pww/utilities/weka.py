@@ -79,8 +79,8 @@ def evaluate_predictions(model_name, arff_data):
 
     cutoff = 0.1
     # successful_bets = 0
-    # total_bets = 0
-    # max_accuracy = 0
+    total_bets = 0
+    ideal_range_bet_count = 0
     current_min = 0.0
     current_max = 0.1
     ideal_min = current_min
@@ -88,17 +88,10 @@ def evaluate_predictions(model_name, arff_data):
     absolute_max = 8.0
     absolute_min = 0.0
     max_winnings = 0
-    max_avg_profit = 0
+    max_profit_per_bet = 0
     winning_position = 1
-    max_profit_scope = 0 # profit per bet * range
-    # stringformat = "{}\t|\t{}\t|\t{}\t|\t{}"
-    # print(stringformat.format(
-    #     "Min",
-    #     "Max",
-    #     "Bets",
-    #     "Won ($)",
-    #     "Avg ($)"
-    # ))
+    max_profit_scope = 0 # number of bets * profit per bet
+
     while current_max < absolute_max:
         current_min = absolute_min
         while current_min < current_max:
@@ -109,6 +102,7 @@ def evaluate_predictions(model_name, arff_data):
             for prediction in predictions:
                 if current_min <= prediction["prediction"] <= current_max:
                     range_bets += 1
+                    total_bets += 1
                     if prediction["participant"].final <= winning_position:
                         successful_bets += 1
                         try:
@@ -116,40 +110,26 @@ def evaluate_predictions(model_name, arff_data):
                         except:
                             pass
             if range_bets > 0:
-                profit_per_bet = winnings/range_bets
-                current_profit_scope = float(profit_per_bet)*(current_max-current_min)
+                current_profit_per_bet = winnings/range_bets
+                current_profit_scope = range_bets*float(current_profit_per_bet)
                 if current_profit_scope > max_profit_scope:
-                    max_avg_profit = profit_per_bet
+                    max_profit_per_bet = current_profit_per_bet
                     max_profit_scope = current_profit_scope
                     ideal_min = current_min
                     ideal_max = current_max
-                # print(stringformat.format(
-                #     round(current_min, 3),
-                #     round(current_max, 3),
-                #     range_bets,
-                #     "Won ($)",
-                #     "Avg ($)"
-                # ))
+                    ideal_range_bet_count = range_bets
 
-                # winnings
-
-
-                # print(range_bets)
-                # win_per_bet = winnings/range_bets
-                # if winnings > max_profit:
-                #     max_winnings = winnings
-            #     accuracy = round(successful_bets/range_bets*100, 1)
-            #     print("{} - {}: {} {} ${}".format(current_min, current_max, accuracy, range_bets, winnings))
-            #     if accuracy > max_accuracy:
-            #         max_accuracy = accuracy
             current_min += 0.1
         current_max +=0.1
-    if max_avg_profit > 1:
-        print("Optimal Range: {} - {} at avg return ${}/bet".format(
-            round(ideal_min, 3),
-            round(ideal_max, 3),
-            round(max_avg_profit, 2)
-        ))
+    print("Optimal Range: {} - {} at avg return ${}/bet".format(
+        round(ideal_min, 3),
+        round(ideal_max, 3),
+        round(max_profit_per_bet, 2)
+    ))
+    print("This range represents {}% of all bets.".format(
+        round(ideal_range_bet_count/total_bets*100, 1)
+    ))
+
 
 
 
