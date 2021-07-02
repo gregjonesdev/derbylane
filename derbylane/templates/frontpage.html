@@ -15,7 +15,7 @@
       id="chart-select">
     </select>
     </div>
-    <div style="height: 65vh; overflow-y:scroll;">
+    <!-- <div style="height: 65vh; overflow-y:scroll;">
       {% for venue in venues %}
       <div id="weather-{{ venue.code }}" class="weather-container" style="display:none">
         <a
@@ -30,7 +30,7 @@
         data-suncolor="#fd7e14"
         data-raincolor="#dfdede">
       </a>
-    </div>
+    </div> -->
     {% endfor %}
     <table
       id="bets_table"
@@ -46,9 +46,9 @@
       "charts_url": "{% url 'load_charts' %}"
     }
   </script>
-  <script>
+  <!-- <script>
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
-</script>
+</script> -->
 <script>
   venue_select = document.getElementById("venue-select")
   chart_select = document.getElementById("chart-select")
@@ -67,8 +67,8 @@
       success: function(data) {
         $("#chart-select").html(data)
         load_bets()
-        $(".weather-container").hide()
-        $("#weather-" + venue_code).show()
+        // $(".weather-container").hide()
+        // $("#weather-" + venue_code).show()
       }
     })
   }
