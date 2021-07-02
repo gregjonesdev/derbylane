@@ -353,8 +353,7 @@ class Race(CoreModel):
                 if participant.prediction:
                     return True
             except:
-                pass
-        return True        
+                pass    
 
 
 
