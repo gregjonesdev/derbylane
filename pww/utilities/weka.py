@@ -61,21 +61,41 @@ def predict(race_key, arff_data):
     except:
         pass
 
-def evaluate_predictions(model, arff_data):
+def evaluate_predictions(model_name, arff_data):
     print("evaluate_predictions()")
     uuid_list = get_uuid_list(arff_data)
-    participant_count = 0
-    bet_count = 0
+
+
+    cutoff_min = 0.0
+    cutoff_max = 5.0
+
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     test_data = loader.load_file(arff_data)
     remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
     remove.inputformat(test_data)
-    filtered_scheduled = remove.filter(test_data)
-    test_data.class_is_last()
-    for index, inst in enumerate(test_data):
+    filtered_test = remove.filter(test_data)
+    filtered_test.class_is_last()
+    model = Classifier(jobject=serialization.read("arff/{}".format(model_name)))
+    predictions = new_get_predictions(filtered_test, uuid_list, model)
+
+    cutoff = 0.1
+    prediction_count = 0
+    bet_count = 0
+    while cutoff < cutoff_max:
+        for prediction in predictions:
+            print(prediction["participant"])
+        cutoff += 0.1
+
+
+def new_get_predictions(filtered_test, uuid_list, model):
+    predictions = []
+    for index, inst in enumerate(filtered_test):
         participant = Participant.objects.get(uuid=uuid_list[index])
-        print(participant.dog.name)
-        # pred = model.classify_instance(inst)
+        predictions.append({
+            "participant": participant,
+            "prediction": model.classify_instance(inst)})
+    return predictions
+
 
 
 def make_predictions(cls, data, uuid_list):
