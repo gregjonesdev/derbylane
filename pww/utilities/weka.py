@@ -125,12 +125,6 @@ def evaluate_predictions(model_name, arff_data):
         round(ideal_range_bet_count/total_bets*100, 1)
     ))
 
-def find_ideal_range():
-
-
-
-
-
 
 def new_get_predictions(filtered_test, uuid_list, model):
     predictions = []
