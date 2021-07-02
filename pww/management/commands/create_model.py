@@ -65,7 +65,7 @@ class Command(BaseCommand):
         venue_code = sys.argv[3]
         grade_name = sys.argv[5]
         distance = sys.argv[7]
-        complexity = sys.argv[7]
+        complexity = sys.argv[9]
         arff_directory = "arff"
 
         Path(arff_directory).mkdir(
