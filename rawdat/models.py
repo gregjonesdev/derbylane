@@ -347,12 +347,13 @@ class Race(CoreModel):
             return False
 
     def has_predictions(self):
+
         for participant in self.participant_set.all():
             try:
-                return participant.prediction.exists()
+                if participant.prediction:
+                    return True
             except:
-                pass    
-        return False
+                pass
 
 
 
