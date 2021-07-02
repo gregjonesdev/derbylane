@@ -50,6 +50,7 @@ class Command(BaseCommand):
             participant__race__chart__program__venue__code=venue_code,
             participant__race__distance=distance,
             participant__race__grade__name=grade_name,
+            participant__race__chart__program__date__gte="2019-01-01",
             final__isnull=False)
 
     def get_race_keys_to_test(self, models):
