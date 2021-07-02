@@ -157,7 +157,8 @@ def make_bet(request):
 def load_bets(request):
     chart = Chart.objects.get(
         uuid=request.GET.get('chart_id'))
-    races = chart.race_set.filter(grade__value__gt=0)
+    races = chart.race_set.filter(
+        grade__value__gt=0)
     # races = chart.race_set.all()
 
     return render(
