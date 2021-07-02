@@ -146,6 +146,7 @@ def load_charts(request):
 
 def make_bet(request):
     print("make bets")
+    print(request)
     return render(
         request,
         'make_bet.html',

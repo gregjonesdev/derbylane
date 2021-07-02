@@ -11,16 +11,7 @@
               {% if not participant.prediction %}
               <td style="border: none" width=90%>{{ participant.post }}  {{ participant.dog.name }}</td>
               <td style="border: none; float-right">
-                <a
-                  data-toggle="modal"
-                  style="padding:2px 5px"
-                  class="btn btn-primary btn-sm"
-                  data-target="#bet-modal"
-                  >
-                    <small>{% url 'make_bet' %}{{ participant.prediction.smo|floatformat:2 }}</small>
-                  </a>
-
-
+                {{ participant.prediction.smo|floatformat:2 }}
               </td>
               {% endif %}
             </tr>

@@ -77,20 +77,15 @@ def evaluate_predictions(model_name, arff_data):
     model = Classifier(jobject=serialization.read("test_models/{}".format(model_name)))
     predictions = new_get_predictions(filtered_test, uuid_list, model)
 
-    cutoff = 0.1
-    # successful_bets = 0
     total_bets = 0
     ideal_range_bet_count = 0
     current_min = 0
-    # current_max = 0.1
-    # ideal_min = current_min
-    # ideal_max = current_max
     absolute_max = 8.0
     absolute_min = 0.0
     max_winnings = 0
     max_profit_per_bet = 0
     winning_position = 1
-    max_profit_scope = 0 # number of bets * profit per bet
+    max_profit = 0 # number of bets * profit per bet
 
     range_width = 0.25
 
@@ -112,10 +107,10 @@ def evaluate_predictions(model_name, arff_data):
                         pass
         if current_bet_count > 0:
             current_profit_per_bet = winnings/current_bet_count
-            current_profit_scope = current_bet_count*float(current_profit_per_bet)
-            if current_profit_scope >= max_profit_scope:
+            current_profit = current_bet_count*float(current_profit_per_bet)
+            if current_profit >= max_profit:
                 max_profit_per_bet = current_profit_per_bet
-                max_profit_scope = current_profit_scope
+                max_profit = current_profit
                 ideal_min = current_min
                 ideal_max = current_max
                 ideal_range_bet_count = current_bet_count
@@ -129,6 +124,9 @@ def evaluate_predictions(model_name, arff_data):
     print("This range represents {}% of all bets.\n\n".format(
         round(ideal_range_bet_count/total_bets*100, 1)
     ))
+
+def find_ideal_range():
+
 
 
 
