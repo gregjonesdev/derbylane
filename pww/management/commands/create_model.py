@@ -24,6 +24,7 @@ class Command(BaseCommand):
         parser.add_argument('--venue', type=str)
         parser.add_argument('--grade', type=str)
         parser.add_argument('--distance', type=int)
+        parser.add_argument('--C', type=str)
 
 
     def create_arff(self, filename, metrics, is_nominal):
@@ -64,6 +65,7 @@ class Command(BaseCommand):
         venue_code = sys.argv[3]
         grade_name = sys.argv[5]
         distance = sys.argv[7]
+        complexity = sys.argv[7]
         arff_directory = "arff"
 
         Path(arff_directory).mkdir(
@@ -86,4 +88,7 @@ class Command(BaseCommand):
             model_filename,
             metrics,
             is_nominal)
-        create_model(arff_file, race_key)
+        classifier = "weka.classifiers.functions.SMOreg"
+        options = ["-C", complexity]
+        filename = "smoreg_{}".format(complexity.replace(".", "_"))
+        create_model(arff_file, race_key, classifier, options, filename)

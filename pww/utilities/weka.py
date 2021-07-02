@@ -24,7 +24,7 @@ classifiers = [
     ]
 
 
-def create_model(model_arff, race_key):
+def create_model(model_arff, race_key, classifier, options, filename):
     jvm.start(packages=True, max_heap_size="2048m")
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     unfiltered_data = loader.load_file(model_arff)
@@ -32,11 +32,12 @@ def create_model(model_arff, race_key):
     remove.inputformat(unfiltered_data)
     filtered_data = remove.filter(unfiltered_data)
     filtered_data.class_is_last()
-    cls = Classifier(classname="weka.classifiers.functions.SMOreg", options=[])
+    cls = Classifier(classname=classifier, options=options)
     cls.build_classifier(filtered_data)
-    filename = "arff/{}.model".format(race_key)
+    filename = "test_models/{}_{}.model".format(race_key, filename)
     serialization.write(filename, cls)
     jvm.stop()
+
 
 def predict_all(scheduled_data):
     jvm.start(packages=True, max_heap_size="2048m")
@@ -62,7 +63,6 @@ def predict(race_key, arff_data):
         pass
 
 def evaluate_predictions(model_name, arff_data):
-    print("\n\n\n")
     print(model_name)
     uuid_list = get_uuid_list(arff_data)
 
@@ -144,12 +144,12 @@ def evaluate_predictions(model_name, arff_data):
             #         max_accuracy = accuracy
             current_min += 0.1
         current_max +=0.1
-
-    print("Optimal Range: {} - {} at avg return ${}/bet".format(
-        round(ideal_min, 3),
-        round(ideal_max, 3),
-        round(max_avg_profit, 2)
-    ))
+    if max_avg_profit > 1:
+        print("Optimal Range: {} - {} at avg return ${}/bet".format(
+            round(ideal_min, 3),
+            round(ideal_max, 3),
+            round(max_avg_profit, 2)
+        ))
 
 
 
