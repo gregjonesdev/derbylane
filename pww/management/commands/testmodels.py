@@ -73,7 +73,7 @@ class Command(BaseCommand):
             fnmatch.filter(os.listdir('arff'), '*.model'))
 
         jvm.start(packages=True, max_heap_size="2048m")
-
+        print("///////////////////////////////////////////////////////////////////////////////////")
         for race_key in race_keys_to_test:
             for model in race_keys_to_test[race_key]:
                 venue_code = race_key[:2]
