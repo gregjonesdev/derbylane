@@ -63,7 +63,7 @@ def predict(race_key, arff_data):
         pass
 
 def evaluate_predictions(model_name, arff_data):
-    print("\n{}:\n".format(model_name))
+    print("{}:\n".format(model_name))
     uuid_list = get_uuid_list(arff_data)
 
 
@@ -126,7 +126,7 @@ def evaluate_predictions(model_name, arff_data):
         round(ideal_max, 3),
         round(max_profit_per_bet, 2)
     ))
-    print("This range represents {}% of all bets.".format(
+    print("This range represents {}% of all bets.\n\n".format(
         round(ideal_range_bet_count/total_bets*100, 1)
     ))
 
