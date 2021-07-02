@@ -81,10 +81,10 @@ def evaluate_predictions(model_name, arff_data):
     # successful_bets = 0
     total_bets = 0
     ideal_range_bet_count = 0
-    current_min = 0.0
-    current_max = 0.1
-    ideal_min = current_min
-    ideal_max = current_max
+    current_min = 0
+    # current_max = 0.1
+    # ideal_min = current_min
+    # ideal_max = current_max
     absolute_max = 8.0
     absolute_min = 0.0
     max_winnings = 0
@@ -92,35 +92,35 @@ def evaluate_predictions(model_name, arff_data):
     winning_position = 1
     max_profit_scope = 0 # number of bets * profit per bet
 
-    while current_max < absolute_max:
-        current_min = absolute_min
-        while current_min < current_max:
-            current_bet_count = 0
-            successful_bets = 0
-            winnings = 0
+    range_width = 0.25
 
-            for prediction in predictions:
-                if current_min <= prediction["prediction"] <= current_max:
-                    current_bet_count += 1
-                    total_bets += 1
-                    if prediction["participant"].final <= winning_position:
-                        successful_bets += 1
-                        try:
-                            winnings += prediction["participant"].straight_wager.win
-                        except:
-                            pass
-            if current_bet_count > 0:
-                current_profit_per_bet = winnings/current_bet_count
-                current_profit_scope = current_bet_count*float(current_profit_per_bet)
-                if current_profit_scope > max_profit_scope:
-                    max_profit_per_bet = current_profit_per_bet
-                    max_profit_scope = current_profit_scope
-                    ideal_min = current_min
-                    ideal_max = current_max
-                    ideal_range_bet_count = current_bet_count
+    while current_min < absolute_max:
+        current_max = current_min + range_width
+        current_bet_count = 0
+        successful_bets = 0
+        winnings = 0
 
-            current_min += 0.1
-        current_max +=0.1
+        for prediction in predictions:
+            if current_min <= prediction["prediction"] <= current_max:
+                current_bet_count += 1
+                total_bets += 1
+                if prediction["participant"].final <= winning_position:
+                    successful_bets += 1
+                    try:
+                        winnings += prediction["participant"].straight_wager.win
+                    except:
+                        pass
+        if current_bet_count > 0:
+            current_profit_per_bet = winnings/current_bet_count
+            current_profit_scope = current_bet_count*float(current_profit_per_bet)
+            if current_profit_scope >= max_profit_scope:
+                max_profit_per_bet = current_profit_per_bet
+                max_profit_scope = current_profit_scope
+                ideal_min = current_min
+                ideal_max = current_max
+                ideal_range_bet_count = current_bet_count
+
+        current_min += 0.1
     print("Optimal Range: {} - {} at avg return ${}/bet".format(
         round(ideal_min, 3),
         round(ideal_max, 3),
