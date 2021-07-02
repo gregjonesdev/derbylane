@@ -70,7 +70,7 @@ class Command(BaseCommand):
         directory = "test_models"
 
         race_keys_to_test = self.get_race_keys_to_test(
-            fnmatch.filter(os.listdir('arff'), '*.model'))
+            fnmatch.filter(os.listdir(directory), '*.model'))
 
         jvm.start(packages=True, max_heap_size="2048m")
         print("///////////////////////////////////////////////////////////////////////////////////")
