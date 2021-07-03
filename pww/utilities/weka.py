@@ -99,8 +99,8 @@ def evaluate_predictions(model_name, arff_data):
             if current_min <= prediction["prediction"] <= current_max:
                 current_bet_count += 1
                 # winnings += get_win_bet_earnings(participant)
-                winnings += get_place_bet_earnings(participant)
-                # winnings += get_show_bet_earnings(participant)
+                # winnings += get_place_bet_earnings(participant)
+                winnings += get_show_bet_earnings(participant)
         if current_bet_count > 0:
             current_profit_per_bet = winnings/current_bet_count
             current_profit = current_bet_count*float(current_profit_per_bet)
