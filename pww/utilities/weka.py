@@ -92,19 +92,15 @@ def evaluate_predictions(model_name, arff_data):
     while current_min < absolute_max:
         current_max = current_min + range_width
         current_bet_count = 0
-        successful_bets = 0
         winnings = 0
 
         for prediction in predictions:
+            participant = prediction["participant"]
             if current_min <= prediction["prediction"] <= current_max:
                 current_bet_count += 1
-                total_bets += 1
-                if prediction["participant"].final <= winning_position:
-                    successful_bets += 1
-                    try:
-                        winnings += prediction["participant"].straight_wager.win
-                    except:
-                        pass
+                # winnings += get_win_bet_earnings(participant)
+                winnings += get_place_bet_earnings(participant)
+                # winnings += get_show_bet_earnings(participant)
         if current_bet_count > 0:
             current_profit_per_bet = winnings/current_bet_count
             current_profit = current_bet_count*float(current_profit_per_bet)
@@ -114,7 +110,7 @@ def evaluate_predictions(model_name, arff_data):
                 ideal_min = current_min
                 ideal_max = current_max
                 ideal_range_bet_count = current_bet_count
-
+        total_bets += current_bet_count
         current_min += 0.1
     print("Optimal Range: {} - {} at avg return ${}/bet".format(
         round(ideal_min, 3),
@@ -124,6 +120,27 @@ def evaluate_predictions(model_name, arff_data):
     print("This range represents {}% of all bets.\n\n".format(
         round(ideal_range_bet_count/total_bets*100, 1)
     ))
+
+def get_win_bet_earnings(participant):
+    if participant.final == 1:
+        try:
+            return participant.straight_wager.win
+        except:
+            return 0
+
+def get_place_bet_earnings(participant):
+    if participant.final <=2:
+        try:
+            return participant.straight_wager.place
+        except:
+            return 0
+
+def get_show_bet_earnings(participant):
+    if participant.final <= 3:
+        try:
+            return participant.straight_wager.show
+        except:
+            return 0
 
 
 def new_get_predictions(filtered_test, uuid_list, model):
