@@ -140,7 +140,10 @@ def get_place_bet_earnings(participant):
 def get_show_bet_earnings(participant):
     if participant.final <= 3:
         try:
-            return participant.straight_wager.show
+            if participant.straight_wager.show:
+                return participant.straight_wager.show
+            else:
+                return 0
         except:
             pass
     return 0
