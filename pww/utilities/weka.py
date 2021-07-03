@@ -126,21 +126,24 @@ def get_win_bet_earnings(participant):
         try:
             return participant.straight_wager.win
         except:
-            return 0
+            pass
+    return 0
 
 def get_place_bet_earnings(participant):
     if participant.final <=2:
         try:
             return participant.straight_wager.place
         except:
-            return 0
+            pass
+    return 0
 
 def get_show_bet_earnings(participant):
     if participant.final <= 3:
         try:
             return participant.straight_wager.show
         except:
-            return 0
+            pass
+    return 0
 
 
 def new_get_predictions(filtered_test, uuid_list, model):
