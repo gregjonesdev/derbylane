@@ -4,14 +4,17 @@
     <tr>
       <td width="25%" style="text-align: center; vertical-align: middle;">
           <span style="font-size: 2em">{{ race.number }}</span><br>
-          Grade: {{ race.grade.name }} 
+          Grade: {{ race.grade.name }}
       </td>
       <td>
           <table class="table table-sm table-borderless" style="background-color:inherit">
             {% for participant in race.participant_set.all %}
             <tr class="prediction-row" style="width:100%">
               {% if participant.prediction %}
-              <td style="border: none" width=90%>{{ participant.post }}  {{ participant.dog.name }}</td>
+              <td style="border: none" width=5%>
+                {{ participant.post }}</td>
+              <td style="border: none" width=85%>
+                  {{ participant.dog.name }}</td>
               <td style="border: none; float-right">
               <button type="button" class="btn btn-sm btn-primary" disabled>
                 <small>{{ participant.prediction.smo|floatformat:2 }}</small>
