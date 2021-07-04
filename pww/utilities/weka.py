@@ -88,10 +88,6 @@ def evaluate_predictions(model_name, arff_data):
     show_winnings = []
     prediction_count = len(predictions)
 
-
-
-    print(prediction_count)
-
     while current_range_min < absolute_max:
         current_range_max = current_range_min + range_width
         range_win = 0
@@ -118,6 +114,14 @@ def evaluate_predictions(model_name, arff_data):
         current_range_min += range_width
 
     if len(bet_counts) > 0:
+        print("Prediction Breakdown:\n")
+        for each in range_starts:
+            index = range_starts.index(each)
+            percent = 100*int(bet_counts/prediction_count)
+            print("{}: {}%".format(each, ))
+
+
+
         print("Ideal betting ranges:\n")
         print(breakdown_string.format(
             "Bet",
