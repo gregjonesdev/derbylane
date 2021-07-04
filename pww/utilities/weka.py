@@ -122,76 +122,13 @@ def evaluate_predictions(model_name, arff_data):
                 # print("{}: {}%".format(each, percent))
                 bet_count = bet_counts[index]
                 print("{}-{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-                    each,
-                    each + range_width,
+                    round(each, 2),
+                    round(each + range_width, 2),
                     round(win_winnings[index], 2),
                     round(place_winnings[index], 2),
                     round(show_winnings[index], 2),
                     round(float(bet_count*8)/float(prediction_count), 2)
                 ))
-
-
-
-    #     print("Ideal betting ranges:\n")
-    #     print(breakdown_string.format(
-    #         "Bet",
-    #         "Min",
-    #         "Max",
-    #         "$/bet",
-    #         "Bets"
-    #     ))
-    #     print_bet_breakdown(
-    #         win_winnings,
-    #         range_starts,
-    #         bet_counts,
-    #         prediction_count,
-    #         range_width,
-    #         'Win')
-    #     print_bet_breakdown(
-    #         place_winnings,
-    #         range_starts,
-    #         bet_counts,
-    #         prediction_count,
-    #         range_width,
-    #         'Place')
-    #     print_bet_breakdown(
-    #         show_winnings,
-    #         range_starts,
-    #         bet_counts,
-    #         prediction_count,
-    #         range_width,
-    #         'Show')
-    # else:
-    #     print("No bets recorded.")
-    # print("\n\n")
-
-def print_bet_breakdown(
-    winnings,
-    range_starts,
-    bet_counts,
-    prediction_count,
-    range_width,
-    type):
-    max_winnings = max(winnings)
-    index = winnings.index(max_winnings)
-    optimal_range_start = range_starts[index]
-    optimal_range_stop = optimal_range_start + range_width
-    bet_count = bet_counts[index]
-    win_per_bet = float(max_winnings)/float(bet_count)
-    bets_per_race = float(bet_count*8)/float(prediction_count)
-    # print("{}: {}-{}. (${}/bet)".format(
-    #     type,
-    #     optimal_range_start,
-    #     optimal_range_stop,
-    #     round(win_per_bet, 2)))
-    print(breakdown_string.format(
-        type,
-        optimal_range_start,
-        optimal_range_stop,
-        round(win_per_bet, 2),
-        round(bets_per_race, 3)
-    ))
-
 
 
 def get_win_bet_earnings(participant):
