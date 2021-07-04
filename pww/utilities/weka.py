@@ -124,9 +124,9 @@ def evaluate_predictions(model_name, arff_data):
                 print("{}-{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
                     each,
                     each + range_width,
-                    round(win_winnings[index]/bet_count, 2),
-                    round(place_winnings[index]/bet_count, 2),
-                    round(show_winnings[index]/bet_count, 2),
+                    round(win_winnings[index], 2),
+                    round(place_winnings[index], 2),
+                    round(show_winnings[index], 2),
                     round(float(bet_count*8)/float(prediction_count), 2)
                 ))
 
