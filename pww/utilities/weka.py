@@ -13,6 +13,7 @@ from pww.models import Prediction
 
 confidence_vector = "0.3"
 # data_dir = "./rawdat/arff/"
+breakdown_string="{}/t/t{}/t/t{}/t/t{}/t/t{}"
 
 classifiers = [
     # "weka.classifiers.functions.SMO",
@@ -87,6 +88,10 @@ def evaluate_predictions(model_name, arff_data):
     show_winnings = []
     prediction_count = len(predictions)
 
+
+
+
+
     while current_range_min < absolute_max:
         range_starts.append(current_range_min)
         current_range_max = current_range_min + range_width
@@ -113,6 +118,14 @@ def evaluate_predictions(model_name, arff_data):
         current_range_min += range_width
 
     if len(bet_counts) > 0:
+        print("Ideal betting ranges:")
+        print(breakdown_string.format(
+            "Bet",
+            "Min",
+            "Max",
+            "$/bet",
+            "Bets/Race"
+        ))
         print_bet_breakdown(
             win_winnings,
             range_starts,
@@ -136,7 +149,7 @@ def evaluate_predictions(model_name, arff_data):
             'Show')
     else:
         print("No bets recorded.")
-
+    print("\n\n")
 
 def print_bet_breakdown(
     winnings,
@@ -149,12 +162,22 @@ def print_bet_breakdown(
     index = winnings.index(max_winnings)
     optimal_range_start = range_starts[index]
     optimal_range_stop = optimal_range_start + range_width
-    win_per_bet = float(max_winnings)/float(bet_counts[index])
-    print("Ideal range for {} bet: {}-{}. (${}/bet)".format(
+    bet_count = bet_counts[index]
+    win_per_bet = float(max_winnings)/float(bet_count)
+    bets_per_race = float(bet_count*8)/float(prediction_count)
+    # print("{}: {}-{}. (${}/bet)".format(
+    #     type,
+    #     optimal_range_start,
+    #     optimal_range_stop,
+    #     round(win_per_bet, 2)))
+    print(breakdown_string.format(
         type,
         optimal_range_start,
         optimal_range_stop,
-        round(win_per_bet, 2)))
+        round(win_per_bet, 2),
+        bets_per_race
+    ))
+
 
 
 def get_win_bet_earnings(participant):
