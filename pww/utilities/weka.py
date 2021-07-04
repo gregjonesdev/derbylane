@@ -13,7 +13,7 @@ from pww.models import Prediction
 
 confidence_vector = "0.3"
 # data_dir = "./rawdat/arff/"
-breakdown_string="{}/t/t{}/t/t{}/t/t{}/t/t{}"
+breakdown_string="{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
 classifiers = [
     # "weka.classifiers.functions.SMO",
