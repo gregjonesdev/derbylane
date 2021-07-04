@@ -90,7 +90,7 @@ def evaluate_predictions(model_name, arff_data):
 
 
 
-
+    print(prediction_count)
 
     while current_range_min < absolute_max:
         current_range_max = current_range_min + range_width
@@ -124,7 +124,7 @@ def evaluate_predictions(model_name, arff_data):
             "Min",
             "Max",
             "$/bet",
-            "Bets/Race"
+            "Bets"
         ))
         print_bet_breakdown(
             win_winnings,
@@ -175,7 +175,7 @@ def print_bet_breakdown(
         optimal_range_start,
         optimal_range_stop,
         round(win_per_bet, 2),
-        round(bets_per_race, 3)
+        bet_count
     ))
 
 
