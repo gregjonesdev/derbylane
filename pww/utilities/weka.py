@@ -118,7 +118,8 @@ def evaluate_predictions(model_name, arff_data):
         for each in range_starts:
             index = range_starts.index(each)
             percent = int(100*bet_counts[index]/prediction_count)
-            print("{}: {}%".format(each, percent))
+            if percent > 0:
+                print("{}: {}%".format(each, percent))
 
 
 
