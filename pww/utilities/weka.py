@@ -117,9 +117,9 @@ def evaluate_predictions(model_name, arff_data):
         print("Prediction Breakdown:\n")
         print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
             "Range",
-            "$/Win Bet",
-            "$/Place Bet",
-            "$/Show Bet",
+            "Win",
+            "Place",
+            "Show",
             "Predictions/Race"
         ))
         for each in range_starts:
