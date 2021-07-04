@@ -78,7 +78,7 @@ def evaluate_predictions(model_name, arff_data):
     model = Classifier(jobject=serialization.read("test_models/{}".format(model_name)))
     predictions = new_get_predictions(filtered_test, uuid_list, model)
 
-    range_width = 0.35
+    range_width = 1
     current_range_min = 0
     absolute_max = 8.0
     range_starts = []
