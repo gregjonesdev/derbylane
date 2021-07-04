@@ -119,42 +119,51 @@ def evaluate_predictions(model_name, arff_data):
             index = range_starts.index(each)
             percent = int(100*bet_counts[index]/prediction_count)
             if percent > 0:
-                print("{}: {}%".format(each, percent))
+                # print("{}: {}%".format(each, percent))
+                bet_count = bet_counts[index]
+                print("{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+                    each,
+                    each + range_width,
+                    win_winnings[index]/bet_count,
+                    place_winnings[index]/bet_count,
+                    show_winnings[index]/bet_count,
+                    float(bet_count*8)/float(prediction_count)
+                ))
 
 
 
-        print("Ideal betting ranges:\n")
-        print(breakdown_string.format(
-            "Bet",
-            "Min",
-            "Max",
-            "$/bet",
-            "Bets"
-        ))
-        print_bet_breakdown(
-            win_winnings,
-            range_starts,
-            bet_counts,
-            prediction_count,
-            range_width,
-            'Win')
-        print_bet_breakdown(
-            place_winnings,
-            range_starts,
-            bet_counts,
-            prediction_count,
-            range_width,
-            'Place')
-        print_bet_breakdown(
-            show_winnings,
-            range_starts,
-            bet_counts,
-            prediction_count,
-            range_width,
-            'Show')
-    else:
-        print("No bets recorded.")
-    print("\n\n")
+    #     print("Ideal betting ranges:\n")
+    #     print(breakdown_string.format(
+    #         "Bet",
+    #         "Min",
+    #         "Max",
+    #         "$/bet",
+    #         "Bets"
+    #     ))
+    #     print_bet_breakdown(
+    #         win_winnings,
+    #         range_starts,
+    #         bet_counts,
+    #         prediction_count,
+    #         range_width,
+    #         'Win')
+    #     print_bet_breakdown(
+    #         place_winnings,
+    #         range_starts,
+    #         bet_counts,
+    #         prediction_count,
+    #         range_width,
+    #         'Place')
+    #     print_bet_breakdown(
+    #         show_winnings,
+    #         range_starts,
+    #         bet_counts,
+    #         prediction_count,
+    #         range_width,
+    #         'Show')
+    # else:
+    #     print("No bets recorded.")
+    # print("\n\n")
 
 def print_bet_breakdown(
     winnings,
