@@ -60,7 +60,6 @@ class Command(BaseCommand):
                 race_key = model[:9]
             else:
                 race_key = model[:8]
-            print(race_key)
             if not race_key in race_keys_to_test.keys():
                 race_keys_to_test[race_key] = []
             race_keys_to_test[race_key].append(model)

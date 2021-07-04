@@ -78,7 +78,8 @@ def evaluate_predictions(model_name, arff_data):
     predictions = new_get_predictions(filtered_test, uuid_list, model)
 
     range_width = 0.25
-
+    current_range_min = 0
+    absolute_max = 8.0
     range_starts = []
     bet_counts = []
     win_winnings = []
