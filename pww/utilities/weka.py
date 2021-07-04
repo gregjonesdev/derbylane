@@ -102,20 +102,36 @@ def evaluate_predictions(model_name, arff_data):
     max_profit_per_win_bet = 0
 
 
-    range_width = 0.1
+    range_width = 0.25
 
-    winnings_per_bet = {}
-
+    range_starts = []
+    bet_counts = []
+    win_bet_amounts = []
+    place_bet_amounts = []
+    show_bet_amounts = []
 
 
 
     while current_range_min < absolute_max:
-        winnings_per_bet[str(current_range_min)] = {}
         current_range_max = current_range_min + range_width
-        range_win_bet_winnings = 0
-        range_place_bet_winnings = 0
-        range_show_bet_winnings = 0
+        range_win = 0
+        range_place = 0
+        range_show = 0
+        range_count = 0
 
+
+        for prediction in predictions:
+             participant = prediction["participant"]
+             if current_range_min <= prediction["prediction"] <= current_range_max:
+                 range_count += 1
+                 range_win += get_win_bet_earnings(participant)
+                 range_place += get_place_bet_earnings(participant)
+                 range_show += get_show_bet_earnings(participant)
+
+        bet_counts.append(range_count)
+        win_bet_amounts.append(range_win)
+        place_bet_amounts.append(range_place)
+        show_bet_amounts.append(range_show)
 
 
 
@@ -123,11 +139,11 @@ def evaluate_predictions(model_name, arff_data):
         current_range_min += range_width
         #
         #
-        # for prediction in predictions:
-        #      participant = prediction["participant"]
-        #      if current_range_min <= prediction["prediction"] <= current_range_max:
 
-    print(winnings_per_bet)
+    print(bet_counts[3])
+    print(win_bet_amounts[3])
+    print(place_bet_amounts[3])
+    print(show_bet_amounts[3])
     raise SystemExit(0)
 
         #          range_win_bet_count += 1
