@@ -88,6 +88,7 @@ def evaluate_predictions(model_name, arff_data):
     prediction_count = len(predictions)
 
     while current_range_min < absolute_max:
+        range_starts = current_range_min
         current_range_max = current_range_min + range_width
         range_win = 0
         range_place = 0
