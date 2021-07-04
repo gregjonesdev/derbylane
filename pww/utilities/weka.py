@@ -93,7 +93,6 @@ def evaluate_predictions(model_name, arff_data):
 
 
     while current_range_min < absolute_max:
-        range_starts.append(current_range_min)
         current_range_max = current_range_min + range_width
         range_win = 0
         range_place = 0
@@ -110,6 +109,7 @@ def evaluate_predictions(model_name, arff_data):
                  range_show += get_show_bet_earnings(participant)
 
         if range_count > 0:
+            range_starts.append(current_range_min)
             bet_counts.append(range_count)
             win_winnings.append(range_win/range_count)
             place_winnings.append(range_place/range_count)
