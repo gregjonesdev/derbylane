@@ -116,7 +116,7 @@ def evaluate_predictions(model_name, arff_data):
     if len(bet_counts) > 0:
         print("Prediction Breakdown:\n")
         print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-            "Range"
+            "Range",
             "$/Win Bet",
             "$/Place Bet",
             "$/Show Bet",
