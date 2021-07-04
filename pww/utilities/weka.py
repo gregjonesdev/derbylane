@@ -143,7 +143,7 @@ def print_bet_breakdown(
     bet_counts,
     prediction_count,
     range_width,
-type):
+    type):
     max_winnings = max(winnings)
     index = winnings.index(max_winnings)
     optimal_range_start = range_starts[index]
@@ -154,6 +154,34 @@ type):
         optimal_range_start,
         optimal_range_stop,
         round(win_per_bet, 2)))
+
+
+def get_win_bet_earnings(participant):
+    if participant.final == 1:
+        try:
+            return participant.straight_wager.win
+        except:
+            pass
+    return 0
+
+def get_place_bet_earnings(participant):
+    if participant.final <=2:
+        try:
+            return participant.straight_wager.place
+        except:
+            pass
+    return 0
+
+def get_show_bet_earnings(participant):
+    if participant.final <= 3:
+        try:
+            if participant.straight_wager.show:
+                return participant.straight_wager.show
+            else:
+                return 0
+        except:
+            pass
+    return 0
 
 
 def new_get_predictions(filtered_test, uuid_list, model):
