@@ -79,47 +79,108 @@ def evaluate_predictions(model_name, arff_data):
 
     total_bets = 0
     ideal_range_bet_count = 0
-    current_min = 0
+    current_range_min = 0
     absolute_max = 8.0
-    absolute_min = 0.0
+    # absolute_min = 0.0
     max_winnings = 0
     max_profit_per_bet = 0
     winning_position = 1
     max_profit = 0 # number of bets * profit per bet
 
-    range_width = 0.25
+    win_bets = 0
+    place_bets = 0
+    show_bets = 0
 
-    while current_min < absolute_max:
-        current_max = current_min + range_width
-        current_bet_count = 0
-        winnings = 0
+    win_range_min = 0
+    place_range_min = 0
+    show_range_min = 0
 
-        for prediction in predictions:
-            participant = prediction["participant"]
-            if current_min <= prediction["prediction"] <= current_max:
-                current_bet_count += 1
-                # winnings += get_win_bet_earnings(participant)
-                # winnings += get_place_bet_earnings(participant)
-                winnings += get_show_bet_earnings(participant)
-        if current_bet_count > 0:
-            current_profit_per_bet = winnings/current_bet_count
-            current_profit = current_bet_count*float(current_profit_per_bet)
-            if current_profit >= max_profit:
-                max_profit_per_bet = current_profit_per_bet
-                max_profit = current_profit
-                ideal_min = current_min
-                ideal_max = current_max
-                ideal_range_bet_count = current_bet_count
-        total_bets += current_bet_count
-        current_min += 0.1
-    print("Optimal Range: {} - {} at avg return ${}/bet".format(
-        round(ideal_min, 3),
-        round(ideal_max, 3),
-        round(max_profit_per_bet, 2)
-    ))
-    print("This range represents {}% of all bets.\n\n".format(
-        round(ideal_range_bet_count/total_bets*100, 1)
-    ))
+    win_winnings = 0
+    place_winnings = 0
+    show_winnings = 0
+
+    max_profit_per_win_bet = 0
+
+
+    range_width = 0.1
+
+    winnings_per_bet = {}
+
+
+
+
+    while current_range_min < absolute_max:
+        winnings_per_bet[str(current_range_min)] = {}
+        current_range_max = current_range_min + range_width
+        range_win_bet_winnings = 0
+        range_place_bet_winnings = 0
+        range_show_bet_winnings = 0
+
+
+
+
+
+        current_range_min += range_width
+        #
+        #
+        # for prediction in predictions:
+        #      participant = prediction["participant"]
+        #      if current_range_min <= prediction["prediction"] <= current_range_max:
+
+    print(winnings_per_bet)
+    raise SystemExit(0)
+
+        #          range_win_bet_count += 1
+        #          range_place_bet_count += 1
+        #          range_show_bet_count += 1
+        #          range_win_bet_winnings += get_win_bet_earnings(participant)
+        #          range_place_bet_winnings += get_place_bet_earnings(participant)
+        #          range_show_bet_winnings += get_show_bet_earnings(participant)
+        # max_profit_per_win_bet = get_max_profit_per_bet(
+        #     max_profit_per_win_bet,
+        #     range_win_bet_winnings,
+        #     range_win_bet_count)
+
+    # while current_range_min < absolute_max:
+    #     current_range_max = current_range_min + range_width
+    #     current_bet_count = 0
+    #     winnings = 0
+    #
+    #     for prediction in predictions:
+    #         participant = prediction["participant"]
+    #         if current_range_min <= prediction["prediction"] <= current_range_max:
+    #             current_bet_count += 1
+    #             winnings += get_win_bet_earnings(participant)
+    #             # winnings += get_place_bet_earnings(participant)
+    #             # winnings += get_show_bet_earnings(participant)
+    #     if current_bet_count > 0:
+    #         current_profit_per_bet = winnings/current_bet_count
+    #         current_profit = current_bet_count*float(current_profit_per_bet)
+    #         if current_profit >= max_profit:
+    #             max_profit_per_bet = current_profit_per_bet
+    #             max_profit = current_profit
+    #             ideal_min = current_range_min
+    #             ideal_max = current_range_max
+    #             ideal_range_bet_count = current_bet_count
+    #     total_bets += current_bet_count
+    #     current_range_min += 0.1
+    # print("Optimal Range: {} - {} at avg return ${}/bet".format(
+    #     round(ideal_min, 3),
+    #     round(ideal_max, 3),
+    #     round(max_profit_per_bet, 2)
+    # ))
+    # print("This range represents {}% of all bets.\n\n".format(
+    #     round(ideal_range_bet_count/total_bets*100, 1)
+    # ))
+
+def get_max_profit_per_bet(max_profit_per_bet, range_winnings, range_bet_count):
+    if range_bet_count > 0:
+        current_profit_per_bet = range_winnings/range_bet_count
+    else:
+        current_profit_per_bet = 0
+    return max(current_profit_per_bet, max_profit_per_bet)
+
+
 
 def get_win_bet_earnings(participant):
     if participant.final == 1:
