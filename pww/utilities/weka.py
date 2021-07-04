@@ -78,7 +78,7 @@ def evaluate_predictions(model_name, arff_data):
     model = Classifier(jobject=serialization.read("test_models/{}".format(model_name)))
     predictions = new_get_predictions(filtered_test, uuid_list, model)
 
-    range_width = 0.25
+    range_width = 0.35
     current_range_min = 0
     absolute_max = 8.0
     range_starts = []
@@ -175,7 +175,7 @@ def print_bet_breakdown(
         optimal_range_start,
         optimal_range_stop,
         round(win_per_bet, 2),
-        bets_per_race
+        round(bets_per_race, 3)
     ))
 
 
