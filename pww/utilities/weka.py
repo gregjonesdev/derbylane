@@ -115,6 +115,13 @@ def evaluate_predictions(model_name, arff_data):
 
     if len(bet_counts) > 0:
         print("Prediction Breakdown:\n")
+        print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+            "Range"
+            "$/Win Bet",
+            "$/Place Bet",
+            "$/Show Bet",
+            "Predictions/Race"
+        ))
         for each in range_starts:
             index = range_starts.index(each)
             percent = int(100*bet_counts[index]/prediction_count)
