@@ -77,7 +77,9 @@ def evaluate_predictions(model_name, arff_data):
     filtered_test.class_is_last()
     model = Classifier(jobject=serialization.read("test_models/{}".format(model_name)))
     predictions = new_get_predictions(filtered_test, uuid_list, model)
-
+    print("Predictions:")
+    print(len(predictions))
+    print(predictions[:10])
     range_width = .20
     current_range_min = 0
     absolute_max = 8.0
@@ -125,17 +127,17 @@ def evaluate_predictions(model_name, arff_data):
         for each in range_starts:
             index = range_starts.index(each)
             percent = int(100*bet_counts[index]/prediction_count)
-            if percent > 0:
-                # print("{}: {}%".format(each, percent))
-                bet_count = bet_counts[index]
-                print("{}-{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-                    round(each, 2),
-                    round(each + range_width, 2),
-                    round(win_winnings[index], 2),
-                    round(place_winnings[index], 2),
-                    round(show_winnings[index], 2),
-                    round(float(bet_count*8)/float(prediction_count), 2)
-                ))
+            # if percent > 0:
+            # print("{}: {}%".format(each, percent))
+            bet_count = bet_counts[index]
+            print("{}-{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+                round(each, 2),
+                round(each + range_width, 2),
+                round(win_winnings[index], 2),
+                round(place_winnings[index], 2),
+                round(show_winnings[index], 2),
+                round(float(bet_count*8)/float(prediction_count), 2)
+            ))
 
 
 def get_win_bet_earnings(participant):
