@@ -25,17 +25,20 @@ classifiers = [
     ]
 
 
-def create_model(model_arff, race_key, classifier, options, filename):
+def create_model(model_arff, classifier, options, filename):
+    print("create_model()")
     jvm.start(packages=True, max_heap_size="2048m")
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    unfiltered_data = loader.load_file(model_arff)
-    remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
-    remove.inputformat(unfiltered_data)
-    filtered_data = remove.filter(unfiltered_data)
-    filtered_data.class_is_last()
+
+    model_data = loader.load_file(model_arff)
+    model_data = remove_uuid(model_data)
+    model_data = nominalize(model_data)
+
+    model_data.class_is_last()
     cls = Classifier(classname=classifier, options=options)
-    cls.build_classifier(filtered_data)
-    filename = "test_models/{}_{}.model".format(race_key, filename)
+    cls.build_classifier(model_data)
+    filename = "test_models/{}.model".format(filename)
+    print("filename: {}".format(filename))
     serialization.write(filename, cls)
     jvm.stop()
 

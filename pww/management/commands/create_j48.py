@@ -92,17 +92,18 @@ class Command(BaseCommand):
                         print(len(metrics))
                         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
                         # print(race_key)
-                        model_filename = "{}/{}_J48_C{}_model.arff".format(
-                            arff_directory,
+                        root_filename = "{}_J48_C{}".format(
                             race_key,
                             complexity.replace(".", "_"))
-                        print(model_filename)
-                        # is_nominal = False
-                        # arff_file = self.create_arff(
-                        #     model_filename,
-                        #     metrics,
-                        #     is_nominal)
-                        # classifier = "weka.classifiers.functions.SMOreg"
-                        # options = ["-C", complexity]
-                        # filename = "smoreg_{}".format(complexity.replace(".", "_"))
-                        # create_model(arff_file, race_key, classifier, options, filename)
+                        arff_filename = "{}/{}.arff".format(
+                            arff_directory,
+                            root_filename)
+                        print(arff_filename)
+                        is_nominal = False
+                        arff_file = self.create_arff(
+                            arff_filename,
+                            metrics,
+                            is_nominal)
+                        classifier = "weka.classifiers.trees.J48"
+                        options = ["-C", complexity]
+                        create_model(arff_file, classifier, options, root_filename)
