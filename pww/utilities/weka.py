@@ -52,7 +52,7 @@ def predict_all(scheduled_data):
 
 def predict(race_key, arff_data):
 
-    filename = "weka_models/{}.model".format(race_key)
+    filename = "weka_models/{}_J48_C0_75.model".format(race_key)
     uuid_list = get_uuid_list(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     scheduled_data = loader.load_file(arff_data)
