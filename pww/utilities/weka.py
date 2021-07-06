@@ -27,7 +27,6 @@ classifiers = [
 
 def create_model(model_arff, classifier, options, filename):
     print("create_model()")
-    jvm.start(packages=True, max_heap_size="2048m")
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
 
     model_data = loader.load_file(model_arff)
@@ -40,7 +39,7 @@ def create_model(model_arff, classifier, options, filename):
     filename = "test_models/{}.model".format(filename)
     print("filename: {}".format(filename))
     serialization.write(filename, cls)
-    jvm.stop()
+
 
 
 def predict_all(scheduled_data):

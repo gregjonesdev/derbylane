@@ -1,5 +1,6 @@
 import csv
 import sys
+import weka.core.jvm as jvm
 
 from pathlib import Path
 
@@ -72,6 +73,7 @@ class Command(BaseCommand):
         Path(arff_directory).mkdir(
                 parents=True,
                 exist_ok=True)
+        jvm.start(packages=True, max_heap_size="2048m")
 
         for venue in Venue.objects.filter(is_focused=True):
             venue_code = venue.code
@@ -107,3 +109,4 @@ class Command(BaseCommand):
                         classifier = "weka.classifiers.trees.J48"
                         options = ["-C", complexity]
                         create_model(arff_file, classifier, options, root_filename)
+        jvm.stop()
