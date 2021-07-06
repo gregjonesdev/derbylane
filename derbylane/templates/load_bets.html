@@ -9,14 +9,14 @@
       <td>
           <table class="table table-sm table-borderless" style="background-color:inherit">
             {% for participant in race.participant_set.all %}
-            <tr class="prediction-row" style="width:100%">
+            <tr class="prediction-row" style="width:100%;">
               {% if participant.prediction %}
               <td style="border: none" width=5%>
                 {{ participant.post }}</td>
               <td style="border: none" width=85%>
                   {{ participant.dog.name }}</td>
               <td style="border: none; float-right">
-              <button type="button" class="btn btn-outline-light" data-toggle="modal" data-target="#bet-modal" data-participant="{{ participant.uuid }}">
+              <button type="button" class="btn btn-sm btn-outline-light" data-toggle="modal" data-target="#bet-modal" data-participant="{{ participant.uuid }}">
                 <small>{{ participant.prediction.smo|floatformat:2 }}</small>
 
               </button>

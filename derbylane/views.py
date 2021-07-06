@@ -32,15 +32,8 @@ class FrontPage(OTPRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         today = datetime.now()
-        venues = []
-        for chart in Chart.objects.filter(program__date = today):
-            venue = chart.program.venue
-            if not venue in venues:
-                if venue.is_focused:
-                    venues.append(venue)
         charts = Chart.objects.filter(program__date=today)
         self.context["charts"] = charts
-        self.context["venues"] = venues
         self.context["today"] = today.strftime("%A, %B %-d")
 
         return render(request, self.template_name, self.context)
