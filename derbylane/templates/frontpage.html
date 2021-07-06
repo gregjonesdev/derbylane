@@ -3,17 +3,17 @@
 {% block content %}
   <h5 class="card-header text-center"><b><i>{{ today }}</i></b></h5>
     <div class="select-holder">
-    <select
-      class="form-control frontpage-select"
-      id="venue-select">
-      {% for venue in venues %}
-        <option value="{{ venue.code}}">{{ venue.name }}</option>
-      {% endfor %}
-    </select>
-    <select
-      class="form-control frontpage-select"
-      id="chart-select">
-    </select>
+      <select
+        class="form-control frontpage-select"
+        id="chart-select">
+        {% for chart in charts %}
+          <option value="{{ chart.uuid }}">
+            <span >
+              {{ chart.program.venue.kiosk_name }}_{{ chart.kiosk_time }}
+            </span>
+          </option>
+        {% endfor %}
+      </select>
     </div>
     <div style="height: 65vh; overflow-y:scroll;">
       <table
@@ -21,59 +21,30 @@
       class="table table-sm table-borderless" >
         <tbody id="bets" style="max-height: 100%"></tbody>
       </table>
-
-
     </div>
 
-{% include 'betmodal.html' with test='a' %}
-
-<script>
-
-</script>
-
+{% include 'betmodal.html' %}
 
   <script id="json-chart-data" type="application/json">
     {
-      "bets_url": "{% url 'load_bets' %}",
-      "charts_url": "{% url 'load_charts' %}"
+      "bets_url": "{% url 'load_bets' %}"
     }
   </script>
 
 <script>
-  venue_select = document.getElementById("venue-select")
   chart_select = document.getElementById("chart-select")
   modal = document.getElementById("bet-modal")
   modal.addEventListener("focus", function (e) {
     var button = $(event.relatedTarget) // Button that triggered the modal
   var participant = button.data('participant') // Extract info from data-* attributes
-  console.log(participant)
-  // // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
   var modal = $(this)
   modal.find('.modal-title').text('New message to ' + participant)
-  // modal.find('.modal-body input').val(recipient)
   })
   text_content = document.getElementById("json-chart-data").textContent
   chart_json_data = JSON.parse(text_content)
 
-
-  load_charts = () => {
-    venue_code = venue_select.value
-    $.ajax({
-      url: chart_json_data["charts_url"],
-      dataType: "html",
-      data: {
-        "venue_code": venue_code,
-      },
-      success: function(data) {
-        $("#chart-select").html(data)
-        load_bets()
-      }
-    })
-  }
   load_bets = () => {
       const chart_id = chart_select.value
-
       $.ajax({
         url: chart_json_data["bets_url"],
         dataType: "html",
@@ -86,10 +57,9 @@
       })
     }
   window.onload = (event) => {
-    load_charts(venue_select.value)
+    load_bets()
 
   };
-  venue_select.addEventListener("change", load_charts)
   chart_select.addEventListener("change", load_bets)
 
 </script>

@@ -68,20 +68,9 @@ class Venue(CoreModel):
     about = models.TextField(
         null=True
     )
-
-    def todays_charts(self):
-        return Chart.objects.filter(
-            program__venue=self,
-            program__date=datetime.date.today()
-        )
-        # try:
-        #     program = Program.objects.get(
-        #         venue=self,
-        #         date=datetime.date.today())
-        #     if program.chart_set.count() > 0:
-        #         return program
-        # except:
-        #     pass
+    kiosk_name = models.CharField(
+        null=True,
+        max_length=24)
 
     def __str__(self):
         return self.name
@@ -235,6 +224,19 @@ class Chart(CoreModel):
     )
     is_cancelled = models.BooleanField(default=False)
 
+    def kiosk_time(self):
+        if self.time == 'A':
+            if self.program.venue.code == 'WD':
+                return 'Mat'
+            else:
+                return "A"    
+        elif self.time == 'E':
+            return 'E'
+        elif self.time == 'T':
+            return 'Twi'
+        else:
+            return self.time
+
     def get_rh(self):
         weather = self.program.weather
         if weather:
@@ -244,7 +246,6 @@ class Chart(CoreModel):
                 return float(mean_rh)
             except:
                 pass
-
 
     def get_racetemp(self):
         weather = self.program.weather
@@ -353,7 +354,7 @@ class Race(CoreModel):
                 if participant.prediction:
                     return True
             except:
-                pass    
+                pass
 
 
 

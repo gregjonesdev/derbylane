@@ -67,6 +67,7 @@ h1 {
   border: 1px solid #555;
 }
 
-/* .delete-button {
-  margin-left: 10px;
-} */
+#chart-select{
+  font-weight: bold;
+  background-image: linear-gradient(#039be5, black)
+}
