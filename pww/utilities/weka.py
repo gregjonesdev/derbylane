@@ -52,12 +52,10 @@ def predict_all(scheduled_data):
 
 def predict(race_key, arff_data):
 
-    filename = "arff/{}.model".format(race_key)
+    filename = "models/{}.model".format(race_key)
     uuid_list = get_uuid_list(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     scheduled_data = loader.load_file(arff_data)
-
-    filtered_scheduled = remove.filter(scheduled_data)
     scheduled_data = remove_uuid(scheduled_data)
     scheduled_data = nominalize(scheduled_data)
     scheduled_data.class_is_last()
