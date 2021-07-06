@@ -92,7 +92,7 @@ def evaluate_predictions(model_name, arff_data):
 
     test_data.class_is_last()
     model = Classifier(jobject=serialization.read("test_models/{}".format(model_name)))
-    predictions = new_get_predictions(filtered_test, uuid_list, model)
+    predictions = new_get_predictions(test_data, uuid_list, model)
     print("Predictions:")
     print(len(predictions))
     print(predictions[:10])
