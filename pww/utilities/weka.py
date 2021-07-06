@@ -194,7 +194,6 @@ def new_get_predictions(filtered_test, uuid_list, model):
 
 
 def make_predictions(cls, data, uuid_list):
-    data.class_is_last()
     for index, inst in enumerate(data):
         pred = cls.classify_instance(inst)
         save_prediction(
