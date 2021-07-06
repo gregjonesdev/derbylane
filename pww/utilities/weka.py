@@ -82,9 +82,6 @@ def nominalize(test_data):
 def evaluate_predictions(model_name, arff_data):
     print("{}:\n".format(model_name))
     uuid_list = get_uuid_list(arff_data)
-
-
-
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     test_data = loader.load_file(arff_data)
     test_data = remove_uuid(test_data)
