@@ -163,7 +163,9 @@ def get_win_bet_earnings(participant):
 def get_place_bet_earnings(participant):
     if participant.final <=2:
         try:
-            return participant.straight_wager.place
+            earnings = participant.straight_wager.place
+            if earnings:
+                return earnings
         except:
             pass
     return 0
