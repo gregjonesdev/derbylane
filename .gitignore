@@ -130,3 +130,4 @@ dmypy.json
 
 arff/
 test_models/
+weka_models/

@@ -56,12 +56,14 @@ def predict(race_key, arff_data):
     uuid_list = get_uuid_list(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     scheduled_data = loader.load_file(arff_data)
-    remove = Filter(classname="weka.filters.unsupervised.attribute.Remove", options=["-R", "first"])
-    remove.inputformat(scheduled_data)
+
     filtered_scheduled = remove.filter(scheduled_data)
+    scheduled_data = remove_uuid(scheduled_data)
+    scheduled_data = nominalize(scheduled_data)
+    scheduled_data.class_is_last()
     try:
         model = Classifier(jobject=serialization.read(filename))
-        make_predictions(model, filtered_scheduled, uuid_list)
+        make_predictions(model, scheduled_data, uuid_list)
     except:
         pass
 
