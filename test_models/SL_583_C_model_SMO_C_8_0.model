@@ -1,0 +1,1085 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.functions.SMO -C 8.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007" -calibrator "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
+Relation:     Metric-weka.filters.unsupervised.attribute.Remove-R1-weka.filters.unsupervised.attribute.NumericToNominal-R19
+Instances:    72591
+Attributes:   19
+              SFT
+              W
+              P
+              S
+              B
+              E
+              St
+              F
+              G
+              T7
+              T3
+              U
+              A
+              Se
+              LB
+              PF
+              TF
+              RHF
+              Fi
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+SMO
+
+Kernel used:
+  Linear Kernel: K(x,y) = <x,y>
+
+Classifier for classes: 1, 2
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.1395 * (normalized) SFT
+ +      -0.3362 * (normalized) W
+ +      -0.2257 * (normalized) P
+ +      -0.0711 * (normalized) S
+ +       0.0476 * (normalized) B
+ +      -0.0921 * (normalized) E
+ +      -0.0092 * (normalized) St
+ +       0.0762 * (normalized) F
+ +      -0.1369 * (normalized) G
+ +      -0.168  * (normalized) T7
+ +       0.0043 * (normalized) T3
+ +      -0.0593 * (normalized) U
+ +       0.131  * (normalized) A
+ +       1.0052 * (normalized) Se=F
+ +      -0.1086 * (normalized) LB
+ +       0.4344 * (normalized) PF
+ +      -0.0961 * (normalized) TF
+ +       0.0068 * (normalized) RHF
+ -       0.503 
+
+Number of kernel evaluations: 205595296 (11.513% cached)
+
+Classifier for classes: 1, 3
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.0056 * (normalized) SFT
+ +      -0.0008 * (normalized) W
+ +      -0.0657 * (normalized) P
+ +      -0.0988 * (normalized) S
+ +       0.288  * (normalized) B
+ +       0.1934 * (normalized) E
+ +       0.0471 * (normalized) St
+ +       0.2699 * (normalized) F
+ +       0.1628 * (normalized) G
+ +       0.2522 * (normalized) T7
+ +       0.0458 * (normalized) T3
+ +       0.6725 * (normalized) U
+ +       0.3289 * (normalized) A
+ +      -0.0094 * (normalized) Se=F
+ +       0.1253 * (normalized) LB
+ +       0.4178 * (normalized) PF
+ +       0.2445 * (normalized) TF
+ +      -0.3267 * (normalized) RHF
+ -       1.1118
+
+Number of kernel evaluations: 205170762 (11.985% cached)
+
+Classifier for classes: 1, 4
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.078  * (normalized) SFT
+ +      -0.5973 * (normalized) W
+ +       0.1588 * (normalized) P
+ +      -0.146  * (normalized) S
+ +      -0.2104 * (normalized) B
+ +       0.3076 * (normalized) E
+ +       0.1443 * (normalized) St
+ +       0.6181 * (normalized) F
+ +      -0.2251 * (normalized) G
+ +       0.0249 * (normalized) T7
+ +       0.3222 * (normalized) T3
+ +       0.2997 * (normalized) U
+ +       1.1597 * (normalized) A
+ +      -1.5826 * (normalized) Se=F
+ +       0.4525 * (normalized) LB
+ +       0.0649 * (normalized) PF
+ +      -1.8356 * (normalized) TF
+ +      -0.323  * (normalized) RHF
+ +       1.0367
+
+Number of kernel evaluations: 202640274 (12.257% cached)
+
+Classifier for classes: 1, 5
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.0578 * (normalized) SFT
+ +      -0.2217 * (normalized) W
+ +       0.0118 * (normalized) P
+ +       0.0587 * (normalized) S
+ +      -0.1031 * (normalized) B
+ +      -0.0595 * (normalized) E
+ +       0.0821 * (normalized) St
+ +       0.1692 * (normalized) F
+ +      -0.2472 * (normalized) G
+ +       0.1413 * (normalized) T7
+ +      -0.0074 * (normalized) T3
+ +      -0.0801 * (normalized) U
+ +       0.3113 * (normalized) A
+ +      -0.0115 * (normalized) Se=F
+ +       0.083  * (normalized) LB
+ +      -0.0953 * (normalized) PF
+ +      -0.0613 * (normalized) TF
+ +      -1.3885 * (normalized) RHF
+ +       0.7662
+
+Number of kernel evaluations: 231974915 (12.557% cached)
+
+Classifier for classes: 1, 6
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.415  * (normalized) SFT
+ +      -0.2844 * (normalized) W
+ +      -0.1487 * (normalized) P
+ +      -0.1017 * (normalized) S
+ +      -0.1691 * (normalized) B
+ +       0.2202 * (normalized) E
+ +      -0.0893 * (normalized) St
+ +       0.5524 * (normalized) F
+ +      -0.5856 * (normalized) G
+ +       0.2675 * (normalized) T7
+ +       0.512  * (normalized) T3
+ +      -0.0594 * (normalized) U
+ +       1.1249 * (normalized) A
+ +       0.0557 * (normalized) Se=F
+ +      -0.2001 * (normalized) LB
+ +      -0.1129 * (normalized) PF
+ +      -0.0206 * (normalized) TF
+ +      -0.3454 * (normalized) RHF
+ +       0.1197
+
+Number of kernel evaluations: 297836127 (12.32% cached)
+
+Classifier for classes: 1, 7
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -2.5481 * (normalized) SFT
+ +      -0.045  * (normalized) W
+ +      -0.7474 * (normalized) P
+ +      -0.755  * (normalized) S
+ +       0.0671 * (normalized) B
+ +      -0.0214 * (normalized) E
+ +      -0.0686 * (normalized) St
+ +       3.3842 * (normalized) F
+ +      -3.5307 * (normalized) G
+ +      -0.7303 * (normalized) T7
+ +       3.8186 * (normalized) T3
+ +      -0.048  * (normalized) U
+ +       4.908  * (normalized) A
+ +       0.074  * (normalized) Se=F
+ +      -0.3136 * (normalized) LB
+ +      -0.1258 * (normalized) PF
+ +       0.3918 * (normalized) TF
+ +      -1.2031 * (normalized) RHF
+ -       0.353 
+
+Number of kernel evaluations: 631424430 (23.948% cached)
+
+Classifier for classes: 1, 8
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -2.1739 * (normalized) SFT
+ +       0.3302 * (normalized) W
+ +      -0.7227 * (normalized) P
+ +      -0.2648 * (normalized) S
+ +       0.0127 * (normalized) B
+ +      -0.0403 * (normalized) E
+ +      -1.2192 * (normalized) St
+ +       4.6872 * (normalized) F
+ +      -3.2961 * (normalized) G
+ +       0.5234 * (normalized) T7
+ +       3.4323 * (normalized) T3
+ +      -0.0635 * (normalized) U
+ +       4.559  * (normalized) A
+ +       0.0839 * (normalized) Se=F
+ +      -0.3375 * (normalized) LB
+ +      -0.1369 * (normalized) PF
+ +       0.0966 * (normalized) TF
+ +      -1.0031 * (normalized) RHF
+ -       0.7955
+
+Number of kernel evaluations: 606372115 (25.219% cached)
+
+Classifier for classes: 1, 9
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.0008 * (normalized) SFT
+ +       0.0002 * (normalized) W
+ +       0.0002 * (normalized) P
+ +      -0.0005 * (normalized) S
+ +      -0      * (normalized) B
+ +       0.0003 * (normalized) E
+ +      -0.0014 * (normalized) St
+ +       0.0046 * (normalized) F
+ +      -0.0032 * (normalized) G
+ +      -0.0025 * (normalized) T7
+ +       0.006  * (normalized) T3
+ +      -0.0001 * (normalized) U
+ +       0.0041 * (normalized) A
+ +       0.0002 * (normalized) Se=F
+ +      -0.0002 * (normalized) LB
+ +      -0.0001 * (normalized) PF
+ +      -0.002  * (normalized) TF
+ +      -0.0028 * (normalized) RHF
+ -       0.9988
+
+Number of kernel evaluations: 199449947 (26.762% cached)
+
+Classifier for classes: 2, 3
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.0664 * (normalized) SFT
+ +       0.8809 * (normalized) W
+ +      -0.1897 * (normalized) P
+ +       0.2589 * (normalized) S
+ +       0.0464 * (normalized) B
+ +      -0.1415 * (normalized) E
+ +       0.1011 * (normalized) St
+ +      -0.1796 * (normalized) F
+ +      -0.0733 * (normalized) G
+ +       0.3957 * (normalized) T7
+ +      -0.1002 * (normalized) T3
+ +       0.674  * (normalized) U
+ +       0.1094 * (normalized) A
+ +       0.19   * (normalized) Se=F
+ +       0.3427 * (normalized) LB
+ +       0.557  * (normalized) PF
+ +       0.0399 * (normalized) TF
+ +       0.0856 * (normalized) RHF
+ -       0.9093
+
+Number of kernel evaluations: 199671633 (11.478% cached)
+
+Classifier for classes: 2, 4
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.399  * (normalized) SFT
+ +      -0.5255 * (normalized) W
+ +      -0.268  * (normalized) P
+ +      -0.1468 * (normalized) S
+ +       0.0395 * (normalized) B
+ +       0.794  * (normalized) E
+ +      -0.1244 * (normalized) St
+ +      -0.1381 * (normalized) F
+ +       0.0639 * (normalized) G
+ +       0.1302 * (normalized) T7
+ +       0.452  * (normalized) T3
+ +       0.1104 * (normalized) U
+ +       0.0794 * (normalized) A
+ +       0.7529 * (normalized) Se=F
+ +      -0.323  * (normalized) LB
+ +      -0.1536 * (normalized) PF
+ +      -0.8128 * (normalized) TF
+ +       0.856  * (normalized) RHF
+ -       0.3039
+
+Number of kernel evaluations: 196228248 (11.409% cached)
+
+Classifier for classes: 2, 5
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.5108 * (normalized) SFT
+ +      -0.3719 * (normalized) W
+ +      -0.5508 * (normalized) P
+ +       0.1616 * (normalized) S
+ +       0.1247 * (normalized) B
+ +      -0.5994 * (normalized) E
+ +       0.1227 * (normalized) St
+ +       0.3697 * (normalized) F
+ +      -0.0856 * (normalized) G
+ +      -0.4618 * (normalized) T7
+ +       0.0878 * (normalized) T3
+ +       0.338  * (normalized) U
+ +       0.3607 * (normalized) A
+ +      -0.0937 * (normalized) Se=F
+ +      -0.6391 * (normalized) LB
+ +       0.2964 * (normalized) PF
+ +       0.0058 * (normalized) TF
+ +      -0.1532 * (normalized) RHF
+ +       0.2505
+
+Number of kernel evaluations: 189600345 (12.205% cached)
+
+Classifier for classes: 2, 6
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.0341 * (normalized) SFT
+ +       0.9717 * (normalized) W
+ +      -0.3029 * (normalized) P
+ +      -0.718  * (normalized) S
+ +      -0.7393 * (normalized) B
+ +       0.2798 * (normalized) E
+ +      -0.4117 * (normalized) St
+ +      -1.0346 * (normalized) F
+ +      -0.9999 * (normalized) G
+ +       0.6776 * (normalized) T7
+ +       0.5375 * (normalized) T3
+ +      -0.7423 * (normalized) U
+ +       0.4449 * (normalized) A
+ +       1.2674 * (normalized) Se=F
+ +      -0.9354 * (normalized) LB
+ +      -0.8393 * (normalized) PF
+ +       0.2334 * (normalized) TF
+ +       0.1867 * (normalized) RHF
+ +       1.0072
+
+Number of kernel evaluations: 186876696 (12.668% cached)
+
+Classifier for classes: 2, 7
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.1386 * (normalized) SFT
+ +       0.1433 * (normalized) W
+ +      -0.1092 * (normalized) P
+ +      -0.5767 * (normalized) S
+ +      -0.1313 * (normalized) B
+ +      -0.1589 * (normalized) E
+ +      -0.2442 * (normalized) St
+ +       0.8931 * (normalized) F
+ +      -0.6114 * (normalized) G
+ +       0.4241 * (normalized) T7
+ +       0.5932 * (normalized) T3
+ +       0.1274 * (normalized) U
+ +       0.2143 * (normalized) A
+ +      -0.0356 * (normalized) Se=F
+ +       0.321  * (normalized) LB
+ +       0.0851 * (normalized) PF
+ +      -0.139  * (normalized) TF
+ +       0.1009 * (normalized) RHF
+ -       0.3397
+
+Number of kernel evaluations: 181450950 (13.647% cached)
+
+Classifier for classes: 2, 8
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.3368 * (normalized) SFT
+ +      -0.288  * (normalized) W
+ +      -0.2441 * (normalized) P
+ +      -0.2419 * (normalized) S
+ +       0.1131 * (normalized) B
+ +       0.0936 * (normalized) E
+ +       0.0728 * (normalized) St
+ +       0.9568 * (normalized) F
+ +      -0.2176 * (normalized) G
+ +       0.5115 * (normalized) T7
+ +       0.6504 * (normalized) T3
+ +       0.32   * (normalized) U
+ +       0.5678 * (normalized) A
+ +      -0.1305 * (normalized) Se=F
+ +       0.0804 * (normalized) LB
+ +      -0.3619 * (normalized) PF
+ +      -0.3301 * (normalized) TF
+ +      -0.6854 * (normalized) RHF
+ -       0.1806
+
+Number of kernel evaluations: 174244451 (15.85% cached)
+
+Classifier for classes: 2, 9
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.0001 * (normalized) SFT
+ +      -0.0004 * (normalized) W
+ +       0.0001 * (normalized) P
+ +       0.0004 * (normalized) S
+ +       0.0001 * (normalized) B
+ +      -0.0001 * (normalized) E
+ +      -0.0004 * (normalized) St
+ +       0.0022 * (normalized) F
+ +      -0.0012 * (normalized) G
+ +      -0.0035 * (normalized) T7
+ +       0.0035 * (normalized) T3
+ +       0      * (normalized) U
+ +       0.001  * (normalized) A
+ +      -0.0001 * (normalized) Se=F
+ +       0.0004 * (normalized) LB
+ +       0      * (normalized) PF
+ +      -0.0029 * (normalized) TF
+ +       0.0008 * (normalized) RHF
+ -       0.9995
+
+Number of kernel evaluations: 146966279 (27.355% cached)
+
+Classifier for classes: 3, 4
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -1.2564 * (normalized) SFT
+ +      -0.7627 * (normalized) W
+ +       0.2859 * (normalized) P
+ +       0.0368 * (normalized) S
+ +      -0.424  * (normalized) B
+ +      -0.1106 * (normalized) E
+ +       0.1233 * (normalized) St
+ +       0.649  * (normalized) F
+ +       0.8224 * (normalized) G
+ +       0.103  * (normalized) T7
+ +       0.5672 * (normalized) T3
+ +       0.7146 * (normalized) U
+ +       0.118  * (normalized) A
+ +       0.2774 * (normalized) Se=F
+ +      -0.6521 * (normalized) LB
+ +       0.0645 * (normalized) PF
+ +      -2.1636 * (normalized) TF
+ +       0.587  * (normalized) RHF
+ +       0.4423
+
+Number of kernel evaluations: 211283929 (11.063% cached)
+
+Classifier for classes: 3, 5
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.271  * (normalized) SFT
+ +       0.0497 * (normalized) W
+ +       0.3083 * (normalized) P
+ +      -0.7349 * (normalized) S
+ +       0.1124 * (normalized) B
+ +       0.0321 * (normalized) E
+ +       0.1602 * (normalized) St
+ +      -0.5777 * (normalized) F
+ +       0.344  * (normalized) G
+ +       0.1985 * (normalized) T7
+ +       0.3921 * (normalized) T3
+ +       0.2862 * (normalized) U
+ +      -0.1987 * (normalized) A
+ +       1.5614 * (normalized) Se=F
+ +      -0.1882 * (normalized) LB
+ +       0.234  * (normalized) PF
+ +       0.0973 * (normalized) TF
+ +       0.2238 * (normalized) RHF
+ -       1.0912
+
+Number of kernel evaluations: 183691298 (12.633% cached)
+
+Classifier for classes: 3, 6
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.2982 * (normalized) SFT
+ +      -0.1823 * (normalized) W
+ +       0.9387 * (normalized) P
+ +      -0.6702 * (normalized) S
+ +      -0.7398 * (normalized) B
+ +      -0.2231 * (normalized) E
+ +       0.233  * (normalized) St
+ +      -0.4924 * (normalized) F
+ +      -0.3914 * (normalized) G
+ +       0.3024 * (normalized) T7
+ +       0.6186 * (normalized) T3
+ +      -1.0364 * (normalized) U
+ +       0.6505 * (normalized) A
+ +       0.6433 * (normalized) Se=F
+ +      -0.7549 * (normalized) LB
+ +       0.3537 * (normalized) PF
+ +       1.1523 * (normalized) TF
+ +      -0.0237 * (normalized) RHF
+ +       0.1293
+
+Number of kernel evaluations: 194718119 (11.947% cached)
+
+Classifier for classes: 3, 7
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.1487 * (normalized) SFT
+ +      -0.0395 * (normalized) W
+ +      -0.2487 * (normalized) P
+ +       0.0869 * (normalized) S
+ +       0.028  * (normalized) B
+ +      -0.4259 * (normalized) E
+ +       0.0592 * (normalized) St
+ +       0.3385 * (normalized) F
+ +      -0.2708 * (normalized) G
+ +       0.0775 * (normalized) T7
+ +       0.0525 * (normalized) T3
+ +      -0.3421 * (normalized) U
+ +       0.2741 * (normalized) A
+ +      -0.2415 * (normalized) Se=F
+ +      -0.0548 * (normalized) LB
+ +      -0.2406 * (normalized) PF
+ +      -0.6214 * (normalized) TF
+ +       0.2945 * (normalized) RHF
+ +       0.607 
+
+Number of kernel evaluations: 189949861 (12.969% cached)
+
+Classifier for classes: 3, 8
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.8702 * (normalized) SFT
+ +      -0.6074 * (normalized) W
+ +       0.1799 * (normalized) P
+ +       0.0146 * (normalized) S
+ +      -0.211  * (normalized) B
+ +       0.064  * (normalized) E
+ +      -0.5346 * (normalized) St
+ +       1.1062 * (normalized) F
+ +      -0.4554 * (normalized) G
+ +       0.3917 * (normalized) T7
+ +       0.2372 * (normalized) T3
+ +       0.047  * (normalized) U
+ +      -0.1262 * (normalized) A
+ +      -0.1041 * (normalized) Se=F
+ +      -0.0578 * (normalized) LB
+ +       0.1088 * (normalized) PF
+ +       0.4264 * (normalized) TF
+ +      -0.5804 * (normalized) RHF
+ +       0.1182
+
+Number of kernel evaluations: 176225854 (15.208% cached)
+
+Classifier for classes: 3, 9
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.0001 * (normalized) SFT
+ +      -0      * (normalized) W
+ +       0.0004 * (normalized) P
+ +       0.0003 * (normalized) S
+ +       0.0003 * (normalized) B
+ +       0.0001 * (normalized) E
+ +      -0.0002 * (normalized) St
+ +       0.0026 * (normalized) F
+ +      -0.0018 * (normalized) G
+ +      -0.0033 * (normalized) T7
+ +       0.0038 * (normalized) T3
+ +       0.0002 * (normalized) U
+ +       0.0014 * (normalized) A
+ +       0.0007 * (normalized) Se=F
+ +       0.0005 * (normalized) LB
+ +      -0.0001 * (normalized) PF
+ +      -0.0053 * (normalized) TF
+ +       0.0019 * (normalized) RHF
+ -       0.9996
+
+Number of kernel evaluations: 131263674 (27.019% cached)
+
+Classifier for classes: 4, 5
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.3955 * (normalized) SFT
+ +      -0.3957 * (normalized) W
+ +      -0.1574 * (normalized) P
+ +      -0.5049 * (normalized) S
+ +       0.1039 * (normalized) B
+ +      -0.2081 * (normalized) E
+ +      -0.1669 * (normalized) St
+ +       0.3524 * (normalized) F
+ +      -0.3224 * (normalized) G
+ +      -0.1284 * (normalized) T7
+ +       0.4398 * (normalized) T3
+ +      -0.5087 * (normalized) U
+ +       0.0844 * (normalized) A
+ +       0.9856 * (normalized) Se=F
+ +      -0.4    * (normalized) LB
+ +      -0.5153 * (normalized) PF
+ +       1.6912 * (normalized) TF
+ +      -0.2217 * (normalized) RHF
+ -       0.3946
+
+Number of kernel evaluations: 189390884 (11.83% cached)
+
+Classifier for classes: 4, 6
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.1573 * (normalized) SFT
+ +      -0.2247 * (normalized) W
+ +      -0.6795 * (normalized) P
+ +       0.1559 * (normalized) S
+ +      -0.012  * (normalized) B
+ +       0.0225 * (normalized) E
+ +       0.6505 * (normalized) St
+ +       0.8723 * (normalized) F
+ +      -0.6127 * (normalized) G
+ +       0.3791 * (normalized) T7
+ +       0.1535 * (normalized) T3
+ +       0.4562 * (normalized) U
+ +       0.2925 * (normalized) A
+ +      -0.4428 * (normalized) Se=F
+ +      -0.4016 * (normalized) LB
+ +       0.3792 * (normalized) PF
+ +       0.6838 * (normalized) TF
+ +      -0.6843 * (normalized) RHF
+ -       0.5499
+
+Number of kernel evaluations: 192806047 (11.623% cached)
+
+Classifier for classes: 4, 7
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.2591 * (normalized) SFT
+ +       0.4232 * (normalized) W
+ +       0.3383 * (normalized) P
+ +       0.0671 * (normalized) S
+ +      -0.0621 * (normalized) B
+ +       0.0112 * (normalized) E
+ +      -0.2389 * (normalized) St
+ +       1.012  * (normalized) F
+ +      -0.3512 * (normalized) G
+ +      -0.1441 * (normalized) T7
+ +      -0.0207 * (normalized) T3
+ +       0.3384 * (normalized) U
+ +      -0.0997 * (normalized) A
+ +      -1.1167 * (normalized) Se=F
+ +       0.3249 * (normalized) LB
+ +      -0.3004 * (normalized) PF
+ +       2.6586 * (normalized) TF
+ +      -0.4549 * (normalized) RHF
+ -       0.7631
+
+Number of kernel evaluations: 181544653 (12.654% cached)
+
+Classifier for classes: 4, 8
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.2445 * (normalized) SFT
+ +       0.2038 * (normalized) W
+ +       0.0026 * (normalized) P
+ +      -0.6866 * (normalized) S
+ +       0.0931 * (normalized) B
+ +       0.1544 * (normalized) E
+ +      -0.2927 * (normalized) St
+ +       0.4365 * (normalized) F
+ +      -0.3126 * (normalized) G
+ +      -0.0167 * (normalized) T7
+ +       0.287  * (normalized) T3
+ +       0.1555 * (normalized) U
+ +      -0.1035 * (normalized) A
+ +      -0.3365 * (normalized) Se=F
+ +       0.0979 * (normalized) LB
+ +      -0.0974 * (normalized) PF
+ +       0.9873 * (normalized) TF
+ +      -0.9833 * (normalized) RHF
+ +       0.1247
+
+Number of kernel evaluations: 169056038 (14.811% cached)
+
+Classifier for classes: 4, 9
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.0003 * (normalized) SFT
+ +       0.0003 * (normalized) W
+ +       0.0006 * (normalized) P
+ +       0.0003 * (normalized) S
+ +      -0.0001 * (normalized) B
+ +      -0.0001 * (normalized) E
+ +      -0.0003 * (normalized) St
+ +       0.0027 * (normalized) F
+ +      -0.0009 * (normalized) G
+ +      -0.0048 * (normalized) T7
+ +       0.0035 * (normalized) T3
+ +       0      * (normalized) U
+ +       0.0001 * (normalized) A
+ +      -0.0002 * (normalized) Se=F
+ +       0.0003 * (normalized) LB
+ +      -0.0002 * (normalized) PF
+ +       0.0011 * (normalized) TF
+ +      -0.0001 * (normalized) RHF
+ -       1.0006
+
+Number of kernel evaluations: 114499394 (27.79% cached)
+
+Classifier for classes: 5, 6
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.0585 * (normalized) SFT
+ +      -0.1072 * (normalized) W
+ +      -0.1136 * (normalized) P
+ +      -0.3037 * (normalized) S
+ +      -0.2959 * (normalized) B
+ +       0.3468 * (normalized) E
+ +       0.0788 * (normalized) St
+ +       0.2434 * (normalized) F
+ +       0.2816 * (normalized) G
+ +       0.0893 * (normalized) T7
+ +      -0.1011 * (normalized) T3
+ +       0.0651 * (normalized) U
+ +       0.1475 * (normalized) A
+ +       0.0104 * (normalized) Se=F
+ +       0.1948 * (normalized) LB
+ +       0.0601 * (normalized) PF
+ +       1.0655 * (normalized) TF
+ +       0.5479 * (normalized) RHF
+ -       1.1659
+
+Number of kernel evaluations: 173066649 (12.603% cached)
+
+Classifier for classes: 5, 7
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.2523 * (normalized) SFT
+ +       0.5947 * (normalized) W
+ +       0.1854 * (normalized) P
+ +      -0.1948 * (normalized) S
+ +      -0.2418 * (normalized) B
+ +       0.7186 * (normalized) E
+ +      -0.1879 * (normalized) St
+ +      -0.0544 * (normalized) F
+ +      -0.3374 * (normalized) G
+ +       0.1992 * (normalized) T7
+ +      -0.2349 * (normalized) T3
+ +      -0.6593 * (normalized) U
+ +      -0.2824 * (normalized) A
+ +      -0.0853 * (normalized) Se=F
+ +       0.4488 * (normalized) LB
+ +       0.5406 * (normalized) PF
+ +      -0.0098 * (normalized) TF
+ +       0.2824 * (normalized) RHF
+ -       0.4893
+
+Number of kernel evaluations: 187722305 (12.088% cached)
+
+Classifier for classes: 5, 8
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.2217 * (normalized) SFT
+ +       0.8005 * (normalized) W
+ +      -0.0708 * (normalized) P
+ +      -0.6436 * (normalized) S
+ +      -0.1925 * (normalized) B
+ +      -0.4552 * (normalized) E
+ +      -0.1749 * (normalized) St
+ +       0.7309 * (normalized) F
+ +      -0.5713 * (normalized) G
+ +      -0.3832 * (normalized) T7
+ +      -0.0472 * (normalized) T3
+ +       0.2586 * (normalized) U
+ +      -0.2779 * (normalized) A
+ +      -0.1631 * (normalized) Se=F
+ +      -0.0969 * (normalized) LB
+ +      -0.1832 * (normalized) PF
+ +      -0.2475 * (normalized) TF
+ +      -0.0015 * (normalized) RHF
+ +       0.4362
+
+Number of kernel evaluations: 175820438 (12.618% cached)
+
+Classifier for classes: 5, 9
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.0001 * (normalized) SFT
+ +       0.0001 * (normalized) W
+ +       0.0001 * (normalized) P
+ +      -0.0002 * (normalized) S
+ +       0.0001 * (normalized) B
+ +      -0      * (normalized) E
+ +      -0.0002 * (normalized) St
+ +       0.0021 * (normalized) F
+ +      -0.0006 * (normalized) G
+ +      -0.0039 * (normalized) T7
+ +       0.0026 * (normalized) T3
+ +       0.0003 * (normalized) U
+ +       0.0004 * (normalized) A
+ +      -0.0001 * (normalized) Se=F
+ +      -0.0002 * (normalized) LB
+ +       0.0002 * (normalized) PF
+ +      -0.0018 * (normalized) TF
+ +       0.0015 * (normalized) RHF
+ -       1.0002
+
+Number of kernel evaluations: 98478744 (28.819% cached)
+
+Classifier for classes: 6, 7
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.125  * (normalized) SFT
+ +      -0.0461 * (normalized) W
+ +       0.0804 * (normalized) P
+ +      -0.0247 * (normalized) S
+ +       0.2831 * (normalized) B
+ +      -0.6076 * (normalized) E
+ +      -0.5266 * (normalized) St
+ +      -0.0254 * (normalized) F
+ +       0.3015 * (normalized) G
+ +      -0.5069 * (normalized) T7
+ +       0.3728 * (normalized) T3
+ +       1.1042 * (normalized) U
+ +       0.1754 * (normalized) A
+ +      -0.5466 * (normalized) Se=F
+ +      -0.157  * (normalized) LB
+ +       0.5737 * (normalized) PF
+ +      -0.349  * (normalized) TF
+ +      -0.0757 * (normalized) RHF
+ -       0.0176
+
+Number of kernel evaluations: 195449871 (11.817% cached)
+
+Classifier for classes: 6, 8
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.1451 * (normalized) SFT
+ +      -0.3142 * (normalized) W
+ +       0.2128 * (normalized) P
+ +      -0.2808 * (normalized) S
+ +       0.199  * (normalized) B
+ +       0.1233 * (normalized) E
+ +      -0.7811 * (normalized) St
+ +       1.1935 * (normalized) F
+ +       0.2308 * (normalized) G
+ +       0.0157 * (normalized) T7
+ +       0.8427 * (normalized) T3
+ +       1.0614 * (normalized) U
+ +       0.0948 * (normalized) A
+ +       0.6529 * (normalized) Se=F
+ +       0.6561 * (normalized) LB
+ +      -0.5855 * (normalized) PF
+ +      -0.1384 * (normalized) TF
+ +       0.0561 * (normalized) RHF
+ -       1.2007
+
+Number of kernel evaluations: 175472399 (13.115% cached)
+
+Classifier for classes: 6, 9
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.0002 * (normalized) SFT
+ +       0.0003 * (normalized) W
+ +       0.0004 * (normalized) P
+ +       0.0002 * (normalized) S
+ +      -0.0001 * (normalized) B
+ +      -0.0001 * (normalized) E
+ +      -0.0005 * (normalized) St
+ +       0.0015 * (normalized) F
+ +      -0.0006 * (normalized) G
+ +      -0.0035 * (normalized) T7
+ +       0.0027 * (normalized) T3
+ +       0.0002 * (normalized) U
+ +      -0.0009 * (normalized) A
+ +       0.0004 * (normalized) Se=F
+ +      -0      * (normalized) LB
+ +      -0.0002 * (normalized) PF
+ +      -0.0002 * (normalized) TF
+ +      -0.001  * (normalized) RHF
+ -       0.9993
+
+Number of kernel evaluations: 100775073 (28.652% cached)
+
+Classifier for classes: 7, 8
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.0642 * (normalized) SFT
+ +      -0.4984 * (normalized) W
+ +       0.2257 * (normalized) P
+ +       0.3527 * (normalized) S
+ +      -0.1372 * (normalized) B
+ +      -0.3737 * (normalized) E
+ +      -0.0394 * (normalized) St
+ +       0.2405 * (normalized) F
+ +       0.4496 * (normalized) G
+ +       0.4163 * (normalized) T7
+ +       0.0192 * (normalized) T3
+ +       0.5002 * (normalized) U
+ +       0.2464 * (normalized) A
+ +       1.2359 * (normalized) Se=F
+ +      -0.5167 * (normalized) LB
+ +       0.4271 * (normalized) PF
+ +      -0.0367 * (normalized) TF
+ +      -0.1182 * (normalized) RHF
+ -       0.7771
+
+Number of kernel evaluations: 175686023 (12.532% cached)
+
+Classifier for classes: 7, 9
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.0003 * (normalized) SFT
+ +      -0.0003 * (normalized) W
+ +       0.0003 * (normalized) P
+ +      -0      * (normalized) S
+ +       0.0002 * (normalized) B
+ +      -0.0007 * (normalized) E
+ +       0.0004 * (normalized) St
+ +       0.0011 * (normalized) F
+ +       0      * (normalized) G
+ +      -0.0032 * (normalized) T7
+ +       0.0029 * (normalized) T3
+ +      -0.0006 * (normalized) U
+ +      -0.0013 * (normalized) A
+ +       0.0001 * (normalized) Se=F
+ +       0      * (normalized) LB
+ +       0.0005 * (normalized) PF
+ +      -0.0007 * (normalized) TF
+ +       0.0009 * (normalized) RHF
+ -       1.0005
+
+Number of kernel evaluations: 73699946 (30.018% cached)
+
+Classifier for classes: 8, 9
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0.0001 * (normalized) SFT
+ +      -0.0005 * (normalized) W
+ +      -0.0001 * (normalized) P
+ +      -0.0002 * (normalized) S
+ +       0.0002 * (normalized) B
+ +       0.0001 * (normalized) E
+ +       0.0001 * (normalized) St
+ +       0.0004 * (normalized) F
+ +      -0.0006 * (normalized) G
+ +      -0.0037 * (normalized) T7
+ +       0.0021 * (normalized) T3
+ +       0      * (normalized) U
+ +       0.0003 * (normalized) A
+ +       0.0002 * (normalized) Se=F
+ +      -0.0004 * (normalized) LB
+ +       0      * (normalized) PF
+ +      -0.0028 * (normalized) TF
+ +       0.0019 * (normalized) RHF
+ -       0.9989
+
+Number of kernel evaluations: 77101250 (27.907% cached)
+
+
+
+Time taken to build model: 2084.9 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances       10238               14.1037 %
+Incorrectly Classified Instances     62353               85.8963 %
+Kappa statistic                          0.0244
+Mean absolute error                      0.1947
+Root mean squared error                  0.3147
+Relative absolute error                 99.0707 %
+Root relative squared error            100.3991 %
+Total Number of Instances            72591     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.367    0.258    0.164      0.367    0.227      0.080    0.594     0.153     1
+                 0.142    0.124    0.137      0.142    0.139      0.018    0.529     0.130     2
+                 0.093    0.096    0.117      0.093    0.103      -0.004   0.511     0.124     3
+                 0.091    0.091    0.121      0.091    0.104      0.000    0.508     0.122     4
+                 0.089    0.087    0.122      0.089    0.103      0.003    0.504     0.120     5
+                 0.142    0.132    0.126      0.142    0.134      0.009    0.516     0.123     6
+                 0.116    0.098    0.136      0.116    0.125      0.019    0.533     0.127     7
+                 0.141    0.090    0.167      0.141    0.153      0.055    0.585     0.142     8
+                 0.000    0.000    ?          0.000    ?          ?        0.500     0.047     9
+Weighted Avg.    0.141    0.117    ?          0.141    ?          ?        0.533     0.126     
+
+=== Confusion Matrix ===
+
+    a    b    c    d    e    f    g    h    i   <-- classified as
+ 3229 1266  833  783  574  909  659  542    0 |    a = 1
+ 2825 1251  834  808  638 1075  679  702    0 |    b = 2
+ 2588 1172  815  875  743 1115  790  694    0 |    c = 3
+ 2404 1183  926  797  771 1119  807  714    0 |    d = 4
+ 2270 1107  853  826  773 1203  875  766    0 |    e = 5
+ 2118 1059  824  791  819 1225  922  858    0 |    f = 6
+ 1935  876  821  788  846 1283  989 1005    0 |    g = 7
+ 1674  857  764  682  804 1227 1052 1159    0 |    h = 8
+  633  364  294  256  361  540  477  495    0 |    i = 9
+
