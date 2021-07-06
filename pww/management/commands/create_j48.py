@@ -74,29 +74,35 @@ class Command(BaseCommand):
                 exist_ok=True)
 
         for venue in Venue.objects.filter(is_focused=True):
-            code = venue.code
-            if not code == "CA":
-                for distance in focused_distances[code]:
-                    for grade_name in focused_grades[code]:
-                        print("{}_{}_{}".format(code, distance, grade_name))
-                        print(complexity)
-            # metrics = Metric.objects.filter(
-            #     participant__race__chart__program__venue=venue,
-            #     participant__race__distance=distance,
-            #     participant__race__grade__name=grade_name,
-            #     final__isnull=False)
-            #
-            # print(len(metrics))
-            # race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
-            # print(race_key)
-            # model_filename = "{}/{}_model.arff".format(arff_directory, race_key)
-            # print(model_filename)
-            # is_nominal = False
-            # arff_file = self.create_arff(
-            #     model_filename,
-            #     metrics,
-            #     is_nominal)
-            # classifier = "weka.classifiers.functions.SMOreg"
-            # options = ["-C", complexity]
-            # filename = "smoreg_{}".format(complexity.replace(".", "_"))
-            # create_model(arff_file, race_key, classifier, options, filename)
+            venue_code = venue.code
+            if not venue_code == "CA":
+                for distance in focused_distances[venue_code]:
+                    for grade_name in focused_grades[venue_code]:
+                        print("{}_{}_{}".format(
+                            venue_code,
+                            distance,
+                            grade_name))
+                        # print(complexity)
+                        metrics = Metric.objects.filter(
+                            participant__race__chart__program__venue=venue,
+                            participant__race__distance=distance,
+                            participant__race__grade__name=grade_name,
+                            final__isnull=False)
+                        #
+                        print(len(metrics))
+                        race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
+                        # print(race_key)
+                        model_filename = "{}/{}_J48_C{}_model.arff".format(
+                            arff_directory,
+                            race_key,
+                            complexity.replace(".", "_"))
+                        print(model_filename)
+                        # is_nominal = False
+                        # arff_file = self.create_arff(
+                        #     model_filename,
+                        #     metrics,
+                        #     is_nominal)
+                        # classifier = "weka.classifiers.functions.SMOreg"
+                        # options = ["-C", complexity]
+                        # filename = "smoreg_{}".format(complexity.replace(".", "_"))
+                        # create_model(arff_file, race_key, classifier, options, filename)
