@@ -212,7 +212,7 @@ def save_prediction(participant, pred):
         new_prediction.set_fields_to_base()
         new_prediction.save()
         prediction = new_prediction
-    prediction.smo = pred
+    prediction.j48 = pred
     prediction.save()
     print("Race {}\t{}:\t{}".format(
         participant.race.number,
