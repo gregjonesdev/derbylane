@@ -39,8 +39,24 @@ def predict_all(scheduled_data):
         predict("TS_550_B", scheduled_data[race_key])
     jvm.stop()
 
+def new_predict_all(arff_files):
+    print("new predict all")
+    jvm.start(packages=True, max_heap_size="2048m")
 
+    for arff_file in arff_files:
+        predict_single(arff_file)
+        # evaluate_predictions("TS_550_B_J48_C0_75.model", scheduled_data[race_key])
+        # predict("TS_550_B", scheduled_data[race_key])
+    jvm.stop()
 
+def predict_single(arff_file):
+    print("predict single")
+    # race_key = arff_file.split("/")
+    print("race_key:")
+    race_key = arff_file.replace("arff/", "").replace(".arff", "")
+    print(race_key)
+    model_name = "weka_models/{}_J48_C0_75.model".format(race_key)
+    print(model_name)
 
 
 
