@@ -126,66 +126,65 @@ def evaluate_predictions(model_name, arff_data):
     test_data.class_is_last()
     model = Classifier(jobject=serialization.read("weka_models/{}".format(model_name)))
     predictions = new_get_predictions(test_data, uuid_list, model)
-    print(predictions[:3])
-    #
-    # range_width = .25
-    # current_range_min = 0
-    # absolute_max = 8.0
-    # range_starts = []
-    # bet_counts = []
-    # win_winnings = []
-    # place_winnings = []
-    # show_winnings = []
-    # prediction_count = len(predictions)
-    #
-    # while current_range_min < absolute_max:
-    #     current_range_max = current_range_min + range_width
-    #     range_win = 0
-    #     range_place = 0
-    #     range_show = 0
-    #     range_count = 0
-    #
-    #
-    #     for prediction in predictions:
-    #         participant = prediction["participant"]
-    #         if current_range_min <= prediction["prediction"] <= current_range_max:
-    #              range_count += 1
-    #              range_win += get_win_bet_earnings(participant)
-    #              range_place += get_place_bet_earnings(participant)
-    #              range_show += get_show_bet_earnings(participant)
-    #
-    #     if range_count > 0:
-    #         range_starts.append(current_range_min)
-    #         bet_counts.append(range_count)
-    #         win_winnings.append(range_win/range_count)
-    #         place_winnings.append(range_place/range_count)
-    #         show_winnings.append(range_show/range_count)
-    #
-    #     current_range_min += range_width
-    #
-    # if len(bet_counts) > 0:
-    #     print("Prediction Breakdown:\n")
-    #     print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-    #         "Range",
-    #         "Win",
-    #         "Place",
-    #         "Show",
-    #         "Predictions/Race"
-    #     ))
-    #     for each in range_starts:
-    #         index = range_starts.index(each)
-    #         percent = int(100*bet_counts[index]/prediction_count)
-    #         # if percent > 0:
-    #         # print("{}: {}%".format(each, percent))
-    #         bet_count = bet_counts[index]
-    #         print("{}-{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-    #             round(each, 2),
-    #             round(each + range_width, 2),
-    #             round(win_winnings[index], 2),
-    #             round(place_winnings[index], 2),
-    #             round(show_winnings[index], 2),
-    #             round(float(bet_count*8)/float(prediction_count), 2)
-    #         ))
+    
+    range_width = .25
+    current_range_min = 0
+    absolute_max = 8.0
+    range_starts = []
+    bet_counts = []
+    win_winnings = []
+    place_winnings = []
+    show_winnings = []
+    prediction_count = len(predictions)
+
+    while current_range_min < absolute_max:
+        current_range_max = current_range_min + range_width
+        range_win = 0
+        range_place = 0
+        range_show = 0
+        range_count = 0
+
+
+        for prediction in predictions:
+            participant = prediction["participant"]
+            if current_range_min <= prediction["prediction"] <= current_range_max:
+                 range_count += 1
+                 range_win += get_win_bet_earnings(participant)
+                 range_place += get_place_bet_earnings(participant)
+                 range_show += get_show_bet_earnings(participant)
+
+        if range_count > 0:
+            range_starts.append(current_range_min)
+            bet_counts.append(range_count)
+            win_winnings.append(range_win/range_count)
+            place_winnings.append(range_place/range_count)
+            show_winnings.append(range_show/range_count)
+
+        current_range_min += range_width
+
+    if len(bet_counts) > 0:
+        print("Prediction Breakdown:\n")
+        print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+            "Range",
+            "Win",
+            "Place",
+            "Show",
+            "Predictions/Race"
+        ))
+        for each in range_starts:
+            index = range_starts.index(each)
+            percent = int(100*bet_counts[index]/prediction_count)
+            # if percent > 0:
+            # print("{}: {}%".format(each, percent))
+            bet_count = bet_counts[index]
+            print("{}-{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+                round(each, 2),
+                round(each + range_width, 2),
+                round(win_winnings[index], 2),
+                round(place_winnings[index], 2),
+                round(show_winnings[index], 2),
+                round(float(bet_count*8)/float(prediction_count), 2)
+            ))
 
 def dup_evaluate_predictions(model_name, arff_data):
     print("{}:\n".format(model_name)) # WD_548_C_J48_C0_75.model
