@@ -126,7 +126,7 @@ def evaluate_predictions(model_name, arff_data):
     test_data.class_is_last()
     model = Classifier(jobject=serialization.read("weka_models/{}".format(model_name)))
     predictions = new_get_predictions(test_data, uuid_list, model)
-    
+
     range_width = .25
     current_range_min = 0
     absolute_max = 8.0
@@ -186,17 +186,22 @@ def evaluate_predictions(model_name, arff_data):
                 round(float(bet_count*8)/float(prediction_count), 2)
             ))
 
-def dup_evaluate_predictions(model_name, arff_data):
+def test_predict(model_name, arff_data):
+    print("test predict: {}".format(arff_data))
     print("{}:\n".format(model_name)) # WD_548_C_J48_C0_75.model
     uuid_list = get_uuid_list(arff_data)
+    print(uuid_list[:4])
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     test_data = loader.load_file(arff_data)
+    # print(len(test_data))
     test_data = remove_uuid(test_data)
     test_data = nominalize(test_data)
     test_data.class_is_last()
     model = Classifier(jobject=serialization.read("weka_models/{}".format(model_name)))
+    # print(model)
     predictions = new_get_predictions(test_data, uuid_list, model)
-    print(predictions[0])
+    for each in predictions:
+        print("{}: {}".format( each["participant"], each["prediction"]))
     #
     # range_width = .25
     # current_range_min = 0

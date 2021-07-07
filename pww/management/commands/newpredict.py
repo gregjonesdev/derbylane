@@ -10,7 +10,7 @@ from django.core.management.base import BaseCommand
 
 from pww.models import Metric
 from rawdat.models import Venue
-from pww.utilities.weka import dup_evaluate_predictions
+from pww.utilities.weka import test_predict
 
 from miner.utilities.constants import (
     csv_columns,
@@ -20,11 +20,11 @@ from miner.utilities.constants import (
 
 class Command(BaseCommand):
 
-    def create_arff(self, filename, metrics, is_nominal):
+    def create_arff(self, filename, metrics):
         arff_file = open(filename, "w")
         arff_file.write("@relation Metric\n")
 
-        arff_file = self.write_headers(arff_file, is_nominal)
+        arff_file = self.write_headers(arff_file)
 
         for metric in metrics:
             csv_metric = metric.build_csv_metric()
@@ -34,11 +34,9 @@ class Command(BaseCommand):
         return filename
 
 
-    def write_headers(self, arff_file, is_nominal):
+    def write_headers(self, arff_file):
         for each in csv_columns:
-            if is_nominal and each == "Fi":
-                arff_file.write("@attribute {} nominal\n".format(each))
-            elif each == "PID":
+            if each == "PID":
                 arff_file.write("@attribute PID string\n")
             elif each == "Se":
                 arff_file.write("@attribute Se {M, F}\n")
@@ -72,24 +70,33 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         today = datetime.date.today()
-
-        # directory = "test_models"
+        # #
+        # # # directory = "test_models"
+        # # #
+        # # # race_keys_to_test = self.get_race_keys_to_test(
+        # # #     fnmatch.filter(os.listdir(directory), '*.model'))
+        # #
+        # jvm.start(packages=True, max_heap_size="2048m", system_info=True)
+        # # print("\n\n\n")
+        # # for race_key in race_keys_to_test:
+        # #     for model in race_keys_to_test[race_key]:
+        # #         venue_code = race_key[:2]
+        # #         if venue_code in ["TS", "WD", "SL"]:
+        # #             distance = int(race_key[3:6])
+        # #             grade_name = race_key[7:]
+        # #             metrics = self.get_metrics(venue_code, distance, grade_name)
+        # #             is_nominal = False
+        # #             test_arff = self.create_arff("test.arff", metrics, is_nominal)
+        # #             evaluate_predictions(model, test_arff)
+        # #
+        # model = "WD_548_B_J48_C0_75.model"
+        # test_predict(model, "combined.arff")
+        # # # test_predict(model, "scheduled.arff")
+        # #
+        # jvm.stop()
         #
-        # race_keys_to_test = self.get_race_keys_to_test(
-        #     fnmatch.filter(os.listdir(directory), '*.model'))
-
-        jvm.start(packages=True, max_heap_size="2048m")
-        print("\n\n\n")
-        # for race_key in race_keys_to_test:
-        #     for model in race_keys_to_test[race_key]:
-        #         venue_code = race_key[:2]
-        #         if venue_code in ["TS", "WD", "SL"]:
-        #             distance = int(race_key[3:6])
-        #             grade_name = race_key[7:]
-        #             metrics = self.get_metrics(venue_code, distance, grade_name)
-        #             is_nominal = False
-        #             test_arff = self.create_arff("test.arff", metrics, is_nominal)
-        #             evaluate_predictions(model, test_arff)
+        # raise SystemExit(0)
+        arff_files = []
         for venue in Venue.objects.filter(is_focused=True):
             print(venue)
             venue_code = venue.code
@@ -105,14 +112,17 @@ class Command(BaseCommand):
                     graded_metrics = distance_metrics.filter(
                         participant__race__grade__name=grade_name,
                     )
-                    # scheduled_metrics = graded_metrics.filter(
-                    #     participant__race__chart__program__date__gte=today)
-                    scheduled_metrics = graded_metrics.filter(participant__final__isnull=False)
-
-                    print("Metrics Found: {}".format(len(scheduled_metrics)))
-                    # if len(scheduled_metrics) > 0:
-                    model = "WD_548_B_J48_C0_75.model"
-                    is_nominal = False
-                    test_arff = self.create_arff("test.arff", scheduled_metrics, is_nominal)
-                    dup_evaluate_predictions(model, test_arff)
-        jvm.stop()
+                    if len(graded_metrics) > 0:
+                        print(len(graded_metrics))
+                        scheduled_metrics = graded_metrics.filter(
+                        participant__race__chart__program__date__gte=today)
+                        if len(scheduled_metrics) > 0:
+                            print(len(scheduled_metrics))
+                            training_metrics = graded_metrics.filter(
+                                participant__race__chart__program__date__lte="2018-12-31")
+                            print(len(training_metrics))
+                            race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
+                            arff_files.append(self.create_arff(
+                                "arff/{}.arff".format(race_key),
+                                graded_metrics))
+        print(arff_files)
