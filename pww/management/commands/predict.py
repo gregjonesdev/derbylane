@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand
 
 from pww.models import Prediction, Metric
 from rawdat.models import Race, Venue
-from pww.utilities.weka import predict_all
+from pww.utilities.weka import predict_all, evaluate_predictions
 
 from miner.utilities.constants import (
     focused_grades,
@@ -70,12 +70,18 @@ class Command(BaseCommand):
                     )
                     scheduled_metrics = graded_metrics.filter(
                         participant__race__chart__program__date__gte=today)
-                    print("Metrics Found: {}".format(len(scheduled_metrics)))
+
+                    # print("Metrics Found: {}".format(len(scheduled_metrics)))
                     if len(scheduled_metrics) > 0:
                         race_key = "{}_{}_{}".format(venue.code, distance, grade_name)
+                    #     race_key = "SL_583_C"
                         scheduled_filename = "arff/{}_scheduled.arff".format(race_key)
                         scheduled_data[race_key] = self.create_arff(
                             scheduled_filename,
                             scheduled_metrics,
                             False)
-        predict_all(scheduled_data)
+        for each in scheduled_data:
+            print(scheduled_data[each])
+            fake_model = "WD_548_C_J48_C0_75.model"
+            evaluate_predictions(fake_model, scheduled_data[each] )
+        # predict_all(scheduled_data)

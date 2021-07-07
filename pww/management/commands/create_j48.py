@@ -89,6 +89,7 @@ class Command(BaseCommand):
                             participant__race__chart__program__venue=venue,
                             participant__race__distance=distance,
                             participant__race__grade__name=grade_name,
+                            participant__race__chart__program__date__lt("2018-12-31"),
                             final__isnull=False)
                         #
                         print(len(metrics))
