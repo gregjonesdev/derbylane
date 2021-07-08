@@ -92,8 +92,21 @@ def nominalize(data):
     nominalize.inputformat(data)
     return nominalize.filter(data)
 
+def get_prediction_winnings(prediction_tuple, prediction):
+    prediction_winnings = {}
+    # (str, float)
+    for entry in prediction_tuple:
+        print("{} ({}), {} ({})".format(
+            entry[0],
+            type(entry[0]),
+            entry[1],
+            type(entry[1])
+        ))
 
-def evaluate_predictions(model_name, arff_data):
+def evaluate_predictions(prediction_tuple):
+    i = 0
+    for i in range(9):
+        get_prediction_winnings(prediction_tuple, i)
     # print("{}:\n".format(model_name)) # WD_548_C_J48_C0_75.model
     # # uuid_list = get_uuid_list(arff_data)
     # loader = conv.Loader(classname="weka.core.converters.ArffLoader")
