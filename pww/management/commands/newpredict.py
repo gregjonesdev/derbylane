@@ -20,14 +20,14 @@ from miner.utilities.constants import (
 
 class Command(BaseCommand):
 
-    def create_arff(self, filename, metrics):
+    def create_arff(self, filename, metrics, start_date):
         arff_file = open(filename, "w")
         arff_file.write("@relation Metric\n")
 
         arff_file = self.write_headers(arff_file)
 
         for metric in metrics:
-            csv_metric = metric.build_csv_metric()
+            csv_metric = metric.build_csv_metric(start_date)
             if csv_metric:
                 arff_file.writelines(csv_metric)
 
@@ -72,6 +72,8 @@ class Command(BaseCommand):
         today = datetime.date.today()
         scheduled_start = today
         scheduled_start = "2019-01-01"
+        start_datetime = datetime.datetime.strptime(scheduled_start, "%Y-%m-%d")
+        start_date = start_datetime.date()
         arff_files = []
         for venue in Venue.objects.filter(is_focused=True):
             print(venue)
@@ -100,5 +102,5 @@ class Command(BaseCommand):
                             race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
                             arff_files.append(self.create_arff(
                                 "arff/{}.arff".format(race_key),
-                                graded_metrics))
+                                graded_metrics, start_date))
         new_predict_all(arff_files)

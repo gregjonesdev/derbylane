@@ -367,9 +367,9 @@ def new_get_uuid_list(filename):
             i += 1
 
 
-    for each in uuids:
-        print("Line {}: {}".format(each[0], each[1]))
-    raise SystemExit(0)
+    # for each in uuids:
+    #     print("Line {}: {}".format(each[0], each[1]))
+    # raise SystemExit(0)
     return uuids
 
 
