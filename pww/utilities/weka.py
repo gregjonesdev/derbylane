@@ -34,52 +34,7 @@ def predict_single(arff_file):
     print("race_key:")
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
     predict(race_key, arff_file)
-    # print(race_key)
-    # print("WD_548_A_J48_C0_75.model" in os.listdir('weka_models'))
-    # model_name = "{}_J48_C0_75.model".format(race_key)
-    # print("A")
-    # print(fnmatch.filter(os.listdir('weka_models'), race_key))
-    # print(model_name)
-    # new_evaluate(model_name, arff_file)
 
-# def new_evaluate(model_name, arff_file):
-#     uuid_tuple = get_uuid_tuple(arff_file)
-#     # uuid_tuple
-#     for each in uuid_tuple[:4]:
-#         print(each)
-#     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-#     loaded_arff = loader.load_file(arff_file)
-#     anonymous_arff = remove_uuid(loaded_arff)
-#     nominal_arff = nominalize(anonymous_arff)
-#     try:
-#         model = Classifier(jobject=serialization.read(model_name))
-#         make_super_predictions(model, nominal_arff, uuid_tuple)
-#         print("HOORAY")
-#         raise SystemExit(0)
-#     except:
-#         print("No model {}".format(model_name))
-
-#
-# def make_super_predictions(model, nominal_arff, uuid_tuple):
-#     print('make SUPER predictions')
-#     for index, inst in enumerate(data):
-#         pred = model.classify_instance(inst)
-#         print(pred)
-#         # save_prediction(
-#         #     Participant.objects.get(uuid=uuid_list[index]),
-#         #     pred
-#         # )
-
-#
-# def make_predictions(cls, data, uuid_list):
-#     print('make predictions')
-#     for index, inst in enumerate(data):
-#         pred = cls.classify_instance(inst)
-#         print(pred)
-        # save_prediction(
-        #     Participant.objects.get(uuid=uuid_list[index]),
-        #     pred
-        # )
 
 def save_prediction(participant, pred):
     try:
@@ -118,47 +73,6 @@ def predict(race_key, arff_data):
         make_predictions(model, scheduled_data, uuid_tuple)
     except:
         print("No model found: {}".format(race_key))
-    # try:
-    #     model = Classifier(jobject=serialization.read(filename))
-    #     make_predictions(model, filtered_scheduled, uuid_list)
-    # except:
-    #     pass
-    # print(arff_data)
-    # filename = "weka_models/{}_J48_C0_75.model".format(race_key)
-    # uuid_list = get_uuid_list(arff_data)
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    # print(uuid_list)
-    # loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    # scheduled_data = loader.load_file(arff_data)
-    # print(scheduled_data)
-    # scheduled_data = remove_uuid(scheduled_data)
-    # print(scheduled_data)
-    #
-    # scheduled_data = nominalize(scheduled_data)
-    # print(scheduled_data)
-    #
-    # scheduled_data.class_is_last()
-    # try:
-    #     model = Classifier(jobject=serialization.read(filename))
-    #     new_get_predictions(scheduled_data, uuid_list, model)
-    #     # make_predictions(model, scheduled_data, uuid_list)
-    # except:
-    #     pass
 
 def remove_uuid(data):
     remove = Filter(
@@ -245,83 +159,6 @@ def evaluate_predictions(model_name, arff_data):
                 round(float(bet_count*8)/float(prediction_count), 2)
             ))
 
-# def test_predict(model_name, arff_data):
-#     print("test predict: {}".format(arff_data))
-#     print("{}:\n".format(model_name)) # WD_548_C_J48_C0_75.model
-#     uuid_list = get_uuid_list(arff_data)
-#     print(uuid_list[:4])
-#     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-#     test_data = loader.load_file(arff_data)
-#     # print(len(test_data))
-#     test_data = remove_uuid(test_data)
-#     test_data = nominalize(test_data)
-#     test_data.class_is_last()
-#     model = Classifier(jobject=serialization.read("weka_models/{}".format(model_name)))
-#     # print(model)
-#     predictions = new_get_predictions(test_data, uuid_list, model)
-#     for each in predictions:
-#         print("{}: {}".format( each["participant"], each["prediction"]))
-    #
-    # range_width = .25
-    # current_range_min = 0
-    # absolute_max = 8.0
-    # range_starts = []
-    # bet_counts = []
-    # win_winnings = []
-    # place_winnings = []
-    # show_winnings = []
-    # prediction_count = len(predictions)
-    #
-    # while current_range_min < absolute_max:
-    #     current_range_max = current_range_min + range_width
-    #     range_win = 0
-    #     range_place = 0
-    #     range_show = 0
-    #     range_count = 0
-    #
-    #
-    #     for prediction in predictions:
-    #         participant = prediction["participant"]
-    #         if current_range_min <= prediction["prediction"] <= current_range_max:
-    #              range_count += 1
-    #              range_win += get_win_bet_earnings(participant)
-    #              range_place += get_place_bet_earnings(participant)
-    #              range_show += get_show_bet_earnings(participant)
-    #
-    #     if range_count > 0:
-    #         range_starts.append(current_range_min)
-    #         bet_counts.append(range_count)
-    #         win_winnings.append(range_win/range_count)
-    #         place_winnings.append(range_place/range_count)
-    #         show_winnings.append(range_show/range_count)
-    #
-    #     current_range_min += range_width
-    #
-    # if len(bet_counts) > 0:
-    #     print("Prediction Breakdown:\n")
-    #     print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-    #         "Range",
-    #         "Win",
-    #         "Place",
-    #         "Show",
-    #         "Predictions/Race"
-    #     ))
-    #     for each in range_starts:
-    #         index = range_starts.index(each)
-    #         percent = int(100*bet_counts[index]/prediction_count)
-    #         # if percent > 0:
-    #         # print("{}: {}%".format(each, percent))
-    #         bet_count = bet_counts[index]
-    #         print("{}-{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-    #             round(each, 2),
-    #             round(each + range_width, 2),
-    #             round(win_winnings[index], 2),
-    #             round(place_winnings[index], 2),
-    #             round(show_winnings[index], 2),
-    #             round(float(bet_count*8)/float(prediction_count), 2)
-    #         ))
-
-
 def get_win_bet_earnings(participant):
     if participant.final == 1:
         try:
@@ -350,20 +187,6 @@ def get_show_bet_earnings(participant):
         except:
             pass
     return 0
-
-
-# def new_get_predictions(filtered_test, uuid_list, model):
-#     print("new_get_predictions")
-#     predictions = []
-#     for index, inst in enumerate(filtered_test):
-#         participant = Participant.objects.get(uuid=uuid_list[index])
-#         prediction = model.classify_instance(inst)
-#         predictions.append({
-#             "participant": participant,
-#             "prediction": prediction})
-#         # print("{}: {}".format(participant.dog.name, prediction))
-#     return predictions
-
 
 
 def make_predictions(cls, data, uuid_tuple):
@@ -420,12 +243,3 @@ def get_uuid_tuple(filename):
                 uuids.append([i, split_line[0]])
             i += 1
     return uuids
-
-#
-# def get_uuid_list(filename):
-#     arff_file = open(filename, "r")
-#     uuids = []
-#     for line in arff_file:
-#         if len(line) > 100:
-#             uuids.append(line.split(",")[0])
-#     return uuids
