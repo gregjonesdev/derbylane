@@ -24,14 +24,17 @@ def create_model(model_arff, classifier, options, filename):
 
 def predict_all(arff_list):
     jvm.start(packages=True, max_heap_size="2048m")
+    analysis_file = open("prediction_analysis.txt", "w")
     for arff_file in arff_list:
-        predict_single(arff_file)
+        predict_single(arff_file, analysis_file)
+    analysis_file.close()
+    print("Results written to {}".format(analysis_file.name))
     jvm.stop()
 
-def predict_single(arff_file):
+def predict_single(arff_file, analysis_file):
     race_key = arff_file.split("/")
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
-    predict(race_key, arff_file)
+    predict(race_key, arff_file, analysis_file)
 
 
 def save_prediction(participant, pred):
@@ -52,7 +55,7 @@ def save_prediction(participant, pred):
         pred))
 
 
-def predict(race_key, arff_data):
+def predict(race_key, arff_data, analysis_file):
     # filename = "arff/{}.model".format(race_key)
     filename = "weka_models/{}_J48_C0_75.model".format(race_key)
     # uuid_list = get_uuid_list(arff_data)
@@ -69,7 +72,7 @@ def predict(race_key, arff_data):
     except:
         print("No model found: {}".format(race_key))
     if prediction_tuple:
-        evaluate_predictions(prediction_tuple, filename)
+        evaluate_predictions(prediction_tuple, filename, analysis_file)
 
 def remove_uuid(data):
     remove = Filter(
@@ -104,8 +107,7 @@ def get_prediction_winnings(prediction_tuple, prediction):
 eval_string = "{}\t\t{}\t\t{}\t\t{}"
 bet_amount = 2
 
-def evaluate_predictions(prediction_tuple, filename):
-    analysis_file = open("prediction_analysis.txt", "w")
+def evaluate_predictions(prediction_tuple, filename, analysis_file):
     print("{}\n".format(filename), file=analysis_file)
     print(eval_string.format(
     "J48",
@@ -135,7 +137,6 @@ def evaluate_predictions(prediction_tuple, filename):
         show_winnings
         ), file=analysis_file)
 
-    analysis_file.close()
 
 def get_win_bet_earnings(participant):
     try:
