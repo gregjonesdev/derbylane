@@ -86,9 +86,7 @@ class Metric(CoreModel):
     def build_csv_metric(self, start_date):
         if self.participant.race.chart.program.date >= start_date:
             final = "?"
-            print("got a newb here")
         else:
-            print("old fart")
             final = self.final
         post_factor = self.post_factor if self.post_factor else 0.5
         temp_factor = self.temp_factor if self.temp_factor else 0.5
