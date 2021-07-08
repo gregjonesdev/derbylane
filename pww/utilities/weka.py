@@ -85,12 +85,12 @@ def predict_single(arff_file):
 #         #     pred
 #         # )
 
-
-def make_predictions(cls, data, uuid_list):
-    print('make predictions')
-    for index, inst in enumerate(data):
-        pred = cls.classify_instance(inst)
-        print(pred)
+# 
+# def make_predictions(cls, data, uuid_list):
+#     print('make predictions')
+#     for index, inst in enumerate(data):
+#         pred = cls.classify_instance(inst)
+#         print(pred)
         # save_prediction(
         #     Participant.objects.get(uuid=uuid_list[index]),
         #     pred
