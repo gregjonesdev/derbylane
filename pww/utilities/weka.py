@@ -29,9 +29,7 @@ def predict_all(arff_list):
     jvm.stop()
 
 def predict_single(arff_file):
-    print("predict single")
     race_key = arff_file.split("/")
-    print("race_key:")
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
     predict(race_key, arff_file)
 
@@ -55,8 +53,7 @@ def save_prediction(participant, pred):
 
 
 def predict(race_key, arff_data):
-    print("predict")
-    print(race_key)
+    print("\n")
     # filename = "arff/{}.model".format(race_key)
     filename = "weka_models/{}_J48_C0_75.model".format(race_key)
     # uuid_list = get_uuid_list(arff_data)
@@ -75,7 +72,7 @@ def predict(race_key, arff_data):
     except:
         print("No model found: {}".format(race_key))
     if prediction_tuple:
-        print("Evaluate {}".format(race_key))
+        print(race_key)
         evaluate_predictions(prediction_tuple)
 
 def remove_uuid(data):
@@ -108,82 +105,40 @@ def get_prediction_winnings(prediction_tuple, prediction):
             prediction_winnings['show'] += get_show_bet_earnings(participant)
     return prediction_winnings
 
+eval_string = "{}\t\t{}\t\t{}\t\t{}"
+bet_amount = 2
 
 def evaluate_predictions(prediction_tuple):
+    print(eval_string.format(
+    "J48",
+    "Win",
+    "Place",
+    "Show"
+    ))
     i = 0
     for i in range(9):
         prediction_winnings = get_prediction_winnings(prediction_tuple, i)
-        print("---")
-        print(prediction_winnings)
-    # print("{}:\n".format(model_name)) # WD_548_C_J48_C0_75.model
-    # # uuid_list = get_uuid_list(arff_data)
-    # loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    # test_data = loader.load_file(arff_data)
-    # test_data = remove_uuid(test_data)
-    # test_data = nominalize(test_data)
-    # test_data.class_is_last()
-    # model = Classifier(jobject=serialization.read("weka_models/{}".format(model_name)))
-    # # predictions = new_get_predictions(test_data, uuid_list, model)
-    #
-    # range_width = .25
-    # current_range_min = 0
-    # absolute_max = 8.0
-    # range_starts = []
-    # bet_counts = []
-    # win_winnings = []
-    # place_winnings = []
-    # show_winnings = []
-    # prediction_count = len(predictions)
-    raise SystemExit(0)
-
-    while current_range_min < absolute_max:
-        current_range_max = current_range_min + range_width
-        range_win = 0
-        range_place = 0
-        range_show = 0
-        range_count = 0
-
-
-        for prediction in predictions:
-            participant = prediction["participant"]
-            if current_range_min <= prediction["prediction"] <= current_range_max:
-                 range_count += 1
-                 range_win += get_win_bet_earnings(participant)
-                 range_place += get_place_bet_earnings(participant)
-                 range_show += get_show_bet_earnings(participant)
-
-        if range_count > 0:
-            range_starts.append(current_range_min)
-            bet_counts.append(range_count)
-            win_winnings.append(range_win/range_count)
-            place_winnings.append(range_place/range_count)
-            show_winnings.append(range_show/range_count)
-
-        current_range_min += range_width
-
-    if len(bet_counts) > 0:
-        print("Prediction Breakdown:\n")
-        print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-            "Range",
-            "Win",
-            "Place",
-            "Show",
-            "Predictions/Race"
+        # print("---")
+        # print(prediction_winnings)
+        bet_count = prediction_winnings["bet_count"]
+        if bet_count > 0:
+            win_winnings = "${}".format(
+                round(prediction_winnings["win"]/(bet_count*2), 2))
+            place_winnings = "${}".format(
+                round(prediction_winnings["place"]/(bet_count*2), 2))
+            show_winnings = "${}".format(
+                round(prediction_winnings["show"]/(bet_count*2), 2))
+        else:
+            win_winnings = "--"
+            place_winnings = "--"
+            show_winnings = "--"
+        print(eval_string.format(
+        i,
+        win_winnings,
+        place_winnings,
+        show_winnings
         ))
-        for each in range_starts:
-            index = range_starts.index(each)
-            percent = int(100*bet_counts[index]/prediction_count)
-            # if percent > 0:
-            # print("{}: {}%".format(each, percent))
-            bet_count = bet_counts[index]
-            print("{}-{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-                round(each, 2),
-                round(each + range_width, 2),
-                round(win_winnings[index], 2),
-                round(place_winnings[index], 2),
-                round(show_winnings[index], 2),
-                round(float(bet_count*8)/float(prediction_count), 2)
-            ))
+
 
 def get_win_bet_earnings(participant):
     try:
@@ -215,7 +170,7 @@ def get_show_bet_earnings(participant):
 
 
 def get_prediction_tuple(cls, data, uuid_tuple):
-    print('make predictions')
+    # print('make predictions')
     # print(len(data))
     prediction_tuple = []
     prediction_list = get_prediction_list(cls, data)
