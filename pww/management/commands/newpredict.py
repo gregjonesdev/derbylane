@@ -74,7 +74,7 @@ class Command(BaseCommand):
         scheduled_start = "2019-01-01"
         start_datetime = datetime.datetime.strptime(scheduled_start, "%Y-%m-%d")
         start_date = start_datetime.date()
-        arff_files = []
+        arff_list = []
         for venue in Venue.objects.filter(is_focused=True):
             # print(venue)
             venue_code = venue.code
@@ -100,7 +100,7 @@ class Command(BaseCommand):
                                 participant__race__chart__program__date__lt=scheduled_start)
                             # print(len(training_metrics))
                             race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
-                            arff_files.append(self.create_arff(
+                            arff_list.append(self.create_arff(
                                 "arff/{}.arff".format(race_key),
                                 graded_metrics, start_date))
-        predict_all(arff_files)
+        predict_all(arff_list)

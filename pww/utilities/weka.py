@@ -22,25 +22,10 @@ def create_model(model_arff, classifier, options, filename):
     serialization.write(filename, cls)
 
 
-
-# def predict_all(scheduled_data):
-#     jvm.start(packages=True, max_heap_size="2048m")
-#     print("weka: predict all")
-#     print(len(scheduled_data))
-#     for race_key in scheduled_data:
-#         # evaluate_predictions("TS_550_B_J48_C0_75.model", scheduled_data[race_key])
-#         predict("TS_550_B", scheduled_data[race_key])
-#     jvm.stop()
-
-def predict_all(arff_files):
-    print("new predict all")
-    print(arff_files)
+def predict_all(arff_list):
     jvm.start(packages=True, max_heap_size="2048m")
-
-    for arff_file in arff_files:
+    for arff_file in arff_list:
         predict_single(arff_file)
-        # evaluate_predictions("TS_550_B_J48_C0_75.model", scheduled_data[race_key])
-        # predict("TS_550_B", scheduled_data[race_key])
     jvm.stop()
 
 def predict_single(arff_file):
