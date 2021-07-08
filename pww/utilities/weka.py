@@ -68,11 +68,15 @@ def predict(race_key, arff_data):
     # print(scheduled_data)
     scheduled_data = nominalize(scheduled_data)
     scheduled_data.class_is_last()
+    prediction_tuple = None
     try:
         model = Classifier(jobject=serialization.read(filename))
-        get_prediction_tuple(model, scheduled_data, uuid_tuple)
+        prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple)
     except:
         print("No model found: {}".format(race_key))
+    if prediction_tuple:
+        print("Evaluate {}".format(race_key))
+        evaluate_predictions(prediction_tuple)
 
 def remove_uuid(data):
     remove = Filter(
@@ -90,25 +94,26 @@ def nominalize(data):
 
 
 def evaluate_predictions(model_name, arff_data):
-    print("{}:\n".format(model_name)) # WD_548_C_J48_C0_75.model
-    # uuid_list = get_uuid_list(arff_data)
-    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    test_data = loader.load_file(arff_data)
-    test_data = remove_uuid(test_data)
-    test_data = nominalize(test_data)
-    test_data.class_is_last()
-    model = Classifier(jobject=serialization.read("weka_models/{}".format(model_name)))
-    # predictions = new_get_predictions(test_data, uuid_list, model)
-
-    range_width = .25
-    current_range_min = 0
-    absolute_max = 8.0
-    range_starts = []
-    bet_counts = []
-    win_winnings = []
-    place_winnings = []
-    show_winnings = []
-    prediction_count = len(predictions)
+    # print("{}:\n".format(model_name)) # WD_548_C_J48_C0_75.model
+    # # uuid_list = get_uuid_list(arff_data)
+    # loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+    # test_data = loader.load_file(arff_data)
+    # test_data = remove_uuid(test_data)
+    # test_data = nominalize(test_data)
+    # test_data.class_is_last()
+    # model = Classifier(jobject=serialization.read("weka_models/{}".format(model_name)))
+    # # predictions = new_get_predictions(test_data, uuid_list, model)
+    #
+    # range_width = .25
+    # current_range_min = 0
+    # absolute_max = 8.0
+    # range_starts = []
+    # bet_counts = []
+    # win_winnings = []
+    # place_winnings = []
+    # show_winnings = []
+    # prediction_count = len(predictions)
+    raise SystemExit(0)
 
     while current_range_min < absolute_max:
         current_range_max = current_range_min + range_width
@@ -210,7 +215,7 @@ def get_prediction_tuple(cls, data, uuid_tuple):
         #     Participant.objects.get(uuid=uuid_list[index]),
         #     pred
         # )
-    return prediction_tuple    
+    return prediction_tuple
 
 def get_prediction_list(cls, data):
     prediction_list = []

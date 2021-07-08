@@ -92,14 +92,14 @@ class Command(BaseCommand):
                     )
                     if len(graded_metrics) > 0:
                         print(len(graded_metrics))
-                        # scheduled_metrics = graded_metrics.filter(
-                        # participant__race__chart__program__date__gte=scheduled_start)
-                        # if len(scheduled_metrics) > 0:
-                        #     training_metrics = graded_metrics.filter(
-                        #         participant__race__chart__program__date__lt=scheduled_start)
-                        #     print(len(training_metrics))
-                        #     race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
-                        #     arff_list.append(self.create_arff(
-                        #         "arff/{}.arff".format(race_key),
-                        #         graded_metrics, start_date))
-        # predict_all(arff_list)
+                        scheduled_metrics = graded_metrics.filter(
+                        participant__race__chart__program__date__gte=scheduled_start)
+                        if len(scheduled_metrics) > 0:
+                            training_metrics = graded_metrics.filter(
+                                participant__race__chart__program__date__lt=scheduled_start)
+                            print(len(training_metrics))
+                            race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
+                            arff_list.append(self.create_arff(
+                                "arff/{}.arff".format(race_key),
+                                graded_metrics, start_date))
+        predict_all(arff_list)
