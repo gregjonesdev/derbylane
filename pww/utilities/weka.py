@@ -192,6 +192,7 @@ def get_show_bet_earnings(participant):
 def get_prediction_tuple(cls, data, uuid_tuple):
     print('make predictions')
     print(len(data))
+    prediction_tuple = []
     prediction_list = get_prediction_list(cls, data)
     print("{}\t{}\t{}".format("Line", "Part ID", "J48"))
     i = 0
@@ -201,6 +202,7 @@ def get_prediction_tuple(cls, data, uuid_tuple):
             uuid_tuple[i][1][:4],
             prediction_list[i]
         ))
+        prediction_tuple.append((uuid_tuple[i][1], prediction_list[i]))
         # print(uuid_tuple[i][0])
         i += 1
         # print(len(pred))
@@ -208,6 +210,7 @@ def get_prediction_tuple(cls, data, uuid_tuple):
         #     Participant.objects.get(uuid=uuid_list[index]),
         #     pred
         # )
+    return prediction_tuple    
 
 def get_prediction_list(cls, data):
     prediction_list = []

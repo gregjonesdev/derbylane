@@ -76,31 +76,31 @@ class Command(BaseCommand):
         start_date = start_datetime.date()
         arff_list = []
         for venue in Venue.objects.filter(is_focused=True):
-            # print(venue)
+            print(venue)
             venue_code = venue.code
             venue_metrics = Metric.objects.filter(
                 participant__race__chart__program__venue=venue)
             for distance in focused_distances[venue_code]:
-                # print("Distance: {}".format(distance))
+                print("Distance: {}".format(distance))
                 distance_metrics = venue_metrics.filter(
                     participant__race__distance=distance,
                 )
                 for grade_name in focused_grades[venue_code]:
-                    # print("Grade: {}".format(grade_name))
+                    print("Grade: {}".format(grade_name))
                     graded_metrics = distance_metrics.filter(
                         participant__race__grade__name=grade_name,
                     )
                     if len(graded_metrics) > 0:
-                        # print(len(graded_metrics))
+                        print(len(graded_metrics))
                         scheduled_metrics = graded_metrics.filter(
                         participant__race__chart__program__date__gte=scheduled_start)
                         if len(scheduled_metrics) > 0:
                             # print(len(scheduled_metrics))
                             training_metrics = graded_metrics.filter(
                                 participant__race__chart__program__date__lt=scheduled_start)
-                            # print(len(training_metrics))
+                            print(len(training_metrics))
                             race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
                             arff_list.append(self.create_arff(
                                 "arff/{}.arff".format(race_key),
                                 graded_metrics, start_date))
-        predict_all(arff_list)
+        # predict_all(arff_list)

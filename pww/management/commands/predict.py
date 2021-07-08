@@ -13,7 +13,6 @@ from pww.utilities.weka import predict_all, evaluate_predictions
 from miner.utilities.constants import (
     focused_grades,
     focused_distances,
-    focused_venues,
     csv_columns)
 
 

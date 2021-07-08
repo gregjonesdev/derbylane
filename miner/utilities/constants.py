@@ -62,8 +62,6 @@ chart_times = [
  "Z"
 ]
 
-valued_grades = ["AA", "A", "B", "C", "D"]
-
 allowed_attempts = 3
 max_races_per_chart = 30
 
@@ -90,8 +88,6 @@ focused_grades = {
     "TS": ["A", "B", "C"],
     "WD": ["AA", "A", "B", "C"],
 }
-
-focused_venues = ["SL", "CA", "TS", "WD"]
 
 venue_distances = {
 "SL": [660, 583, 334, 703, 820],
