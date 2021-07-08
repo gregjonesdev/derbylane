@@ -70,7 +70,7 @@ def predict(race_key, arff_data):
     scheduled_data.class_is_last()
     try:
         model = Classifier(jobject=serialization.read(filename))
-        make_predictions(model, scheduled_data, uuid_tuple)
+        get_prediction_tuple(model, scheduled_data, uuid_tuple)
     except:
         print("No model found: {}".format(race_key))
 
@@ -189,7 +189,7 @@ def get_show_bet_earnings(participant):
     return 0
 
 
-def make_predictions(cls, data, uuid_tuple):
+def get_prediction_tuple(cls, data, uuid_tuple):
     print('make predictions')
     print(len(data))
     prediction_list = get_prediction_list(cls, data)
