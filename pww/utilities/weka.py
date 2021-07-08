@@ -93,15 +93,26 @@ def nominalize(data):
     return nominalize.filter(data)
 
 def get_prediction_winnings(prediction_tuple, prediction):
-    prediction_winnings = {}
+    prediction_winnings = {
+        'bet_count': 0,
+        'win': 0,
+        'place': 0,
+        'show': 0,
+    }
     # (str, float)
     for entry in prediction_tuple:
-        print("{} ({}), {} ({})".format(
-            entry[0],
-            type(entry[0]),
-            entry[1],
-            type(entry[1])
-        ))
+        participant = Participant.objects.get(uuid=entry[0])
+        print(participant.dog.name)
+        # print("{} ({}), {} ({})".format(
+        #     entry[0],
+        #     type(entry[0]),
+        #     entry[1],
+        #     type(entry[1])
+        # ))
+        if int(entry[1]) == prediction:
+            print("yes")
+            prediction_winnings['bet_count'] += 1
+            prediction_winnings['win'] += get_win_bet_earnings(participant)
 
 def evaluate_predictions(prediction_tuple):
     i = 0
