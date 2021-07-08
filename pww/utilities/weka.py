@@ -1,26 +1,19 @@
-import os, fnmatch
-
 from django.core.management.base import BaseCommand
 from weka.filters import Filter
 import weka.core.jvm as jvm
 import weka.core.converters as conv
 import weka.core.serialization as serialization
 from rawdat.models import Participant
-from weka.classifiers import Evaluation, Classifier, FilteredClassifier
-from weka.core.classes import Random
+from weka.classifiers import Classifier
 from django.core.exceptions import ObjectDoesNotExist
 from pww.models import Prediction
 
-breakdown_string="{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
 def create_model(model_arff, classifier, options, filename):
-    print("create_model()")
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-
     model_data = loader.load_file(model_arff)
     model_data = remove_uuid(model_data)
     model_data = nominalize(model_data)
-
     model_data.class_is_last()
     cls = Classifier(classname=classifier, options=options)
     cls.build_classifier(model_data)
@@ -30,14 +23,14 @@ def create_model(model_arff, classifier, options, filename):
 
 
 
-def predict_all(scheduled_data):
-    jvm.start(packages=True, max_heap_size="2048m")
-    print("weka: predict all")
-    print(len(scheduled_data))
-    for race_key in scheduled_data:
-        # evaluate_predictions("TS_550_B_J48_C0_75.model", scheduled_data[race_key])
-        predict("TS_550_B", scheduled_data[race_key])
-    jvm.stop()
+# def predict_all(scheduled_data):
+#     jvm.start(packages=True, max_heap_size="2048m")
+#     print("weka: predict all")
+#     print(len(scheduled_data))
+#     for race_key in scheduled_data:
+#         # evaluate_predictions("TS_550_B_J48_C0_75.model", scheduled_data[race_key])
+#         predict("TS_550_B", scheduled_data[race_key])
+#     jvm.stop()
 
 def new_predict_all(arff_files):
     print("new predict all")
@@ -64,33 +57,33 @@ def predict_single(arff_file):
     # print(model_name)
     # new_evaluate(model_name, arff_file)
 
-def new_evaluate(model_name, arff_file):
-    uuid_tuple = get_uuid_tuple(arff_file)
-    # uuid_tuple
-    for each in uuid_tuple[:4]:
-        print(each)
-    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    loaded_arff = loader.load_file(arff_file)
-    anonymous_arff = remove_uuid(loaded_arff)
-    nominal_arff = nominalize(anonymous_arff)
-    try:
-        model = Classifier(jobject=serialization.read(model_name))
-        make_super_predictions(model, nominal_arff, uuid_tuple)
-        print("HOORAY")
-        raise SystemExit(0)
-    except:
-        print("No model {}".format(model_name))
+# def new_evaluate(model_name, arff_file):
+#     uuid_tuple = get_uuid_tuple(arff_file)
+#     # uuid_tuple
+#     for each in uuid_tuple[:4]:
+#         print(each)
+#     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+#     loaded_arff = loader.load_file(arff_file)
+#     anonymous_arff = remove_uuid(loaded_arff)
+#     nominal_arff = nominalize(anonymous_arff)
+#     try:
+#         model = Classifier(jobject=serialization.read(model_name))
+#         make_super_predictions(model, nominal_arff, uuid_tuple)
+#         print("HOORAY")
+#         raise SystemExit(0)
+#     except:
+#         print("No model {}".format(model_name))
 
-
-def make_super_predictions(model, nominal_arff, uuid_tuple):
-    print('make SUPER predictions')
-    for index, inst in enumerate(data):
-        pred = model.classify_instance(inst)
-        print(pred)
-        # save_prediction(
-        #     Participant.objects.get(uuid=uuid_list[index]),
-        #     pred
-        # )
+#
+# def make_super_predictions(model, nominal_arff, uuid_tuple):
+#     print('make SUPER predictions')
+#     for index, inst in enumerate(data):
+#         pred = model.classify_instance(inst)
+#         print(pred)
+#         # save_prediction(
+#         #     Participant.objects.get(uuid=uuid_list[index]),
+#         #     pred
+#         # )
 
 
 def make_predictions(cls, data, uuid_list):
@@ -199,14 +192,14 @@ def nominalize(data):
 
 def evaluate_predictions(model_name, arff_data):
     print("{}:\n".format(model_name)) # WD_548_C_J48_C0_75.model
-    uuid_list = get_uuid_list(arff_data)
+    # uuid_list = get_uuid_list(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     test_data = loader.load_file(arff_data)
     test_data = remove_uuid(test_data)
     test_data = nominalize(test_data)
     test_data.class_is_last()
     model = Classifier(jobject=serialization.read("weka_models/{}".format(model_name)))
-    predictions = new_get_predictions(test_data, uuid_list, model)
+    # predictions = new_get_predictions(test_data, uuid_list, model)
 
     range_width = .25
     current_range_min = 0
@@ -267,22 +260,22 @@ def evaluate_predictions(model_name, arff_data):
                 round(float(bet_count*8)/float(prediction_count), 2)
             ))
 
-def test_predict(model_name, arff_data):
-    print("test predict: {}".format(arff_data))
-    print("{}:\n".format(model_name)) # WD_548_C_J48_C0_75.model
-    uuid_list = get_uuid_list(arff_data)
-    print(uuid_list[:4])
-    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    test_data = loader.load_file(arff_data)
-    # print(len(test_data))
-    test_data = remove_uuid(test_data)
-    test_data = nominalize(test_data)
-    test_data.class_is_last()
-    model = Classifier(jobject=serialization.read("weka_models/{}".format(model_name)))
-    # print(model)
-    predictions = new_get_predictions(test_data, uuid_list, model)
-    for each in predictions:
-        print("{}: {}".format( each["participant"], each["prediction"]))
+# def test_predict(model_name, arff_data):
+#     print("test predict: {}".format(arff_data))
+#     print("{}:\n".format(model_name)) # WD_548_C_J48_C0_75.model
+#     uuid_list = get_uuid_list(arff_data)
+#     print(uuid_list[:4])
+#     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+#     test_data = loader.load_file(arff_data)
+#     # print(len(test_data))
+#     test_data = remove_uuid(test_data)
+#     test_data = nominalize(test_data)
+#     test_data.class_is_last()
+#     model = Classifier(jobject=serialization.read("weka_models/{}".format(model_name)))
+#     # print(model)
+#     predictions = new_get_predictions(test_data, uuid_list, model)
+#     for each in predictions:
+#         print("{}: {}".format( each["participant"], each["prediction"]))
     #
     # range_width = .25
     # current_range_min = 0
@@ -374,17 +367,17 @@ def get_show_bet_earnings(participant):
     return 0
 
 
-def new_get_predictions(filtered_test, uuid_list, model):
-    print("new_get_predictions")
-    predictions = []
-    for index, inst in enumerate(filtered_test):
-        participant = Participant.objects.get(uuid=uuid_list[index])
-        prediction = model.classify_instance(inst)
-        predictions.append({
-            "participant": participant,
-            "prediction": prediction})
-        # print("{}: {}".format(participant.dog.name, prediction))
-    return predictions
+# def new_get_predictions(filtered_test, uuid_list, model):
+#     print("new_get_predictions")
+#     predictions = []
+#     for index, inst in enumerate(filtered_test):
+#         participant = Participant.objects.get(uuid=uuid_list[index])
+#         prediction = model.classify_instance(inst)
+#         predictions.append({
+#             "participant": participant,
+#             "prediction": prediction})
+#         # print("{}: {}".format(participant.dog.name, prediction))
+#     return predictions
 
 
 
@@ -438,23 +431,16 @@ def get_uuid_tuple(filename):
     for line in arff_file:
         if len(line) > 100:
             split_line = line.split(",")
-            # uuids.append(split_line[0])
             if split_line[19] == "?\n":
-                # print((i, split_line[0]))
                 uuids.append([i, split_line[0]])
             i += 1
-
-
-    # for each in uuids:
-    #     print("Line {}: {}".format(each[0], each[1]))
-    # raise SystemExit(0)
     return uuids
 
-
-def get_uuid_list(filename):
-    arff_file = open(filename, "r")
-    uuids = []
-    for line in arff_file:
-        if len(line) > 100:
-            uuids.append(line.split(",")[0])
-    return uuids
+#
+# def get_uuid_list(filename):
+#     arff_file = open(filename, "r")
+#     uuids = []
+#     for line in arff_file:
+#         if len(line) > 100:
+#             uuids.append(line.split(",")[0])
+#     return uuids
