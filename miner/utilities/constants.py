@@ -80,6 +80,7 @@ focused_distances = {
     "CA": [546],
     "TS": [550],
     "WD": [548],
+    "IG": [550, 330]
 }
 
 focused_grades = {
@@ -87,6 +88,7 @@ focused_grades = {
     "CA": ["A", "B", "C", "D"],
     "TS": ["A", "B", "C"],
     "WD": ["AA", "A", "B", "C"],
+    "IG": ["A", "B", "C", "D"]
 }
 
 venue_distances = {
