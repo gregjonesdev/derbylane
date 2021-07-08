@@ -10,7 +10,7 @@ from django.core.management.base import BaseCommand
 
 from pww.models import Metric
 from rawdat.models import Venue
-from pww.utilities.weka import new_predict_all
+from pww.utilities.weka import predict_all
 
 from miner.utilities.constants import (
     csv_columns,
@@ -103,4 +103,4 @@ class Command(BaseCommand):
                             arff_files.append(self.create_arff(
                                 "arff/{}.arff".format(race_key),
                                 graded_metrics, start_date))
-        new_predict_all(arff_files)
+        predict_all(arff_files)

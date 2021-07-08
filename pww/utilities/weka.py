@@ -32,7 +32,7 @@ def create_model(model_arff, classifier, options, filename):
 #         predict("TS_550_B", scheduled_data[race_key])
 #     jvm.stop()
 
-def new_predict_all(arff_files):
+def predict_all(arff_files):
     print("new predict all")
     print(arff_files)
     jvm.start(packages=True, max_heap_size="2048m")
@@ -85,7 +85,7 @@ def predict_single(arff_file):
 #         #     pred
 #         # )
 
-# 
+#
 # def make_predictions(cls, data, uuid_list):
 #     print('make predictions')
 #     for index, inst in enumerate(data):
