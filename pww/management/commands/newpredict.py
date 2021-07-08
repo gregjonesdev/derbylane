@@ -70,32 +70,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         today = datetime.date.today()
-        # #
-        # # # directory = "test_models"
-        # # #
-        # # # race_keys_to_test = self.get_race_keys_to_test(
-        # # #     fnmatch.filter(os.listdir(directory), '*.model'))
-        # #
-        # jvm.start(packages=True, max_heap_size="2048m", system_info=True)
-        # # print("\n\n\n")
-        # # for race_key in race_keys_to_test:
-        # #     for model in race_keys_to_test[race_key]:
-        # #         venue_code = race_key[:2]
-        # #         if venue_code in ["TS", "WD", "SL"]:
-        # #             distance = int(race_key[3:6])
-        # #             grade_name = race_key[7:]
-        # #             metrics = self.get_metrics(venue_code, distance, grade_name)
-        # #             is_nominal = False
-        # #             test_arff = self.create_arff("test.arff", metrics, is_nominal)
-        # #             evaluate_predictions(model, test_arff)
-        # #
-        # model = "WD_548_B_J48_C0_75.model"
-        # test_predict(model, "combined.arff")
-        # # # test_predict(model, "scheduled.arff")
-        # #
-        # jvm.stop()
-        #
-        # raise SystemExit(0)
+        scheduled_start = today
+        scheduled_start = "2019-01-01"
         arff_files = []
         for venue in Venue.objects.filter(is_focused=True):
             print(venue)
@@ -115,11 +91,11 @@ class Command(BaseCommand):
                     if len(graded_metrics) > 0:
                         print(len(graded_metrics))
                         scheduled_metrics = graded_metrics.filter(
-                        participant__race__chart__program__date__gte=today)
+                        participant__race__chart__program__date__gte=scheduled_start)
                         if len(scheduled_metrics) > 0:
                             print(len(scheduled_metrics))
                             training_metrics = graded_metrics.filter(
-                                participant__race__chart__program__date__lte="2018-12-31")
+                                participant__race__chart__program__date__lt=scheduled_start)
                             print(len(training_metrics))
                             race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
                             arff_files.append(self.create_arff(

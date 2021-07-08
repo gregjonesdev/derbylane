@@ -41,6 +41,7 @@ def predict_all(scheduled_data):
 
 def new_predict_all(arff_files):
     print("new predict all")
+    print(arff_files)
     jvm.start(packages=True, max_heap_size="2048m")
 
     for arff_file in arff_files:
@@ -51,13 +52,14 @@ def new_predict_all(arff_files):
 
 def predict_single(arff_file):
     print("predict single")
-    # race_key = arff_file.split("/")
+    race_key = arff_file.split("/")
     print("race_key:")
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
     print(race_key)
     model_name = "weka_models/{}_J48_C0_75.model".format(race_key)
     print(model_name)
-
+    uuid_list = new_get_uuid_list(arff_file)
+    print(len(uuid_list))
 
 
 def predict(race_key, arff_data):
@@ -349,6 +351,26 @@ def save_prediction(participant, pred):
         participant.race.number,
         participant.dog.name[:8],
         pred))
+
+def new_get_uuid_list(filename):
+    arff_file = open(filename, "r")
+    uuids = []
+    i = 0
+    for line in arff_file:
+        if len(line) > 100:
+            split_line = line.split(",")
+            print(split_line)
+            # uuids.append(split_line[0])
+            if split_line[19] == "?\n":
+            # print(split_line[0])
+                uuids.append((i, split_line[0]))
+            i += 1
+
+
+    for each in uuids:
+        print("Line {}: {}".format(each[0], each[1]))
+    raise SystemExit(0)
+    return uuids
 
 
 def get_uuid_list(filename):
