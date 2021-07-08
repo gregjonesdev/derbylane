@@ -99,25 +99,22 @@ def get_prediction_winnings(prediction_tuple, prediction):
         'place': 0,
         'show': 0,
     }
-    # (str, float)
     for entry in prediction_tuple:
         participant = Participant.objects.get(uuid=entry[0])
-        print(participant.dog.name)
-        # print("{} ({}), {} ({})".format(
-        #     entry[0],
-        #     type(entry[0]),
-        #     entry[1],
-        #     type(entry[1])
-        # ))
         if int(entry[1]) == prediction:
-            print("yes")
             prediction_winnings['bet_count'] += 1
             prediction_winnings['win'] += get_win_bet_earnings(participant)
+            prediction_winnings['place'] += get_place_bet_earnings(participant)
+            prediction_winnings['show'] += get_show_bet_earnings(participant)
+    return prediction_winnings
+
 
 def evaluate_predictions(prediction_tuple):
     i = 0
     for i in range(9):
-        get_prediction_winnings(prediction_tuple, i)
+        prediction_winnings = get_prediction_winnings(prediction_tuple, i)
+        print("---")
+        print(prediction_winnings)
     # print("{}:\n".format(model_name)) # WD_548_C_J48_C0_75.model
     # # uuid_list = get_uuid_list(arff_data)
     # loader = conv.Loader(classname="weka.core.converters.ArffLoader")
@@ -189,48 +186,47 @@ def evaluate_predictions(prediction_tuple):
             ))
 
 def get_win_bet_earnings(participant):
-    if participant.final == 1:
-        try:
+    try:
+        if participant.final == 1:
             return participant.straight_wager.win
-        except:
-            pass
+    except:
+        pass
     return 0
 
 def get_place_bet_earnings(participant):
-    if participant.final <=2:
-        try:
-            earnings = participant.straight_wager.place
-            if earnings:
-                return earnings
-        except:
-            pass
+    try:
+        if participant.final <=2:
+            if participant.straight_wager.place:
+                return participant.straight_wager.place
+    except:
+        pass
     return 0
 
 def get_show_bet_earnings(participant):
-    if participant.final <= 3:
-        try:
+    try:
+        if participant.final <= 3:
             if participant.straight_wager.show:
                 return participant.straight_wager.show
-            else:
-                return 0
-        except:
-            pass
+        else:
+            return 0
+    except:
+        pass
     return 0
 
 
 def get_prediction_tuple(cls, data, uuid_tuple):
     print('make predictions')
-    print(len(data))
+    # print(len(data))
     prediction_tuple = []
     prediction_list = get_prediction_list(cls, data)
-    print("{}\t{}\t{}".format("Line", "Part ID", "J48"))
+    # print("{}\t{}\t{}".format("Line", "Part ID", "J48"))
     i = 0
     while i < len(uuid_tuple):
-        print("{}\t{}\t{}".format(
-            uuid_tuple[i][0],
-            uuid_tuple[i][1][:4],
-            prediction_list[i]
-        ))
+        # print("{}\t{}\t{}".format(
+        #     uuid_tuple[i][0],
+        #     uuid_tuple[i][1][:4],
+        #     prediction_list[i]
+        # ))
         prediction_tuple.append((uuid_tuple[i][1], prediction_list[i]))
         # print(uuid_tuple[i][0])
         i += 1
