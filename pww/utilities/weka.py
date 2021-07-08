@@ -1,4 +1,4 @@
-import os
+import os, fnmatch
 
 from django.core.management.base import BaseCommand
 from weka.filters import Filter
@@ -55,18 +55,77 @@ def predict_single(arff_file):
     race_key = arff_file.split("/")
     print("race_key:")
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
-    print(race_key)
-    model_name = "weka_models/{}_J48_C0_75.model".format(race_key)
-    print(model_name)
-    uuid_list = new_get_uuid_list(arff_file)
-    print(len(uuid_list))
+    predict(race_key, arff_file)
+    # print(race_key)
+    # print("WD_548_A_J48_C0_75.model" in os.listdir('weka_models'))
+    # model_name = "{}_J48_C0_75.model".format(race_key)
+    # print("A")
+    # print(fnmatch.filter(os.listdir('weka_models'), race_key))
+    # print(model_name)
+    # new_evaluate(model_name, arff_file)
+
+def new_evaluate(model_name, arff_file):
+    uuid_tuple = get_uuid_tuple(arff_file)
+    # uuid_tuple
+    for each in uuid_tuple[:4]:
+        print(each)
+    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+    loaded_arff = loader.load_file(arff_file)
+    anonymous_arff = remove_uuid(loaded_arff)
+    nominal_arff = nominalize(anonymous_arff)
+    try:
+        model = Classifier(jobject=serialization.read(model_name))
+        make_super_predictions(model, nominal_arff, uuid_tuple)
+        print("HOORAY")
+        raise SystemExit(0)
+    except:
+        print("No model {}".format(model_name))
+
+
+def make_super_predictions(model, nominal_arff, uuid_tuple):
+    print('make SUPER predictions')
+    for index, inst in enumerate(data):
+        pred = model.classify_instance(inst)
+        print(pred)
+        # save_prediction(
+        #     Participant.objects.get(uuid=uuid_list[index]),
+        #     pred
+        # )
+
+
+def make_predictions(cls, data, uuid_list):
+    print('make predictions')
+    for index, inst in enumerate(data):
+        pred = cls.classify_instance(inst)
+        print(pred)
+        # save_prediction(
+        #     Participant.objects.get(uuid=uuid_list[index]),
+        #     pred
+        # )
+
+def save_prediction(participant, pred):
+    try:
+        prediction = Prediction.objects.get(participant=participant)
+    except ObjectDoesNotExist:
+        new_prediction = Prediction(
+            participant = participant
+        )
+        new_prediction.set_fields_to_base()
+        new_prediction.save()
+        prediction = new_prediction
+    prediction.j48 = pred
+    prediction.save()
+    print("Race {}\t{}:\t{}".format(
+        participant.race.number,
+        participant.dog.name[:8],
+        pred))
 
 
 def predict(race_key, arff_data):
     print("predict")
 
     # filename = "arff/{}.model".format(race_key)
-    filename = "weka_models/TS_550_B_J48_C0_75.model"
+    filename = "weka_models/{}_J48_C0_75.model".format(race_key)
     uuid_list = get_uuid_list(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     scheduled_data = loader.load_file(arff_data)
@@ -75,8 +134,11 @@ def predict(race_key, arff_data):
     print(scheduled_data)
     scheduled_data = nominalize(scheduled_data)
     scheduled_data.class_is_last()
-    model = Classifier(jobject=serialization.read(filename))
-    make_predictions(model, scheduled_data, uuid_list)
+    try:
+        model = Classifier(jobject=serialization.read(filename))
+        make_predictions(model, scheduled_data, uuid_list)
+    except:
+        print("No model found: {}".format(race_key))
     # try:
     #     model = Classifier(jobject=serialization.read(filename))
     #     make_predictions(model, filtered_scheduled, uuid_list)
@@ -352,14 +414,13 @@ def save_prediction(participant, pred):
         participant.dog.name[:8],
         pred))
 
-def new_get_uuid_list(filename):
+def get_uuid_tuple(filename):
     arff_file = open(filename, "r")
     uuids = []
     i = 0
     for line in arff_file:
         if len(line) > 100:
             split_line = line.split(",")
-            print(split_line)
             # uuids.append(split_line[0])
             if split_line[19] == "?\n":
             # print(split_line[0])

@@ -35,7 +35,7 @@
   chart_select = document.getElementById("chart-select")
   modal = document.getElementById("bet-modal")
   modal.addEventListener("focus", function (e) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
+  var button = $(event.relatedTarget) // Button that triggered the modal
   var participant = button.data('participant') // Extract info from data-* attributes
   var modal = $(this)
   modal.find('.modal-title').text('New message to ' + participant)
