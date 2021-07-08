@@ -53,16 +53,13 @@ def save_prediction(participant, pred):
 
 
 def predict(race_key, arff_data):
-    print("\n")
     # filename = "arff/{}.model".format(race_key)
     filename = "weka_models/{}_J48_C0_75.model".format(race_key)
     # uuid_list = get_uuid_list(arff_data)
     uuid_tuple = get_uuid_tuple(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(arff_data)
-    # print(scheduled_data)
     scheduled_data = remove_uuid(loaded_data)
-    # print(scheduled_data)
     scheduled_data = nominalize(scheduled_data)
     scheduled_data.class_is_last()
     prediction_tuple = None
@@ -72,8 +69,7 @@ def predict(race_key, arff_data):
     except:
         print("No model found: {}".format(race_key))
     if prediction_tuple:
-        print(race_key)
-        evaluate_predictions(prediction_tuple)
+        evaluate_predictions(prediction_tuple, filename)
 
 def remove_uuid(data):
     remove = Filter(
@@ -108,18 +104,18 @@ def get_prediction_winnings(prediction_tuple, prediction):
 eval_string = "{}\t\t{}\t\t{}\t\t{}"
 bet_amount = 2
 
-def evaluate_predictions(prediction_tuple):
+def evaluate_predictions(prediction_tuple, filename):
+    analysis_file = open("prediction_analysis.txt", "w")
+    print("{}\n".format(filename), file=analysis_file)
     print(eval_string.format(
     "J48",
     "Win",
     "Place",
     "Show"
-    ))
+    ), file=analysis_file)
     i = 0
     for i in range(9):
         prediction_winnings = get_prediction_winnings(prediction_tuple, i)
-        # print("---")
-        # print(prediction_winnings)
         bet_count = prediction_winnings["bet_count"]
         if bet_count > 0:
             win_winnings = "${}".format(
@@ -137,8 +133,9 @@ def evaluate_predictions(prediction_tuple):
         win_winnings,
         place_winnings,
         show_winnings
-        ))
+        ), file=analysis_file)
 
+    analysis_file.close()
 
 def get_win_bet_earnings(participant):
     try:
@@ -170,26 +167,12 @@ def get_show_bet_earnings(participant):
 
 
 def get_prediction_tuple(cls, data, uuid_tuple):
-    # print('make predictions')
-    # print(len(data))
     prediction_tuple = []
     prediction_list = get_prediction_list(cls, data)
-    # print("{}\t{}\t{}".format("Line", "Part ID", "J48"))
     i = 0
     while i < len(uuid_tuple):
-        # print("{}\t{}\t{}".format(
-        #     uuid_tuple[i][0],
-        #     uuid_tuple[i][1][:4],
-        #     prediction_list[i]
-        # ))
         prediction_tuple.append((uuid_tuple[i][1], prediction_list[i]))
-        # print(uuid_tuple[i][0])
         i += 1
-        # print(len(pred))
-        # save_prediction(
-        #     Participant.objects.get(uuid=uuid_list[index]),
-        #     pred
-        # )
     return prediction_tuple
 
 def get_prediction_list(cls, data):
