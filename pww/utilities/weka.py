@@ -123,20 +123,21 @@ def save_prediction(participant, pred):
 
 def predict(race_key, arff_data):
     print("predict")
-
+    print(race_key)
     # filename = "arff/{}.model".format(race_key)
     filename = "weka_models/{}_J48_C0_75.model".format(race_key)
-    uuid_list = get_uuid_list(arff_data)
+    # uuid_list = get_uuid_list(arff_data)
+    uuid_tuple = get_uuid_tuple(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    scheduled_data = loader.load_file(arff_data)
-    print(scheduled_data)
-    scheduled_data = remove_uuid(scheduled_data)
-    print(scheduled_data)
+    loaded_data = loader.load_file(arff_data)
+    # print(scheduled_data)
+    scheduled_data = remove_uuid(loaded_data)
+    # print(scheduled_data)
     scheduled_data = nominalize(scheduled_data)
     scheduled_data.class_is_last()
     try:
         model = Classifier(jobject=serialization.read(filename))
-        make_predictions(model, scheduled_data, uuid_list)
+        make_predictions(model, scheduled_data, uuid_tuple)
     except:
         print("No model found: {}".format(race_key))
     # try:
@@ -387,15 +388,31 @@ def new_get_predictions(filtered_test, uuid_list, model):
 
 
 
-def make_predictions(cls, data, uuid_list):
+def make_predictions(cls, data, uuid_tuple):
     print('make predictions')
-    for index, inst in enumerate(data):
-        pred = cls.classify_instance(inst)
-        print(pred)
+    print(len(data))
+    prediction_list = get_prediction_list(cls, data)
+    print("{}\t{}\t{}".format("Line", "Part ID", "J48"))
+    i = 0
+    while i < len(uuid_tuple):
+        print("{}\t{}\t{}".format(
+            uuid_tuple[i][0],
+            uuid_tuple[i][1][:4],
+            prediction_list[i]
+        ))
+        # print(uuid_tuple[i][0])
+        i += 1
+        # print(len(pred))
         # save_prediction(
         #     Participant.objects.get(uuid=uuid_list[index]),
         #     pred
         # )
+
+def get_prediction_list(cls, data):
+    prediction_list = []
+    for index, inst in enumerate(data):
+        prediction_list.append(cls.classify_instance(inst))
+    return prediction_list
 
 def save_prediction(participant, pred):
     try:
@@ -423,8 +440,8 @@ def get_uuid_tuple(filename):
             split_line = line.split(",")
             # uuids.append(split_line[0])
             if split_line[19] == "?\n":
-            # print(split_line[0])
-                uuids.append((i, split_line[0]))
+                # print((i, split_line[0]))
+                uuids.append([i, split_line[0]])
             i += 1
 
 
