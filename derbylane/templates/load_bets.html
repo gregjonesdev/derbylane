@@ -11,6 +11,7 @@
             {% for participant in race.participant_set.all %}
             <tr class="prediction-row" style="width:100%;">
               {% if participant.prediction.get_bets %}
+              <div style="margin: 12px">
               <td style="border: none; vertical-align: middle" width=5%>
                 {{ participant.post }}</td>
               <td style="border: none; vertical-align: middle" width=85%>
@@ -22,6 +23,7 @@
               </button>
 
               </td>
+              </div>
               {% endif %}
             </tr>
             {% endfor %}
