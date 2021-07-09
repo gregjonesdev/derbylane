@@ -2,7 +2,7 @@ from django.db import models
 
 from derbylane.applib.models import CoreModel
 
-from rawdat.models import Race, Participant
+from rawdat.models import Race, Participant, Venue, Grade
 
 class Metric(CoreModel):
 
@@ -119,6 +119,35 @@ class Metric(CoreModel):
                 return metric_csv_string
 
 
+class Bet_Margin(CoreModel):
+
+    venue =  models.ForeignKey(
+        Venue,
+        on_delete=models.CASCADE)
+    distance = models.IntegerField()
+    grade = models.ForeignKey(
+        Grade,
+        on_delete=models.CASCADE)
+    prediction = models.DecimalField(
+            max_digits=16,
+            decimal_places=8,
+            null=True
+        )
+    win = models.DecimalField(
+            max_digits=16,
+            decimal_places=2,
+            null=True
+        )
+    place = models.DecimalField(
+            max_digits=16,
+            decimal_places=2,
+            null=True
+        )
+    show = models.DecimalField(
+            max_digits=16,
+            decimal_places=2,
+            null=True
+        )
 
 
 class Prediction(CoreModel):

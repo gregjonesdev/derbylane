@@ -17,7 +17,7 @@
                   {{ participant.dog.name }}</td>
               <td style="border: none; float-right">
               <button type="button" class="btn btn-sm btn-outline-light" data-toggle="modal" data-target="#bet-modal" data-participant="{{ participant.uuid }}">
-                <small>{{ participant.prediction.smo|floatformat:2 }}</small>
+                <small>{{ participant.prediction.j48|floatformat:0 }}</small>
 
               </button>
 
