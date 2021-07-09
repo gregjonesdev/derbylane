@@ -229,7 +229,7 @@ class Chart(CoreModel):
             if self.program.venue.code == 'WD':
                 return 'Mat'
             else:
-                return "A"    
+                return "A"
         elif self.time == 'E':
             return 'E'
         elif self.time == 'T':
@@ -351,7 +351,7 @@ class Race(CoreModel):
 
         for participant in self.participant_set.all():
             try:
-                if participant.prediction:
+                if participant.prediction.get_bets():
                     return True
             except:
                 pass
