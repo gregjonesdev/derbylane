@@ -255,6 +255,11 @@ class Chart(CoreModel):
             except:
                 pass
 
+    def has_predictions(self):
+        for race in self.race_set.all():
+            if race.has_predictions():
+                return True
+
 class Grade(CoreModel):
 
     name = models.CharField(
