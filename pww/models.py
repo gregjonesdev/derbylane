@@ -130,7 +130,7 @@ class Bet_Margin(CoreModel):
         on_delete=models.CASCADE)
     prediction = models.DecimalField(
             max_digits=16,
-            decimal_places=8,
+            decimal_places=1,
             null=True
         )
     win = models.DecimalField(

@@ -52,7 +52,7 @@ data = [
         "venue": "WD",
         "distance": 548,
         "grade": "A",
-        "prediction": 0.0,
+        "prediction": 1.0,
         "win": None,
         "place": 1.02,
         "show": None,
