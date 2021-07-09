@@ -1,5 +1,6 @@
 import os, fnmatch
 import py7zr
+from django.utils.timezone import localdate
 from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
 from datetime import datetime
@@ -31,7 +32,7 @@ class FrontPage(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-        today = datetime.now()
+        today = localdate()
         charts = Chart.objects.filter(program__date=today)
         self.context["charts"] = charts
         self.context["today"] = today.strftime("%A, %B %-d")
