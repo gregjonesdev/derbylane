@@ -73,6 +73,7 @@ def predict(race_key, arff_data, analysis_file):
         print("No model found: {}".format(race_key))
     if prediction_tuple:
         evaluate_predictions(prediction_tuple, filename, analysis_file)
+        save_predictions(prediction_tuple)
 
 def remove_uuid(data):
     remove = Filter(
@@ -181,6 +182,11 @@ def get_prediction_list(cls, data):
     for index, inst in enumerate(data):
         prediction_list.append(cls.classify_instance(inst))
     return prediction_list
+
+def save_predictions(prediction_tuple):
+    for each in prediction_tuple:
+        participant = Participant.objects.get(uuid=each[0])
+        save_prediction(participant, each[1])
 
 def save_prediction(participant, pred):
     try:
