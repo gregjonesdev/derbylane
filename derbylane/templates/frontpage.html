@@ -38,7 +38,9 @@
   modal = document.getElementById("bet-modal")
   modal.addEventListener("focus", function (e) {
     var button = $(event.relatedTarget) // Button that triggered the modal
+    var participant_bets = document.getElementById("participant_bets")
     var dog = button.data('dog')
+    var bets = button.data('bets')
     var post = button.data('post')
     var venue = button.data('venue')
     var chart = button.data('chart')
@@ -54,6 +56,7 @@
       chart + " Race " +
       number
     )
+    $('select option[value=' + bets).prop('selected',true);
   })
   text_content = document.getElementById("json-chart-data").textContent
   chart_json_data = JSON.parse(text_content)

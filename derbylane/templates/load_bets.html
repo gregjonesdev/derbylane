@@ -30,8 +30,9 @@
                 data-venue="{{ participant.race.chart.program.venue.name }}"
                 data-chart="{{ participant.race.chart.time }}"
                 data-number="{{ participant.race.number }}"
-                data-participant="{{ participant }}">
-                <span style="font-weight:bold">
+                data-participant="{{ participant }}"
+                data-bets="{{ participant.prediction.get_bets }}">
+                <span id="participant_bets" style="font-weight:bold">
                   {{ participant.prediction.get_bets }}
                 </span>
 
