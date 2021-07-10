@@ -17,8 +17,17 @@
               <td style="border: none; vertical-align: middle" width=85%>
                   {{ participant.dog.name }}</td>
               <td style="border: none; float-right">
-              <button disabled type="button" class="btn btn-sm btn-outline-light float-right" data-toggle="modal" data-target="#bet-modal" data-participant="{{ participant.uuid }}">
-                <span style="font-weight:bold">{{ participant.prediction.get_bets }}</span>
+              <button
+                disabled
+                type="button"
+                class="btn btn-sm btn-outline-light float-right"
+                style="width:42px"
+                data-toggle="modal"
+                data-target="#bet-modal"
+                data-participant="{{ participant.uuid }}">
+                <span style="font-weight:bold">
+                  {{ participant.prediction.get_bets }}
+                </span>
 
               </button>
 
