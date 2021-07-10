@@ -3,12 +3,15 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="bet-modalLabel" style="color: black"></h5>
+          <h5 class="modal-title" id="bet-modalLabel" style="color: black">
+
+          </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
+          <span class="modal-subtitle" style="color: black; font-size: 1.25em"></span><br>
           <label for="tentacles" style="color:black">$</label>
 
           <input
@@ -26,3 +29,25 @@
     </div>
   </div>
 </div>
+<script id="json-chart-data" type="application/json">
+  {
+    "bets_url": "{% url 'load_bets' %}"
+  }
+</script>
+
+<script>
+make_bet = () => {
+  console.log("make bet")
+    const chart_id = chart_select.value
+    $.ajax({
+      url: chart_json_data["bets_url"],
+      dataType: "html",
+      data: {
+        "chart_id": chart_id,
+      },
+      success: function(data) {
+        $("#bets").html(data)
+      }
+    })
+  }
+</script>

@@ -104,24 +104,7 @@ class UploadsView(OTPRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         print("post uplaodz")
         print(request.FILES)
-        # files = request.POST.getlist('files')
-        # print('o')
-        # folder='uploads/'
-        # fs = FileSystemStorage(location=folder) #defaults to   MEDIA_ROOT
-        # for file in files:
-        #     print("something")
-        #     print(file)
-        #     print(file.name)
-        #     # myfile = request.FILES['myfile']
-        #     # filename = fs.save(myfile.name, myfile)
-        #     # file_url = fs.url(filename)
-        #     # return render(request, 'upload.html', {
-        #     #     'file_url': file_url
-        #     # })
-        # else:
-        #      # return render(request, 'upload.html')
-        #      pass
-        #
+
 
 class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):
 
@@ -142,13 +125,13 @@ def load_charts(request):
 
 def make_bet(request):
     print("make bets")
-    print(request)
-    return render(
-        request,
-        'make_bet.html',
-        {
-            'test': 'hi'
-        })
+    # print(request)
+    # return render(
+    #     request,
+    #     'make_bet.html',
+    #     {
+    #         'test': 'hi'
+    #     })
 
 def load_bets(request):
     chart = Chart.objects.get(

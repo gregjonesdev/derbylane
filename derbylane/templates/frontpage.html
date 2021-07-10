@@ -37,10 +37,23 @@
   chart_select = document.getElementById("chart-select")
   modal = document.getElementById("bet-modal")
   modal.addEventListener("focus", function (e) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var participant = button.data('participant') // Extract info from data-* attributes
-  var modal = $(this)
-  modal.find('.modal-title').text('New message to ' + participant)
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var dog = button.data('dog')
+    var post = button.data('post')
+    var venue = button.data('venue')
+    var chart = button.data('chart')
+    var number = button.data('number')
+    var participant = button.data('participant')
+    var modal = $(this)
+    modal.find('.modal-subtitle').text(
+      post + " | " +
+      dog + " "
+    )
+    modal.find('.modal-title').text(
+      venue + " " +
+      chart + " Race " +
+      number
+    )
   })
   text_content = document.getElementById("json-chart-data").textContent
   chart_json_data = JSON.parse(text_content)
