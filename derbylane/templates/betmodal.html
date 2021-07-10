@@ -11,16 +11,28 @@
           </button>
         </div>
         <div class="modal-body">
-          <span class="modal-subtitle" style="color: black; font-size: 1.25em"></span><br>
-          <label for="tentacles" style="color:black">$</label>
+          <span class="modal-subtitle" style="color: black; font-size: 1.25em"></span>
 
-          <input
-            type="number"
-            id="tentacles"
-            name="tentacles"
-            min="1"
-            max="100"
-            placeholder="2">
+          <div style="display: flex; flex-flow: row nowrap; margin-top:10px">
+              <select name="bet_type" id="bet_types" style="height:34px; font-size:1.2em">
+                <option value="W">WIN</option>
+                <option value="P">PLC</option>
+                <option value="S">SHW</option>
+                <option value="WP">WP</option>
+                <option value="WPS">WPS</option>
+
+              </select>
+
+              <span style="font-size:1.5em; color:black; line-height: 100%; margin:10px 5px 10px 10px; vertical-align:middle">$</span>
+              <input
+                type="number"
+                id="tentacles"
+                name="tentacles"
+                min="1"
+                max="100"
+                placeholder="2">
+          </div>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-success">Save</button>
           </div>
