@@ -63,6 +63,7 @@ chart_times = [
 ]
 
 models_directory = "../../../allmodels"
+packages_directory = "../../../packages"
 
 
 allowed_attempts = 3

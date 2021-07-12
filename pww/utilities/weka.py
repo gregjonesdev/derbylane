@@ -1,13 +1,18 @@
 from django.core.management.base import BaseCommand
 from weka.filters import Filter
 import weka.core.jvm as jvm
+import weka.core.packages as packages
 import weka.core.converters as conv
 import weka.core.serialization as serialization
+from libsvm.svmutil import *
 from rawdat.models import Participant
 from weka.classifiers import Classifier
 from django.core.exceptions import ObjectDoesNotExist
 from pww.models import Prediction
-from miner.utilities.constants import models_directory
+from weka.core.packages import install_missing_packages, LATEST
+from miner.utilities.constants import (
+    models_directory,
+    packages_directory)
 import os
 
 def create_model(model_arff, classifier, options, filename):
@@ -140,6 +145,19 @@ def evaluate_predictions(prediction_tuple, filename, analysis_file):
         ), file=analysis_file)
 
 def compare_predictions(arff_file):
+    # # packages.install_package("/some/where/funky-package-1.0.0.zip")
+    # for package in os.listdir(packages_directory):
+    #     packages.install_package("{}/{}".format(packages_directory, package))
+    jvm.start(packages=True, max_heap_size="2048m")
+    install_missing_packages([
+        ('LibSVM', LATEST),
+        ('LibLINEAR', LATEST)])
+    # install_missing_package('LibSVM', stop_jvm_and_exit=True) # LibSVM/1.0.10 successfully installed
+    # install_missing_package('LibLINEAR', stop_jvm_and_exit=True) # LibLINEAR/1.9.8 successfully installed
+    # suggestions = packages.suggest_package(search)
+    # print("suggested packages for " + search + ":", suggestions)
+    raise SystemExit(0)
+    print("-----")
     race_key = "SL_583_C"
     print("weka compare")
     print(models_directory)
@@ -148,6 +166,11 @@ def compare_predictions(arff_file):
     analysis_file = open("{}_comparison.txt".format(race_key), "w")
     uuid_tuple = get_uuid_tuple(arff_file)
     print(uuid_tuple[:5])
+    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+    test_data = loader.load_file(arff_file)
+    test_data = remove_uuid(test_data)
+    test_data = nominalize(test_data)
+    test_data.class_is_last()
     for model_name in os.listdir(models_directory):
         retrieve_prediction_data(arff_file, model_name)
         short_name = model_name.replace("{}_model_".format(race_key), "")
@@ -159,6 +182,17 @@ def compare_predictions(arff_file):
 def retrieve_prediction_data(arff_file, model_name):
     # print(model_name)
     prediction_data = []
+    if "svm" in model_name.lower():
+        # model = svm_load_model(model_name)
+        # print(model)
+        # pass
+
+        model_location = "{}/{}".format(models_directory, model_name)
+        model = Classifier(jobject=serialization.read(model_location))
+
+    # ERROR:
+    # javabridge.jutil.JavaException:
+    # Unable to find class weka.classifiers.functions.LibLINEAR
 
 
 
