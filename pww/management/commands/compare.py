@@ -4,6 +4,7 @@ import os
 import fnmatch
 from pathlib import Path
 import weka.core.jvm as jvm
+import datetime
 
 from django.core.management.base import BaseCommand
 
@@ -16,14 +17,24 @@ from miner.utilities.constants import csv_columns
 
 class Command(BaseCommand):
 
-    def create_arff(self, filename, metrics, is_nominal):
+    def create_arff_file(self, metrics, filename, start_date):
+        # csv_metric = metric.build_csv_metric()
+        # if csv_metric:
+        #     arff_file = open("metrics.arff", "w")
+        #     arff_file.write("@relation Metric\n")
+        #     arff_file = self.write_headers(arff_file, True)
+        #     for metric in metrics:
+        #         csv_metric = metric.build_csv_metric()
+        #         if csv_metric:
+        #             arff_file.writelines(csv_metric)
+        # return arff_file
         arff_file = open(filename, "w")
         arff_file.write("@relation Metric\n")
-
+        is_nominal = False
         arff_file = self.write_headers(arff_file, is_nominal)
 
         for metric in metrics:
-            csv_metric = metric.build_csv_metric()
+            csv_metric = metric.build_csv_metric(start_date)
             if csv_metric:
                 arff_file.writelines(csv_metric)
 
@@ -74,16 +85,21 @@ class Command(BaseCommand):
         # race_keys_to_test = self.get_race_keys_to_test(
         #     fnmatch.filter(os.listdir(directory), '*.model'))
         #
-        # jvm.start(packages=True, max_heap_size="2048m")
-        # print("\n\n\n")
+        distance = 583
+        grade_name = "C"
+        venue_code = "SL"
+        metrics = self.get_metrics(venue_code, distance, grade_name)
+        print(len(metrics))
         # for race_key in race_keys_to_test:
         #     for model in race_keys_to_test[race_key]:
         #         venue_code = race_key[:2]
         #         if venue_code in ["TS", "WD", "SL"]:
         #             distance = int(race_key[3:6])
         #             grade_name = race_key[7:]
-        #             metrics = self.get_metrics(venue_code, distance, grade_name)
-        #             is_nominal = False
-        #             test_arff = self.create_arff("test.arff", metrics, is_nominal)
-        #             evaluate_predictions(model, test_arff)
-        # jvm.stop()
+        # numeric_arff = arff_files['numeric']
+        # nominal_arff = arff_files['nominal']
+        scheduled_start = "2019-01-01"
+        start_datetime = datetime.datetime.strptime(scheduled_start, "%Y-%m-%d")
+        start_date = start_datetime.date()
+        self.create_arff_file(metrics, "metrics.arff", start_date)
+        # compare_predictions(model, self.create_arff_file(metrics))
