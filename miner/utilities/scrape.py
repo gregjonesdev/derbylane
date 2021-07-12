@@ -398,26 +398,14 @@ def get_single_bets(bet_rows):
 def save_single_bets(race, single_bets):
     print("save single bets")
     for each in single_bets:
-        # print(each)
         participant = get_participant(
             race,
             each["dog"])
-        print(participant)
-        try:
-            straightwager = Straight_Wager.objects.get(
-                participant=participant
-            )
-        except ObjectDoesNotExist:
-            new_straightwager = Straight_Wager(
-                participant = participant
-            )
-            new_straightwager.set_fields_to_base()
-            new_straightwager.save()
-            straightwager = new_straightwager
-        straightwager.win = each["win"]
-        straightwager.place = each["place"]
-        straightwager.show = each["show"]
-        straightwager.save()
+        straight_wager = get_straightwager(participant)
+        straight_wager.win = each["win"]
+        straight_wager.place = each["place"]
+        straight_wager.show = each["show"]
+        straight_wager.save()
 
 
 def process_race_data(race, race_data):
@@ -466,10 +454,7 @@ def handle_race(race, race_setting, race_data, single_bets, exotic_bets):
     if race_setting:
         save_race_info(race, race_setting)
     process_race_data(race, race_data)
-
     save_single_bets(race, single_bets)
-    # save single bets
-
     save_exotic_bets(race, exotic_bets)
     if race.grade and race.grade.value:
         build_race_metrics(race)
