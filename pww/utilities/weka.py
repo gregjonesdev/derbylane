@@ -146,6 +146,8 @@ def compare_predictions(arff_file):
     jvm.start(packages=True, max_heap_size="2048m")
     print("\n")
     analysis_file = open("{}_comparison.txt".format(race_key), "w")
+    uuid_tuple = get_uuid_tuple(arff_file)
+    print(uuid_tuple[:5])
     for model_name in os.listdir(models_directory):
         retrieve_prediction_data(arff_file, model_name)
         short_name = model_name.replace("{}_model_".format(race_key), "")
@@ -156,7 +158,9 @@ def compare_predictions(arff_file):
 
 def retrieve_prediction_data(arff_file, model_name):
     # print(model_name)
-    pass
+    prediction_data = []
+
+
 
 def get_win_bet_earnings(participant):
     try:
