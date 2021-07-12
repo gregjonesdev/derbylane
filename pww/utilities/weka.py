@@ -142,7 +142,17 @@ def evaluate_predictions(prediction_tuple, filename, analysis_file):
 def compare_predictions(arff_file):
     print("weka compare")
     print(models_directory)
-    print(os.listdir(models_directory))
+    jvm.start(packages=True, max_heap_size="2048m")
+    print("\n")
+    analysis_file = open("model_comparison.txt", "w")
+    for model in os.listdir(models_directory):
+        retrieve_prediction_data(arff_file, model)
+    analysis_file.close()
+    jvm.stop()
+    print("\nResults written to {}\n".format(analysis_file.name))
+
+def retrieve_prediction_data(arff_file, model):
+    print(model)
 
 
 
