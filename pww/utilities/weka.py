@@ -140,21 +140,23 @@ def evaluate_predictions(prediction_tuple, filename, analysis_file):
         ), file=analysis_file)
 
 def compare_predictions(arff_file):
+    race_key = "SL_583_C"
     print("weka compare")
     print(models_directory)
     jvm.start(packages=True, max_heap_size="2048m")
     print("\n")
-    analysis_file = open("model_comparison.txt", "w")
-    for model in os.listdir(models_directory):
-        retrieve_prediction_data(arff_file, model)
+    analysis_file = open("{}_comparison.txt".format(race_key), "w")
+    for model_name in os.listdir(models_directory):
+        retrieve_prediction_data(arff_file, model_name)
+        short_name = model_name.replace("{}_model_".format(race_key), "")
+        print(short_name)
     analysis_file.close()
     jvm.stop()
     print("\nResults written to {}\n".format(analysis_file.name))
 
-def retrieve_prediction_data(arff_file, model):
-    print(model)
-
-
+def retrieve_prediction_data(arff_file, model_name):
+    # print(model_name)
+    pass
 
 def get_win_bet_earnings(participant):
     try:
