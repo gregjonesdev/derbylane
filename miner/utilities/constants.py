@@ -62,6 +62,9 @@ chart_times = [
  "Z"
 ]
 
+models_directory = "../../../allmodels"
+
+
 allowed_attempts = 3
 max_races_per_chart = 30
 

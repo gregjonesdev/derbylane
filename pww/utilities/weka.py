@@ -7,7 +7,8 @@ from rawdat.models import Participant
 from weka.classifiers import Classifier
 from django.core.exceptions import ObjectDoesNotExist
 from pww.models import Prediction
-
+from miner.utilities.constants import models_directory
+import os
 
 def create_model(model_arff, classifier, options, filename):
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
@@ -137,6 +138,12 @@ def evaluate_predictions(prediction_tuple, filename, analysis_file):
         place_winnings,
         show_winnings
         ), file=analysis_file)
+
+def compare_predictions(arff_file):
+    print("weka compare")
+    print(models_directory)
+    print(os.listdir(models_directory))
+
 
 
 def get_win_bet_earnings(participant):

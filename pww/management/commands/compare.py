@@ -10,7 +10,7 @@ from django.core.management.base import BaseCommand
 
 from pww.models import Metric
 from rawdat.models import Venue
-from pww.utilities.weka import evaluate_predictions
+from pww.utilities.weka import compare_predictions
 
 from miner.utilities.constants import csv_columns
 
@@ -18,16 +18,6 @@ from miner.utilities.constants import csv_columns
 class Command(BaseCommand):
 
     def create_arff_file(self, metrics, filename, start_date):
-        # csv_metric = metric.build_csv_metric()
-        # if csv_metric:
-        #     arff_file = open("metrics.arff", "w")
-        #     arff_file.write("@relation Metric\n")
-        #     arff_file = self.write_headers(arff_file, True)
-        #     for metric in metrics:
-        #         csv_metric = metric.build_csv_metric()
-        #         if csv_metric:
-        #             arff_file.writelines(csv_metric)
-        # return arff_file
         arff_file = open(filename, "w")
         arff_file.write("@relation Metric\n")
         is_nominal = False
@@ -79,27 +69,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print("compare")
-        print(os.listdir("../../../allmodels"))
-        # directory = "test_models"
-        #
-        # race_keys_to_test = self.get_race_keys_to_test(
-        #     fnmatch.filter(os.listdir(directory), '*.model'))
-        #
         distance = 583
         grade_name = "C"
         venue_code = "SL"
         metrics = self.get_metrics(venue_code, distance, grade_name)
         print(len(metrics))
-        # for race_key in race_keys_to_test:
-        #     for model in race_keys_to_test[race_key]:
-        #         venue_code = race_key[:2]
-        #         if venue_code in ["TS", "WD", "SL"]:
-        #             distance = int(race_key[3:6])
-        #             grade_name = race_key[7:]
-        # numeric_arff = arff_files['numeric']
-        # nominal_arff = arff_files['nominal']
         scheduled_start = "2019-01-01"
         start_datetime = datetime.datetime.strptime(scheduled_start, "%Y-%m-%d")
         start_date = start_datetime.date()
-        self.create_arff_file(metrics, "metrics.arff", start_date)
-        # compare_predictions(model, self.create_arff_file(metrics))
+        arff_file = self.create_arff_file(metrics, "metrics.arff", start_date)
+        compare_predictions(arff_file)
