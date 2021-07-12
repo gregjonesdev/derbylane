@@ -145,23 +145,13 @@ def evaluate_predictions(prediction_tuple, filename, analysis_file):
         ), file=analysis_file)
 
 def compare_predictions(arff_file):
-    # # packages.install_package("/some/where/funky-package-1.0.0.zip")
-    # for package in os.listdir(packages_directory):
-    #     packages.install_package("{}/{}".format(packages_directory, package))
-    jvm.start(packages=True, max_heap_size="2048m")
-    install_missing_packages([
-        ('LibSVM', LATEST),
-        ('LibLINEAR', LATEST)])
-    # install_missing_package('LibSVM', stop_jvm_and_exit=True) # LibSVM/1.0.10 successfully installed
-    # install_missing_package('LibLINEAR', stop_jvm_and_exit=True) # LibLINEAR/1.9.8 successfully installed
-    # suggestions = packages.suggest_package(search)
-    # print("suggested packages for " + search + ":", suggestions)
-    raise SystemExit(0)
-    print("-----")
     race_key = "SL_583_C"
     print("weka compare")
     print(models_directory)
     jvm.start(packages=True, max_heap_size="2048m")
+    install_missing_packages([
+        ('LibSVM', LATEST),
+        ('LibLINEAR', LATEST)])
     print("\n")
     analysis_file = open("{}_comparison.txt".format(race_key), "w")
     uuid_tuple = get_uuid_tuple(arff_file)
