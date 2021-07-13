@@ -155,22 +155,24 @@ def compare_predictions(arff_file):
     print("\n")
     analysis_file = open("{}_comparison.txt".format(race_key), "w")
     uuid_tuple = get_uuid_tuple(arff_file)
-    print(uuid_tuple[:5])
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     test_data = loader.load_file(arff_file)
     test_data = remove_uuid(test_data)
     test_data = nominalize(test_data)
     test_data.class_is_last()
     for model_name in os.listdir(models_directory):
-        retrieve_prediction_data(arff_file, model_name)
+        retrieve_prediction_data(model_name, test_data, uuid_tuple)
         short_name = model_name.replace("{}_model_".format(race_key), "")
         print(short_name)
     analysis_file.close()
     jvm.stop()
     print("\nResults written to {}\n".format(analysis_file.name))
 
-def retrieve_prediction_data(arff_file, model_name):
-    # print(model_name)
+def retrieve_prediction_data(model_name, test_data, uuid_tuple):
+    print("RPD")
+    print(model_name)
+    print(len(test_data))
+    print(uuid_tuple[:5])
     prediction_data = []
     if "svm" in model_name.lower():
         # model = svm_load_model(model_name)
@@ -179,8 +181,8 @@ def retrieve_prediction_data(arff_file, model_name):
 
         model_location = "{}/{}".format(models_directory, model_name)
         model = Classifier(jobject=serialization.read(model_location))
-
-    # ERROR:
+        print(get_prediction_tuple(model, test_data, uuid_tuple))
+    # ERROR:                  b
     # javabridge.jutil.JavaException:
     # Unable to find class weka.classifiers.functions.LibLINEAR
 
@@ -216,6 +218,7 @@ def get_show_bet_earnings(participant):
 
 
 def get_prediction_tuple(cls, data, uuid_tuple):
+    print("GPT")
     prediction_tuple = []
     prediction_list = get_prediction_list(cls, data)
     i = 0
