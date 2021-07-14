@@ -160,28 +160,30 @@ def compare_predictions(arff_file):
     test_data = remove_uuid(test_data)
     test_data = nominalize(test_data)
     test_data.class_is_last()
+    skip_models = ["SL_583_C_model_SMO_C_8_0.model"]
     for model_name in os.listdir(models_directory):
-        retrieve_prediction_data(model_name, test_data, uuid_tuple)
-        short_name = model_name.replace("{}_model_".format(race_key), "")
-        print(short_name)
+        if not model_name in skip_models:
+            retrieve_prediction_data(model_name, test_data, uuid_tuple)
+            short_name = model_name.replace("{}_model_".format(race_key), "")
+            print(short_name)
     analysis_file.close()
     jvm.stop()
     print("\nResults written to {}\n".format(analysis_file.name))
 
 def retrieve_prediction_data(model_name, test_data, uuid_tuple):
-    print("RPD")
+    # print("RPD")
     print(model_name)
-    print(len(test_data))
-    print(uuid_tuple[:5])
+    # print(len(test_data))
+    # print(uuid_tuple[:5])
     prediction_data = []
-    if "svm" in model_name.lower():
+    # if "svm" in model_name.lower():
         # model = svm_load_model(model_name)
         # print(model)
         # pass
 
-        model_location = "{}/{}".format(models_directory, model_name)
-        model = Classifier(jobject=serialization.read(model_location))
-        print(get_prediction_tuple(model, test_data, uuid_tuple))
+    model_location = "{}/{}".format(models_directory, model_name)
+    model = Classifier(jobject=serialization.read(model_location))
+    print(get_prediction_tuple(model, test_data, uuid_tuple))
     # ERROR:                  b
     # javabridge.jutil.JavaException:
     # Unable to find class weka.classifiers.functions.LibLINEAR
@@ -218,7 +220,7 @@ def get_show_bet_earnings(participant):
 
 
 def get_prediction_tuple(cls, data, uuid_tuple):
-    print("GPT")
+    # print("GPT")
     prediction_tuple = []
     prediction_list = get_prediction_list(cls, data)
     i = 0
