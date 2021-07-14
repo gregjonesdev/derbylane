@@ -117,7 +117,7 @@ bet_amount = 2
 def evaluate_predictions(prediction_tuple, filename, analysis_file):
     print("{}\n".format(filename), file=analysis_file)
     print(eval_string.format(
-    "J48",
+    "",
     "Win",
     "Place",
     "Show"
@@ -144,6 +144,45 @@ def evaluate_predictions(prediction_tuple, filename, analysis_file):
         show_winnings
         ), file=analysis_file)
 
+
+def new_evaluate_predictions(prediction_tuple, table_name, analysis_file):
+    # print("{}\n".format(filename), file=analysis_file)
+    # print(eval_string.format(
+    # "",
+    # "Win",
+    # "Place",
+    # "Show"
+    # ), file=analysis_file)
+    i = 0
+
+    prediction_winnings = get_prediction_winnings(prediction_tuple, i)
+    bet_count = prediction_winnings["bet_count"]
+    if bet_count > 0:
+        win_winnings = "${}".format(
+            round(prediction_winnings["win"]/(bet_count*2), 2))
+        place_winnings = "${}".format(
+            round(prediction_winnings["place"]/(bet_count*2), 2))
+        show_winnings = "${}".format(
+            round(prediction_winnings["show"]/(bet_count*2), 2))
+    else:
+        win_winnings = "--"
+        place_winnings = "--"
+        show_winnings = "--"
+    print(breakdown_string.format(
+        table_name.replace("EAR", ""),
+        "%",
+        "\t[Win]",
+        "\t[Place]",
+        "\t[Show]"
+    ))
+        # print(eval_string.format(
+        # i,
+        # win_winnings,
+        # place_winnings,
+        # show_winnings
+        # ), file=analysis_file)
+
+
 def compare_predictions(arff_file):
     race_key = "SL_583_C"
     print("weka compare")
@@ -161,22 +200,29 @@ def compare_predictions(arff_file):
     test_data = nominalize(test_data)
     test_data.class_is_last()
     skip_models = ["SL_583_C_model_SMO_C_8_0.model"]
+    print(breakdown_string.format(
+        "Model",
+        "\t% Correct",
+        "Win",
+        "\tPlace",
+        "\tShow"
+    ))
     for model_name in os.listdir(models_directory):
         if not model_name in skip_models:
-            retrieve_prediction_data(model_name, race_key, test_data, uuid_tuple)
+            retrieve_prediction_data(model_name, race_key, test_data, uuid_tuple, analysis_file)
     analysis_file.close()
     jvm.stop()
     print("\nResults written to {}\n".format(analysis_file.name))
 
-# breakdown_string = "{}\t\t{}\t{}\t{}\t\t{}"
+breakdown_string = "{}\t\t{}\t{}\t\t{}\t\t{}"
 
 
-def retrieve_prediction_data(model_name, race_key, test_data, uuid_tuple):
+def retrieve_prediction_data(model_name, race_key, test_data, uuid_tuple, analysis_file):
     # print("RPD")
     short_name = model_name.replace("{}_model_".format(race_key), "")
-    print("\n-----------------------------------")
-    print(short_name.replace(".model", ""))
-    print("-----------------------------------\n")
+    # print("\n-----------------------------------")
+    table_name = short_name.replace(".model", "")
+    # print("-----------------------------------\n")
 
     # print(model_name)
     # print(len(test_data))
@@ -189,10 +235,13 @@ def retrieve_prediction_data(model_name, race_key, test_data, uuid_tuple):
 
     model_location = "{}/{}".format(models_directory, model_name)
     model = Classifier(jobject=serialization.read(model_location))
-    print(get_prediction_tuple(model, test_data, uuid_tuple))
+    prediction_tuple = get_prediction_tuple(model, test_data, uuid_tuple)
+    new_evaluate_predictions(prediction_tuple, table_name, analysis_file)
     # ERROR:                  b
     # javabridge.jutil.JavaException:
     # Unable to find class weka.classifiers.functions.LibLINEAR
+
+
 
 
 
