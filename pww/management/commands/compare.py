@@ -10,7 +10,7 @@ from django.core.management.base import BaseCommand
 
 from pww.models import Metric
 from rawdat.models import Venue
-from pww.utilities.weka import compare_predictions
+from pww.utilities.newweka import compare_predictions
 
 from miner.utilities.constants import csv_columns
 
