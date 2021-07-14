@@ -160,19 +160,35 @@ def compare_predictions(arff_file):
     test_data = remove_uuid(test_data)
     test_data = nominalize(test_data)
     test_data.class_is_last()
+    analysis_file
+    # print(eval_string.format(
+    # "J48",
+    # "Win",
+    # "Place",
+    # "Show"
+    # ), file=analysis_file)
+    print(breakdown_string.format(
+        "Model",
+        "% Correct",
+        "Win",
+        "Place",
+        "Show"))
     skip_models = ["SL_583_C_model_SMO_C_8_0.model"]
     for model_name in os.listdir(models_directory):
         if not model_name in skip_models:
-            retrieve_prediction_data(model_name, test_data, uuid_tuple)
-            short_name = model_name.replace("{}_model_".format(race_key), "")
-            print(short_name)
+            retrieve_prediction_data(model_name, race_key, test_data, uuid_tuple)
     analysis_file.close()
     jvm.stop()
     print("\nResults written to {}\n".format(analysis_file.name))
 
-def retrieve_prediction_data(model_name, test_data, uuid_tuple):
+breakdown_string = "{}\t\t\t{}\t{}\t{}\t\t{}"
+
+
+def retrieve_prediction_data(model_name, race_key, test_data, uuid_tuple):
     # print("RPD")
-    print(model_name)
+    short_name = model_name.replace("{}_model_".format(race_key), "")
+    print(short_name)
+    # print(model_name)
     # print(len(test_data))
     # print(uuid_tuple[:5])
     prediction_data = []
