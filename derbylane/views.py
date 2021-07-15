@@ -63,15 +63,15 @@ class DownloadsView(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-        print("get")
-        self.context["filenames"] = fnmatch.filter(os.listdir('arff'), '*_model.arff')
+        filenames = fnmatch.filter(os.listdir('arff'), '*_model.arff')
+        self.context["filenames"] = filenames
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
         print("post")
         files = request.POST.getlist('files')
         # print(os.listdir("arff"))
-        self.context["filenames"] = os.listdir("arff")
+        # self.context["filenames"] = os.listdir("arff")
         file_path = 'downloads.7z'
         if len(files) > 0:
             with py7zr.SevenZipFile(
