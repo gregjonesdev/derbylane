@@ -64,7 +64,7 @@ class DownloadsView(OTPRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         filenames = fnmatch.filter(os.listdir('arff'), '*_model.arff')
-        self.context["filenames"] = filenames
+        self.context["filenames"] = filenames.sort()
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
