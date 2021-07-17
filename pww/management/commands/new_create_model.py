@@ -90,7 +90,7 @@ class Command(BaseCommand):
 
         venue = Venue.objects.get(code="WD")
         venue_code = venue.code
-        distance = 548
+        distance = focused_distances[venue_code][0]
         for grade_name in focused_grades[venue_code]:
             print("{}_{}_{}".format(
                 venue_code,
