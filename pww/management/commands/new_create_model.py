@@ -76,7 +76,7 @@ class Command(BaseCommand):
                 exist_ok=True)
         jvm.start(packages=True, max_heap_size="2048m")
 
-        venue = Venue.objects.get(code="WD")
+        venue = Venue.objects.get(code="TS")
         venue_code = venue.code
         distance = focused_distances[venue_code][0]
         for grade_name in focused_grades[venue_code]:
