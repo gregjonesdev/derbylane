@@ -1,7 +1,7 @@
 import csv
 import sys
 import weka.core.jvm as jvm
-
+import datetime
 from pathlib import Path
 
 from django.core.management.base import BaseCommand
@@ -30,13 +30,15 @@ class Command(BaseCommand):
 
 
     def create_arff(self, filename, metrics, is_nominal):
+        scheduled_start = "2021-07-14"
+        start_datetime = datetime.datetime.strptime(scheduled_start, "%Y-%m-%d").date()
         arff_file = open(filename, "w")
         arff_file.write("@relation Metric\n")
 
         arff_file = self.write_headers(arff_file, is_nominal)
 
         for metric in metrics:
-            csv_metric = metric.build_csv_metric()
+            csv_metric = metric.build_csv_metric(start_datetime)
             if csv_metric:
                 arff_file.writelines(csv_metric)
 
@@ -65,20 +67,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("New Create model")
 
-        # LibSVM -S 0 - K 2 -D 3 -G 0.0 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.001 -P 0.1 -seed 1
-
-
-        # cls = Classifier(classname="weka.classifiers.trees.J48", options=["-C", "0.3"])
-        # venue_code = sys.argv[3]
-        # grade_name = sys.argv[5]
-        # distance = sys.argv[7]
-        #
-        # classifier = "weka.classifiers.functions.LibSVM"
-        # options = ["-C", complexity]
-        # filename = "smoreg_{}".format(complexity.replace(".", "_"))
-        # create_model(arff_file, race_key, classifier, options, filename)
-
-
 
         # complexity = sys.argv[3]
         arff_directory = "arff"
@@ -96,7 +84,6 @@ class Command(BaseCommand):
                 venue_code,
                 distance,
                 grade_name))
-            # print(complexity)
             metrics = Metric.objects.filter(
                 participant__race__chart__program__venue=venue,
                 participant__race__distance=distance,
@@ -106,25 +93,51 @@ class Command(BaseCommand):
             #
             print(len(metrics))
             race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
+
+            # LibSVM -S 0 - K 2 -D 3 -G 0.0 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.001 -P 0.1 -seed 1
+
+
+            # cls = Classifier(classname="weka.classifiers.trees.J48", options=["-C", "0.3"])
+            # venue_code = sys.argv[3]
+            # grade_name = sys.argv[5]
+            # distance = sys.argv[7]
+            #
+            # options = ["-C", complexity]
+            # filename = "smoreg_{}".format(complexity.replace(".", "_"))
+            # create_model(arff_file, race_key, classifier, options, filename)
+
                         # print(race_key)
 
 
                         # Options ?
 
 
-                        # root_filename = "{}_J48_C{}".format(
-                        #     race_key,
-                        #     complexity.replace(".", "_"))
-                        # arff_filename = "{}/{}.arff".format(
-                        #     arff_directory,
-                        #     root_filename)
+            root_filename = "{}_libsvm".format(
+                race_key)
+            arff_filename = "{}/{}.arff".format(
+                arff_directory,
+                root_filename)
                         # print(arff_filename)
-                        # is_nominal = False
-                        # arff_file = self.create_arff(
-                        #     arff_filename,
-                        #     metrics,
-                        #     is_nominal)
+            is_nominal = False
+            arff_file = self.create_arff(
+                arff_filename,
+                metrics,
+                is_nominal)
+            classifier = "weka.classifiers.functions.LibSVM"
+            options = [
+                "-S", "0",
+                "-K", "2",
+                "-D", "3",
+                "-G", "0.0",
+                "-R", "0.0",
+                "-N", "0.5",
+                "-M", "40.0",
+                "-C", "1.0",
+                "-E", "0.001",
+                "-P", "0.1",
+                "-seed", "1"
+                ]
                         # classifier = "weka.classifiers.trees.J48"
                         # options = ["-C", complexity]
-                        # create_model(arff_file, classifier, options, root_filename)
+            create_model(arff_file, classifier, options, root_filename)
         jvm.stop()

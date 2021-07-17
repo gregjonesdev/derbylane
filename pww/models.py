@@ -195,6 +195,6 @@ class Prediction(CoreModel):
                 bets += "P"
             if bet_margin.show and bet_margin.show > 1.0:
                 bets += "S"
-            return bets    
+            return bets
         except:
             pass
