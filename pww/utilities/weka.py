@@ -63,7 +63,8 @@ def save_prediction(participant, pred):
 
 def predict(race_key, arff_data, analysis_file):
     # filename = "arff/{}.model".format(race_key)
-    filename = "weka_models/{}_J48_C0_75.model".format(race_key)
+    # WD_548_C_libsvm.model
+    filename = "weka_models/{}_libsvm.model".format(race_key)
     # uuid_list = get_uuid_list(arff_data)
     uuid_tuple = get_uuid_tuple(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
@@ -79,7 +80,7 @@ def predict(race_key, arff_data, analysis_file):
         print("No model found: {}".format(race_key))
     if prediction_tuple:
         evaluate_predictions(prediction_tuple, filename, analysis_file)
-        save_predictions(prediction_tuple)
+        # save_predictions(prediction_tuple)
 
 def remove_uuid(data):
     remove = Filter(
@@ -311,12 +312,12 @@ def save_prediction(participant, pred):
         new_prediction.set_fields_to_base()
         new_prediction.save()
         prediction = new_prediction
-    prediction.j48 = pred
-    prediction.save()
-    print("Race {}\t{}:\t{}".format(
-        participant.race.number,
-        participant.dog.name[:8],
-        pred))
+    prediction.lib_svm = pred
+    # prediction.save()
+    # print("Race {}\t{}:\t{}".format(
+    #     participant.race.number,
+    #     participant.dog.name[:8],
+    #     pred))
 
 def get_uuid_tuple(filename):
     arff_file = open(filename, "r")

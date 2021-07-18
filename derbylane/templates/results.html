@@ -2,4 +2,25 @@
 
 {% block content %}
 Results
+{{ yesterday }}
+<table class=table table-sm">
+{% for program in programs %}
+  {% for chart in program.chart_set.all %}
+    {% for race in chart.race_set.all %}
+      <tr>
+        <th>
+          {{ program.venue.code }} {{ chart.get_time_display }} {{ race.number }}
+        </th>
+        <td>
+          <ul>
+            {% for participant in race.participant_set.all %}
+              <li>{{ participant.post }} - {{ participant.dog.name }}</li>
+            {% endfor%}
+          </ul>
+        </td>
+      </tr>
+    {% endfor %}
+  {% endfor %}
+{% endfor %}
+</table>
 {% endblock content %}

@@ -1,7 +1,9 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
+import datetime
 
 from pww.models import Prediction
+from rawdat.models import Program
 
 class Command(BaseCommand):
 
@@ -70,37 +72,64 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        print("Bet Scheme: $2 to place on an dog predict < 3")
-        bets = {}
-        for prediction in Prediction.objects.filter(
-            smo__isnull=False,
-            participant__final__isnull=False):
-            # print(self.get_bet_size(prediction.smo))
-            participant = prediction.participant
-            race = participant.race
-            grade_name = race.grade.name
-            distance = race.distance
-            venue_code = race.chart.program.venue.code
+        today = datetime.datetime.now()
+        yesterday = (today - datetime.timedelta(days=1)).date()
+        print(yesterday)
+        venue_results = {}
+        initial_obj = {
+            "bets": 0,
+            "win": 0,
+            "place": 0,
+            "show": 0
+        }
+        for program in Program.objects.filter(date=yesterday):
+            venue_code = program.venue.code
+            if not venue_code in venue_results.keys():
+                venue_results[venue_code] = {}
+            for chart in program.chart_set.all():
+                for race in chart.race_set.all():
+                    str_distance = str(race.distance)
+                    if not str_distance in venue_results[venue_code].keys():
+                        venue_results[venue_code][str_distance] = initial_obj
+                    # for participant in race.participant_set.all():
+                    #     print(participant.dog.name)
+        print(venue_results)
 
-            if not venue_code in bets.keys():
-                bets[venue_code] = {}
-            if not grade_name in bets[venue_code].keys():
-                bets[venue_code][grade_name] = {}
-            str_dist = str(distance)
-            if not str_dist in bets[venue_code][grade_name].keys():
-                bets[venue_code][grade_name][str_dist] = {
-                    "bet_count": 0,
-                    "spent": 0,
-                    "return": 0
-                }
-            vgd = bets[venue_code][grade_name][str_dist]
-            bet_size = self.get_bet_size(prediction.smo)
-            if bet_size:
-                vgd["bet_count"] += 1
-                vgd["spent"] += bet_size
-                # vgd["return"] += self.get_win_return(participant, bet_size)
-                vgd["return"] += self.get_place_return(participant, bet_size)
-                # vgd["return"] += self.get_show_return(participant, bet_size)
-            # print(prediction.smo)
 
-        self.print_report(bets)
+
+
+    # def handle(self, *args, **options):
+    #     print("Bet Scheme: $2 to place on an dog predict < 3")
+    #     bets = {}
+    #     for prediction in Prediction.objects.filter(
+    #         smo__isnull=False,
+    #         participant__final__isnull=False):
+    #         # print(self.get_bet_size(prediction.smo))
+    #         participant = prediction.participant
+    #         race = participant.race
+    #         grade_name = race.grade.name
+    #         distance = race.distance
+    #         venue_code = race.chart.program.venue.code
+    #
+    #         if not venue_code in bets.keys():
+    #             bets[venue_code] = {}
+    #         if not grade_name in bets[venue_code].keys():
+    #             bets[venue_code][grade_name] = {}
+    #         str_dist = str(distance)
+    #         if not str_dist in bets[venue_code][grade_name].keys():
+    #             bets[venue_code][grade_name][str_dist] = {
+    #                 "bet_count": 0,
+    #                 "spent": 0,
+    #                 "return": 0
+    #             }
+    #         vgd = bets[venue_code][grade_name][str_dist]
+    #         bet_size = self.get_bet_size(prediction.smo)
+    #         if bet_size:
+    #             vgd["bet_count"] += 1
+    #             vgd["spent"] += bet_size
+    #             # vgd["return"] += self.get_win_return(participant, bet_size)
+    #             vgd["return"] += self.get_place_return(participant, bet_size)
+    #             # vgd["return"] += self.get_show_return(participant, bet_size)
+    #         # print(prediction.smo)
+    #
+    #     self.print_report(bets)

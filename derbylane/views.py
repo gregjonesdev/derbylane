@@ -3,7 +3,7 @@ import py7zr
 from django.utils.timezone import localdate
 from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
-from datetime import datetime
+import datetime
 from django.shortcuts import redirect
 from django.core.files.storage import FileSystemStorage
 from django.views.generic import View
@@ -15,6 +15,7 @@ from rawdat.models import (
     Venue,
     Chart,
     CronJob,
+    Program,
 )
 
 
@@ -97,8 +98,11 @@ class ResultsView(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-        filenames = fnmatch.filter(os.listdir('arff'), '*_model.arff')
-        self.context["filenames"] = filenames
+        today = localdate()
+        yesterday = today - datetime.timedelta(days=1)
+        programs = Program.objects.filter(date=yesterday)
+        self.context["yesterday"] = yesterday
+        self.context["programs"] = programs
         return render(request, self.template_name, self.context)
 
 
@@ -129,7 +133,7 @@ def load_charts(request):
         code=request.GET.get('venue_code'))
     charts = Chart.objects.filter(
         program__venue=venue,
-        program__date=datetime.now()
+        program__date=datetime.datetime.now()
     )
     return render(
         request,
