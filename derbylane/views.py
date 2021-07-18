@@ -91,6 +91,18 @@ class DownloadsView(OTPRequiredMixin, View):
             response = redirect('frontpage')
             return response
 
+class ResultsView(OTPRequiredMixin, View):
+
+    template_name = 'results.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        filenames = fnmatch.filter(os.listdir('arff'), '*_model.arff')
+        self.context["filenames"] = filenames
+        return render(request, self.template_name, self.context)
+
+
+
 class UploadsView(OTPRequiredMixin, View):
 
     template_name = 'uploads.html'
