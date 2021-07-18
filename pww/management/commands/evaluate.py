@@ -82,17 +82,32 @@ class Command(BaseCommand):
             "place": 0,
             "show": 0
         }
+        bet_size = 2.0
         for program in Program.objects.filter(date=yesterday):
             venue_code = program.venue.code
             if not venue_code in venue_results.keys():
                 venue_results[venue_code] = {}
             for chart in program.chart_set.all():
                 for race in chart.race_set.all():
-                    str_distance = str(race.distance)
-                    if not str_distance in venue_results[venue_code].keys():
-                        venue_results[venue_code][str_distance] = initial_obj
-                    # for participant in race.participant_set.all():
-                    #     print(participant.dog.name)
+                    grade_name = race.grade.name
+                    if not grade_name in venue_results[venue_code].keys():
+                        venue_results[venue_code][grade_name] = initial_obj
+                    for participant in race.participant_set.all():
+                        try:
+                            if int(participant.prediction.smo_reg) == 0:
+                                print(participant.prediction.smo_reg)
+                                graded = venue_results[venue_code][grade_name]
+                                graded["bets"] += 1
+                                graded["win"] += (
+                                    self.get_win_return(participant, bet_size))
+                                graded["place"] += (
+                                    self.get_place_return(participant, bet_size))
+                                graded["show"] += (
+                                    self.get_show_return(participant, bet_size))
+
+                        except:
+                            pass
+
         print(venue_results)
 
 
