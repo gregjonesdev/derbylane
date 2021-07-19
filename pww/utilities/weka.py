@@ -29,6 +29,8 @@ def create_model(model_arff, classifier, options, filename):
 
 
 def predict_all(arff_list):
+    print("predict all")
+    print(arff_list)
     jvm.start(packages=True, max_heap_size="2048m")
     analysis_file = open("prediction_analysis.txt", "w")
     for arff_file in arff_list:
