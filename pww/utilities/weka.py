@@ -53,7 +53,7 @@ def save_prediction(participant, pred):
         new_prediction.set_fields_to_base()
         new_prediction.save()
         prediction = new_prediction
-    prediction.smo_reg= pred
+    prediction.smo_reg = pred
     prediction.save()
     print("Race {}\t{}:\t{}".format(
         participant.race.number,
@@ -62,11 +62,13 @@ def save_prediction(participant, pred):
 
 
 def predict(race_key, arff_data, analysis_file):
+    print("predict()")
     # filename = "arff/{}.model".format(race_key)
     # WD_548_C_libsvm.model
     filename = "weka_models/{}_libsvm.model".format(race_key)
     # uuid_list = get_uuid_list(arff_data)
     uuid_tuple = get_uuid_tuple(arff_data)
+    print('70')
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(arff_data)
     scheduled_data = remove_uuid(loaded_data)
@@ -74,7 +76,6 @@ def predict(race_key, arff_data, analysis_file):
     scheduled_data.class_is_last()
     prediction_tuple = None
     try:
-        print("Predicting {}".format(race_key))
         model = Classifier(jobject=serialization.read(filename))
         prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple)
     except:
