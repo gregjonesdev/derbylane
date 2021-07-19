@@ -71,13 +71,15 @@ def predict(race_key, arff_data, analysis_file):
     filename = "weka_models/{}_libsvm.model".format(race_key)
     # uuid_list = get_uuid_list(arff_data)
     uuid_tuple = get_uuid_tuple(arff_data)
-    print('70')
+    print('74')
+    print(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(arff_data)
     scheduled_data = remove_uuid(loaded_data)
     scheduled_data = nominalize(scheduled_data)
     scheduled_data.class_is_last()
     prediction_tuple = None
+    print('82')
     try:
         model = Classifier(jobject=serialization.read(filename))
         prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple)
