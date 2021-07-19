@@ -70,11 +70,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         today = datetime.date.today()
-        scheduled_start = today
+        print(today)
+        # scheduled_start = today
         # scheduled_start = "2019-01-01"
         # start_datetime = datetime.datetime.strptime(scheduled_start, "%Y-%m-%d")
         # start_date = start_datetime.date()
-        start_date = today
+        # start_date = today
         arff_list = []
         for venue in Venue.objects.filter(is_focused=True):
             print("Building metrics for {}".format(venue))
@@ -92,15 +93,14 @@ class Command(BaseCommand):
                         participant__race__grade__name=grade_name,
                     )
                     if len(graded_metrics) > 0:
-                        print(len(graded_metrics))
                         scheduled_metrics = graded_metrics.filter(
-                        participant__race__chart__program__date__gte=scheduled_start)
+                        participant__race__chart__program__date__gte=today)
                         if len(scheduled_metrics) > 0:
-                            training_metrics = graded_metrics.filter(
-                                participant__race__chart__program__date__lt=scheduled_start)
-                            print(len(training_metrics))
+                            # training_metrics = graded_metrics.filter(
+                            #     participant__race__chart__program__date__lt=scheduled_start)
+                            # print(len(training_metrics))
                             race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
                             arff_list.append(self.create_arff(
                                 "arff/{}.arff".format(race_key),
-                                graded_metrics, start_date))
+                                graded_metrics, today))
         predict_all(arff_list)

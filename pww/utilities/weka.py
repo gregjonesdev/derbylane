@@ -74,6 +74,7 @@ def predict(race_key, arff_data, analysis_file):
     scheduled_data.class_is_last()
     prediction_tuple = None
     try:
+        print("Predicting {}".format(race_key))
         model = Classifier(jobject=serialization.read(filename))
         prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple)
     except:
