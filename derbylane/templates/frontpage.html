@@ -8,13 +8,11 @@
         class="form-control frontpage-select"
         id="chart-select">
         {% for chart in charts %}
-          {% if chart.has_predictions %}
-            <option value="{{ chart.uuid }}">
-              <span >
-                {{ chart.program.venue.kiosk_name }}_{{ chart.kiosk_time }}
-              </span>
-            </option>
-          {% endif %}
+          <option value="{{ chart.uuid }}">
+            <span >
+              {{ chart.program.venue.kiosk_name }}_{{ chart.kiosk_time }}
+            </span>
+          </option>
         {% endfor %}
       </select>
     </div>
