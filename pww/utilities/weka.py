@@ -68,6 +68,7 @@ def predict(race_key, arff_data, analysis_file):
     # print("predict()")
     # filename = "arff/{}.model".format(race_key)
     # WD_548_C_libsvm.model
+    # race_key = "WD_548_A"
     filename = "weka_models/{}_libsvm.model".format(race_key)
     # uuid_list = get_uuid_list(arff_data)
     uuid_tuple = get_uuid_tuple(arff_data)
@@ -86,7 +87,6 @@ def predict(race_key, arff_data, analysis_file):
     except:
         print("No model found: {}".format(race_key))
     if prediction_tuple:
-        # evaluate_predictions(prediction_tuple, filename, analysis_file)
         save_predictions(prediction_tuple)
 
 def remove_uuid(data):

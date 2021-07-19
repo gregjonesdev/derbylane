@@ -2,6 +2,7 @@
 
 {% block content %}
   <h5 class="card-header text-center"><b><i>{{ today }}</i></b></h5>
+    {% if charts|length %}
     <div class="select-holder">
       <select
         class="form-control frontpage-select"
@@ -21,9 +22,14 @@
       <table
       id="bets_table"
       class="table table-sm table-borderless" >
-        <tbody id="bets" style="max-height: 100%"></tbody>
-      </table>
+      <tbody id="bets" style="max-height: 100%"></tbody>
+    </table>
+  </div>
+    {% else %}
+    <div style="text-align: center; padding: 50px">
+    No Predictions Today
     </div>
+    {% endif %}
 
 {% include 'betmodal.html' %}
 

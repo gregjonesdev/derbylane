@@ -34,7 +34,10 @@ class FrontPage(OTPRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         today = localdate()
-        charts = Chart.objects.filter(program__date=today)
+        charts = []
+        for chart in Chart.objects.filter(program__date=today):
+            if chart.has_predictions():
+                charts.append(chart)
         self.context["charts"] = charts
         self.context["today"] = today.strftime("%A, %B %-d")
 
