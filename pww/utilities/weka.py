@@ -84,7 +84,8 @@ def predict(race_key, arff_data, analysis_file):
     except:
         print("No model found: {}".format(race_key))
     if prediction_tuple:
-        evaluate_predictions(prediction_tuple, filename, analysis_file)
+        # evaluate_predictions(prediction_tuple, filename, analysis_file)
+        print(prediction_tuple)
         save_predictions(prediction_tuple)
 
 def remove_uuid(data):
