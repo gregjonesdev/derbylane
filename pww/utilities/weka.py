@@ -36,10 +36,11 @@ def predict_all(arff_list):
     for arff_file in arff_list:
         predict_single(arff_file, analysis_file)
     analysis_file.close()
-    print("Results written to {}".format(analysis_file.name))
+    # print("Results written to {}".format(analysis_file.name))
     jvm.stop()
 
 def predict_single(arff_file, analysis_file):
+    print("predict single ()")
     race_key = arff_file.split("/")
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
     predict(race_key, arff_file, analysis_file)
