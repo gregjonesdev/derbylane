@@ -65,21 +65,21 @@ def save_prediction(participant, pred):
 
 
 def predict(race_key, arff_data, analysis_file):
-    print("predict()")
+    # print("predict()")
     # filename = "arff/{}.model".format(race_key)
     # WD_548_C_libsvm.model
     filename = "weka_models/{}_libsvm.model".format(race_key)
     # uuid_list = get_uuid_list(arff_data)
     uuid_tuple = get_uuid_tuple(arff_data)
-    print('74')
-    print(arff_data)
+    # print('74')
+    # print(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(arff_data)
     scheduled_data = remove_uuid(loaded_data)
     scheduled_data = nominalize(scheduled_data)
     scheduled_data.class_is_last()
     prediction_tuple = None
-    print('82')
+    # print('82')
     try:
         model = Classifier(jobject=serialization.read(filename))
         prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple)
@@ -87,7 +87,6 @@ def predict(race_key, arff_data, analysis_file):
         print("No model found: {}".format(race_key))
     if prediction_tuple:
         # evaluate_predictions(prediction_tuple, filename, analysis_file)
-        print(prediction_tuple)
         save_predictions(prediction_tuple)
 
 def remove_uuid(data):

@@ -168,11 +168,8 @@ class Prediction(CoreModel):
             decimal_places=8,
             null=True
             )
-    lib_svm = models.DecimalField(
-            max_digits=16,
-            decimal_places=8,
-            null=True
-            )
+    lib_svm = models.IntegerField(
+            null=True)
     smo_reg = models.DecimalField(
             max_digits=16,
             decimal_places=8,
@@ -180,21 +177,6 @@ class Prediction(CoreModel):
             )
 
     def get_bets(self):
-        race = self.participant.race
-        bets = ""
-        try:
-            bet_margin = Bet_Margin.objects.get(
-                venue = race.chart.program.venue,
-                distance = race.distance,
-                grade = race.grade,
-                prediction = self.j48
-            )
-            if bet_margin.win and bet_margin.win > 1.0:
-                bets += "W"
-            if bet_margin.place and bet_margin.place > 1.0:
-                bets += "P"
-            if bet_margin.show and bet_margin.show > 1.0:
-                bets += "S"
-            return bets
-        except:
-            pass
+
+        if self.lib_Svm == 0:
+            return "WP"
