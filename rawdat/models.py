@@ -195,6 +195,12 @@ class Program(CoreModel):
     def get_charts(self):
         return Chart.objects.filter(program=self)
 
+    def get_predicted_charts(self):
+        predicted_charts = []
+        for chart in self.chart_set.all():
+            if chart.has_predictions():
+                predicted_charts.append(chart)        
+
 
 class Chart(CoreModel):
     AFTERNOON = 'A'
@@ -254,6 +260,12 @@ class Chart(CoreModel):
                 return float(weather.max_temp)
             except:
                 pass
+
+    def get_predicted_races(self):
+        predicted_races = []
+        for race in self.race_set.all():
+            if race.has_predictions():
+                predicted_races.append(race)
 
     def has_predictions(self):
         for race in self.race_set.all():

@@ -68,6 +68,7 @@ def predict(race_key, arff_data, analysis_file):
     print("predict()")
     # filename = "arff/{}.model".format(race_key)
     # WD_548_C_libsvm.model
+    race_key = "WD_548_AA"
     filename = "weka_models/{}_libsvm.model".format(race_key)
     # uuid_list = get_uuid_list(arff_data)
     uuid_tuple = get_uuid_tuple(arff_data)
@@ -321,7 +322,7 @@ def save_prediction(participant, pred):
         new_prediction.save()
         prediction = new_prediction
     prediction.lib_svm = pred
-    # prediction.save()
+    prediction.save()
     # print("Race {}\t{}:\t{}".format(
     #     participant.race.number,
     #     participant.dog.name[:8],
