@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 from django.core.files.storage import FileSystemStorage
 from django.views.generic import View
 from django.shortcuts import render
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse, Http404
 from two_factor.views.mixins import OTPRequiredMixin
 
@@ -16,9 +17,10 @@ from rawdat.models import (
     Chart,
     CronJob,
     Program,
-    Participant
+    Participant,
+    Bet,
+    StraightBetType
 )
-
 
 class Welcome(OTPRequiredMixin, View):
 
@@ -161,8 +163,23 @@ def make_bet(request):
     print(request.GET.get('bet_types'))
     participant = Participant.objects.get(
         uuid=request.GET.get('participant_id'))
-    for bet_type in [char for char in request.GET.get('bet_types')]:
-        print(bet_type)
+    for bet_name in [char for char in request.GET.get('bet_types')]:
+        type = StraightBetType.objects.get(name=bet_name)
+        try:
+            bet = Bet.objects.get(
+                participant = participant,
+                type = type
+            )
+        except ObjectDoesNotExist:
+            new_bet = Bet(
+                participant = participant,
+                type = type
+            )
+            new_bet.set_fields_to_base()
+            new_bet.save()
+            bet = new_bet
+        bet.amount = request.GET.get('amount')
+        bet.save()
 
     return HttpResponse('haha')
 

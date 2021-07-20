@@ -373,6 +373,25 @@ class Race(CoreModel):
             except:
                 pass
 
+class StraightBetType(CoreModel):
+
+    PLACE = 'P'
+    SHOW = 'S'
+    WIN = 'W'
+
+
+    NAME_CHOICES = (
+        (PLACE, 'Place'),
+        (SHOW, 'Show'),
+        (WIN, 'Win'),
+    )
+
+    name = models.CharField(
+        max_length=16,
+        choices=NAME_CHOICES)
+    cutoff = models.IntegerField()
+
+
 
 
 
@@ -423,7 +442,33 @@ class Participant(CoreModel):
         max_length=256)
 
     def get_purchased_wagers(self):
-        return ("$50 WPS")
+        bet_list = ""
+        amount = None
+        for bet in Bet.objects.filter(participant=self):
+            bet_list += bet.type.name
+            amount = bet.amount
+            # NB WILL CURRRENTLY ASSUME BETS FOR WPS ARE SAME
+        if len(bet_list) > 0:
+            return ("${} {}".format(amount, bet_list))
+
+class Bet(CoreModel):
+    participant =  models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE)
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=2.00)
+    type = models.ForeignKey(
+        StraightBetType,
+        on_delete=models.CASCADE)
+
+    def get_return(self):
+        if self.participant.finish <= self.type.cutoff:
+            return "FIX THIS!"
+        else:
+            return 0
+
 
 
 

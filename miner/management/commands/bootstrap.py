@@ -7,9 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from rawdat.models import (
     Venue,
     WeatherLookup,
-    Grade)
-
-from pww.models import StraightBetType
+    Grade,
+    StraightBetType)
 
 class Command(BaseCommand):
 

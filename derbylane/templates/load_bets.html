@@ -19,7 +19,7 @@
               <td style="border: none; vertical-align: middle" >
                   <span>{{ participant.dog.name }}</span></td>
               <td style="border: none; float-right; padding-right:5px">
-                  {% if user.is_staff %}
+                  {% if user.is_active %}
                     {% if participant.get_purchased_wagers %}
                       <button
                         type="button"
@@ -59,7 +59,7 @@
                       </button>
                     {% endif %}
                   {% else %}
-                    {% if not participant.get_purchased_wagers %}
+                    {% if participant.get_purchased_wagers %}
                       <button
                         type="button"
                         class="btn btn-sm btn-outline-success float-right"
