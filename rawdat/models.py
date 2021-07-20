@@ -422,6 +422,9 @@ class Participant(CoreModel):
         null=True,
         max_length=256)
 
+    def get_purchased_wagers(self):
+        return ("$50 WPS")
+
 
 
 class Straight_Wager(CoreModel):
