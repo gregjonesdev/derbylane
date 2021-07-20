@@ -1,0 +1,114 @@
+/**
+ * Demo Styles
+ */
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-size: 100%;
+  line-height: 1.5;
+  max-width: 640px;
+  margin: 64px auto;
+  text-align: center;
+}
+
+.demo {
+  margin: 64px 0;
+}
+
+/**
+ * Switch Styles
+ */
+
+/* Variables */
+@switch-transition-duration: 0.25s;
+@switch-transition-timing-function: ease;
+
+@switch-label-width: 48px;
+@switch-label-height: 24px;
+
+@switch-rail-width: 100%;
+@switch-rail-height: 100%;
+@switch-rail-background-color: #dedede;
+@switch-rail-border-radius: 9999em;
+@switch-rail-checked-background-color: #89c12d;
+
+@switch-knob-width: 24px;
+@switch-knob-height: 24px;
+@switch-knob-border-radius: 50%;
+@switch-knob-background-color: #fff;
+@switch-knob-box-shadow: 0 0 2px rgba(0, 0, 0, 0.45);
+@switch-knob-checked-left: @switch-knob-width;
+
+/* Switch Container */
+.switch {
+  position: relative;
+  display: inline-block;
+}
+
+/* Hide the checkbox input (only needed for `:checked` property) */
+.switch-input {
+  display: none;
+}
+
+/* Switch */
+.switch-label {
+  display: block;
+  width: @switch-label-width;
+  height: @switch-label-height;
+  text-indent: -150%;
+  clip: rect(0 0 0 0);
+  color: transparent;
+  user-select: none;
+
+  /* Switch Rail & Knob */
+  &:before,
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    cursor: pointer;
+  }
+
+  /* Switch Rail */
+  &:before {
+    width: @switch-rail-width;
+    height: @switch-rail-height;
+    background-color: @switch-rail-background-color;
+    border-radius: @switch-rail-border-radius;
+    transition: background-color @switch-transition-duration @switch-transition-timing-function;
+  }
+
+  /* Switch Knob */
+  &:after {
+    top: 0;
+    left: 0;
+    width: @switch-knob-width;
+    height: @switch-knob-height;
+    border-radius: @switch-knob-border-radius;
+    background-color: @switch-knob-background-color;
+    box-shadow: @switch-knob-box-shadow;
+    transition: left @switch-transition-duration @switch-transition-timing-function;
+  }
+}
+
+/* When input is checked */
+.switch-input:checked + .switch-label {
+  /* Switch Rail */
+  &:before {
+    background-color: @switch-rail-checked-background-color;
+  }
+
+  /* Switch Knob */
+  &:after {
+    left: @switch-knob-checked-left;
+  }
+}

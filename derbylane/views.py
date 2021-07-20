@@ -52,6 +52,16 @@ class ProfileView(OTPRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.context)
 
+
+class VenueView(OTPRequiredMixin, View):
+
+    template_name = 'venues.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        self.context["venues"] = Venue.objects.filter(is_active=True)
+        return render(request, self.template_name, self.context)
+
 class ScanView(OTPRequiredMixin, View):
 
     template_name = 'scans.html'

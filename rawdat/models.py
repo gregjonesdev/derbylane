@@ -24,7 +24,7 @@ class WeatherLookup(CoreModel):
 class Venue(CoreModel):
 
     class Meta:
-        ordering = ['name']
+        ordering = ['-name']
         verbose_name = 'Venue'
 
     name = models.CharField(
@@ -199,7 +199,7 @@ class Program(CoreModel):
         predicted_charts = []
         for chart in self.chart_set.all():
             if chart.has_predictions():
-                predicted_charts.append(chart)        
+                predicted_charts.append(chart)
 
 
 class Chart(CoreModel):
