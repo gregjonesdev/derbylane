@@ -11,15 +11,15 @@
   ],
   "straight_bet_types": [
     {
-      "name": "Win",
+      "name": "W",
       "cutoff": 1,
     },
     {
-      "name": "Place",
+      "name": "P",
       "cutoff": 2,
     },
     {
-      "name": "Show",
+      "name": "S",
       "cutoff": 3,
     },
   ]

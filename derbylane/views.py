@@ -16,6 +16,7 @@ from rawdat.models import (
     Chart,
     CronJob,
     Program,
+    Participant
 )
 
 
@@ -158,6 +159,10 @@ def make_bet(request):
     print(request.GET.get('amount'))
     print(request.GET.get('participant_id'))
     print(request.GET.get('bet_types'))
+    participant = Participant.objects.get(
+        uuid=request.GET.get('participant_id'))
+    for bet_type in [char for char in request.GET.get('bet_types')]:
+        print(bet_type)
 
     return HttpResponse('haha')
 
