@@ -149,6 +149,31 @@ class Bet_Margin(CoreModel):
             null=True
         )
 
+class StraightBetType(CoreModel):
+    name = models.CharField(max_length=16)
+    cutoff = models.IntegerField()
+
+class Bet(CoreModel):
+    participant =  models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE)
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=2.00)
+    type = models.ForeignKey(
+        StraightBetType,
+        on_delete=models.CASCADE)
+
+    def get_return(self):
+        if self.participant.finish <= self.type.cutoff:
+            return 50.0
+        else:
+            return 0
+
+
+
+
 
 class Prediction(CoreModel):
 

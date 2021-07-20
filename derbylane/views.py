@@ -39,6 +39,7 @@ class FrontPage(OTPRequiredMixin, View):
             if chart.has_predictions():
                 charts.append(chart)
         self.context["charts"] = charts
+
         self.context["today"] = today.strftime("%A, %B %-d")
 
         return render(request, self.template_name, self.context)
@@ -168,11 +169,12 @@ def load_bets(request):
     races = chart.race_set.filter(
         grade__value__gt=0)
     # races = chart.race_set.all()
-
+    print(request.user.email)
     return render(
         request,
         'load_bets.html', {
             'races': races,
+            'user': request.user,
             'program': chart.program,
             'venue': chart.program.venue })
 

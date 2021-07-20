@@ -9,6 +9,20 @@
       }
 
   ],
+  "straight_bet_types": [
+    {
+      "name": "Win",
+      "cutoff": 1,
+    },
+    {
+      "name": "Place",
+      "cutoff": 2,
+    },
+    {
+      "name": "Show",
+      "cutoff": 3,
+    },
+  ]
   "venues": [
     {
       "name":"Birmingham",
