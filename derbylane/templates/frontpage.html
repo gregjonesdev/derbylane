@@ -60,6 +60,9 @@
       chart + " Race " +
       number
     )
+    modal.find('#participant_uuid').text(
+      participant
+    )
     $('select option[value=' + bets).prop('selected',true);
   })
   text_content = document.getElementById("json-chart-data").textContent

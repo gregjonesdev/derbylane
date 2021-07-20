@@ -24,7 +24,9 @@
               </select>
 
               <span style="font-size:1.5em; color:black; line-height: 100%; margin:10px 5px 10px 10px; vertical-align:middle">$</span>
+              <span id="participant_uuid" style="display:none"></span>
               <input
+                id="amount_input"
                 type="number"
                 name="amount"
                 min="1"
@@ -33,7 +35,7 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-success">Save</button>
+            <button id="submit_bet" type="button" class="btn btn-success" onclick="make_bet()">Save</button>
           </div>
         </div>
       </div>
@@ -51,12 +53,14 @@
 
 make_bet = () => {
   console.log("make bet")
-    const chart_id = chart_select.value
+  console.log(document.getElementById("amount_input").value)
+  console.log(document.getElementById("bet_types").value)
+  console.log(document.getElementById("participant_uuid").textContent)
     $.ajax({
       url: chart_json_data["bets_url"],
       dataType: "html",
       data: {
-        "chart_id": chart_id,
+        "amount": document.getElementById("amount_input").value,
       },
       success: function(data) {
         $("#bets").html(data)
