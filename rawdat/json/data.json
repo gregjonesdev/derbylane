@@ -12,17 +12,17 @@
   "straight_bet_types": [
     {
       "name": "W",
-      "cutoff": 1,
+      "cutoff": 1
     },
     {
       "name": "P",
-      "cutoff": 2,
+      "cutoff": 2
     },
     {
       "name": "S",
-      "cutoff": 3,
-    },
-  ]
+      "cutoff": 3
+    }
+  ],
   "venues": [
     {
       "name":"Birmingham",

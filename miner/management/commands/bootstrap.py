@@ -26,9 +26,9 @@ class Command(BaseCommand):
 
     def seed_bettypes(self, bettypes):
         for type in bettypes:
-            create_bet_type(type["name"], type["cutoff"])
+            self.create_bet_type(type["name"], type["cutoff"])
 
-    def create_bet_type(name, cutoff):
+    def create_bet_type(self, name, cutoff):
         try:
             type = StraightBetType.objects.get(name=name)
         except ObjectDoesNotExist:

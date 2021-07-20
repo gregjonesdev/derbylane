@@ -150,7 +150,21 @@ class Bet_Margin(CoreModel):
         )
 
 class StraightBetType(CoreModel):
-    name = models.CharField(max_length=16)
+
+    PLACE = 'P'
+    SHOW = 'S'
+    WIN = 'W'
+
+
+    NAME_CHOICES = (
+        (PLACE, 'Place'),
+        (SHOW, 'Show'),
+        (WIN, 'Win'),
+    )
+
+    name = models.CharField(
+        max_length=16,
+        choices=NAME_CHOICES)
     cutoff = models.IntegerField()
 
 class Bet(CoreModel):
