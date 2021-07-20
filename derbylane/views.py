@@ -155,13 +155,12 @@ def load_charts(request):
 
 def make_bet(request):
     print("make bets")
-    # print(request)
-    # return render(
-    #     request,
-    #     'make_bet.html',
-    #     {
-    #         'test': 'hi'
-    #     })
+    print(request.GET.get('amount'))
+    print(request.GET.get('participant_id'))
+    print(request.GET.get('bet_types'))
+
+    return HttpResponse('haha')
+
 
 def load_bets(request):
     chart = Chart.objects.get(

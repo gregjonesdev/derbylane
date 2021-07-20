@@ -35,16 +35,16 @@
           </div>
 
           <div class="modal-footer">
-            <button id="submit_bet" type="button" class="btn btn-success" onclick="make_bet()">Save</button>
+            <button id="submit_bet" type="button" class="btn btn-success" onclick="make_bet()" data-dismiss="modal">Save</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<script id="json-chart-data" type="application/json">
+<script id="json-data" type="application/json">
   {
-    "bets_url": "{% url 'load_bets' %}"
+    "bets_url": "{% url 'make_bet' %}"
   }
 </script>
 
@@ -52,19 +52,24 @@
 
 
 make_bet = () => {
-  console.log("make bet")
-  console.log(document.getElementById("amount_input").value)
-  console.log(document.getElementById("bet_types").value)
-  console.log(document.getElementById("participant_uuid").textContent)
+  // console.log("make bet")
+  // console.log(document.getElementById("amount_input").value)
+  // console.log(document.getElementById("bet_types").value)
+  // console.log(document.getElementById("participant_uuid").textContent)
+  text_content = document.getElementById("json-data").textContent
+  json_data = JSON.parse(text_content)
+  console.log(json_data["bets_url"])
     $.ajax({
-      url: chart_json_data["bets_url"],
+      url: json_data["bets_url"],
       dataType: "html",
       data: {
         "amount": document.getElementById("amount_input").value,
+        "participant_id": document.getElementById("participant_uuid").textContent,
+        "bet_types": document.getElementById("bet_types").value
       },
-      success: function(data) {
-        $("#bets").html(data)
-      }
+      // success: function(data) {
+      //   // $("#bets").html(data)
+      // }
     })
   }
 </script>
