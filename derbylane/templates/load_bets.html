@@ -18,7 +18,7 @@
                 <b>{{ participant.post }}</b></td>
               <td style="border: none; vertical-align: middle" >
                   <span>{{ participant.dog.name }}</span></td>
-              <td style="border: none; float-right; padding-right:5px">
+              <td id="{{ participant.uuid }}-bet" style="border: none; float-right; padding-right:5px">
                   {% if user.is_active %}
                     {% if participant.get_purchased_wagers %}
                       <button
@@ -61,16 +61,12 @@
                   {% else %}
                     {% if participant.get_purchased_wagers %}
                       <button
-                        type="button"
                         class="btn btn-sm btn-outline-success float-right"
                         disabled>
                         <span id="participant_bets" style="font-weight:bold">
                           {{ participant.get_purchased_wagers }}
                         </span>
-
                       </button>
-
-
                     {% else %}
                       <button
                         type="button"
@@ -80,17 +76,9 @@
                         <span id="participant_bets" style="font-weight:bold">
                           {{ participant.prediction.get_bets }}
                         </span>
-
                       </button>
-
-
-
                     {% endif %}
                   {% endif %}
-
-
-
-
               </td>
               </div>
               {% endif %}
