@@ -43,8 +43,15 @@ def predict_single(arff_file, analysis_file):
     print("predict single ()")
     race_key = arff_file.split("/")
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
-    scheduled_data = build_scheduled_data(arff_data)
-    predict(race_key, arff_file, analysis_file, scheduled_data)
+    scheduled_data = build_scheduled_data(arff_file)
+
+
+    race_key = "WD_548_AA"
+
+    model_names = ["libsvm", "J48_C0_75"]
+    # WD_548_AA_J48_C0_75.model
+    # WD_548_AA_libsvm.model
+    predict(race_key, arff_file, analysis_file, scheduled_data, model_names)
     # get prediction tuple
     # save prediction
 
@@ -58,18 +65,28 @@ def build_scheduled_data(arff_data):
 
 
 
-def predict(race_key, arff_data, analysis_file, scheduled_data):
-    filename = "weka_models/{}_libsvm.model".format(race_key)
-    uuid_tuple = get_uuid_tuple(arff_data)
+def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
+    print("predicting: {}".format(race_key))
 
+    # filename = "weka_models/{}_{}.model".format(race_key, model_name)
+    super_object = get_super_object(arff_data)
+    print(super_object)
+    raise SystemExit(0)
     prediction_tuple = None
     try:
+        print("Looking for {}".format(filename))
         model = Classifier(jobject=serialization.read(filename))
-        prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple)
+        prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple, race_key, arff_data)
     except:
         print("No model found: {}".format(race_key))
+
+    print(prediction_tuple[:5])
+    raise SystemExit(0)
     if prediction_tuple:
-        save_libsvm_predictions(prediction_tuple)
+        if model_name == "libsvm":
+            save_libsvm_predictions(prediction_tuple)
+        elif model_name == "J48_C0_75":
+            save_j48_predictions(prediction_tuple)
 
 def remove_uuid(data):
     remove = Filter(
@@ -181,6 +198,7 @@ def new_evaluate_predictions(prediction_tuple, table_name, analysis_file, i):
 
 
 def compare_predictions(arff_file):
+    print("Currently disabled: No rpd()")
     race_key = "SL_583_C"
     print("weka compare")
     print(models_directory)
@@ -189,7 +207,7 @@ def compare_predictions(arff_file):
         ('LibSVM', LATEST),
         ('LibLINEAR', LATEST)])
     analysis_file = open("{}_comparison.txt".format(race_key), "w")
-    uuid_tuple = get_uuid_tuple(arff_file)
+    uuid_tuple = get_super_object(arff_file)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     test_data = loader.load_file(arff_file)
     test_data = remove_uuid(test_data)
@@ -209,7 +227,8 @@ def compare_predictions(arff_file):
         for model_name in os.listdir(models_directory):
             if not model_name in skip_models:
                 if 'SMO' in model_name:
-                    retrieve_prediction_data(model_name, race_key, test_data, uuid_tuple, analysis_file, i)
+                    pass
+                    # retrieve_prediction_data(model_name, race_key, test_data, uuid_tuple, analysis_file, i)
     analysis_file.close()
     jvm.stop()
     # print("\nResults written to {}\n".format(analysis_file.name))
@@ -217,26 +236,26 @@ def compare_predictions(arff_file):
 breakdown_string = "{}\t\t{}\t{}\t\t{}\t\t{}"
 
 
-def retrieve_prediction_data(model_name, race_key, test_data, uuid_tuple, analysis_file, i):
-    # print("RPD")
-    short_name = model_name.replace("{}_model_".format(race_key), "")
-    # print("\n-----------------------------------")
-    table_name = short_name.replace(".model", "")
-    # print("-----------------------------------\n")
-
-    # print(model_name)
-    # print(len(test_data))
-    # print(uuid_tuple[:5])
-    prediction_data = []
-
-    model_location = "{}/{}".format(models_directory, model_name)
-    model = Classifier(jobject=serialization.read(model_location))
-    prediction_tuple = get_prediction_tuple(model, test_data, uuid_tuple)
-    # print(table_name)
-    # for each in prediction_tuple[:50]:
-    #     print(type(each[1]))
-    # print(prediction_tuple)
-    new_evaluate_predictions(prediction_tuple, table_name, analysis_file, i)
+# def retrieve_prediction_data(model_name, race_key, test_data, uuid_tuple, analysis_file, i):
+#     # print("RPD")
+#     short_name = model_name.replace("{}_model_".format(race_key), "")
+#     # print("\n-----------------------------------")
+#     table_name = short_name.replace(".model", "")
+#     # print("-----------------------------------\n")
+#
+#     # print(model_name)
+#     # print(len(test_data))
+#     # print(uuid_tuple[:5])
+#     prediction_data = []
+#
+#     model_location = "{}/{}".format(models_directory, model_name)
+#     model = Classifier(jobject=serialization.read(model_location))
+#     prediction_tuple = get_prediction_tuple(model, test_data, uuid_tuple)
+#     # print(table_name)
+#     # for each in prediction_tuple[:50]:
+#     #     print(type(each[1]))
+#     # print(prediction_tuple)
+#     new_evaluate_predictions(prediction_tuple, table_name, analysis_file, i)
 
 
 
@@ -270,15 +289,45 @@ def get_show_bet_earnings(participant):
     return 0
 
 
-def get_prediction_tuple(cls, data, uuid_tuple):
-    # print("GPT")
-    prediction_tuple = []
-    prediction_list = get_prediction_list(cls, data)
-    i = 0
-    while i < len(uuid_tuple):
-        prediction_tuple.append((uuid_tuple[i][1], prediction_list[i]))
-        i += 1
-    return prediction_tuple
+def new_get_predictions():
+    prediction_obj = {'uuid': []}
+    for model in model_names:
+        pass
+
+
+
+def get_prediction_tuple(cls, data, uuid_tuple, race_key, arff_data, model_names):
+    print("GPT")
+    # raise SystemExit(0)
+    print(arff_data)
+    filename = "weka_models/{}_libsvm.model".format(race_key)
+    super_object = get_super_object(arff_data)
+
+    for model_name in model_names:
+        print(model_name)
+    # try:
+    #     model = Classifier(jobject=serialization.read(filename))
+    #     prediction_tuple = []
+    #     prediction_obj['lib_svm'] = []
+    #     prediction_obj['j48'] = []
+    #     prediction_list = get_prediction_list(cls, data)
+    #     i = 0
+    #     while i < len(uuid_tuple):
+    #         prediction_tuple.append((uuid_tuple[i][1], prediction_list[i]))
+    #         i += 1
+    #     return prediction_tuple
+    #
+    # except:
+    #     print("No model found: {}".format(race_key))
+
+    #
+    #
+    # prediction_list = get_prediction_list(cls, data)
+    # i = 0
+    # while i < len(uuid_tuple):
+    #     prediction_tuple.append((uuid_tuple[i][1], prediction_list[i]))
+    #     i += 1
+    # return prediction_tuple
 
 def get_prediction_list(cls, data):
     prediction_list = []
@@ -291,7 +340,7 @@ def save_libsvm_predictions(prediction_tuple):
         participant = Participant.objects.get(uuid=each[0])
         save_libsvm_prediction(participant, each[1])
 
-def save_libsvm_prediction(participant, pred):
+def save_predictions(participant, libsvm, j48):
     try:
         prediction = Prediction.objects.get(participant=participant)
     except ObjectDoesNotExist:
@@ -301,17 +350,24 @@ def save_libsvm_prediction(participant, pred):
         new_prediction.set_fields_to_base()
         new_prediction.save()
         prediction = new_prediction
-    prediction.lib_svm = pred
+
+    prediction.lib_svm = lib_svm if lib_svm else None
+    prediction.j48 = j48 if j48 else None
     prediction.save()
 
-def get_uuid_tuple(filename):
+
+def get_super_object(filename):
     arff_file = open(filename, "r")
-    uuids = []
+    super_object = {
+        "lines": [],
+        "uuids": []
+    }
     i = 0
     for line in arff_file:
         if len(line) > 100:
             split_line = line.split(",")
             if split_line[19] == "?\n":
-                uuids.append([i, split_line[0]])
+                super_object["lines"].append(i)
+                super_object["uuids"].append(split_line[0])
             i += 1
-    return uuids
+    return super_object
