@@ -42,6 +42,23 @@
                     {% else %}
                       <button
                         type="button"
+                        class="btn btn-sm btn-outline-primary float-right"
+                        style="width:42px"
+                        data-toggle="modal"
+                        data-target="#bet-modal"
+                        data-dog="{{ participant.dog.name }}"
+                        data-post="{{ participant.post }}"
+                        data-venue="{{ participant.race.chart.program.venue.name }}"
+                        data-chart="{{ participant.race.chart.time }}"
+                        data-number="{{ participant.race.number }}"
+                        data-participant="{{ participant.uuid }}"
+                        data-bets="{{ participant.prediction.get_bets }}">
+                        <span id="participant_bets" style="font-weight:bold">
+                          {{ participant.prediction.lib_svm }}
+                        </span>
+                      </button>
+                      <button
+                        type="button"
                         class="btn btn-sm btn-outline-light float-right"
                         style="width:42px"
                         data-toggle="modal"
@@ -54,7 +71,7 @@
                         data-participant="{{ participant.uuid }}"
                         data-bets="{{ participant.prediction.get_bets }}">
                         <span id="participant_bets" style="font-weight:bold">
-                          {{ participant.prediction.get_bets }}
+                          {{ participant.prediction.j48 }}
                         </span>
                       </button>
                     {% endif %}

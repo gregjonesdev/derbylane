@@ -43,51 +43,33 @@ def predict_single(arff_file, analysis_file):
     print("predict single ()")
     race_key = arff_file.split("/")
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
-    predict(race_key, arff_file, analysis_file)
+    scheduled_data = build_scheduled_data(arff_data)
+    predict(race_key, arff_file, analysis_file, scheduled_data)
+    # get prediction tuple
+    # save prediction
 
-
-def save_prediction(participant, pred):
-    try:
-        prediction = Prediction.objects.get(participant=participant)
-    except ObjectDoesNotExist:
-        new_prediction = Prediction(
-            participant = participant
-        )
-        new_prediction.set_fields_to_base()
-        new_prediction.save()
-        prediction = new_prediction
-    prediction.smo_reg = pred
-    prediction.save()
-    print("Race {}\t{}:\t{}".format(
-        participant.race.number,
-        participant.dog.name[:8],
-        pred))
-
-
-def predict(race_key, arff_data, analysis_file):
-    # print("predict()")
-    # filename = "arff/{}.model".format(race_key)
-    # WD_548_C_libsvm.model
-    # race_key = "WD_548_A"
-    filename = "weka_models/{}_libsvm.model".format(race_key)
-    # uuid_list = get_uuid_list(arff_data)
-    uuid_tuple = get_uuid_tuple(arff_data)
-    # print('74')
-    # print(arff_data)
+def build_scheduled_data(arff_data):
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(arff_data)
     scheduled_data = remove_uuid(loaded_data)
     scheduled_data = nominalize(scheduled_data)
     scheduled_data.class_is_last()
+    return scheduled_data
+
+
+
+def predict(race_key, arff_data, analysis_file, scheduled_data):
+    filename = "weka_models/{}_libsvm.model".format(race_key)
+    uuid_tuple = get_uuid_tuple(arff_data)
+
     prediction_tuple = None
-    # print('82')
     try:
         model = Classifier(jobject=serialization.read(filename))
         prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple)
     except:
         print("No model found: {}".format(race_key))
     if prediction_tuple:
-        save_predictions(prediction_tuple)
+        save_libsvm_predictions(prediction_tuple)
 
 def remove_uuid(data):
     remove = Filter(
@@ -304,12 +286,12 @@ def get_prediction_list(cls, data):
         prediction_list.append(cls.classify_instance(inst))
     return prediction_list
 
-def save_predictions(prediction_tuple):
+def save_libsvm_predictions(prediction_tuple):
     for each in prediction_tuple:
         participant = Participant.objects.get(uuid=each[0])
-        save_prediction(participant, each[1])
+        save_libsvm_prediction(participant, each[1])
 
-def save_prediction(participant, pred):
+def save_libsvm_prediction(participant, pred):
     try:
         prediction = Prediction.objects.get(participant=participant)
     except ObjectDoesNotExist:
@@ -321,10 +303,6 @@ def save_prediction(participant, pred):
         prediction = new_prediction
     prediction.lib_svm = pred
     prediction.save()
-    # print("Race {}\t{}:\t{}".format(
-    #     participant.race.number,
-    #     participant.dog.name[:8],
-    #     pred))
 
 def get_uuid_tuple(filename):
     arff_file = open(filename, "r")
