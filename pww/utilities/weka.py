@@ -68,20 +68,24 @@ def build_scheduled_data(arff_data):
 def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
     print("predicting: {}".format(race_key))
 
-    # filename = "weka_models/{}_{}.model".format(race_key, model_name)
     super_object = get_super_object(arff_data)
-    print(super_object)
-    raise SystemExit(0)
-    prediction_tuple = None
-    try:
-        print("Looking for {}".format(filename))
-        model = Classifier(jobject=serialization.read(filename))
-        prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple, race_key, arff_data)
-    except:
-        print("No model found: {}".format(race_key))
 
-    print(prediction_tuple[:5])
-    raise SystemExit(0)
+
+    for model_name in model_names:
+        filename = "weka_models/{}_{}.model".format(race_key, model_name)
+
+        try:
+            print("Looking for {}".format(filename))
+            model = Classifier(jobject=serialization.read(filename))
+            new_get_predictions(
+                model,
+                scheduled_data,
+                super_object["lines"])
+            # prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple, race_key, arff_data)
+        except:
+            print("No model found: {}".format(race_key))
+
+    prediction_tuple = None
     if prediction_tuple:
         if model_name == "libsvm":
             save_libsvm_predictions(prediction_tuple)
@@ -289,22 +293,19 @@ def get_show_bet_earnings(participant):
     return 0
 
 
-def new_get_predictions():
-    prediction_obj = {'uuid': []}
-    for model in model_names:
-        pass
+def new_get_predictions(model, data, line_list):
+    prediction_list = get_prediction_list(model, data)
+    trimmed_list = []
 
 
 
-def get_prediction_tuple(cls, data, uuid_tuple, race_key, arff_data, model_names):
+def get_prediction_tuple(cls, data, uuid_tuple, race_key, arff_data):
     print("GPT")
     # raise SystemExit(0)
     print(arff_data)
     filename = "weka_models/{}_libsvm.model".format(race_key)
     super_object = get_super_object(arff_data)
 
-    for model_name in model_names:
-        print(model_name)
     # try:
     #     model = Classifier(jobject=serialization.read(filename))
     #     prediction_tuple = []
@@ -329,11 +330,29 @@ def get_prediction_tuple(cls, data, uuid_tuple, race_key, arff_data, model_names
     #     i += 1
     # return prediction_tuple
 
+def convert_to_list(weka_dataset):
+    list = []
+    for inst in enumerate(weka_dataset):
+        list.append(inst)
+    return list
+
+
 def get_prediction_list(cls, data):
     prediction_list = []
+    print("GET PRED LIST 336")
+    # # print(data)
+    super_index = [100, 101, 102]
     for index, inst in enumerate(data):
-        prediction_list.append(cls.classify_instance(inst))
-    return prediction_list
+        print(index)
+        print(type(index))
+        if index in super_index:
+            # print("true")
+            prediction_list.append(cls.classify_instance(inst))
+    print(prediction_list)
+    print("8888")
+    raise SystemExit(0)
+
+    # return prediction_list
 
 def save_libsvm_predictions(prediction_tuple):
     for each in prediction_tuple:
