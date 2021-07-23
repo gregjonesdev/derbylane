@@ -38,9 +38,7 @@ def predict_all(arff_list):
     jvm.stop()
 
 def predict_single(arff_file, analysis_file):
-    print(arff_file)
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
-    print(race_key)
     scheduled_data = build_scheduled_data(arff_file)
     model_names = ["libsvm", "J48_C0_75"]
     # if race_key == "WD_548_AA":
@@ -58,8 +56,8 @@ def build_scheduled_data(arff_data):
 def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
     prediction_object = get_prediction_object(arff_data)
     prediction_object['predictions'] = {}
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(prediction_object)
+    # pp = pprint.PrettyPrinter(indent=4)
+    # pp.pprint(prediction_object)
 
     for model_name in model_names:
         model = None
