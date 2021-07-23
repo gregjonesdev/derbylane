@@ -43,8 +43,8 @@ def predict_single(arff_file, analysis_file):
     print(race_key)
     scheduled_data = build_scheduled_data(arff_file)
     model_names = ["libsvm", "J48_C0_75"]
-    if race_key == "WD_548_AA":
-        predict(race_key, arff_file, analysis_file, scheduled_data, model_names)
+    # if race_key == "WD_548_AA":
+    predict(race_key, arff_file, analysis_file, scheduled_data, model_names)
 
 def build_scheduled_data(arff_data):
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
