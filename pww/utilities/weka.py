@@ -32,7 +32,7 @@ def create_model(model_arff, classifier, options, filename):
 def predict_all(arff_list):
     print("predict all")
     print(arff_list)
-    jvm.start(packages=True, max_heap_size="2048m")
+    start_jvm()
     analysis_file = open("prediction_analysis.txt", "w")
     for arff_file in arff_list:
         predict_single(arff_file, analysis_file)
@@ -50,11 +50,7 @@ def predict_single(arff_file, analysis_file):
     race_key = "WD_548_AA"
 
     model_names = ["libsvm", "J48_C0_75"]
-    # WD_548_AA_J48_C0_75.model
-    # WD_548_AA_libsvm.model
     predict(race_key, arff_file, analysis_file, scheduled_data, model_names)
-    # get prediction tuple
-    # save prediction
 
 def build_scheduled_data(arff_data):
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
@@ -210,16 +206,19 @@ def new_evaluate_predictions(prediction_tuple, table_name, analysis_file, i):
         # show_winnings
         # ), file=analysis_file)
 
+def start_jvm():
+    jvm.start(packages=True, max_heap_size="2048m")
+    install_missing_packages([
+        ('LibSVM', LATEST),
+        ('LibLINEAR', LATEST)])
+
 
 def compare_predictions(arff_file):
     print("Currently disabled: No rpd()")
     race_key = "SL_583_C"
     print("weka compare")
     print(models_directory)
-    jvm.start(packages=True, max_heap_size="2048m")
-    install_missing_packages([
-        ('LibSVM', LATEST),
-        ('LibLINEAR', LATEST)])
+    start_jvm()
     analysis_file = open("{}_comparison.txt".format(race_key), "w")
     uuid_tuple = get_prediction_object(arff_file)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")

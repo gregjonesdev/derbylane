@@ -155,11 +155,8 @@ class Bet_Margin(CoreModel):
 class Prediction(CoreModel):
 
     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
-    j48 = models.DecimalField(
-            max_digits=16,
-            decimal_places=8,
-            null=True
-        )
+    j48 = models.IntegerField(
+            null=True)
     smo = models.DecimalField(
             max_digits=16,
             decimal_places=8,
