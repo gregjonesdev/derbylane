@@ -77,13 +77,16 @@ def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
         try:
             print("Looking for {}".format(filename))
             model = Classifier(jobject=serialization.read(filename))
-            new_get_predictions(
+            super_object[model_name] = get_prediction_list(
                 model,
                 scheduled_data,
                 super_object["lines"])
             # prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple, race_key, arff_data)
         except:
             print("No model found: {}".format(race_key))
+
+    print(super_object)
+    raise SystemExit(0)
 
     prediction_tuple = None
     if prediction_tuple:
@@ -293,11 +296,6 @@ def get_show_bet_earnings(participant):
     return 0
 
 
-def new_get_predictions(model, data, line_list):
-    prediction_list = get_prediction_list(model, data)
-    trimmed_list = []
-
-
 
 def get_prediction_tuple(cls, data, uuid_tuple, race_key, arff_data):
     print("GPT")
@@ -337,22 +335,12 @@ def convert_to_list(weka_dataset):
     return list
 
 
-def get_prediction_list(cls, data):
+def get_prediction_list(cls, data, lines):
     prediction_list = []
-    print("GET PRED LIST 336")
-    # # print(data)
-    super_index = [100, 101, 102]
     for index, inst in enumerate(data):
-        print(index)
-        print(type(index))
-        if index in super_index:
-            # print("true")
+        if index in lines:
             prediction_list.append(cls.classify_instance(inst))
-    print(prediction_list)
-    print("8888")
-    raise SystemExit(0)
-
-    # return prediction_list
+    return prediction_list
 
 def save_libsvm_predictions(prediction_tuple):
     for each in prediction_tuple:
