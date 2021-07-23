@@ -70,7 +70,7 @@ def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
     print("predicting: {}".format(race_key))
 
     super_object = get_super_object(arff_data)
-
+    super_object['predictions'] = {}
 
     for model_name in model_names:
         filename = "weka_models/{}_{}.model".format(race_key, model_name)
@@ -78,7 +78,7 @@ def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
         try:
             print("Looking for {}".format(filename))
             model = Classifier(jobject=serialization.read(filename))
-            super_object[model_name] = get_prediction_list(
+            super_object['predictions'][model_name] = get_prediction_list(
                 model,
                 scheduled_data,
                 super_object["lines"])
