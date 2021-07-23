@@ -69,8 +69,8 @@ def build_scheduled_data(arff_data):
 def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
     print("predicting: {}".format(race_key))
 
-    super_object = get_super_object(arff_data)
-    super_object['predictions'] = {}
+    prediction_object = get_prediction_object(arff_data)
+    prediction_object['predictions'] = {}
 
     for model_name in model_names:
         filename = "weka_models/{}_{}.model".format(race_key, model_name)
@@ -78,27 +78,29 @@ def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
         try:
             print("Looking for {}".format(filename))
             model = Classifier(jobject=serialization.read(filename))
-            super_object['predictions'][model_name] = get_prediction_list(
+            prediction_object['predictions'][model_name] = get_prediction_list(
                 model,
                 scheduled_data,
-                super_object["lines"])
+                prediction_object["lines"])
             # prediction_tuple = get_prediction_tuple(model, scheduled_data, uuid_tuple, race_key, arff_data)
         except:
             print("No model found: {}".format(race_key))
 
-    # print(super_object)
+    # print(prediction_object)
 
     pp = pprint.PrettyPrinter(indent=4)
 
-    pp.pprint(super_object)
-    raise SystemExit(0)
+    pp.pprint(prediction_object)
+    save_all_predictions(
+        prediction_object['uuids'],
+        prediction_object['predictions'])
 
-    prediction_tuple = None
-    if prediction_tuple:
-        if model_name == "libsvm":
-            save_libsvm_predictions(prediction_tuple)
-        elif model_name == "J48_C0_75":
-            save_j48_predictions(prediction_tuple)
+
+def save_all_predictions(uuids, predictions):
+    for uuid in uuids:
+        save_predictions(uuid, predictions, uuids.index(uuid))
+
+
 
 def remove_uuid(data):
     remove = Filter(
@@ -219,7 +221,7 @@ def compare_predictions(arff_file):
         ('LibSVM', LATEST),
         ('LibLINEAR', LATEST)])
     analysis_file = open("{}_comparison.txt".format(race_key), "w")
-    uuid_tuple = get_super_object(arff_file)
+    uuid_tuple = get_prediction_object(arff_file)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     test_data = loader.load_file(arff_file)
     test_data = remove_uuid(test_data)
@@ -307,7 +309,7 @@ def get_prediction_tuple(cls, data, uuid_tuple, race_key, arff_data):
     # raise SystemExit(0)
     print(arff_data)
     filename = "weka_models/{}_libsvm.model".format(race_key)
-    super_object = get_super_object(arff_data)
+    prediction_object = get_prediction_object(arff_data)
 
     # try:
     #     model = Classifier(jobject=serialization.read(filename))
@@ -352,25 +354,31 @@ def save_libsvm_predictions(prediction_tuple):
         participant = Participant.objects.get(uuid=each[0])
         save_libsvm_prediction(participant, each[1])
 
-def save_predictions(participant, libsvm, j48):
+def save_predictions(participant_id, predictions, index):
     try:
-        prediction = Prediction.objects.get(participant=participant)
+        pred = Prediction.objects.get(participant_id=participant_id)
     except ObjectDoesNotExist:
-        new_prediction = Prediction(
+        new_pred = Prediction(
             participant = participant
         )
-        new_prediction.set_fields_to_base()
-        new_prediction.save()
-        prediction = new_prediction
+        new_pred.set_fields_to_base()
+        new_pred.save()
+        pred = new_prediction
 
-    prediction.lib_svm = lib_svm if lib_svm else None
-    prediction.j48 = j48 if j48 else None
-    prediction.save()
+    for prediction in predictions:
+        if 'J48' in prediction:
+            print("save j48")
+            print(prediction)
+            pred.j48 = predictions[prediction][index]
+        elif 'libsvm' in prediction:
+            print("save libsvm")
+            pred.lib_svm = predictions[prediction][index]
+    pred.save()
 
 
-def get_super_object(filename):
+def get_prediction_object(filename):
     arff_file = open(filename, "r")
-    super_object = {
+    prediction_object = {
         "lines": [],
         "uuids": []
     }
@@ -379,7 +387,7 @@ def get_super_object(filename):
         if len(line) > 100:
             split_line = line.split(",")
             if split_line[19] == "?\n":
-                super_object["lines"].append(i)
-                super_object["uuids"].append(split_line[0])
+                prediction_object["lines"].append(i)
+                prediction_object["uuids"].append(split_line[0])
             i += 1
-    return super_object
+    return prediction_object
