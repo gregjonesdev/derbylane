@@ -176,6 +176,6 @@ class Prediction(CoreModel):
             )
 
     def get_bets(self):
-
-        if self.lib_svm == 0:
-            return "WP"
+        return True
+        # if self.lib_svm == 0:
+        #     return "WP"
