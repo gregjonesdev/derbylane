@@ -14,6 +14,7 @@ from miner.utilities.constants import (
     models_directory,
     packages_directory)
 import os
+import pprint
 
 def create_model(model_arff, classifier, options, filename):
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
@@ -85,7 +86,11 @@ def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
         except:
             print("No model found: {}".format(race_key))
 
-    print(super_object)
+    # print(super_object)
+
+    pp = pprint.PrettyPrinter(indent=4)
+
+    pp.pprint(super_object)
     raise SystemExit(0)
 
     prediction_tuple = None
