@@ -90,14 +90,51 @@ def evaluate(race_key, arff_data, analysis_file, scheduled_data, model_names):
             model,
             scheduled_data,
             prediction_object["lines"])
-    save_all_predictions(
-        prediction_object['uuids'],
-        prediction_object['predictions'])
+    # save_all_predictions(
+    #     prediction_object['uuids'],
+    #     prediction_object['predictions'])
     # pp = pprint.PrettyPrinter(indent=4)
     # pp.pprint(prediction_object)
+    do_something(prediction_object, model_names)
 
-def build_result_matrix():
+def do_something(prediction_object, model_names):
     print("build result matrix")
+    for title in ["Win", "Place", "Show"]:
+        x_label = model_names[0].upper()
+        y_label = model_names[1].upper()
+        build_matrix_shell(title, x_label, y_label)
+
+eval_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
+
+def build_matrix_shell(title, x_label, y_label):
+    print("\nAverage Return for $2.00 {} Bets:".format(title))
+    print("\t\t\t\t\t{}".format(x_label))
+    print(eval_string.format("\t", " ", 1, 2, 3, 4))
+    print(eval_string.format("\t", 1, get_dollars(0.5), get_dollars(1.6), get_dollars(3), get_dollars(3)))
+    print(eval_string.format(y_label, 2, get_dollars(0.5), get_dollars(1.6), get_dollars(3), get_dollars(3)))
+    print(eval_string.format("\t", 3, get_dollars(0.5), get_dollars(1.6), get_dollars(3), get_dollars(3)))
+    write_matrix_row(4)
+
+
+def write_matrix_row(y_value):
+    x_value_list = get_x_value_list(y_value)
+    print(eval_string.format(
+        "\t",
+        y_value,
+        get_dollars(x_value_list[0]),
+        get_dollars(x_value_list[1]),
+        get_dollars(x_value_list[2]),
+        get_dollars(x_value_list[3])))
+
+def get_dollars(number):
+    return "${}".format(round(number, 2))
+
+def get_x_value_list(y_value):
+    x_value_list = []
+
+
+    x_value_list = [ 0.65, 0.75, .85, 1.2]
+    return x_value_list
 
 
 def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
