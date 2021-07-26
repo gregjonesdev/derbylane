@@ -37,6 +37,24 @@ def predict_all(arff_list):
     analysis_file.close()
     jvm.stop()
 
+
+def evaluate_all(arff_list):
+    start_jvm()
+    analysis_file = open("prediction_analysis.txt", "w")
+    for arff_file in arff_list:
+        evaluate_single(arff_file, analysis_file)
+    analysis_file.close()
+    jvm.stop()
+
+
+def evaluate_single(arff_file, analysis_file):
+    race_key = arff_file.replace("arff/", "").replace(".arff", "")
+    scheduled_data = build_scheduled_data(arff_file)
+    model_names = ["libsvm", "J48_C0_75"]
+    if race_key == "WD_548_AA":
+        evaluate(race_key, arff_file, analysis_file, scheduled_data, model_names)
+
+
 def predict_single(arff_file, analysis_file):
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
     scheduled_data = build_scheduled_data(arff_file)
@@ -51,6 +69,32 @@ def build_scheduled_data(arff_data):
     scheduled_data = nominalize(scheduled_data)
     scheduled_data.class_is_last()
     return scheduled_data
+
+
+def evaluate(race_key, arff_data, analysis_file, scheduled_data, model_names):
+    prediction_object = get_prediction_object(arff_data)
+    prediction_object['predictions'] = {}
+    # pp = pprint.PrettyPrinter(indent=4)
+    # pp.pprint(prediction_object)
+
+    for model_name in model_names:
+        model = None
+        filename = "weka_models/{}_{}.model".format(race_key, model_name)
+
+        try:
+            model = Classifier(jobject=serialization.read(filename))
+        except:
+            print("No model found: {}".format(race_key))
+        if model:
+            prediction_object['predictions'][model_name] = get_prediction_list(
+            model,
+            scheduled_data,
+            prediction_object["lines"])
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(prediction_object)
+
+def build_result_matrix():
+    print("build result matrix")
 
 
 def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
