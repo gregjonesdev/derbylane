@@ -90,8 +90,11 @@ def evaluate(race_key, arff_data, analysis_file, scheduled_data, model_names):
             model,
             scheduled_data,
             prediction_object["lines"])
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(prediction_object)
+    save_all_predictions(
+        prediction_object['uuids'],
+        prediction_object['predictions'])
+    # pp = pprint.PrettyPrinter(indent=4)
+    # pp.pprint(prediction_object)
 
 def build_result_matrix():
     print("build result matrix")
