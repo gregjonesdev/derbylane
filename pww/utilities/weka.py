@@ -44,7 +44,7 @@ def evaluate_all(arff_list, venue_code, grade_name):
     ), "w")
     for arff_file in arff_list:
         predict_single(arff_file)
-        evaluate_single(arff_file, analysis_file)
+        # evaluate_single(arff_file, analysis_file)
     analysis_file.close()
     jvm.stop()
 
