@@ -335,7 +335,7 @@ def nominalize(data):
 #         # ), file=analysis_file)
 #
 def start_jvm():
-    jvm.start(packages=True, max_heap_size="5048m")
+    jvm.start(packages=True, max_heap_size="6048m")
     install_missing_packages([
         ('LibSVM', LATEST),
         ('LibLINEAR', LATEST)])
