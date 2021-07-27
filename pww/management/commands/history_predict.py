@@ -53,8 +53,8 @@ class Command(BaseCommand):
         start_datetime = datetime.datetime.strptime(scheduled_start, "%Y-%m-%d")
         start_date = start_datetime.date()
         arff_list = []
-        # for venue in Venue.objects.filter(code="WD"):
-        for venue in Venue.objects.filter(is_focused=True):
+        for venue in Venue.objects.filter(code="WD"):
+        # for venue in Venue.objects.filter(is_focused=True):
             print("Building metrics for {}".format(venue))
             venue_code = venue.code
             venue_metrics = Metric.objects.filter(
