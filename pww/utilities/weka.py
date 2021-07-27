@@ -31,7 +31,7 @@ def create_model(model_arff, classifier, options, filename):
 
 def predict_all(arff_list):
     start_jvm()
-    analysis_file = open("prediction_analysis.txt", "w")
+    analysis_file = open("prediction_analysis_WD.txt", "w")
     for arff_file in arff_list:
         predict_single(arff_file, analysis_file)
     analysis_file.close()
@@ -40,6 +40,8 @@ def predict_all(arff_list):
 
 def evaluate_all(arff_list):
     start_jvm()
+    analysis_file = open("prediction_analysis_TS.txt", "w")
+
     analysis_file = open("prediction_analysis.txt", "w")
     for arff_file in arff_list:
         evaluate_single(arff_file, analysis_file)
@@ -102,9 +104,13 @@ def evaluate(race_key, arff_data, analysis_file, scheduled_data, model_names):
 def do_something(prediction_object, model_names, race_key, analysis_file):
     x_label = model_names[0].upper()
     y_label = model_names[1].upper()
-    build_matrix_shell("Win", x_label, y_label, get_win_bet_earnings, race_key, analysis_file)
-    build_matrix_shell("Place", x_label, y_label, get_place_bet_earnings, race_key, analysis_file)
-    build_matrix_shell("Show", x_label, y_label, get_show_bet_earnings, race_key, analysis_file)
+
+
+    filtered_predictions = get_filtered_predicitions(prediction_object['uuids'])
+    print(len(filtered_predictions))
+    build_matrix_shell("Win", x_label, y_label, get_win_bet_earnings, race_key, analysis_file, filtered_predictions)
+    build_matrix_shell("Place", x_label, y_label, get_place_bet_earnings, race_key, analysis_file, filtered_predictions)
+    build_matrix_shell("Show", x_label, y_label, get_show_bet_earnings, race_key, analysis_file, filtered_predictions)
 
     print("\n", file=analysis_file)
     print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------", file=analysis_file)
@@ -112,7 +118,7 @@ def do_something(prediction_object, model_names, race_key, analysis_file):
 
 eval_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
-def build_matrix_shell(title, x_label, y_label, get_bet_earnings, race_key, analysis_file):
+def build_matrix_shell(title, x_label, y_label, get_bet_earnings, race_key, analysis_file, filtered_predictions):
 
     print("\nAverage Return for $2.00 {} Bets:".format(title), file=analysis_file)
     print("\t\t\t\t\t\t\t\t\t{}".format(x_label), file=analysis_file)
@@ -120,18 +126,18 @@ def build_matrix_shell(title, x_label, y_label, get_bet_earnings, race_key, anal
     i = 1
     print(eval_string.format("\t", " ", 1, 2, 3, 4, 5, 6, 7, 8), file=analysis_file)
     while i <= prediction_max:
-        write_matrix_row(i, y_label, get_bet_earnings, race_key, analysis_file)
+        write_matrix_row(i, y_label, get_bet_earnings, race_key, analysis_file, filtered_predictions)
 
         i += 1
 
 
 
-def write_matrix_row(y_value, y_label, get_bet_earnings, race_key, analysis_file):
+def write_matrix_row(y_value, y_label, get_bet_earnings, race_key, analysis_file, filtered_predictions):
     if y_value == 4:
         cell_0 = "     {}".format(y_label)
     else:
         cell_0 = "\t"
-    x_value_list = get_x_value_list(y_value, get_bet_earnings, race_key)
+    x_value_list = get_x_value_list(y_value, get_bet_earnings, race_key, filtered_predictions)
     print(eval_string.format(
         cell_0,
         y_value,
@@ -147,7 +153,7 @@ def write_matrix_row(y_value, y_label, get_bet_earnings, race_key, analysis_file
 def get_dollars(number):
     return "${}".format(round(number, 2))
 
-def get_x_value_list(y_value, get_bet_earnings, race_key):
+def get_x_value_list(y_value, get_bet_earnings, race_key, filtered_predictions):
     x_value_list = []
     split_race_key = race_key.split("_") # ['WD', '548', 'AA']
 
@@ -155,15 +161,13 @@ def get_x_value_list(y_value, get_bet_earnings, race_key):
     # y: j48
     i = 1
     while i <=8:
-        filtered_predictions = get_filtered_predicitions(
-            i,
-            y_value,
-            split_race_key[1],
-            split_race_key[2],
-            split_race_key[0])
-        count = filtered_predictions.count()
+        specific_predictions = filtered_predictions.filter(
+            lib_svm=i,
+            j48=y_value
+        )
+        count = specific_predictions.count()
         winnings = 0
-        for prediction in filtered_predictions:
+        for prediction in specific_predictions:
             winnings += get_bet_earnings(prediction.participant)
         if count > 0:
             x_value_list.append(get_dollars(winnings/count))
@@ -188,14 +192,9 @@ def example_calculation():
     # print("{} / {} = {}/bet".format(total, count, get_dollars(win_winnings/count)))
 
 
-def get_filtered_predicitions(lib_svm, j48, distance, grade_name, venue_code):
+def get_filtered_predicitions(participant_uuids):
     return Prediction.objects.filter(
-        participant__race__chart__program__date__range=("2019-01-01", "2021-07-04"),
-        participant__race__distance=distance,
-        participant__race__grade__name=grade_name,
-        participant__race__chart__program__venue__code=venue_code,
-        lib_svm=lib_svm,
-        j48=j48
+        participant__in=participant_uuids
     )
 
 
