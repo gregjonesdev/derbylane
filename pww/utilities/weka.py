@@ -41,8 +41,6 @@ def predict_all(arff_list):
 def evaluate_all(arff_list):
     start_jvm()
     analysis_file = open("prediction_analysis_WD.txt", "w")
-
-    analysis_file = open("prediction_analysis.txt", "w")
     for arff_file in arff_list:
         evaluate_single(arff_file, analysis_file)
     analysis_file.close()
