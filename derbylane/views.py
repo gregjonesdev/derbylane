@@ -119,6 +119,7 @@ class ResultsView(OTPRequiredMixin, View):
         yesterday = today - datetime.timedelta(days=1)
         programs = Program.objects.filter(date=yesterday)
         self.context["day"] = yesterday.strftime("%A")
+        self.context["date"] = yesterday.strftime("%Y-%m-%d")
         self.context["programs"] = programs
         return render(request, self.template_name, self.context)
 

@@ -7,8 +7,8 @@
       <div class="card-header">
         <span style="font-size: 1.5em">{{ day }}</span>
         <!-- <label for="your_name">Select Date: </label> -->
-        <span class="float-right">
-          <input id="your_name" type="date" name="your_name" value="{{ day }}">
+        <span class="float-right" style="height: 25px; padding-top:2px">
+          <input id="your_name" type="date" name="your_name" data-value="{{ date }}">
           <input type="submit" class="btn-outline-primary" value="Disabled" disabled>
         </span>
 
@@ -18,6 +18,9 @@
     </form>
 
 
-
+<script>
+  const input = document.getElementById("your_name")
+  input.value = input.getAttribute("data-value")
+</script>
 
 {% endblock content %}
