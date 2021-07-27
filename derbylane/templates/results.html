@@ -3,12 +3,18 @@
 {% block content %}
 
     <form action="/your-name/" method="post">
-      <span>{{ day }}</span>
+
+      <div class="card-header">
+        <span style="font-size: 1.5em">{{ day }}</span>
         <!-- <label for="your_name">Select Date: </label> -->
-      <span class="float-right">
-        <input id="your_name" type="date" name="your_name" value="{{ day }}">
-        <input type="submit" class="btn-outline-primary" value="OK">
-      </span>
+        <span class="float-right">
+          <input id="your_name" type="date" name="your_name" value="{{ day }}">
+          <input type="submit" class="btn-outline-primary" value="Disabled" disabled>
+        </span>
+
+      </div>
+      <div class="card-body">
+      </div>
     </form>
 
 
