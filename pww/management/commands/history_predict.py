@@ -20,6 +20,10 @@ from miner.utilities.constants import (
 
 class Command(BaseCommand):
 
+    def add_arguments(self, parser):
+        parser.add_argument('--venue', type=str)
+        parser.add_argument('--grade', type=str)
+
     def create_arff(self, filename, metrics, start_date):
         arff_file = open(filename, "w")
         arff_file.write("@relation Metric\n")
@@ -53,10 +57,10 @@ class Command(BaseCommand):
         start_datetime = datetime.datetime.strptime(scheduled_start, "%Y-%m-%d")
         start_date = start_datetime.date()
         arff_list = []
-        venue = Venue.objects.get(code="WD")
+        venue_code = sys.argv[3]
+        grade_name = sys.argv[5]
         # for venue in Venue.objects.filter(is_focused=True):
         print("Building metrics for {}".format(venue))
-        venue_code = venue.code
         venue_metrics = Metric.objects.filter(
             participant__race__chart__program__venue=venue)
         for distance in focused_distances[venue_code]:
@@ -64,7 +68,6 @@ class Command(BaseCommand):
             distance_metrics = venue_metrics.filter(
                 participant__race__distance=distance,
             )
-            grade_name = "AA"
             print("Grade: {}".format(grade_name))
             graded_metrics = distance_metrics.filter(
                 participant__race__grade__name=grade_name,
@@ -78,4 +81,4 @@ class Command(BaseCommand):
                         "arff/{}.arff".format(race_key),
                         graded_metrics, start_date))
         # print(arff_list)
-        evaluate_all(arff_list)
+        evaluate_all(arff_list, venue_code, grade_name)

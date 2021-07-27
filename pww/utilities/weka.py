@@ -38,9 +38,12 @@ def predict_all(arff_list):
     jvm.stop()
 
 
-def evaluate_all(arff_list):
+def evaluate_all(arff_list, venue_code, grade_name):
     start_jvm()
-    analysis_file = open("prediction_analysis_WD.txt", "w")
+    analysis_file = open("prediction_analysis_{}_{}.txt".format(
+        venue_code,
+        grade_name
+    ), "w")
     for arff_file in arff_list:
         evaluate_single(arff_file, analysis_file)
     analysis_file.close()
