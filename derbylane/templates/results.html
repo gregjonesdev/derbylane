@@ -1,26 +1,17 @@
 {% extends '_base.html' %}
 
 {% block content %}
-Results
-{{ yesterday }}
-<table class=table table-sm">
-{% for program in programs %}
-  {% for chart in program.chart_set.all %}
-    {% for race in chart.race_set.all %}
-      <tr>
-        <th>
-          {{ program.venue.code }} {{ chart.get_time_display }} {{ race.number }}
-        </th>
-        <td>
-          <ul>
-            {% for participant in race.participant_set.all %}
-              <li>{{ participant.post }} - {{ participant.dog.name }}</li>
-            {% endfor%}
-          </ul>
-        </td>
-      </tr>
-    {% endfor %}
-  {% endfor %}
-{% endfor %}
-</table>
+
+    <form action="/your-name/" method="post">
+      <span>{{ day }}</span>
+        <!-- <label for="your_name">Select Date: </label> -->
+      <span class="float-right">
+        <input id="your_name" type="date" name="your_name" value="{{ day }}">
+        <input type="submit" class="btn-outline-primary" value="OK">
+      </span>
+    </form>
+
+
+
+
 {% endblock content %}

@@ -118,7 +118,7 @@ class ResultsView(OTPRequiredMixin, View):
         today = localdate()
         yesterday = today - datetime.timedelta(days=1)
         programs = Program.objects.filter(date=yesterday)
-        self.context["yesterday"] = yesterday
+        self.context["day"] = yesterday
         self.context["programs"] = programs
         return render(request, self.template_name, self.context)
 

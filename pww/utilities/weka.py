@@ -33,7 +33,6 @@ def predict_all(arff_list):
     start_jvm()
     for arff_file in arff_list:
         predict_single(arff_file)
-    analysis_file.close()
     jvm.stop()
 
 
