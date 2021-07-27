@@ -23,7 +23,16 @@
           </tr>
           {% if bet_charts.length > 0 %}
             {% for chart in bet_charts %}
-              {{ chart.get_time_display }}
+              <tr>
+                <td>{{ chart.get_time_display }}</td>
+                <td>
+                  {% for race.chart.race_set %}
+                    {% if race.has_bets %}
+                        {{ race.number }}<br>
+                    {% endif %}
+                  {% endfor %}
+                </td>
+              </tr>
             {% endfor %}
           {% else %}
             <tr><td colspan="4">No bets placed today</td></tr>

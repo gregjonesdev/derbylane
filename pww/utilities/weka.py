@@ -123,8 +123,8 @@ def build_matrix_shell(title, x_label, y_label, get_bet_earnings, race_key, anal
     print("\nAverage Return for $2.00 {} Bets:".format(title), file=analysis_file)
     print("\t\t\t\t\t\t\t\t\t{}".format(x_label), file=analysis_file)
     prediction_max = 8
-    i = 1
-    print(eval_string.format("\t", " ", 1, 2, 3, 4, 5, 6, 7, 8), file=analysis_file)
+    i = 0
+    print(eval_string.format("\t", " ", 0, 1, 2, 3, 4, 5, 6, 7), file=analysis_file)
     while i <= prediction_max:
         write_matrix_row(i, y_label, get_bet_earnings, race_key, analysis_file, filtered_predictions)
 
@@ -159,8 +159,8 @@ def get_x_value_list(y_value, get_bet_earnings, race_key, filtered_predictions):
 
     # x: libsvm
     # y: j48
-    i = 1
-    while i <=8:
+    i = 0
+    while i <=7:
         specific_predictions = filtered_predictions.filter(
             lib_svm=i,
             j48=y_value
