@@ -272,6 +272,11 @@ class Chart(CoreModel):
             if race.has_predictions():
                 return True
 
+    def has_bets(self):
+        for race in self.race_set.all():
+            if race.has_bets():
+                return True
+
 class Grade(CoreModel):
 
     name = models.CharField(
@@ -369,6 +374,15 @@ class Race(CoreModel):
         for participant in self.participant_set.all():
             try:
                 if participant.prediction.get_bets():
+                    return True
+            except:
+                pass
+
+    def has_bets(self):
+
+        for participant in self.participant_set.all():
+            try:
+                if participant.bet():
                     return True
             except:
                 pass

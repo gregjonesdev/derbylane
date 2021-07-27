@@ -7,7 +7,7 @@
       <div class="card-header" style="margin-bottom: 15px">
         <span style="font-size: 1.5em">{{ day }}</span>
         <!-- <label for="your_name">Select Date: </label> -->
-        <span class="float-right" style="height: 25px; padding-top:2px">
+        <span class="float-right" style="height: 25px; padding-top:3px">
           <input id="your_name" type="date" name="your_name" data-value="{{ date }}">
           <input type="submit" class="btn-outline-primary" value="Disabled" disabled>
         </span>
@@ -15,11 +15,19 @@
       </div>
 
         <table class="table table-sm">
+          <tr>
           <th>Participant</th>
           <th>Bets</th>
           <th>Finish</th>
           <th>Winnings</th>
-          
+          </tr>
+          {% if bet_charts.length > 0 %}
+            {% for chart in bet_charts %}
+              {{ chart.get_time_display }}
+            {% endfor %}
+          {% else %}
+            <tr><td colspan="4">No bets placed today</td></tr>
+          {% endif %}
         </table>
     </form>
 
