@@ -61,7 +61,7 @@ class Command(BaseCommand):
         grade_name = sys.argv[5]
         # for venue in Venue.objects.filter(is_focused=True):
         venue_metrics = Metric.objects.filter(
-            participant__race__chart__program__venue=venue)
+            participant__race__chart__program__venue__code=venue_code)
         for distance in focused_distances[venue_code]:
             print("Distance: {}".format(distance))
             distance_metrics = venue_metrics.filter(
