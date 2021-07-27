@@ -108,6 +108,9 @@ def do_something(prediction_object, model_names):
 eval_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
 def build_matrix_shell(title, x_label, y_label):
+    example_calculation()
+    raise SystemExit(0)
+
     print("\nAverage Return for $2.00 {} Bets:".format(title))
     print("\t\t\t\t\t\t\t\t\t{}".format(x_label))
     prediction_max = 8
@@ -117,7 +120,6 @@ def build_matrix_shell(title, x_label, y_label):
         write_matrix_row(i, y_label)
 
         i += 1
-    raise SystemExit(0)
     # print(eval_string.format("\t", 1, get_dollars(0.5), get_dollars(1.6), get_dollars(3), get_dollars(3)))
     # print(eval_string.format(y_label, 2, get_dollars(0.5), get_dollars(1.6), get_dollars(3), get_dollars(3)))
     # print(eval_string.format("\t", 3, get_dollars(0.5), get_dollars(1.6), get_dollars(3), get_dollars(3)))
@@ -125,7 +127,7 @@ def build_matrix_shell(title, x_label, y_label):
 
 def write_matrix_row(y_value, y_label):
     if y_value == 4:
-        cell_0 = y_label
+        cell_0 = "     {}".format(y_label)
     else:
         cell_0 = "\t"
     x_value_list = get_x_value_list(y_value)
@@ -150,6 +152,17 @@ def get_x_value_list(y_value):
 
     x_value_list = [ 0.65, 0.75, 0.85, 1.2, 0.65, 0.75, 0.85, 1.2]
     return x_value_list
+
+def example_calculation():
+    filtered_predictions = get_filtered_predicitions(1, 1)
+    count = filtered_predictions.count()
+    win_winnings = 0
+    for prediction in filtered_predictions:
+        win_winnings += get_win_bet_earnings(prediction.participant)
+    total = get_dollars(win_winnings)
+    print("Total win bet earnings: {}".format(total))
+    print("{} / {} bets = {} / bet".format(total, count, get_dollars(win_winnings/count)))
+
 
 def get_filtered_predicitions(lib_svm, j48):
     return Prediction.objects.filter(
@@ -364,13 +377,13 @@ def start_jvm():
 #
 #
 #
-# def get_win_bet_earnings(participant):
-#     try:
-#         if participant.final == 1:
-#             return participant.straight_wager.win
-#     except:
-#         pass
-#     return 0
+def get_win_bet_earnings(participant):
+    try:
+        if participant.final == 1:
+            return participant.straight_wager.win
+    except:
+        pass
+    return 0
 #
 # def get_place_bet_earnings(participant):
 #     try:
