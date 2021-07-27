@@ -94,39 +94,40 @@ def evaluate(race_key, arff_data, analysis_file, scheduled_data, model_names):
     #     prediction_object['predictions'])
     # pp = pprint.PrettyPrinter(indent=4)
     # pp.pprint(prediction_object)
-    print("\n")
-    print(race_key)
-    print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-    do_something(prediction_object, model_names, race_key)
+    analysis_file = "super.txt"
+    print("\n", file=analysis_file)
+    print(race_key, file=analysis_file)
+    print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------", file=analysis_file)
+    do_something(prediction_object, model_names, race_key, analysis_file)
 
-def do_something(prediction_object, model_names, race_key):
+def do_something(prediction_object, model_names, race_key, analysis_file):
     x_label = model_names[0].upper()
     y_label = model_names[1].upper()
-    build_matrix_shell("Win", x_label, y_label, get_win_bet_earnings, race_key)
-    build_matrix_shell("Place", x_label, y_label, get_place_bet_earnings, race_key)
-    build_matrix_shell("Show", x_label, y_label, get_show_bet_earnings, race_key)
+    build_matrix_shell("Win", x_label, y_label, get_win_bet_earnings, race_key, analysis_file)
+    build_matrix_shell("Place", x_label, y_label, get_place_bet_earnings, race_key, analysis_file)
+    build_matrix_shell("Show", x_label, y_label, get_show_bet_earnings, race_key, analysis_file)
 
-    print("\n")
-    print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+    print("\n", file=analysis_file)
+    print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------", file=analysis_file)
     example_calculation()
 
 eval_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
-def build_matrix_shell(title, x_label, y_label, get_bet_earnings, race_key):
+def build_matrix_shell(title, x_label, y_label, get_bet_earnings, race_key, analysis_file):
 
-    print("\nAverage Return for $2.00 {} Bets:".format(title))
-    print("\t\t\t\t\t\t\t\t\t{}".format(x_label))
+    print("\nAverage Return for $2.00 {} Bets:".format(title), file=analysis_file)
+    print("\t\t\t\t\t\t\t\t\t{}".format(x_label), file=analysis_file)
     prediction_max = 8
     i = 1
-    print(eval_string.format("\t", " ", 1, 2, 3, 4, 5, 6, 7, 8))
+    print(eval_string.format("\t", " ", 1, 2, 3, 4, 5, 6, 7, 8), file=analysis_file)
     while i <= prediction_max:
-        write_matrix_row(i, y_label, get_bet_earnings, race_key)
+        write_matrix_row(i, y_label, get_bet_earnings, race_key, analysis_file)
 
         i += 1
 
 
 
-def write_matrix_row(y_value, y_label, get_bet_earnings, race_key):
+def write_matrix_row(y_value, y_label, get_bet_earnings, race_key, analysis_file):
     if y_value == 4:
         cell_0 = "     {}".format(y_label)
     else:
@@ -142,7 +143,7 @@ def write_matrix_row(y_value, y_label, get_bet_earnings, race_key):
         x_value_list[4],
         x_value_list[5],
         x_value_list[6],
-        x_value_list[7]))
+        x_value_list[7]), file=analysis_file)
 
 def get_dollars(number):
     return "${}".format(round(number, 2))
