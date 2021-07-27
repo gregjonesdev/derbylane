@@ -31,9 +31,8 @@ def create_model(model_arff, classifier, options, filename):
 
 def predict_all(arff_list):
     start_jvm()
-    analysis_file = open("prediction_analysis_WD.txt", "w")
     for arff_file in arff_list:
-        predict_single(arff_file, analysis_file)
+        predict_single(arff_file)
     analysis_file.close()
     jvm.stop()
 
@@ -45,6 +44,7 @@ def evaluate_all(arff_list, venue_code, grade_name):
         grade_name
     ), "w")
     for arff_file in arff_list:
+        predict_single(arff_file)
         evaluate_single(arff_file, analysis_file)
     analysis_file.close()
     jvm.stop()
@@ -58,12 +58,12 @@ def evaluate_single(arff_file, analysis_file):
     evaluate(race_key, arff_file, analysis_file, scheduled_data, model_names)
 
 
-def predict_single(arff_file, analysis_file):
+def predict_single(arff_file):
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
     scheduled_data = build_scheduled_data(arff_file)
     model_names = ["libsvm", "J48_C0_75"]
-    if race_key == "WD_548_AA":
-        predict(race_key, arff_file, analysis_file, scheduled_data, model_names)
+    # if race_key == "WD_548_AA":
+    predict(race_key, arff_file, scheduled_data, model_names)
 
 def build_scheduled_data(arff_data):
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
@@ -199,7 +199,7 @@ def get_filtered_predicitions(participant_uuids):
     )
 
 
-def predict(race_key, arff_data, analysis_file, scheduled_data, model_names):
+def predict(race_key, arff_data, scheduled_data, model_names):
     prediction_object = get_prediction_object(arff_data)
     prediction_object['predictions'] = {}
     # pp = pprint.PrettyPrinter(indent=4)

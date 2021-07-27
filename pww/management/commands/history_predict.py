@@ -79,5 +79,4 @@ class Command(BaseCommand):
                     arff_list.append(self.create_arff(
                         "arff/{}.arff".format(race_key),
                         graded_metrics, start_date))
-        # print(arff_list)
         evaluate_all(arff_list, venue_code, grade_name)
