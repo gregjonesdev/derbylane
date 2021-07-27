@@ -53,29 +53,29 @@ class Command(BaseCommand):
         start_datetime = datetime.datetime.strptime(scheduled_start, "%Y-%m-%d")
         start_date = start_datetime.date()
         arff_list = []
-        for venue in Venue.objects.filter(code="WD"):
+        venue = Venue.objects.get(code="WD")
         # for venue in Venue.objects.filter(is_focused=True):
-            print("Building metrics for {}".format(venue))
-            venue_code = venue.code
-            venue_metrics = Metric.objects.filter(
-                participant__race__chart__program__venue=venue)
-            for distance in focused_distances[venue_code]:
-                print("Distance: {}".format(distance))
-                distance_metrics = venue_metrics.filter(
-                    participant__race__distance=distance,
-                )
-                for grade_name in focused_grades[venue_code]:
-                    print("Grade: {}".format(grade_name))
-                    graded_metrics = distance_metrics.filter(
-                        participant__race__grade__name=grade_name,
-                    )
-                    if len(graded_metrics) > 0:
-                        scheduled_metrics = graded_metrics.filter(
-                        participant__race__chart__program__date__gte=start_date)
-                        if len(scheduled_metrics) > 0:
-                            race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
-                            arff_list.append(self.create_arff(
-                                "arff/{}.arff".format(race_key),
-                                graded_metrics, start_date))
+        print("Building metrics for {}".format(venue))
+        venue_code = venue.code
+        venue_metrics = Metric.objects.filter(
+            participant__race__chart__program__venue=venue)
+        for distance in focused_distances[venue_code]:
+            print("Distance: {}".format(distance))
+            distance_metrics = venue_metrics.filter(
+                participant__race__distance=distance,
+            )
+            grade_name = "AA"
+            print("Grade: {}".format(grade_name))
+            graded_metrics = distance_metrics.filter(
+                participant__race__grade__name=grade_name,
+            )
+            if len(graded_metrics) > 0:
+                scheduled_metrics = graded_metrics.filter(
+                participant__race__chart__program__date__gte=start_date)
+                if len(scheduled_metrics) > 0:
+                    race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
+                    arff_list.append(self.create_arff(
+                        "arff/{}.arff".format(race_key),
+                        graded_metrics, start_date))
         # print(arff_list)
         evaluate_all(arff_list)
