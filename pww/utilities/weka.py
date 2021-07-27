@@ -168,7 +168,7 @@ def get_x_value_list(y_value, get_bet_earnings, race_key, filtered_predictions):
         for prediction in specific_predictions:
             winnings += get_bet_earnings(prediction.participant)
         if count > 0:
-            x_value_list.append(get_dollars(winnings/count))
+            x_value_list.append("{} ({})".format(get_dollars(winnings/count)), count)
         else:
             x_value_list.append("----")
         i += 1

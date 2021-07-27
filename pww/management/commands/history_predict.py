@@ -64,7 +64,7 @@ class Command(BaseCommand):
             distance_metrics = venue_metrics.filter(
                 participant__race__distance=distance,
             )
-            grade_name = "A"
+            grade_name = "AA"
             print("Grade: {}".format(grade_name))
             graded_metrics = distance_metrics.filter(
                 participant__race__grade__name=grade_name,
