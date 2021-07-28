@@ -121,7 +121,8 @@ class ResultsView(OTPRequiredMixin, View):
         except:
             target_date = localdate()
         bets = Bet.objects.filter(
-            participant__race__chart__program__date=target_date)
+            participant__race__chart__program__date=target_date).order_by(
+                'participant__race__chart', 'participant__race')
         self.context["bets"] = bets
         self.context["day"] = target_date.strftime("%A")
         self.context["date"] = target_date.strftime("%Y-%m-%d")
