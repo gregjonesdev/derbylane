@@ -66,6 +66,10 @@ make_bet = () => {
         "participant_id": participant_id,
         "bet_types": document.getElementById("bet_types").value
       },
+      error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status);
+        alert(thrownError);
+      },
       success: function(data) {
         console.log(data)
         // console.log(typeof data)

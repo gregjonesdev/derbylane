@@ -167,6 +167,8 @@ def make_bet(request):
     print(request.GET.get('amount'))
     print(request.GET.get('participant_id'))
     print(request.GET.get('bet_types'))
+    scan = CronJob(type="ajax")
+    scan.save()
     # participant = Participant.objects.get(
     #     uuid=request.GET.get('participant_id'))
     # for bet_name in [char for char in request.GET.get('bet_types')]:
