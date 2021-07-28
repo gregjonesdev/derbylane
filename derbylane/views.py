@@ -116,15 +116,15 @@ class ResultsView(OTPRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         today = localdate()
-        yesterday = today - datetime.timedelta(days=1)
-        programs = Program.objects.filter(date=yesterday)
+        # yesterday = today - datetime.timedelta(days=1)
+        programs = Program.objects.filter(date=today)
         bet_charts = []
-        for chart in Chart.objects.filter(program__date=yesterday):
+        for chart in Chart.objects.filter(program__date=today):
             if chart.has_bets():
                 bet_charts.append(chart)
-        self.context["bet_charts"] = bet_charts        
-        self.context["day"] = yesterday.strftime("%A")
-        self.context["date"] = yesterday.strftime("%Y-%m-%d")
+        self.context["bet_charts"] = bet_charts
+        self.context["day"] = today.strftime("%A")
+        self.context["date"] = today.strftime("%Y-%m-%d")
         self.context["programs"] = programs
         return render(request, self.template_name, self.context)
 
