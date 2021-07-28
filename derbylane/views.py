@@ -164,9 +164,9 @@ def load_charts(request):
 
 def make_bet(request):
     print("make bets")
-    print(request.GET.get('amount'))
-    print(request.GET.get('participant_id'))
-    print(request.GET.get('bet_types'))
+    # print(request.GET.get('amount'))
+    # print(request.GET.get('participant_id'))
+    # print(request.GET.get('bet_types'))
     scan = CronJob(type="ajax")
     scan.save()
     # participant = Participant.objects.get(
