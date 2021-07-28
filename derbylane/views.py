@@ -185,11 +185,16 @@ def make_bet(request):
             new_bet.set_fields_to_base()
             new_bet.save()
             bet = new_bet
-        bet.amount = request.GET.get('amount')
-        bet.save()
+        amount = request.GET.get('amount')
+        if int(amount) == 0:
+            bet.delete()
+        else:
+            bet.amount = amount
+            bet.save()
 
     return JsonResponse({
         'bets': participant.get_purchased_wagers(),
+        'none': participant.prediction.get_bets(),
         'enabled': request.user.is_staff})
 
 

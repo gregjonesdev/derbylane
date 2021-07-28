@@ -67,12 +67,18 @@ make_bet = () => {
       },
       success: function(data) {
         button = document.createElement("button")
-        button.setAttribute("class", "btn btn-sm btn-outline-success float-right")
         span = document.createElement("span")
         span.setAttribute("style", "font-weight:bold")
-        span.textContent= data["bets"]
         button.appendChild(span)
         button.disabled = !data["enabled"]
+        if (data["bets"]) {
+          button.setAttribute("class", "btn btn-sm btn-outline-success float-right")
+          span.textContent= data["bets"]
+        } else {
+          button.setAttribute("class", "btn btn-sm btn-outline-light float-right")
+          span.textContent= data["none"]
+        }
+
       $("#" + participant_id + "-bet").html(button);
       }
     })
