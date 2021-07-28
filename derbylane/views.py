@@ -189,11 +189,8 @@ def make_bet(request):
         bet.save()
 
     return JsonResponse({
-        'bets': participant.dog.name,
-        'enabled': request.user.is_active})
-    # return JsonResponse({
-    #     'bets': request.GET.get('bet_types'),
-    #     'enabled': request.user.is_active})
+        'bets': participant.get_purchased_wagers(),
+        'enabled': request.user.is_staff})
 
 
 def load_bets(request):

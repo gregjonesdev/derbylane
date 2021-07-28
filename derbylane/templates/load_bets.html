@@ -19,7 +19,7 @@
               <td style="border: none; vertical-align: middle" >
                   <span>{{ participant.dog.name }}</span></td>
               <td id="{{ participant.uuid }}-bet" style="border: none; float-right; padding-right:5px">
-                  {% if user.is_active %}
+                  {% if user.is_staff %}
                     {% if participant.get_purchased_wagers %}
                       <button
                         type="button"
