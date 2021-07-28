@@ -72,7 +72,7 @@ make_bet = () => {
         span.setAttribute("style", "font-weight:bold")
         span.textContent= data["bets"]
         button.appendChild(span)
-        button.disabled = data["enabled"]
+        button.disabled = !data["enabled"]
       $("#" + participant_id + "-bet").html(button);
       }
     })
