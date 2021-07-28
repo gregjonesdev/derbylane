@@ -170,30 +170,30 @@ def make_bet(request):
 
     participant = Participant.objects.get(
         uuid=request.GET.get('participant_id'))
-    # for bet_name in [char for char in request.GET.get('bet_types')]:
-    #     type = StraightBetType.objects.get(name=bet_name)
-    #     try:
-    #         bet = Bet.objects.get(
-    #             participant = participant,
-    #             type = type
-    #         )
-    #     except ObjectDoesNotExist:
-    #         new_bet = Bet(
-    #             participant = participant,
-    #             type = type
-    #         )
-    #         new_bet.set_fields_to_base()
-    #         new_bet.save()
-    #         bet = new_bet
-    #     bet.amount = request.GET.get('amount')
-    #     bet.save()
+    for bet_name in [char for char in request.GET.get('bet_types')]:
+        type = StraightBetType.objects.get(name=bet_name)
+        try:
+            bet = Bet.objects.get(
+                participant = participant,
+                type = type
+            )
+        except ObjectDoesNotExist:
+            new_bet = Bet(
+                participant = participant,
+                type = type
+            )
+            new_bet.set_fields_to_base()
+            new_bet.save()
+            bet = new_bet
+        bet.amount = request.GET.get('amount')
+        bet.save()
 
-    # return JsonResponse({
-    #     'bets': participant.get_purchased_wagers(),
-    #     'enabled': request.user.is_active})
     return JsonResponse({
-        'bets': request.GET.get('amount'),
+        'bets': participant.get_purchased_wagers(),
         'enabled': request.user.is_active})
+    # return JsonResponse({
+    #     'bets': request.GET.get('bet_types'),
+    #     'enabled': request.user.is_active})
 
 
 def load_bets(request):
