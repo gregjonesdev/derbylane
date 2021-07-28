@@ -12,7 +12,7 @@
         </div>
         <div class="modal-body">
           <span class="modal-subtitle" style="color: black; font-size: 1.25em"></span>
-
+          <form action="{% url 'make_bet' %}" method="post">
           <div style="display: flex; flex-flow: row nowrap; margin-top:10px">
               <select name="bet_type" id="bet_types" style="height:34px; font-size:1.2em">
                 <option value="W">WIN</option>
@@ -38,6 +38,7 @@
           <div class="modal-footer">
             <button id="submit_bet" type="button" class="btn btn-success" onclick="make_bet()" data-dismiss="modal">Save</button>
           </div>
+          </form>
         </div>
       </div>
     </div>
@@ -62,9 +63,10 @@ make_bet = () => {
       url: json_data["bets_url"],
       dataType: "json",
       data: {
-        "amount": document.getElementById("amount_input").value,
-        "participant_id": participant_id,
-        "bet_types": document.getElementById("bet_types").value
+        "hi": "hey"
+        // "amount": document.getElementById("amount_input").value,
+        // "participant_id": participant_id,
+        // "bet_types": document.getElementById("bet_types").value
       },
       error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status);

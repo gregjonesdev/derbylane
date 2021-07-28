@@ -168,6 +168,7 @@ def make_bet(request):
     # print(request.GET.get('participant_id'))
     # print(request.GET.get('bet_types'))
     scan = CronJob(type="ajax")
+    scan.set_fields_to_base()
     scan.save()
     # participant = Participant.objects.get(
     #     uuid=request.GET.get('participant_id'))
