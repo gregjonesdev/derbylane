@@ -58,30 +58,29 @@ make_bet = () => {
   json_data = JSON.parse(text_content)
     console.log("try it");
     console.log(json_data["bets_url"]);
-    // $.ajax({
-    //   url: json_data["bets_url"],
-    //   dataType: "json",
-    //   data: {
-    //     "amount": document.getElementById("amount_input").value,
-    //     "participant_id": participant_id,
-    //     "bet_types": document.getElementById("bet_types").value
-    //   },
-    //   success: function(data) {
-    //     alert("success")
-    //     console.log(data)
-    //     // console.log(typeof data)
-    //     // console.log(data["enabled"])
-    //     // console.log(data["bets"])
-    //     button = document.createElement("button")
-    //     button.setAttribute("class", "btn btn-sm btn-outline-success float-right")
-    //     span = document.createElement("span")
-    //     span.setAttribute("style", "font-weight:bold")
-    //     span.textContent= data["bets"]
-    //     button.appendChild(span)
-    //     button.disabled = data["enabled"]
-    //     // console.log(span)
-    //   $("#" + participant_id + "-bet").html(button);
-    //   }
-    // })
+    $.ajax({
+      url: json_data["bets_url"],
+      dataType: "json",
+      data: {
+        "amount": document.getElementById("amount_input").value,
+        "participant_id": participant_id,
+        "bet_types": document.getElementById("bet_types").value
+      },
+      success: function(data) {
+        console.log(data)
+        // console.log(typeof data)
+        // console.log(data["enabled"])
+        // console.log(data["bets"])
+        button = document.createElement("button")
+        button.setAttribute("class", "btn btn-sm btn-outline-success float-right")
+        span = document.createElement("span")
+        span.setAttribute("style", "font-weight:bold")
+        span.textContent= data["bets"]
+        button.appendChild(span)
+        button.disabled = data["enabled"]
+        // console.log(span)
+      $("#" + participant_id + "-bet").html(button);
+      }
+    })
   }
 </script>
