@@ -56,6 +56,8 @@ make_bet = () => {
   text_content = document.getElementById("json-data").textContent
   participant_id = document.getElementById("participant_uuid").textContent
   json_data = JSON.parse(text_content)
+    console.log("try it");
+    console.log(json_data["bets_url"]);
     $.ajax({
       url: json_data["bets_url"],
       dataType: "json",
