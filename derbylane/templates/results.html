@@ -26,7 +26,7 @@
               <tr>
                 <td>{{ chart.get_time_display }}</td>
                 <td>
-                  {% for race.chart.race_set %}
+                  {% for race in chart.race_set %}
                     {% if race.has_bets %}
                         {{ race.number }}<br>
                     {% endif %}
