@@ -170,8 +170,8 @@ def make_bet(request):
     scan = CronJob(type="ajax")
     scan.set_fields_to_base()
     scan.save()
-    # participant = Participant.objects.get(
-    #     uuid=request.GET.get('participant_id'))
+    participant = Participant.objects.get(
+        uuid=request.GET.get('participant_id'))
     # for bet_name in [char for char in request.GET.get('bet_types')]:
     #     type = StraightBetType.objects.get(name=bet_name)
     #     try:
@@ -194,7 +194,7 @@ def make_bet(request):
     #     'bets': participant.get_purchased_wagers(),
     #     'enabled': request.user.is_active})
     return JsonResponse({
-        'bets': "participant.get_purchased_wagers()",
+        'bets': participant.get_purchased_wagers(),
         'enabled': request.user.is_active})
 
 
