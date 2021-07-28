@@ -2,47 +2,58 @@
 
 {% block content %}
 
-    <form action="/your-name/" method="post">
-
+    <form action="{% url 'results' %}" method="post">
+      {% csrf_token %}
       <div class="card-header" style="margin-bottom: 15px">
         <span style="font-size: 1.5em">{{ day }}</span>
         <!-- <label for="your_name">Select Date: </label> -->
         <span class="float-right" style="height: 25px; padding-top:3px">
-          <input id="your_name" type="date" name="your_name" data-value="{{ date }}">
-          <input type="submit" class="btn-outline-primary" value="Disabled" disabled>
+          <input id="target_date" type="date" name="date" data-value="{{ date }}">
+          <input type="submit" class="btn-outline-primary" value="OK">
         </span>
 
       </div>
 
+      {% if bets|length > 0 %}
         <table class="table table-sm">
+          <thead>
           <tr>
+          <th>Chart</th>
+          <th>Race</th>
           <th>Participant</th>
-          <th>Bets</th>
-          <th>Finish</th>
+          <th>Bet</th>
           <th>Winnings</th>
           </tr>
-          {% if bet_charts.length > 0 %}
-            {% for chart in bet_charts %}
-              <tr>
-                <td>{{ chart.get_time_display }}</td>
-                <td>
-                  {% for race in chart.race_set %}
-                    {% if race.has_bets %}
-                        {{ race.number }}<br>
-                    {% endif %}
-                  {% endfor %}
-                </td>
-              </tr>
+          </thead>
+          <tbody>
+            {% for bet in bets %}
+              {% with race=bet.participant.race %}
+                <tr>
+                  <td>
+                    {{ race.chart.program.venue.kiosk_name }}
+                    {{ race.chart.kiosk_time }}
+                  </td>
+                  <td>
+                    {{ race.number }}
+                  </td>
+                  <td> {{ bet.participant.post }} - {{ bet.participant.dog.name }}</td>
+                  <td>{{ bet.type.name }}</td>
+                  <td></td>
+                </tr>
+              {% endwith %}
             {% endfor %}
-          {% else %}
-            <tr><td colspan="4">No bets placed today</td></tr>
-          {% endif %}
+          </tbody>
         </table>
+        {% else %}
+        <div style="text-align:center; margin: 50px auto">
+          No bets placed
+        </div>
+        {% endif %}
     </form>
 
 
 <script>
-  const input = document.getElementById("your_name")
+  const input = document.getElementById("target_date")
   input.value = input.getAttribute("data-value")
 </script>
 

@@ -115,18 +115,23 @@ class ResultsView(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-        today = localdate()
-        # yesterday = today - datetime.timedelta(days=1)
-        programs = Program.objects.filter(date=today)
-        bet_charts = []
-        for chart in Chart.objects.filter(program__date=today):
-            if chart.has_bets():
-                bet_charts.append(chart)
-        self.context["bet_charts"] = bet_charts
-        self.context["day"] = today.strftime("%A")
-        self.context["date"] = today.strftime("%Y-%m-%d")
-        self.context["programs"] = programs
+        try:
+            target_date = datetime.datetime.fromisoformat(
+                request.GET.get("date"))
+        except:
+            target_date = localdate()
+        bets = Bet.objects.filter(
+            participant__race__chart__program__date=target_date)
+        self.context["bets"] = bets
+        self.context["day"] = target_date.strftime("%A")
+        self.context["date"] = target_date.strftime("%Y-%m-%d")
         return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        response = redirect('results')
+        response['Location'] += '?date={}'.format(
+            request.POST.get("date"))
+        return response
 
 
 
@@ -163,11 +168,6 @@ def load_charts(request):
         'load_charts.html', {'charts': charts, })
 
 def make_bet(request):
-    print("make bets")
-    # print(request.GET.get('amount'))
-    # print(request.GET.get('participant_id'))
-    # print(request.GET.get('bet_types'))
-
     participant = Participant.objects.get(
         uuid=request.GET.get('participant_id'))
     for bet_name in [char for char in request.GET.get('bet_types')]:

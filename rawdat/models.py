@@ -379,13 +379,8 @@ class Race(CoreModel):
                 pass
 
     def has_bets(self):
-
         for participant in self.participant_set.all():
-            try:
-                if participant.bet():
-                    return True
-            except:
-                pass
+            return participant.bet_set.count() > 0
 
 class StraightBetType(CoreModel):
 
@@ -478,8 +473,9 @@ class Bet(CoreModel):
         on_delete=models.CASCADE)
 
     def get_return(self):
-        if self.participant.finish <= self.type.cutoff:
-            return "FIX THIS!"
+        final = self.participant.final
+        if final and final <= self.type.cutoff:
+            return 100.0
         else:
             return 0
 
