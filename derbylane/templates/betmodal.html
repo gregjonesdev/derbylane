@@ -55,8 +55,10 @@
 make_bet = () => {
   text_content = document.getElementById("json-data").textContent
   participant_id = document.getElementById("participant_uuid").textContent
+  var token = '{{csrf_token}}';
   json_data = JSON.parse(text_content)
     $.ajax({
+      headers: { "X-CSRFToken": token },
       url: json_data["bets_url"],
       dataType: "json",
       data: {
