@@ -374,7 +374,7 @@ class Race(CoreModel):
         for participant in self.participant_set.all():
             try:
                 if participant.prediction.get_bets():
-                    return True
+                    return participant.prediction.j48
             except:
                 pass
 
