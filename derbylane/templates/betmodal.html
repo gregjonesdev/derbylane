@@ -59,13 +59,14 @@ make_bet = () => {
   json_data = JSON.parse(text_content)
     console.log("try it");
     console.log(json_data["bets_url"]);
+    console.log(participant_id)
     $.ajax({
       url: json_data["bets_url"],
       dataType: "json",
       data: {
         "hi": "hey"
         // "amount": document.getElementById("amount_input").value,
-        // "participant_id": participant_id,
+        "participant_id": participant_id,
         // "bet_types": document.getElementById("bet_types").value
       },
       error: function (xhr, ajaxOptions, thrownError) {
