@@ -482,7 +482,7 @@ class Bet(CoreModel):
             elif self.type.name == 'W':
                 return self.participant.straight_wager.win
         else:
-            return 5.0
+            return 0
 
 
 
