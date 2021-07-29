@@ -475,9 +475,14 @@ class Bet(CoreModel):
     def get_return(self):
         final = self.participant.final
         if final and final <= self.type.cutoff:
-            return 100.0
+            if self.type.name == 'P':
+                return self.participant.straight_wager.place
+            elif self.type.name == 'S':
+                return self.participant.straight_wager.show
+            elif self.type.name == 'W':
+                return self.participant.straight_wager.win
         else:
-            return 0
+            return 5.0
 
 
 

@@ -22,7 +22,7 @@
           <th>Race</th>
           <th>Participant</th>
           <th>Bet</th>
-          <th>Winnings</th>
+          <th>$2 Win</th>
           </tr>
           </thead>
           <tbody>
@@ -38,7 +38,10 @@
                   </td>
                   <td> {{ bet.participant.post }} - {{ bet.participant.dog.name }}</td>
                   <td>{{ bet.type.name }}</td>
-                  <td></td>
+                  <td>{% if bet.get_return %}
+                    <button style="height:20px; font-weight: bold; padding: 0 8px" class="btn btn-sm btn-success" disabled>$ {{bet.get_return }}</button>
+                      {% endif %}
+                  </td>
                 </tr>
               {% endwith %}
             {% endfor %}
