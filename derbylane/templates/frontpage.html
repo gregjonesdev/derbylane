@@ -6,10 +6,20 @@
 </span>
     <!-- <label for="your_name">Select Date: </label> -->
     <span class="float-right" style="height: 25px; padding-top:3px">
-      <input id="target_date" type="date" data-date="{{ date }}" name="date" onchange="handler(event);" class="btn-outline-light" value="date" style="padding-top: 3px; border: none ">
+      <input
+        id="target_date"
+        type="date"
+        data-date="{{ date }}"
+        name="date"
+        onchange="handler(event);"
+        class="btn-outline-light"
+        value="date"
+        style="padding-top: 3px; border: none ">
     </span>
     </div>
+    <div id="bet_container">
     {% include "results.html" with target_day=date %}
+    </div>
     <!-- {% if charts|length %}
     <div class="select-holder">
       <select
@@ -41,17 +51,30 @@
 
   <script id="json-chart-data" type="application/json">
     {
-      "bets_url": "{% url 'load_bets' %}"
+      "bets_url": "{% url 'load_bets' %}",
+      "results_url": "{% url 'results' %}"
     }
   </script>
 
 
   <script>
+    text_content = document.getElementById("json-chart-data").textContent
+    chart_json_data = JSON.parse(text_content)
     const input = document.getElementById("target_date")
     input.value = input.getAttribute("data-date")
 
     function handler(e) {
-      alert("ok")
+      console.log(e.target.value)
+      $.ajax({
+        url: chart_json_data["results_url"],
+        dataType: "html",
+        data: {
+          "date": e.target.value,
+        },
+        success: function(data) {
+          $("#bet_container").html(data)
+        }
+      })
     }
   </script>
 
