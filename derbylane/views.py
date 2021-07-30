@@ -36,15 +36,17 @@ class FrontPage(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-        today = localdate()
-        self.context["date"] = today.strftime("%Y-%m-%d")
+        target_date = request.GET.get("date")
+        if not target_date:
+            target_date = localdate()
+        self.context["date"] = target_date.strftime("%Y-%m-%d")
         charts = []
-        for chart in Chart.objects.filter(program__date=today):
+        for chart in Chart.objects.filter(program__date=target_date):
             if chart.has_predictions():
                 charts.append(chart)
         self.context["charts"] = charts
 
-        self.context["today"] = today.strftime("%A, %B %-d")
+        self.context["today"] = target_date.strftime("%A, %B %-d")
 
         return render(request, self.template_name, self.context)
 
@@ -115,8 +117,11 @@ def get_daily_charts(request):
 
     date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
     date_header = date_obj.strftime("%A, %B %-d")
+
+    charts = Chart.objects.all()[:3]
     return JsonResponse({
-        'day': date_header})
+        'day': date_header,
+        'charts': charts})
 
 class ResultsView(OTPRequiredMixin, View):
 

@@ -52,7 +52,7 @@
   <script id="json-chart-data" type="application/json">
     {
       "bets_url": "{% url 'load_bets' %}",
-      "results_url": "{% url 'get_daily_charts' %}"
+      "results_url": "{% url 'frontpage' %}?date="
     }
   </script>
 
@@ -65,6 +65,8 @@
 
     function handler(e) {
       console.log(e.target.value)
+      console.log(new Date(e.target.value));
+// var n = d.getDay();)
       $.ajax({
         url: chart_json_data["results_url"],
         dataType: "json",
@@ -72,8 +74,8 @@
           "date": e.target.value,
         },
         success: function(data) {
-          document.getElementById("date_header").innerHTML = data["day"];
-          console.log(data)
+          // document.getElementById("date_header").innerHTML = data["day"];
+          // console.log(data)
         }
       })
     }
