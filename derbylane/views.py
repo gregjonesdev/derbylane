@@ -110,6 +110,14 @@ class DownloadsView(OTPRequiredMixin, View):
             response = redirect('frontpage')
             return response
 
+def get_daily_charts(request):
+    datestring = request.GET.get("date")
+
+    date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
+    date_header = date_obj.strftime("%A, %B %-d")
+    return JsonResponse({
+        'day': date_header})
+
 class ResultsView(OTPRequiredMixin, View):
 
     template_name = 'results.html'

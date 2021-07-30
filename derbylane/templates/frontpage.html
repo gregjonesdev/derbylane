@@ -2,8 +2,8 @@
 
 {% block content %}
   <div class="card-header" style="border: 1px solid #333; ">
-    <span class= "text-center" style="font-size: 1.6em;">  <b><i>{{ today }}</i></b>
-</span>
+    <b><i><span id="date_header" class= "text-center" style="font-size: 1.6em;">{{ today }}
+</span></i></b>
     <!-- <label for="your_name">Select Date: </label> -->
     <span class="float-right" style="height: 25px; padding-top:3px">
       <input
@@ -52,7 +52,7 @@
   <script id="json-chart-data" type="application/json">
     {
       "bets_url": "{% url 'load_bets' %}",
-      "results_url": "{% url 'results' %}"
+      "results_url": "{% url 'get_daily_charts' %}"
     }
   </script>
 
@@ -67,12 +67,13 @@
       console.log(e.target.value)
       $.ajax({
         url: chart_json_data["results_url"],
-        dataType: "html",
+        dataType: "json",
         data: {
           "date": e.target.value,
         },
         success: function(data) {
-          $("#bet_container").html(data)
+          document.getElementById("date_header").innerHTML = data["day"];
+          console.log(data)
         }
       })
     }
