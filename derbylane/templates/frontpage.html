@@ -1,8 +1,16 @@
 {% extends '_base.html'%}
 
 {% block content %}
-  <h5 class="card-header text-center"><b><i>{{ today }}</i></b></h5>
-    {% if charts|length %}
+  <div class="card-header">
+    <span class= "text-center" style="font-size: 1.6em;">  <b><i>{{ today }}</i></b>
+</span>
+    <!-- <label for="your_name">Select Date: </label> -->
+    <span class="float-right" style="height: 25px; padding-top:3px">
+      <!-- <input id="target_date" type="date" name="date" data-value="Select Date"> -->
+      <input type="date" class="btn-outline-light" data-value="Select Date">
+    </span>
+    </div>
+    <!-- {% if charts|length %}
     <div class="select-holder">
       <select
         class="form-control frontpage-select"
@@ -27,7 +35,7 @@
     <div style="text-align: center; padding: 50px">
     No Predictions Today
     </div>
-    {% endif %}
+    {% endif %} -->
 
 {% include 'betmodal.html' %}
 

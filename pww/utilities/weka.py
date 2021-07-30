@@ -134,7 +134,7 @@ def build_matrix_shell(title, x_label, y_label, get_bet_earnings, race_key, anal
 
 def write_matrix_row(y_value, y_label, get_bet_earnings, race_key, analysis_file, filtered_predictions):
     if y_value == 4:
-        cell_0 = "     {}".format(y_label)
+        cell_0 = "{}".format(y_label)
     else:
         cell_0 = "\t"
     x_value_list = get_x_value_list(y_value, get_bet_earnings, race_key, filtered_predictions)

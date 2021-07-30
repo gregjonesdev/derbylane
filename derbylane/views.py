@@ -135,6 +135,25 @@ class ResultsView(OTPRequiredMixin, View):
         return response
 
 
+class AnalysisView(OTPRequiredMixin, View):
+
+    template_name = 'analysis.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        # try:
+        #     target_date = datetime.datetime.fromisoformat(
+        #         request.GET.get("date"))
+        # except:
+        #     target_date = localdate()
+        # bets = Bet.objects.filter(
+        #     participant__race__chart__program__date=target_date).order_by(
+        #         'participant__race__chart', 'participant__race')
+        # self.context["bets"] = bets
+        # self.context["day"] = target_date.strftime("%A")
+        # self.context["date"] = target_date.strftime("%Y-%m-%d")
+        return render(request, self.template_name, self.context)
+
 
 class UploadsView(OTPRequiredMixin, View):
 
