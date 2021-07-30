@@ -1,18 +1,15 @@
-{% extends '_base.html' %}
 
-{% block content %}
-
-    <form action="{% url 'results' %}" method="post">
+    <!-- <form action="{% url 'results' %}" method="post">
       {% csrf_token %}
       <div class="card-header" style="margin-bottom: 15px">
         <span style="font-size: 1.5em">{{ day }}</span>
         <!-- <label for="your_name">Select Date: </label> -->
-        <span class="float-right" style="height: 25px; padding-top:3px">
+      <!--  <span class="float-right" style="height: 25px; padding-top:3px">
           <input id="target_date" type="date" name="date" data-value="{{ date }}">
           <input type="submit" class="btn-outline-primary" value="OK">
         </span>
 
-      </div>
+      </div> -->
 
       {% if bets|length > 0 %}
         <table class="table table-sm">
@@ -52,12 +49,3 @@
           No bets placed
         </div>
         {% endif %}
-    </form>
-
-
-<script>
-  const input = document.getElementById("target_date")
-  input.value = input.getAttribute("data-value")
-</script>
-
-{% endblock content %}

@@ -1,15 +1,15 @@
 {% extends '_base.html'%}
 
 {% block content %}
-  <div class="card-header">
+  <div class="card-header" style="border: 1px solid #333; ">
     <span class= "text-center" style="font-size: 1.6em;">  <b><i>{{ today }}</i></b>
 </span>
     <!-- <label for="your_name">Select Date: </label> -->
     <span class="float-right" style="height: 25px; padding-top:3px">
-      <!-- <input id="target_date" type="date" name="date" data-value="Select Date"> -->
-      <input type="date" class="btn-outline-light" data-value="Select Date">
+      <input id="target_date" type="date" data-date="{{ date }}" name="date" onchange="handler(event);" class="btn-outline-light" value="date" style="padding-top: 3px; border: none ">
     </span>
     </div>
+    {% include "results.html" with target_day=date %}
     <!-- {% if charts|length %}
     <div class="select-holder">
       <select
@@ -42,6 +42,16 @@
   <script id="json-chart-data" type="application/json">
     {
       "bets_url": "{% url 'load_bets' %}"
+    }
+  </script>
+
+
+  <script>
+    const input = document.getElementById("target_date")
+    input.value = input.getAttribute("data-date")
+
+    function handler(e) {
+      alert("ok")
     }
   </script>
 
