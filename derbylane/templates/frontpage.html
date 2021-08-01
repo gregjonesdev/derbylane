@@ -7,7 +7,7 @@
 
 
   <div class="card-header" style="border: 1px solid #333; ">
-    <b><i><span id="date_header" class= "text-center" style="font-size: 1.6em;">{{ today }}
+    <b><i><span id="date_header" class= "text-center" style="font-size: 1.6em;">{{ date_header }}
 </span></i></b>
     <!-- <label for="your_name">Select Date: </label> -->
     <span class="float-right" style="height: 25px; padding-top:3px">
@@ -25,11 +25,10 @@
     <div id="bet_container">
 
     {{ charts }}
-    {{ today }}
 
 
     </div>
-    <!-- {% if charts|length %}
+    {% if charts|length %}
     <div class="select-holder">
       <select
         class="form-control frontpage-select"
@@ -52,9 +51,9 @@
   </div>
     {% else %}
     <div style="text-align: center; padding: 50px">
-    No Predictions Today
+    No Charts Found
     </div>
-    {% endif %} -->
+    {% endif %}
 
 {% include 'betmodal.html' %}
 

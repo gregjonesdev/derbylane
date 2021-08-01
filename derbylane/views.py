@@ -41,12 +41,9 @@ class FrontPage(OTPRequiredMixin, View):
             date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
         else:
             date_obj = localdate()
-        date_header = date_obj.strftime("%A, %B %-d")
-        print(datestring)
-        # datestring = "2021-07-04"
-        self.context["today"] = date_header
+        self.context["date_header"] = date_obj.strftime("%A, %B %-d")
         self.context["datestring"] = datestring
-
+        self.context["charts"] = Chart.objects.filter(program__date=date_obj)
         return render(request, self.template_name, self.context)
 
 
@@ -112,16 +109,6 @@ class DownloadsView(OTPRequiredMixin, View):
             response = redirect('frontpage')
             return response
 
-def get_daily_charts(request):
-    datestring = request.GET.get("date")
-
-    date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
-    date_header = date_obj.strftime("%A, %B %-d")
-
-    charts = Chart.objects.all()[:3]
-    return JsonResponse({
-        'day': date_header,
-        'charts': charts})
 
 class ResultsView(OTPRequiredMixin, View):
 

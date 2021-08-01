@@ -19,7 +19,7 @@ from derbylane.views import (
     load_bets,
     make_bet,
     logout_view,
-    get_daily_charts
+    # get_daily_charts
 )
 
 def buildURL(object_name):
@@ -71,7 +71,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     url(r'logout/$', logout_view, name='logout'),
     url(r'load_charts/$', load_charts, name='load_charts'),
-    url(r'get_daily_charts/$', get_daily_charts, name='get_daily_charts'),
+    # url(r'get_daily_charts/$', get_daily_charts, name='get_daily_charts'),
 
     url(r'load_bets/$', load_bets, name='load_bets'),
     url(r'make_bet/$', make_bet, name='make_bet'),
