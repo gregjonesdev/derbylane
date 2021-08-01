@@ -21,10 +21,10 @@
 
     </div>
     {% if charts|length %}
-    <div class="select-holder">
+    <div id= "charts-holder" class="select-holder">
       <select
         class="form-control frontpage-select"
-        id="chart-select">
+        id="chart-select" onchange="load_bets();">
         {% for chart in charts %}
           <option value="{{ chart.uuid }}">
             <span >
@@ -59,7 +59,7 @@
   <script src="{% static 'js/frontpage.js' %}"></script>
 
   <script>
-    
+
   </script>
 
 {% endblock content %}

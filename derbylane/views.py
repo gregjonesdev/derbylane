@@ -220,6 +220,7 @@ def make_bet(request):
 
 
 def load_bets(request):
+    print("load bets")
     chart = Chart.objects.get(
         uuid=request.GET.get('chart_id'))
     races = chart.race_set.filter(

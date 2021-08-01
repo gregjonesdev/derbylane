@@ -1,22 +1,37 @@
 const text_content = document.getElementById("json-chart-data").textContent
 const chart_json_data = JSON.parse(text_content)
 const input = document.getElementById("target_date")
+const modal = document.getElementById("bet-modal")
 
+if (document.getElementById("charts-holder")) {
+}
 
-
-
+load_bets = () => {
+  const chart_select = document.getElementById("chart-select")
+  if (chart_select) {
+    chart_id = chart_select.value
+    $.ajax({
+      url: chart_json_data["bets_url"],
+      dataType: "html",
+      data: {
+        "chart_id": chart_id,
+      },
+      success: function(data) {
+        $("#bets").html(data)
+      }
+    })
+  }
+}
 
 input.value = input.getAttribute("data-date")
 
-function handler(e) {
+handler = (e) => {
   window.location = chart_json_data["results_url"] + "?date=" + e.target.value
 }
 
 
 
 
-chart_select = document.getElementById("chart-select")
-modal = document.getElementById("bet-modal")
 modal.addEventListener("focus", function (e) {
   var button = $(event.relatedTarget) // Button that triggered the modal
   var participant_bets = document.getElementById("participant_bets")
@@ -42,24 +57,9 @@ modal.addEventListener("focus", function (e) {
   )
   $('select option[value=' + bets).prop('selected',true);
 })
-text_content = document.getElementById("json-chart-data").textContent
-chart_json_data = JSON.parse(text_content)
 
-load_bets = () => {
-    const chart_id = chart_select.value
-    $.ajax({
-      url: chart_json_data["bets_url"],
-      dataType: "html",
-      data: {
-        "chart_id": chart_id,
-      },
-      success: function(data) {
-        $("#bets").html(data)
-      }
-    })
-  }
+
 window.onload = (event) => {
   load_bets()
 
 };
-chart_select.addEventListener("change", load_bets)
