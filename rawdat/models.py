@@ -277,6 +277,12 @@ class Chart(CoreModel):
             if race.has_bets():
                 return True
 
+    def is_complete(self):
+        for race in self.race_set.all():
+            if not race.is_complete():
+                return False
+        return True
+
 class Grade(CoreModel):
 
     name = models.CharField(
@@ -381,6 +387,11 @@ class Race(CoreModel):
     def has_bets(self):
         for participant in self.participant_set.all():
             return participant.bet_set.count() > 0
+
+    def is_complete(self):
+        for participant in self.participant_set.all():
+            if participant.final:
+                return True
 
 class StraightBetType(CoreModel):
 

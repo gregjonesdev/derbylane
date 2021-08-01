@@ -221,19 +221,27 @@ def make_bet(request):
 
 def load_bets(request):
     print("load bets")
+    print(datetime.datetime.now())
     chart = Chart.objects.get(
         uuid=request.GET.get('chart_id'))
+
+    current_date = datetime.datetime.now().date()
+
+    if chart.is_complete() or current_date > chart.program.date:
+        url = "results.html"
+    else:
+        url = "load_bets.html"
+
+    print("render url: {}".format(url))
     races = chart.race_set.filter(
         grade__value__gt=0)
     # races = chart.race_set.all()
     print(request.user.email)
     return render(
         request,
-        'load_bets.html', {
+        url, {
             'races': races,
-            'user': request.user,
-            'program': chart.program,
-            'venue': chart.program.venue })
+            'user': request.user })
 
 
 def logout_view(request):
