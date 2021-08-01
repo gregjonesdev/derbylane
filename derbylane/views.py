@@ -36,7 +36,6 @@ class FrontPage(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-        print(request.GET.__dict__)
         datestring = request.GET.get("date")
         if datestring:
             date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
@@ -46,6 +45,7 @@ class FrontPage(OTPRequiredMixin, View):
         print(datestring)
         # datestring = "2021-07-04"
         self.context["today"] = date_header
+        self.context["datestring"] = datestring
 
         return render(request, self.template_name, self.context)
 

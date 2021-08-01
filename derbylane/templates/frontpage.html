@@ -14,7 +14,7 @@
       <input
         id="target_date"
         type="date"
-        data-date="{{ date }}"
+        data-date="{{ datestring }}"
         name="date"
         onchange="handler(event);"
         class="btn-outline-light"
@@ -70,21 +70,11 @@
     text_content = document.getElementById("json-chart-data").textContent
     chart_json_data = JSON.parse(text_content)
     const input = document.getElementById("target_date")
+    console.log(input.getAttribute("data-date"))
     input.value = input.getAttribute("data-date")
 
     function handler(e) {
       window.location = chart_json_data["results_url"] + "?date=" + e.target.value
-      $.ajax({
-        url: chart_json_data["results_url"] + "?date=" + e.target.value,
-        dataType: "html",
-        data: {
-          "date": e.target.value
-        }
-        // success: function(data) {
-        //   // document.getElementById("date_header").innerHTML = data["day"];
-        //   // console.log(data)
-        // }
-      })
     }
   </script>
 
