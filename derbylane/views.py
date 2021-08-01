@@ -36,19 +36,19 @@ class FrontPage(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-        target_date = request.GET.get("date")
-        if not target_date:
-            target_date = localdate()
-        self.context["date"] = target_date.strftime("%Y-%m-%d")
-        charts = []
-        for chart in Chart.objects.filter(program__date=target_date):
-            if chart.has_predictions():
-                charts.append(chart)
-        self.context["charts"] = charts
-
-        self.context["today"] = target_date.strftime("%A, %B %-d")
+        print(request.GET.__dict__)
+        datestring = request.GET.get("date")
+        if datestring:
+            date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
+        else:
+            date_obj = localdate()
+        date_header = date_obj.strftime("%A, %B %-d")
+        print(datestring)
+        # datestring = "2021-07-04"
+        self.context["today"] = date_header
 
         return render(request, self.template_name, self.context)
+
 
 
 class ProfileView(OTPRequiredMixin, View):

@@ -1,6 +1,11 @@
 {% extends '_base.html'%}
 
 {% block content %}
+
+
+
+
+
   <div class="card-header" style="border: 1px solid #333; ">
     <b><i><span id="date_header" class= "text-center" style="font-size: 1.6em;">{{ today }}
 </span></i></b>
@@ -18,7 +23,11 @@
     </span>
     </div>
     <div id="bet_container">
-    {% include "results.html" with target_day=date %}
+
+    {{ charts }}
+    {{ today }}
+
+
     </div>
     <!-- {% if charts|length %}
     <div class="select-holder">
@@ -52,7 +61,7 @@
   <script id="json-chart-data" type="application/json">
     {
       "bets_url": "{% url 'load_bets' %}",
-      "results_url": "{% url 'frontpage' %}?date="
+      "results_url": "{% url 'frontpage' %}"
     }
   </script>
 
@@ -64,19 +73,17 @@
     input.value = input.getAttribute("data-date")
 
     function handler(e) {
-      console.log(e.target.value)
-      console.log(new Date(e.target.value));
-// var n = d.getDay();)
+      window.location = chart_json_data["results_url"] + "?date=" + e.target.value
       $.ajax({
-        url: chart_json_data["results_url"],
-        dataType: "json",
+        url: chart_json_data["results_url"] + "?date=" + e.target.value,
+        dataType: "html",
         data: {
-          "date": e.target.value,
-        },
-        success: function(data) {
-          // document.getElementById("date_header").innerHTML = data["day"];
-          // console.log(data)
+          "date": e.target.value
         }
+        // success: function(data) {
+        //   // document.getElementById("date_header").innerHTML = data["day"];
+        //   // console.log(data)
+        // }
       })
     }
   </script>
