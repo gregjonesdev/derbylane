@@ -1,4 +1,3 @@
-from django.core.management.base import BaseCommand
 from weka.filters import Filter
 import weka.core.jvm as jvm
 import weka.core.packages as packages
@@ -6,9 +5,18 @@ import weka.core.converters as conv
 import weka.core.serialization as serialization
 from libsvm.svmutil import *
 from rawdat.models import Participant
-from weka.classifiers import Classifier
+from weka.classifiers import Classifier, Evaluation
 from django.core.exceptions import ObjectDoesNotExist
 from pww.models import Prediction
+from weka.attribute_selection import ASSearch
+from weka.attribute_selection import ASEvaluation
+from weka.attribute_selection import AttributeSelection
+# import wekaexamples.helper as helper
+from weka.core.classes import Random
+from weka.core.converters import Loader
+from weka.core.dataset import Instances
+from weka.filters import Filter
+
 from weka.core.packages import install_missing_packages, LATEST
 from miner.utilities.constants import (
     models_directory,
@@ -22,6 +30,9 @@ def create_model(model_arff, classifier, options, filename):
     model_data = remove_uuid(model_data)
     model_data = nominalize(model_data)
     model_data.class_is_last()
+
+
+
     cls = Classifier(classname=classifier, options=options)
     cls.build_classifier(model_data)
     filename = "test_models/{}.model".format(filename)
@@ -70,10 +81,85 @@ def build_scheduled_data(arff_data):
     scheduled_data = remove_uuid(loaded_data)
     scheduled_data = nominalize(scheduled_data)
     scheduled_data.class_is_last()
+    # print(scheduled_data)
+    # New
+    example(scheduled_data)
+    raise SystemExit(0)
+
+    search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
+    evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
+
+    "weka.attributeSelection.WrapperSubsetEval -B"
+
+    attsel = AttributeSelection()
+    attsel.search(search)
+    attsel.evaluator(evaluator)
+    attsel.select_attributes(scheduled_data)
+
+
+    print("# attributes: " + str(attsel.number_attributes_selected))
+    print("attributes: " + str(attsel.selected_attributes))
+    print("result string:\n" + attsel.results_string)
     return scheduled_data
+
+def example(data):
+    print("example")
+    classifier = Classifier(classname="weka.classifiers.trees.J48")
+
+    # randomize data
+    folds = 10
+    seed = 1
+    rnd = Random(seed)
+    rand_data = Instances.copy_instances(data)
+    rand_data.randomize(rnd)
+    if rand_data.class_attribute.is_nominal:
+        rand_data.stratify(folds)
+
+    # perform cross-validation and add predictions
+    predicted_data = None
+    evaluation = Evaluation(rand_data)
+    for i in range(folds):
+        train = rand_data.train_cv(folds, i)
+        # the above code is used by the StratifiedRemoveFolds filter,
+        # the following code is used by the Explorer/Experimenter
+        # train = rand_data.train_cv(folds, i, rnd)
+        test = rand_data.test_cv(folds, i)
+
+        # build and evaluate classifier
+        cls = Classifier.make_copy(classifier)
+        cls.build_classifier(train)
+        evaluation.test_model(cls, test)
+
+        # add predictions
+        addcls = Filter(
+            classname="weka.filters.supervised.attribute.AddClassification",
+            options=["-classification", "-distribution", "-error"])
+        # setting the java object directory avoids issues with correct quoting in option array
+        addcls.set_property("classifier", Classifier.make_copy(classifier))
+        addcls.inputformat(train)
+        addcls.filter(train)  # trains the classifier
+        pred = addcls.filter(test)
+        if predicted_data is None:
+            predicted_data = Instances.template_instances(pred, 0)
+        for n in range(pred.num_instances):
+            predicted_data.add_instance(pred.get_instance(n))
+
+    print("")
+    print("=== Setup ===")
+    print("Classifier: " + classifier.to_commandline())
+    print("Dataset: " + data.relationname)
+    print("Folds: " + str(folds))
+    print("Seed: " + str(seed))
+    print("")
+    print(evaluation.summary("=== " + str(folds) + " -fold Cross-Validation ==="))
+    print("")
+    print(predicted_data)
+
 
 
 def evaluate(race_key, arff_data, analysis_file, scheduled_data, model_names):
+    # print("evaluate")
+    # print(analysis_file.name)
     prediction_object = get_prediction_object(arff_data)
     prediction_object['predictions'] = {}
     # pp = pprint.PrettyPrinter(indent=4)
@@ -96,9 +182,9 @@ def evaluate(race_key, arff_data, analysis_file, scheduled_data, model_names):
     #     prediction_object['predictions'])
     # pp = pprint.PrettyPrinter(indent=4)
     # pp.pprint(prediction_object)
-    print("\n", file=analysis_file)
-    print(race_key, file=analysis_file)
-    print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------", file=analysis_file)
+    # print("\n", file=analysis_file)
+    # print(race_key, file=analysis_file)
+    # print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------", file=analysis_file)
     do_something(prediction_object, model_names, race_key, analysis_file)
 
 def do_something(prediction_object, model_names, race_key, analysis_file):
@@ -107,13 +193,13 @@ def do_something(prediction_object, model_names, race_key, analysis_file):
 
 
     filtered_predictions = get_filtered_predicitions(prediction_object['uuids'])
-    print(len(filtered_predictions))
+    # print(len(filtered_predictions))
     build_matrix_shell("Win", x_label, y_label, get_win_bet_earnings, race_key, analysis_file, filtered_predictions)
     build_matrix_shell("Place", x_label, y_label, get_place_bet_earnings, race_key, analysis_file, filtered_predictions)
     build_matrix_shell("Show", x_label, y_label, get_show_bet_earnings, race_key, analysis_file, filtered_predictions)
 
-    print("\n", file=analysis_file)
-    print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------", file=analysis_file)
+    # print("\n", file=analysis_file)
+    # print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------", file=analysis_file)
     example_calculation()
 
 eval_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
@@ -124,7 +210,7 @@ def build_matrix_shell(title, x_label, y_label, get_bet_earnings, race_key, anal
     print("\t\t\t\t\t\t\t\t\t{}".format(x_label), file=analysis_file)
     prediction_max = 8
     i = 0
-    print(eval_string.format("\t", " ", 0, 1, 2, 3, 4, 5, 6, 7), file=analysis_file)
+    print(eval_string.format("\t", " ", "0\t", "1\t", "2\t", "3\t", "4\t", "5\t", "6\t", "7"), file=analysis_file)
     while i <= prediction_max:
         write_matrix_row(i, y_label, get_bet_earnings, race_key, analysis_file, filtered_predictions)
 
@@ -172,7 +258,7 @@ def get_x_value_list(y_value, get_bet_earnings, race_key, filtered_predictions):
         if count > 0:
             x_value_list.append("{} ({})".format(get_dollars(winnings/count), count))
         else:
-            x_value_list.append("----")
+            x_value_list.append("--------")
         i += 1
     # x_value_list = [ 0.65, 0.75, 0.85, 1.2, 0.65, 0.75, 0.85, 1.2]
     return x_value_list

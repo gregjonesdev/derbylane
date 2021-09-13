@@ -3,7 +3,9 @@ import sys
 import weka.core.jvm as jvm
 import datetime
 from pathlib import Path
-
+from weka.attribute_selection import ASSearch
+from weka.attribute_selection import ASEvaluation
+from weka.attribute_selection import AttributeSelection
 from django.core.management.base import BaseCommand
 
 from pww.models import Metric
@@ -66,9 +68,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print("New Create model")
-
-
-        # complexity = sys.argv[3]
         arff_directory = "arff"
 
         Path(arff_directory).mkdir(
@@ -90,27 +89,8 @@ class Command(BaseCommand):
             participant__race__grade__name=grade_name,
             participant__race__chart__program__date__lte="2021-07-14",
             final__isnull=False)
-        #
         print(len(metrics))
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
-
-        # LibSVM -S 0 - K 2 -D 3 -G 0.0 -R 0.0 -N 0.5 -M 40.0 -C 1.0 -E 0.001 -P 0.1 -seed 1
-
-
-        # cls = Classifier(classname="weka.classifiers.trees.J48", options=["-C", "0.3"])
-        # venue_code = sys.argv[3]
-        # grade_name = sys.argv[5]
-        # distance = sys.argv[7]
-        #
-        # options = ["-C", complexity]
-        # filename = "smoreg_{}".format(complexity.replace(".", "_"))
-        # create_model(arff_file, race_key, classifier, options, filename)
-
-                    # print(race_key)
-
-
-                    # Options ?
-
 
         root_filename = "{}_smo".format(
             race_key)
@@ -141,18 +121,21 @@ class Command(BaseCommand):
         # "-seed", "1"
         # ]
 
-        classifier = "weka.classifiers.functions.SMO"
-        options = [
-            "-C", "1.0",
-            "-L", "0.001",
-            "-P", "1.0E-12",
-            "-N", "0",
-            "-V", "-1",
-            "-W", "1",
-            "-K", "weka.classifiers.functions.supportVector.PolyKernel",
-            # "-E", "1.0",
-            # "-C", "250007",
+        new_options = [
+        "-C", "1.0",
+        "-L", "0.001",
+        "-P", "1.0E-12",
+        "-N", "0",
+        "-W", "1",
+        "-V", "-1",
+        "-K", "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007",
+        "-calibrator", "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
         ]
+
+
+
+
+        classifier = "weka.classifiers.functions.SMO"
         calibrator = "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
-        create_model(arff_file, classifier, options, root_filename)
+        create_model(arff_file, classifier, new_options, root_filename)
         jvm.stop()
