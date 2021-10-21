@@ -48,6 +48,7 @@ def predict_all(arff_list):
 
 
 def evaluate_all(arff_list, venue_code, grade_name):
+    print("evaluate all")
     start_jvm()
     analysis_file = open("prediction_analysis_{}_{}.txt".format(
         venue_code,
@@ -158,7 +159,7 @@ def example(data):
 
 
 def evaluate(race_key, arff_data, analysis_file, scheduled_data, model_names):
-    # print("evaluate")
+    print("evaluate()")
     # print(analysis_file.name)
     prediction_object = get_prediction_object(arff_data)
     prediction_object['predictions'] = {}
@@ -309,6 +310,7 @@ def predict(race_key, arff_data, scheduled_data, model_names):
 
 
 def save_all_predictions(uuids, predictions):
+    print("save all predictions")
     for uuid in uuids:
         save_predictions(uuid, predictions, uuids.index(uuid))
 

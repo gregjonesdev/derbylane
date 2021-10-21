@@ -127,6 +127,7 @@ class ResultsView(OTPRequiredMixin, View):
         self.context["bets"] = bets
         self.context["day"] = target_date.strftime("%A")
         self.context["date"] = target_date.strftime("%Y-%m-%d")
+        print("here")
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
@@ -236,7 +237,7 @@ def load_bets(request):
     races = chart.race_set.filter(
         grade__value__gt=0)
     # races = chart.race_set.all()
-    print(request.user.email)
+    print(request.user)
     return render(
         request,
         url, {

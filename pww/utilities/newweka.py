@@ -1,6 +1,9 @@
 import weka.core.jvm as jvm
 import weka.core.converters as conv
 
+from weka.classifiers import Classifier, Evaluation
+from weka.core.classes import Random
+from weka.core.dataset import Instances
 from weka.core.packages import install_missing_packages, LATEST
 from weka.filters import Filter
 
@@ -29,16 +32,13 @@ def get_race_key(arff_file):
 
 def example(data):
     print("example")
+
     classifier = Classifier(classname="weka.classifiers.trees.J48")
 
     # randomize data
     folds = 10
     seed = 1
-    rnd = Random(seed)
-    rand_data = Instances.copy_instances(data)
-    rand_data.randomize(rnd)
-    if rand_data.class_attribute.is_nominal:
-        rand_data.stratify(folds)
+    rand_data = randomize_data(data, folds, seed)
 
     # perform cross-validation and add predictions
     predicted_data = None
@@ -80,38 +80,48 @@ def example(data):
     print("")
     print(predicted_data)
 
+def randomize_data(data, folds, seed):
+
+    rnd = Random(seed)
+    rand_data = Instances.copy_instances(data)
+    rand_data.randomize(rnd)
+    if rand_data.class_attribute.is_nominal:
+        rand_data.stratify(folds)
+    return rand_data
+
+
+def get_scheduled_data(arff_data):
+    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+    loaded_data = loader.load_file(arff_data)
+    anonymous_data = remove_uuid(loaded_data)
+    scheduled_data = nominalize(anonymous_data)
+    scheduled_data.class_is_last()
+    return scheduled_data
 
 
 def build_scheduled_data(arff_data):
-    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    loaded_data = loader.load_file(arff_data)
-    print("boo")
-    raise SystemExit(0)
-    # FORWARD PROGRESS
-    scheduled_data = remove_uuid(loaded_data)
-    scheduled_data = nominalize(scheduled_data)
-    scheduled_data.class_is_last()
+    scheduled_data = get_scheduled_data(arff_data)
+
     # print(scheduled_data)
     # New
-    print("Stop here")
     example(scheduled_data)
+    print("FORWARD PROGRESS")
     raise SystemExit(0)
-
-    search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
-    evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
-
-    "weka.attributeSelection.WrapperSubsetEval -B"
-
-    attsel = AttributeSelection()
-    attsel.search(search)
-    attsel.evaluator(evaluator)
-    attsel.select_attributes(scheduled_data)
-
-
-    print("# attributes: " + str(attsel.number_attributes_selected))
-    print("attributes: " + str(attsel.selected_attributes))
-    print("result string:\n" + attsel.results_string)
-    return scheduled_data
+    # search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
+    # evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
+    #
+    # "weka.attributeSelection.WrapperSubsetEval -B"
+    #
+    # attsel = AttributeSelection()
+    # attsel.search(search)
+    # attsel.evaluator(evaluator)
+    # attsel.select_attributes(scheduled_data)
+    #
+    #
+    # print("# attributes: " + str(attsel.number_attributes_selected))
+    # print("attributes: " + str(attsel.selected_attributes))
+    # print("result string:\n" + attsel.results_string)
+    # return scheduled_data
 
 
 def remove_uuid(data):
