@@ -164,7 +164,6 @@ def get_dollar_amount(string):
                 return float(stripped.replace("$", "").replace(",", ""))
             except:
                 print("get_dollar_amt: couldnt float {}".format(string))
-                pass
     else:
         return 0.0
 
@@ -269,7 +268,6 @@ def is_grade(grade):
     return Grade.objects.filter(name=grade.upper()).exists()
 
 def get_race_setting(raw_setting):
-    print("Raw setting: {}".format(raw_setting))
     setting = {
         "grade": None,
         "distance": None,
@@ -293,7 +291,6 @@ def get_race_setting(raw_setting):
     return setting
 
 def print_exotic_bets(exotic_bets):
-    print("\nExotic Wagers:")
     for exotic_bet in exotic_bets:
         string = "{}\t"
         if len(exotic_bet["name"]) < 8:
@@ -302,11 +299,11 @@ def print_exotic_bets(exotic_bets):
         if len(exotic_bet["posts"]) < 4:
             string += "\t"
         string += "\t{}"
-        print(string.format(
-            exotic_bet["name"],
-            exotic_bet["posts"],
-            exotic_bet["payout"]
-        ))
+        # print(string.format(
+        #     exotic_bet["name"],
+        #     exotic_bet["posts"],
+        #     exotic_bet["payout"]
+        # ))
     print("\n")
 
 def print_race_setting(raw_setting, race_number, race_setting):
@@ -383,7 +380,6 @@ def get_single_bets(bet_rows):
     while i < len(bet_rows):
         current_row = bet_rows[i]
         dogname = current_row[1].text.strip().lower()
-        print(dogname)
         if dogname in dogname_corrections:
             dogname = dogname_corrections[dogname]
         single_bets.append({
@@ -396,7 +392,6 @@ def get_single_bets(bet_rows):
     return single_bets
 
 def save_single_bets(race, single_bets):
-    print("save single bets")
     for each in single_bets:
         participant = get_participant(
             race,
@@ -409,7 +404,6 @@ def save_single_bets(race, single_bets):
 
 
 def process_race_data(race, race_data):
-    print("process race data")
     for each in race_data:
         dog = get_dog(each["dogname"])
         participant = get_participant(race, dog)
@@ -460,10 +454,10 @@ def handle_race(race, race_setting, race_data, single_bets, exotic_bets):
         build_race_metrics(race)
 
 def single_url_test(results_url, tds, chart):
-    print("\n{}\n".format(results_url))
+    # print("\n{}\n".format(results_url))
     if not "GWD$20180915S05" in results_url:
         raw_setting = get_raw_setting(tds)
-        print("Raw Setting: {}\n".format(raw_setting))
+        # print("Raw Setting: {}\n".format(raw_setting))
         if raw_setting:
             race_setting = get_race_setting(raw_setting)
             race_number = results_url[-2:]
@@ -471,28 +465,27 @@ def single_url_test(results_url, tds, chart):
                 page_rows = get_node_elements(results_url, '//tr')
                 race_rows = get_rows_of_length(page_rows, 10)
                 bet_rows = get_rows_of_length(page_rows, 5)
-                print("Bet rows length: {}".format(len(bet_rows)))
+                # print("Bet rows length: {}".format(len(bet_rows)))
                 single_bets = None
                 if len(bet_rows) > 1:
                     single_bets = get_single_bets(bet_rows)
                 exotic_bets = get_exotic_bets(results_url)
-                print("Exotic bets length: {}".format(len(exotic_bets)))
-                print("Race rows:")
+                # print("Exotic bets length: {}".format(len(exotic_bets)))
+                # print("Race rows:")
                 race_data = get_race_data(race_rows)
                 # print("Race data: {}".format(race_data))
                 # print(race_data)
                 # print("Chart: {}".format(chart))
                 if chart:
-                    print("has chart")
+                    # print("has chart")
                     program = chart.program
-                    print("Program: {}".format(program))
+                    # print("Program: {}".format(program))
                     if race_number.isnumeric():
                         race = get_race(chart, race_number)
                         if len(race_data) > 0:
                             handle_race(race, race_setting, race_data, single_bets, exotic_bets)
                     else:
                         print("race number not numeric")
-                    print("DONE")
                 else:
                     print_race_setting(raw_setting, race_number, race_setting)
                     print_single_bets(single_bets)
@@ -501,7 +494,7 @@ def single_url_test(results_url, tds, chart):
                     if len(race_data) > 0:
                         print_race_data(race_data)
         else:
-            print("No raw setting")
+            pass
 
 
 

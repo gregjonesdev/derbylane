@@ -4,7 +4,7 @@ import datetime
 
 from pww.models import Prediction
 from pww.utilities.weka import evaluate_all
-from rawdat.models import Program, Venue, Bet
+from rawdat.models import Program, Venue, Bet, Participant
 
 class Command(BaseCommand):
 
@@ -72,6 +72,7 @@ class Command(BaseCommand):
             return 0
 
 
+
     def handle(self, *args, **options):
         today = datetime.datetime.now()
         yesterday = (today - datetime.timedelta(days=1)).date()
@@ -80,12 +81,38 @@ class Command(BaseCommand):
         arff_list = []
         # venue_metrics = Metric.objects.filter(
         #     participant__race__chart__program__venue__code=venue_code)
+        data_row = "[{}] {}\t{}\t{}"
+
+        column_names = [
+            "Post",
+            "Dog Name",
+            "Finish",
+            "LibSVM"
+        ]
 
 
-        for program in Program.objects.filter(date=yesterday):
-            print(program.venue)
+        for program in Program.objects.filter(date=yesterday, venue__code="WD"):
+            print("{}".format(program.venue))
+            print("--------------------------------------")
             for chart in program.chart_set.all():
-                print(chart.get_time_display())
+                print("\n{}".format(chart.get_time_display()))
+                for race in chart.race_set.all():
+                    if race.has_predictions():
+                        print("Race {}".format(race.number))
+                        print(race.has_predictions())
+                        for participant in race.participant_set.all():
+                            try:
+                                # print(participant.prediction)
+                                print(data_row.format(
+                                    participant.post,
+                                    participant.dog.name[:6],
+                                    participant.final,
+                                    participant.prediction.lib_svm))
+                            except:
+                                pass
+
+                        print("\n")
+
 
 
 

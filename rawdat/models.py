@@ -379,8 +379,10 @@ class Race(CoreModel):
 
         for participant in self.participant_set.all():
             try:
-                if participant.prediction.get_bets():
-                    return participant.prediction.j48
+                if participant.prediction:
+                    return True
+                # if participant.prediction.get_bets():
+                    # return participant.prediction.j48
             except:
                 pass
 

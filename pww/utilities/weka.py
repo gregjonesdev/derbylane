@@ -72,9 +72,10 @@ def evaluate_single(arff_file, analysis_file):
 def predict_single(arff_file):
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
     scheduled_data = build_scheduled_data(arff_file)
-    model_names = ["libsvm", "J48_C0_75"]
-    # if race_key == "WD_548_AA":
-    predict(race_key, arff_file, scheduled_data, model_names)
+    # model_names = ["libsvm", "J48_C0_75"]
+    model_names = ["libsvm"]
+    race_key == "WD_548_AA"
+    make_prediction(race_key, arff_file, scheduled_data, model_names)
 
 def build_scheduled_data(arff_data):
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
@@ -82,25 +83,32 @@ def build_scheduled_data(arff_data):
     scheduled_data = remove_uuid(loaded_data)
     scheduled_data = nominalize(scheduled_data)
     scheduled_data.class_is_last()
-    # print(scheduled_data)
+    print(scheduled_data)
+
+
+
     # New
-    example(scheduled_data)
-    raise SystemExit(0)
-
-    search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
-    evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
-
-    "weka.attributeSelection.WrapperSubsetEval -B"
-
-    attsel = AttributeSelection()
-    attsel.search(search)
-    attsel.evaluator(evaluator)
-    attsel.select_attributes(scheduled_data)
+    # example(scheduled_data)
 
 
-    print("# attributes: " + str(attsel.number_attributes_selected))
-    print("attributes: " + str(attsel.selected_attributes))
-    print("result string:\n" + attsel.results_string)
+
+
+    #
+    #
+    # search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
+    # evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
+    #
+    # "weka.attributeSelection.WrapperSubsetEval -B"
+    #
+    # attsel = AttributeSelection()
+    # attsel.search(search)
+    # attsel.evaluator(evaluator)
+    # attsel.select_attributes(scheduled_data)
+    #
+    #
+    # print("# attributes: " + str(attsel.number_attributes_selected))
+    # print("attributes: " + str(attsel.selected_attributes))
+    # print("result string:\n" + attsel.results_string)
     return scheduled_data
 
 def example(data):
@@ -285,8 +293,9 @@ def get_filtered_predicitions(participant_uuids):
     )
 
 
-def predict(race_key, arff_data, scheduled_data, model_names):
+def make_prediction(race_key, arff_data, scheduled_data, model_names):
     prediction_object = get_prediction_object(arff_data)
+
     prediction_object['predictions'] = {}
     # pp = pprint.PrettyPrinter(indent=4)
     # pp.pprint(prediction_object)

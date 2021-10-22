@@ -14,10 +14,8 @@ from pww.utilities.metrics import build_race_metrics
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        self.stdout.write("Starting Get Results script..")
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
-        print(yesterday)
         for race in Race.objects.filter(
             chart__program__date__range=(
                 yesterday, today)):
@@ -33,7 +31,6 @@ class Command(BaseCommand):
                 date.day,
                 time,
                 race.number)
-            print(program.date)
             tds = get_node_elements(results_url, '//td')
             single_url_test(results_url, tds, chart)
 

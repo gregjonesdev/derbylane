@@ -64,8 +64,6 @@ def create_quiniela(race, posts, cost, payout):
 
 
 def get_participant_from_post(race, post):
-    print(race)
-    print(post)
     try:
         return Participant.objects.get(
             race=race,
@@ -77,7 +75,6 @@ def get_participant_from_post(race, post):
 
 
 def create_exacta(race, posts, cost, payout):
-    print("create exacta")
     if posts[0].isnumeric() and posts[1].isnumeric():
         win = get_participant_from_post(race, int(posts[0]))
         place = get_participant_from_post(race, int(posts[1]))
@@ -105,7 +102,6 @@ def create_exacta(race, posts, cost, payout):
 
 
 def create_trifecta(race, posts, cost, payout):
-    print("create trifecta")
     if posts[0].isnumeric() and posts[1].isnumeric() and posts[2].isnumeric():
         win = get_participant_from_post(race, int(posts[0]))
         place = get_participant_from_post(race, int(posts[1]))
