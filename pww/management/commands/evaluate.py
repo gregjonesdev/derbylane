@@ -71,6 +71,9 @@ class Command(BaseCommand):
         except:
             return 0
 
+    def evaluate_bet_cutoffs():
+        pass
+
 
 
     def handle(self, *args, **options):
@@ -86,6 +89,20 @@ class Command(BaseCommand):
         for program in Program.objects.filter(date=yesterday, venue__code="WD"):
             print("{}".format(program.venue))
             print("--------------------------------------")
+
+
+            libsvm_count = {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 0,
+                "6": 0,
+                "7": 0,
+                "8": 0
+            }
+
+
             for chart in program.chart_set.all():
                 print("\n{}".format(chart.get_time_display()))
                 for race in chart.race_set.all():
@@ -100,8 +117,14 @@ class Command(BaseCommand):
                             "P",
                             "S"))
                         for participant in race.participant_set.all():
+                            prediction = None
                             try:
-                                # print(participant.prediction)
+                                prediction = participant.prediction
+                            except:
+                                pass
+                            if prediction:
+                                if prediction.lib_svm:
+                                    libsvm_count[str(prediction.lib_svm)] += 1
                                 win = self.get_win_return(participant, 2)
                                 place = self.get_place_return(participant, 2)
                                 show = self.get_show_return(participant, 2)
@@ -109,14 +132,14 @@ class Command(BaseCommand):
                                     "[{}]".format(participant.post),
                                     participant.dog.name[:6],
                                     "\t{}".format(participant.final),
-                                    participant.prediction.lib_svm,
+                                    prediction.lib_svm,
                                     win,
                                     place,
                                     show))
-                            except:
-                                pass
-
                         print("\n")
+
+            for each in libsvm_count:
+                print("{}: {}".format(each, libsvm_count[each]))
 
 
 
