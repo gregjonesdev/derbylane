@@ -102,6 +102,7 @@ class Command(BaseCommand):
                 "8": 0
             }
 
+            total_predicitions = 0
 
             for chart in program.chart_set.all():
                 print("\n{}".format(chart.get_time_display()))
@@ -124,6 +125,7 @@ class Command(BaseCommand):
                                 pass
                             if prediction:
                                 if prediction.lib_svm:
+                                    total_predicitions += 1
                                     libsvm_count[str(prediction.lib_svm)] += 1
                                 win = self.get_win_return(participant, 2)
                                 place = self.get_place_return(participant, 2)
@@ -138,8 +140,11 @@ class Command(BaseCommand):
                                     show))
                         print("\n")
 
-            for each in libsvm_count:
-                print("{}: {}".format(each, libsvm_count[each]))
+            if total_predicitions > 0:
+                print("LibSVM Breakdown")
+                for each in libsvm_count:
+                    current_count = libsvm_count[each]
+                    print("{}\t\t\t{}\t\t{}%".format(each, current_count, int(current_count*100/total_predicitions)))
 
 
 
