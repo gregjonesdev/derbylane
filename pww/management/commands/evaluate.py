@@ -81,15 +81,7 @@ class Command(BaseCommand):
         arff_list = []
         # venue_metrics = Metric.objects.filter(
         #     participant__race__chart__program__venue__code=venue_code)
-        data_row = "[{}] {}\t{}\t{}"
-
-        column_names = [
-            "Post",
-            "Dog Name",
-            "Finish",
-            "LibSVM"
-        ]
-
+        data_row = "{} {}\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
         for program in Program.objects.filter(date=yesterday, venue__code="WD"):
             print("{}".format(program.venue))
@@ -99,15 +91,28 @@ class Command(BaseCommand):
                 for race in chart.race_set.all():
                     if race.has_predictions():
                         print("Race {}".format(race.number))
-                        print(race.has_predictions())
+                        print(data_row.format(
+                            "Participant",
+                            "\t",
+                            "Finish",
+                            "LibSVM",
+                            "W",
+                            "P",
+                            "S"))
                         for participant in race.participant_set.all():
                             try:
                                 # print(participant.prediction)
+                                win = self.get_win_return(participant, 2)
+                                place = self.get_place_return(participant, 2)
+                                show = self.get_show_return(participant, 2)
                                 print(data_row.format(
-                                    participant.post,
+                                    "[{}]".format(participant.post),
                                     participant.dog.name[:6],
-                                    participant.final,
-                                    participant.prediction.lib_svm))
+                                    "\t{}".format(participant.final),
+                                    participant.prediction.lib_svm,
+                                    win,
+                                    place,
+                                    show))
                             except:
                                 pass
 
