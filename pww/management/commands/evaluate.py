@@ -78,8 +78,11 @@ class Command(BaseCommand):
     def analyze_object(self, prediction_obj):
         for key in prediction_obj:
             print(key)
+            print("{}\t{}\t\t{}\t\t{}\t\t{}".format("Prediction", "Count", "Win", "Place", "Show"))
+            target_obj = prediction_obj[key]
             for subkey in sorted(prediction_obj[key].keys()):
-                print("{}\t{}\t{}".format(subkey, "1", "3"))
+                prediction_list = target_obj[subkey]
+                print("{}\t\t{}\t\t{}".format(subkey, len(prediction_list), "?", ))
             print("\n")
 
 
