@@ -99,7 +99,14 @@ class Command(BaseCommand):
                 bet_returns["show"] += self.get_value(straight_wager.show)
         return bet_returns
 
+    def get_return_per_bet(self, money, bet_count):
+        if bet_count > 0:
+            return "${}".format(round(money/bet_count, 2))
+        else:
+            return "$0"
+
     def analyze_object(self, prediction_obj):
+        print("\t\t\t\t\t{}".format("Return Per Bet"))
         for key in prediction_obj:
             print(key)
             print("{}\t{}\t\t{}\t\t{}\t\t{}".format("Prediction", "Count", "Win", "Place", "Show"))
@@ -107,7 +114,13 @@ class Command(BaseCommand):
             for subkey in sorted(prediction_obj[key].keys()):
                 participant_list = target_obj[subkey]
                 bet_returns = self.get_bet_returns(participant_list)
-                print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(subkey, len(participant_list), bet_returns["win"], bet_returns["place"], bet_returns["show"]))
+                bet_count = len(participant_list)
+                print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+                    subkey,
+                    bet_count,
+                    self.get_return_per_bet(bet_returns["win"], bet_count),
+                    self.get_return_per_bet(bet_returns["place"], bet_count),
+                    self.get_return_per_bet(bet_returns["show"], bet_count)))
             print("\n")
 
 
