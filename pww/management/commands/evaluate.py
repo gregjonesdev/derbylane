@@ -75,14 +75,28 @@ class Command(BaseCommand):
         pass
 
 
+    def get_bet_returns(self, participant_list):
+        bet_returns = {
+            "win": 0,
+            "place": 0,
+            "show": 0
+        }
+        for participant in participant_list:
+            try:
+                print(participant.straight_wager.win)
+            except:
+                pass
+        return bet_returns
+
     def analyze_object(self, prediction_obj):
         for key in prediction_obj:
             print(key)
             print("{}\t{}\t\t{}\t\t{}\t\t{}".format("Prediction", "Count", "Win", "Place", "Show"))
             target_obj = prediction_obj[key]
             for subkey in sorted(prediction_obj[key].keys()):
-                prediction_list = target_obj[subkey]
-                print("{}\t\t{}\t\t{}".format(subkey, len(prediction_list), "?", ))
+                participant_list = target_obj[subkey]
+                bet_returns = self.get_bet_returns(participant_list)
+                print("{}\t\t{}\t\t{}".format(subkey, len(participant_list), "?", ))
             print("\n")
 
 
