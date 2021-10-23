@@ -79,28 +79,25 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         today = datetime.datetime.now()
         yesterday = (today - datetime.timedelta(days=1)).date()
-
-        target_day = yesterday
-        arff_list = []
         # venue_metrics = Metric.objects.filter(
         #     participant__race__chart__program__venue__code=venue_code)
-        data_row = "{} {}\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
+        # data_row = "{} {}\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
         # for program in Program.objects.filter(venue__code="WD"):
         #     print("{}".format(program.venue))
         #     print("--------------------------------------")
 
 
-        libsvm_count = {
-            "1": 0,
-            "2": 0,
-            "3": 0,
-            "4": 0,
-            "5": 0,
-            "6": 0,
-            "7": 0,
-            "8": 0
-        }
+        # libsvm_count = {
+        #     "1": 0,
+        #     "2": 0,
+        #     "3": 0,
+        #     "4": 0,
+        #     "5": 0,
+        #     "6": 0,
+        #     "7": 0,
+        #     "8": 0
+        # }
 
         race_predictions = {}
 
