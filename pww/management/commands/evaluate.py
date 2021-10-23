@@ -75,6 +75,13 @@ class Command(BaseCommand):
         pass
 
 
+    def analyze_object(self, prediction_obj):
+        for key in prediction_obj:
+            print(key)
+            for subkey in sorted(prediction_obj[key].keys()):
+                print("{}\t{}\t{}".format(subkey, "1", "3"))
+            print("\n")
+
 
     def handle(self, *args, **options):
         today = datetime.datetime.now()
@@ -181,7 +188,7 @@ class Command(BaseCommand):
             #         print("{}\t\t\t{}\t\t{}%".format(each, current_count, int(current_count*100/total_predicitions)))
             #
             #
-            print(race_predictions)
+            self.analyze_object(race_predictions)
 
 
 
