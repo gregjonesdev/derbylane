@@ -55,7 +55,7 @@ class Command(BaseCommand):
             amount = money/bet_count
             if amount > 0:
                 return "${}".format(round(amount, 2))
-        return "  "
+        return "-----"
 
     def analyze_object(self, prediction_obj):
         print("\t\t\t\t\t{}".format("Winnings Per $2 Bet"))
