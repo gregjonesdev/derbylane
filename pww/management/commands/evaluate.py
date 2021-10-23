@@ -102,13 +102,44 @@ class Command(BaseCommand):
                 "8": 0
             }
 
+            empty_obj = {
+                "1": [],
+                "2": [],
+                "3": [],
+                "4": [],
+                "5": [],
+                "6": [],
+                "7": [],
+                "8": []
+            }
+
             total_predicitions = 0
+
+            prediction_obj = {}
+
+
+
+
+
+
+            race_predictions = {}
+
+
+
+
+
+
+
 
             for chart in program.chart_set.all():
                 print("\n{}".format(chart.get_time_display()))
                 for race in chart.race_set.all():
                     if race.has_predictions():
-                        print("Race {}".format(race.number))
+                        grade_name = race.grade.name
+                        race_key = "{}_{}".format(program.venue.code, grade_name)
+                        if not race_key in race_predictions.keys():
+                            race_predictions[race_key] = {}
+                        print("Race {} | {}".format(race.number, grade_name))
                         print(data_row.format(
                             "Participant",
                             "\t",
@@ -126,6 +157,9 @@ class Command(BaseCommand):
                             if prediction:
                                 if prediction.lib_svm:
                                     total_predicitions += 1
+                                    if not prediction.lib_svm in race_predictions[race_key].keys():
+                                        race_predictions[race_key][prediction.lib_svm] = []
+                                    race_predictions[race_key][prediction.lib_svm].append(participant)
                                     libsvm_count[str(prediction.lib_svm)] += 1
                                 win = self.get_win_return(participant, 2)
                                 place = self.get_place_return(participant, 2)
@@ -140,14 +174,14 @@ class Command(BaseCommand):
                                     show))
                         print("\n")
 
-            if total_predicitions > 0:
-                print("LibSVM Breakdown")
-                for each in libsvm_count:
-                    current_count = libsvm_count[each]
-                    print("{}\t\t\t{}\t\t{}%".format(each, current_count, int(current_count*100/total_predicitions)))
-
-
-
+            # if total_predicitions > 0:
+            #     print("LibSVM Breakdown")
+            #     for each in libsvm_count:
+            #         current_count = libsvm_count[each]
+            #         print("{}\t\t\t{}\t\t{}%".format(each, current_count, int(current_count*100/total_predicitions)))
+            #
+            #
+            print(race_predictions)
 
 
 
