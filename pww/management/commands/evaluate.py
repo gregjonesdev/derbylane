@@ -61,7 +61,7 @@ class Command(BaseCommand):
         print("\t\t\t\t\t{}".format("Winnings Per $2 Bet"))
         for key in prediction_obj:
             print(key)
-            print("{}\t{}\t\t{}\t\t{}\t\t{}".format("Prediction", "Count", "Win", "Place", "Show"))
+            print("{}\t{}\t\t{}\t\t{}\t\t{}".format("Lib SVM", "Count", "Win", "Place", "Show"))
             target_obj = prediction_obj[key]
             for subkey in sorted(prediction_obj[key].keys()):
                 participant_list = target_obj[subkey]
