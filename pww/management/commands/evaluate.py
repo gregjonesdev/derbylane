@@ -74,6 +74,12 @@ class Command(BaseCommand):
     def evaluate_bet_cutoffs():
         pass
 
+    def get_value(self, wager):
+        if wager:
+            return wager
+        else:
+            return 0
+
 
     def get_bet_returns(self, participant_list):
         bet_returns = {
@@ -82,10 +88,15 @@ class Command(BaseCommand):
             "show": 0
         }
         for participant in participant_list:
+            straight_wager = None
             try:
-                print(participant.straight_wager.win)
+                straight_wager = participant.straight_wager
             except:
                 pass
+            if straight_wager:
+                bet_returns["win"] += self.get_value(straight_wager.win)
+                bet_returns["place"] += self.get_value(straight_wager.place)
+                bet_returns["show"] += self.get_value(straight_wager.show)
         return bet_returns
 
     def analyze_object(self, prediction_obj):
@@ -96,7 +107,7 @@ class Command(BaseCommand):
             for subkey in sorted(prediction_obj[key].keys()):
                 participant_list = target_obj[subkey]
                 bet_returns = self.get_bet_returns(participant_list)
-                print("{}\t\t{}\t\t{}".format(subkey, len(participant_list), "?", ))
+                print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(subkey, len(participant_list), bet_returns["win"], bet_returns["place"], bet_returns["show"]))
             print("\n")
 
 
