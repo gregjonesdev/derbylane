@@ -81,8 +81,8 @@ class Command(BaseCommand):
             return 0
 
 
-    def get_bet_returns(self, participant_list):
-        bet_returns = {
+    def get_bet_winnings(self, participant_list):
+        bet_winnings = {
             "win": 0,
             "place": 0,
             "show": 0
@@ -94,33 +94,34 @@ class Command(BaseCommand):
             except:
                 pass
             if straight_wager:
-                bet_returns["win"] += self.get_value(straight_wager.win)
-                bet_returns["place"] += self.get_value(straight_wager.place)
-                bet_returns["show"] += self.get_value(straight_wager.show)
-        return bet_returns
+                bet_winnings["win"] += self.get_value(straight_wager.win)
+                bet_winnings["place"] += self.get_value(straight_wager.place)
+                bet_winnings["show"] += self.get_value(straight_wager.show)
+        return bet_winnings
 
-    def get_return_per_bet(self, money, bet_count):
+    def get_winnings_per_bet(self, money, bet_count):
         if bet_count > 0:
-            return "${}".format(round(money/bet_count, 2))
-        else:
-            return "$0"
+            amount = money/bet_count
+            if amount > 2:
+                return "${}".format(round(amount, 2))
+        return "  "
 
     def analyze_object(self, prediction_obj):
-        print("\t\t\t\t\t{}".format("Return Per Bet"))
+        print("\t\t\t\t\t{}".format("Winnings Per $2 Bet"))
         for key in prediction_obj:
             print(key)
             print("{}\t{}\t\t{}\t\t{}\t\t{}".format("Prediction", "Count", "Win", "Place", "Show"))
             target_obj = prediction_obj[key]
             for subkey in sorted(prediction_obj[key].keys()):
                 participant_list = target_obj[subkey]
-                bet_returns = self.get_bet_returns(participant_list)
+                bet_winnings = self.get_bet_winnings(participant_list)
                 bet_count = len(participant_list)
                 print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
                     subkey,
                     bet_count,
-                    self.get_return_per_bet(bet_returns["win"], bet_count),
-                    self.get_return_per_bet(bet_returns["place"], bet_count),
-                    self.get_return_per_bet(bet_returns["show"], bet_count)))
+                    self.get_winnings_per_bet(bet_winnings["win"], bet_count),
+                    self.get_winnings_per_bet(bet_winnings["place"], bet_count),
+                    self.get_winnings_per_bet(bet_winnings["show"], bet_count)))
             print("\n")
 
 
