@@ -72,8 +72,9 @@ def evaluate_single(arff_file, analysis_file):
 def predict_single(arff_file):
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
     scheduled_data = build_scheduled_data(arff_file)
-    # model_names = ["libsvm", "J48_C0_75"]
-    model_names = ["libsvm"]
+    model_names = ["libsvm", "J48_C0_75"]
+    # model_names = ["libsvm"]
+    # model_names = ["J48_C0_75"]
     race_key == "WD_548_AA"
     make_prediction(race_key, arff_file, scheduled_data, model_names)
 
@@ -299,11 +300,11 @@ def make_prediction(race_key, arff_data, scheduled_data, model_names):
     prediction_object['predictions'] = {}
     # pp = pprint.PrettyPrinter(indent=4)
     # pp.pprint(prediction_object)
-
+    print(scheduled_data)
     for model_name in model_names:
         model = None
+        race_key = "WD_548_AA"
         filename = "weka_models/{}_{}.model".format(race_key, model_name)
-
         try:
             model = Classifier(jobject=serialization.read(filename))
         except:
@@ -313,6 +314,8 @@ def make_prediction(race_key, arff_data, scheduled_data, model_names):
             model,
             scheduled_data,
             prediction_object["lines"])
+    print(prediction_object)
+
     save_all_predictions(
         prediction_object['uuids'],
         prediction_object['predictions'])
@@ -320,6 +323,7 @@ def make_prediction(race_key, arff_data, scheduled_data, model_names):
 
 def save_all_predictions(uuids, predictions):
     print("save all predictions")
+    print(len(uuids))
     for uuid in uuids:
         save_predictions(uuid, predictions, uuids.index(uuid))
 
@@ -550,16 +554,23 @@ def get_prediction(participant):
     return pred
 
 def save_predictions(participant_id, predictions, index):
+    print("save predictions")
     participant = Participant.objects.get(uuid=participant_id)
     pred = get_prediction(participant)
-
-    for prediction in predictions:
-        if 'J48' in prediction:
-            pred.j48 = predictions[prediction][index]
-        elif 'libsvm' in prediction:
-            pred.lib_svm = predictions[prediction][index]
+    print(predictions)
+    print(participant)
+    print(index)
+    for model_name in predictions.keys():
+        print(model_name)
+        if 'J48' in model_name:
+            print("j48")
+            print(predictions[model_name][index])
+            pred.j48 = predictions[model_name][index]
+        elif 'libsvm' in model_name:
+            print("libsvm")
+            print(predictions[model_name][index])
+            pred.lib_svm = predictions[model_name][index]
     pred.save()
-
 
 def get_prediction_object(filename):
     arff_file = open(filename, "r")
@@ -569,10 +580,33 @@ def get_prediction_object(filename):
     }
     i = 0
     for line in arff_file:
+        print(line)
         if len(line) > 100:
             split_line = line.split(",")
-            if split_line[19] == "?\n":
-                prediction_object["lines"].append(i)
-                prediction_object["uuids"].append(split_line[0])
+            prediction_object["lines"].append(i)
+            prediction_object["uuids"].append(split_line[0])
             i += 1
+    print(prediction_object)
     return prediction_object
+
+
+# def get_prediction_object(filename):
+#     arff_file = open(filename, "r")
+#     prediction_object = {
+#         "lines": [],
+#         "uuids": []
+#     }
+#     i = 0
+#     for line in arff_file:
+#         # print(len(line))
+#         if len(line) > 100:
+#             split_line = line.split(",")
+#             print(len(split_line))
+#             print(split_line[19])
+#             if split_line[19] == "?\n":
+#                 prediction_object["lines"].append(i)
+#                 prediction_object["uuids"].append(split_line[0])
+#             i += 1
+#     print(prediction_object)
+#     raise SystemExit(0)
+#     return prediction_object

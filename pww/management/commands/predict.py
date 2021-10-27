@@ -49,7 +49,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         today = datetime.date.today()
-        yesterday = today - datetime.timedelta(days=1)
+        yesterday = today - datetime.timedelta(days=3)
         arff_list = []
         for venue in Venue.objects.filter(is_focused=True):
             print("Building metrics for {}".format(venue))
@@ -65,6 +65,7 @@ class Command(BaseCommand):
                     print("Grade: {}".format(grade_name))
                     graded_metrics = distance_metrics.filter(
                         participant__race__grade__name=grade_name,
+                        participant__race__chart__program__date=yesterday
                     )
                     if len(graded_metrics) > 0:
                         scheduled_metrics = graded_metrics.filter(

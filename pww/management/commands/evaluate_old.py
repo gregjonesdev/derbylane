@@ -1,8 +1,6 @@
-import datetime
-import sys
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
+import datetime
 
 from pww.models import Prediction
 from pww.utilities.weka import evaluate_all
@@ -59,17 +57,12 @@ class Command(BaseCommand):
                 return "${}".format(round(amount, 2))
         return "-----"
 
-
-
-
-    def analyze_object(self, prediction_obj, model_name):
-        print("\nAnalysis of {} model".format(model_name))
+    def analyze_object(self, prediction_obj):
         print("\t\t\t\t\t{}".format("Winnings Per $2 Bet"))
         for key in prediction_obj:
             print(key)
-            print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(" ", "Count", "Win", "Place", "Show"))
+            print("{}\t{}\t\t{}\t\t{}\t\t{}".format("Lib SVM", "Count", "Win", "Place", "Show"))
             target_obj = prediction_obj[key]
-            counts = []
             for subkey in sorted(prediction_obj[key].keys()):
                 participant_list = target_obj[subkey]
                 bet_winnings = self.get_bet_winnings(participant_list)
@@ -82,26 +75,57 @@ class Command(BaseCommand):
                     self.get_winnings_per_bet(bet_winnings["show"], bet_count)))
             print("\n")
 
-    def add_arguments(self, parser):
-        parser.add_argument('--model', type=str)
 
     def handle(self, *args, **options):
-
-        model_name = sys.argv[3]
         today = datetime.datetime.now()
         yesterday = (today - datetime.timedelta(days=1)).date()
+        # venue_metrics = Metric.objects.filter(
+        #     participant__race__chart__program__venue__code=venue_code)
+        # data_row = "{} {}\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
+
+        # for program in Program.objects.filter(venue__code="WD"):
+        #     print("{}".format(program.venue))
+        #     print("--------------------------------------")
+
+
+        # libsvm_count = {
+        #     "1": 0,
+        #     "2": 0,
+        #     "3": 0,
+        #     "4": 0,
+        #     "5": 0,
+        #     "6": 0,
+        #     "7": 0,
+        #     "8": 0
+        # }
 
         race_predictions = {}
+
+            # for chart in program.chart_set.all():
+                # print("\n{}".format(chart.get_time_display()))
+                # for race in chart.race_set.all():
         races_analyzed = Race.objects.filter(
             # chart__program__date=yesterday,
             chart__program__venue__code="WD")
 
+        # for race in races_analyzed:
+        #     print(race)
+        # raise SystemExit(0)
         for race in races_analyzed:
             if race.has_predictions():
                 grade_name = race.grade.name
                 race_key = "{}_{}".format(race.chart.program.venue.code, grade_name)
                 if not race_key in race_predictions.keys():
                     race_predictions[race_key] = {}
+                # print("Race {} | {}".format(race.number, grade_name))
+                # print(data_row.format(
+                #     "Participant",
+                #     "\t",
+                #     "Finish",
+                #     "LibSVM",
+                #     "W",
+                #     "P",
+                #     "S"))
                 for participant in race.participant_set.all():
                     prediction = None
                     try:
@@ -109,15 +133,23 @@ class Command(BaseCommand):
                     except:
                         pass
                     if prediction:
-                        if model_name == "libsvm":
-                            if prediction.lib_svm:
-                                if not prediction.lib_svm in race_predictions[race_key].keys():
-                                    race_predictions[race_key][prediction.lib_svm] = []
-                                race_predictions[race_key][prediction.lib_svm].append(participant)
-                        elif model_name == "j48":
-                            if prediction.j48:
-                                if not prediction.j48 in race_predictions[race_key].keys():
-                                    race_predictions[race_key][prediction.j48] = []
-                                race_predictions[race_key][prediction.j48].append(participant)
-        self.analyze_object(race_predictions, model_name)
-        print("Races Analyzed: {}\n".format(len(races_analyzed)))
+                        if prediction.lib_svm:
+                            if not prediction.lib_svm in race_predictions[race_key].keys():
+                                race_predictions[race_key][prediction.lib_svm] = []
+                            race_predictions[race_key][prediction.lib_svm].append(participant)
+                            # libsvm_count[str(prediction.lib_svm)] += 1
+                        # win = self.get_win_return(participant, 2)
+                        # place = self.get_place_return(participant, 2)
+                        # show = self.get_show_return(participant, 2)
+                        # print(data_row.format(
+                        #     "[{}]".format(participant.post),
+                        #     participant.dog.name[:6],
+                        #     "\t{}".format(participant.final),
+                        #     prediction.lib_svm,
+                        #     win,
+                        #     place,
+                        #     show))
+                # print("\n")
+
+        self.analyze_object(race_predictions)
+        print("Races Analyzed: {}".format(len(races_analyzed)))
