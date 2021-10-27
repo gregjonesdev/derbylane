@@ -90,7 +90,7 @@ class Command(BaseCommand):
         model_name = sys.argv[3]
         today = datetime.datetime.now()
         yesterday = (today - datetime.timedelta(days=1)).date()
-        last_month = (today - datetime.timedelta(days=30)).date()
+        last_month = (today - datetime.timedelta(days=90)).date()
 
         race_predictions = {}
         races_analyzed = Race.objects.filter(
