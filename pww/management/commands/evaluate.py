@@ -90,7 +90,7 @@ class Command(BaseCommand):
         model_name = sys.argv[3]
         today = datetime.datetime.now()
         yesterday = (today - datetime.timedelta(days=1)).date()
-        last_month = (today - datetime.timedelta(days=90)).date()
+        last_month = (today - datetime.timedelta(days=365)).date()
 
         for venue in Venue.objects.filter(is_active=True):
             race_predictions = {}
