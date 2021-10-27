@@ -90,10 +90,11 @@ class Command(BaseCommand):
         model_name = sys.argv[3]
         today = datetime.datetime.now()
         yesterday = (today - datetime.timedelta(days=1)).date()
+        last_month = (today - datetime.timedelta(days=30)).date()
 
         race_predictions = {}
         races_analyzed = Race.objects.filter(
-            # chart__program__date=yesterday,
+            chart__program__date__gte=last_month,
             chart__program__venue__code="WD")
 
         for race in races_analyzed:
