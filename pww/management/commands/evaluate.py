@@ -92,33 +92,36 @@ class Command(BaseCommand):
         yesterday = (today - datetime.timedelta(days=1)).date()
         last_month = (today - datetime.timedelta(days=90)).date()
 
-        race_predictions = {}
-        races_analyzed = Race.objects.filter(
-            chart__program__date__gte=last_month,
-            chart__program__venue__code="WD")
+        for venue in Venue.objects.filter(is_active=True):
+            race_predictions = {}
 
-        for race in races_analyzed:
-            if race.has_predictions():
-                grade_name = race.grade.name
-                race_key = "{}_{}".format(race.chart.program.venue.code, grade_name)
-                if not race_key in race_predictions.keys():
-                    race_predictions[race_key] = {}
-                for participant in race.participant_set.all():
-                    prediction = None
-                    try:
-                        prediction = participant.prediction
-                    except:
-                        pass
-                    if prediction:
-                        if model_name == "libsvm":
-                            if prediction.lib_svm:
-                                if not prediction.lib_svm in race_predictions[race_key].keys():
-                                    race_predictions[race_key][prediction.lib_svm] = []
-                                race_predictions[race_key][prediction.lib_svm].append(participant)
-                        elif model_name == "j48":
-                            if prediction.j48:
-                                if not prediction.j48 in race_predictions[race_key].keys():
-                                    race_predictions[race_key][prediction.j48] = []
-                                race_predictions[race_key][prediction.j48].append(participant)
-        self.analyze_object(race_predictions, model_name)
-        print("Races Analyzed: {}\n".format(len(races_analyzed)))
+
+            races_analyzed = Race.objects.filter(
+                chart__program__date__gte=last_month,
+                chart__program__venue=venue)
+
+            for race in races_analyzed:
+                if race.has_predictions():
+                    grade_name = race.grade.name
+                    race_key = "{}_{}".format(race.chart.program.venue.code, grade_name)
+                    if not race_key in race_predictions.keys():
+                        race_predictions[race_key] = {}
+                    for participant in race.participant_set.all():
+                        prediction = None
+                        try:
+                            prediction = participant.prediction
+                        except:
+                            pass
+                        if prediction:
+                            if model_name == "libsvm":
+                                if prediction.lib_svm:
+                                    if not prediction.lib_svm in race_predictions[race_key].keys():
+                                        race_predictions[race_key][prediction.lib_svm] = []
+                                    race_predictions[race_key][prediction.lib_svm].append(participant)
+                            elif model_name == "j48":
+                                if prediction.j48:
+                                    if not prediction.j48 in race_predictions[race_key].keys():
+                                        race_predictions[race_key][prediction.j48] = []
+                                    race_predictions[race_key][prediction.j48].append(participant)
+            self.analyze_object(race_predictions, model_name)
+            print("Races Analyzed: {}\n".format(len(races_analyzed)))
