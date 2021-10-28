@@ -1,6 +1,7 @@
 
   {% for race in races %}
     {% if race.has_predictions %}
+    {{race}}
     <tr>
       <td width="25%" style="text-align: center; vertical-align: middle; border-right: 1px solid #444">
           <span style="font-size: 2em">{{ race.number }}</span><br>

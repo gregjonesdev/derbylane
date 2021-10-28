@@ -1,40 +1,40 @@
-{% extends 'daily.html'%}
+{% extends '_base.html'%}
 {% load static %}
 
-{% block table %}
+{% block content %}
+  {{ next_day_scheduled }}
+  <div class="card-header" style="border: 1px solid #333; display: flex; flex-flow: row nowrap; justify-content: space-between">
+    <a class="btn btn-small" href="{% url 'frontpage' %}?date={{ previous }}">
+      <img
+        src="{% static 'img/back.png' %}"
+        style="display:inline"
+        height=20
+        class="float-left"
+        alt="back-icon">
+    </a>
+    <span id="date_header" class="text-center" style="font-size: 1.6em; margin:auto; font-style: italic; font-weight: bold">
+      {{ date_header }}
+    </span>
+    {% if next_day_scheduled %}
+    <a class="btn btn-small" href="{% url 'frontpage' %}?date={{ next }}">
+      <img
+        src="{% static 'img/forward.png' %}"
+        style="display:inline"
+        height=20
+        class="float-left"
+        alt="forward-icon">
+    </a>
+    {% else %}
+    <a class="btn btn-small disabled" href="{% url 'frontpage' %}?date={{ next }}">
+      <img
+        src="{% static 'img/forward.png' %}"
+        style="display:inline"
+        height=20
+        class="float-left"
+        alt="forward-icon">
+    </a>
+    {% endif %}
+  </div>
 
-{% include 'betmodal.html' %}
 
-  {% if charts|length %}
-    <div
-      id="charts-holder"
-      class="select-holder">
-      <select
-        class="form-control frontpage-select"
-        id="chart-select"
-        onchange="load_bets();">
-        {% for chart in charts %}
-          <option value="{{ chart.uuid }}">
-            <span >
-              {{ chart.program.venue.kiosk_name }}_{{ chart.kiosk_time }}
-            </span>
-          </option>
-        {% endfor %}
-      </select>
-    </div>
-  {% else %}
-    No charts found.
-  {% endif %}
-
-  <script
-    id="json-chart-data"
-    type="application/json">
-    {
-      "bets_url": "{% url 'load_bets' %}",
-      "results_url": "{% url 'results' %}"
-    }
-  </script>
-
-  <script src="{% static 'js/frontpage.js' %}"></script>
-
-{% endblock table %}
+{% endblock content %}

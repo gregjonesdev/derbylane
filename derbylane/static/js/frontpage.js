@@ -3,9 +3,6 @@ const chart_json_data = JSON.parse(text_content)
 const input = document.getElementById("target_date")
 const modal = document.getElementById("bet-modal")
 
-if (document.getElementById("charts-holder")) {
-}
-
 load_bets = () => {
   const chart_select = document.getElementById("chart-select")
   if (chart_select) {

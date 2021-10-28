@@ -41,7 +41,12 @@ class FrontPage(OTPRequiredMixin, View):
             date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
         else:
             date_obj = localdate()
+        self.context["previous"] = (date_obj - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+        next_day = date_obj + datetime.timedelta(days=1)
+        self.context["next"] = next_day.strftime("%Y-%m-%d")
+        self.context["next_day_scheduled"] = Program.objects.filter(date=next_day).exists()
         self.context["date_header"] = date_obj.strftime("%A, %B %-d")
+        self.context["is_past"] = localdate() > date_obj
         self.context["datestring"] = datestring
         self.context["charts"] = Chart.objects.filter(program__date=date_obj)
         return render(request, self.template_name, self.context)
