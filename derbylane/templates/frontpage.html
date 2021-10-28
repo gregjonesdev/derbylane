@@ -2,9 +2,12 @@
 {% load static %}
 
 {% block content %}
-  {{ next_day_scheduled }}
-  <div class="card-header" style="border: 1px solid #333; display: flex; flex-flow: row nowrap; justify-content: space-between">
-    <a class="btn btn-small" href="{% url 'frontpage' %}?date={{ previous }}">
+  <div
+    class="card-header" 
+    style="border: 1px solid #333; display: flex; flex-flow: row nowrap; justify-content: space-between">
+    <a
+      class="btn btn-small" 
+      href="{% url 'frontpage' %}?date={{ previous }}">
       <img
         src="{% static 'img/back.png' %}"
         style="display:inline"
@@ -12,11 +15,16 @@
         class="float-left"
         alt="back-icon">
     </a>
-    <span id="date_header" class="text-center" style="font-size: 1.6em; margin:auto; font-style: italic; font-weight: bold">
+    <span
+      id="date_header"
+      class="text-center"
+      style="font-size: 1.6em; margin:auto; font-style: italic; font-weight: bold">
       {{ date_header }}
     </span>
     {% if next_day_scheduled %}
-    <a class="btn btn-small" href="{% url 'frontpage' %}?date={{ next }}">
+    <a
+      class="btn btn-small"
+      href="{% url 'frontpage' %}?date={{ next }}">
       <img
         src="{% static 'img/forward.png' %}"
         style="display:inline"
@@ -25,7 +33,9 @@
         alt="forward-icon">
     </a>
     {% else %}
-    <a class="btn btn-small disabled" href="{% url 'frontpage' %}?date={{ next }}">
+    <a
+      class="btn btn-small disabled"
+      href="{% url 'frontpage' %}?date={{ next }}">
       <img
         src="{% static 'img/forward.png' %}"
         style="display:inline"
