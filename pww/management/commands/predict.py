@@ -75,4 +75,5 @@ class Command(BaseCommand):
                             arff_list.append(self.create_arff(
                                 "arff/{}.arff".format(race_key),
                                 graded_metrics, today))
+
         predict_all(arff_list)

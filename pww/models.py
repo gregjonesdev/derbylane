@@ -176,7 +176,9 @@ class Prediction(CoreModel):
             )
 
     def get_bets(self):
-        if self.j48 == 2:
-            return "S"
-        elif self.j48 == 1:
-            return "PS"
+        if self.lib_svm == 1:
+            return "P"
+        # if self.j48 == 2:
+        #     return "S"
+        # elif self.j48 == 1:
+        #     return "PS"

@@ -116,6 +116,7 @@ class ResultsView(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
+        print("Results view")
         try:
             target_date = datetime.datetime.fromisoformat(
                 request.GET.get("date"))
@@ -127,7 +128,6 @@ class ResultsView(OTPRequiredMixin, View):
         self.context["bets"] = bets
         self.context["day"] = target_date.strftime("%A")
         self.context["date"] = target_date.strftime("%Y-%m-%d")
-        print("here")
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):

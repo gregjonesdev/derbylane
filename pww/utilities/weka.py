@@ -300,7 +300,6 @@ def make_prediction(race_key, arff_data, scheduled_data, model_names):
     prediction_object['predictions'] = {}
     # pp = pprint.PrettyPrinter(indent=4)
     # pp.pprint(prediction_object)
-    print(scheduled_data)
     for model_name in model_names:
         model = None
         race_key = "WD_548_AA"
@@ -314,7 +313,6 @@ def make_prediction(race_key, arff_data, scheduled_data, model_names):
             model,
             scheduled_data,
             prediction_object["lines"])
-    print(prediction_object)
 
     save_all_predictions(
         prediction_object['uuids'],

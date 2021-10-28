@@ -31,12 +31,12 @@ def buildURL(object_name):
 
 urlpatterns = [
     url(r'', include(tf_urls)),
+    # url(
+    #     r'^$',
+    #     Welcome.as_view(),
+    #     name='welcome'),
     url(
         r'^$',
-        Welcome.as_view(),
-        name='welcome'),
-    url(
-        r'^frontpage/$',
         FrontPage.as_view(),
         name='frontpage'),
     url(

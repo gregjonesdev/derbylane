@@ -1,0 +1,21 @@
+{% extends '_base.html'%}
+{% block content %}
+  <div class="card-header" style="border: 1px solid #333; ">
+    <span id="date_header" class="text-center" style="font-size: 1.6em; font-style: italic; font-weight: bold">
+      {{ date_header }}
+    </span>
+    <span class="float-right" style="height: 25px; padding-top:3px;">
+      <input
+        id="target_date"
+        type="date"
+        data-date="{{ datestring }}"
+        name="date"
+        onchange="handler(event);"
+        class="btn-outline-light"
+        value="date"
+        style="padding-top: 3px; border: none;">
+    </span>
+  </div>
+  {% block table %}
+  {% endblock table %}
+{% endblock content %}

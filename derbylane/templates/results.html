@@ -1,3 +1,7 @@
+{% extends '_base.html'%}
+
+{% block content %}
+
 <tr>
   <td width="20%" style="border:none"></td>
   <td width="80%" style="border:none">
@@ -27,7 +31,7 @@
               {% if participant.prediction.get_bets %}
               <td style="border: none; vertical-align: middle; font-size:1.25em" width="55%">
                 <b>{{ participant.post }}</b>
-                <span>{{ participant.dog.name }}</span></td>
+                <span>{{ participant.dog.name|truncatechars:9 }}</span></td>
               <td width="15%" style="border: none;">
 
                   <span id="participant_bets" style="font-weight:bold">
@@ -54,3 +58,4 @@
     </tr>
     {% endif %}
   {% endfor %}
+{% endblock content %}

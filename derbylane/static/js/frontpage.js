@@ -17,6 +17,7 @@ load_bets = () => {
         "chart_id": chart_id,
       },
       success: function(data) {
+        console.log(data)
         $("#bets").html(data)
       }
     })
