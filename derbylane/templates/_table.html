@@ -1,13 +1,18 @@
 {% load static %}
 
-{% block special %}
-{% endblock special %}
+<div class="card" style="margin:10px 0px">
+  <div class="card-header" id="daily_bet_table"><span id="glance-title">At A Glance</span></div>
+  <!-- <div class="card-body">
+
+
+  </div> -->
+</div>
 
 {% if charts|length %}
-  <div id= "charts-holder" class="select-holder" style="padding:10px 20px; width:100%; text-align: center">
+  <div id= "charts-holder" class="select-holder" style="margin:10px 0px; text-align: center">
     <select
       class="form-control frontpage-select"
-      id="chart-select" onchange="load_bets();">
+      id="chart-select">
       {% for chart in charts %}
         <option value="{{ chart.uuid }}">
           <span >
@@ -22,12 +27,15 @@
 
   <table
     class="table table-sm table-borderless"
-    style="background-color:inherit; margin-left: 8px; width:95%">
-
+    style="background-color:inherit; margin-left: 8px; width:95%"
+    id="bets_table">
+    <tbody id="bets" style="max-height: 100%">
     <tr>
     {% block header %}
     {% endblock header %}
     </tr>
+    </tbody>
+
 
   </table>
 {% else %}
@@ -36,13 +44,5 @@ No Charts Found
 </div>
 {% endif %}
 
-<script id="json-chart-data" type="application/json">
-  {
-    "bets_url": "{% url 'load_bets' %}",
-    "results_url": "{% url 'results' %}"
-  }
-</script>
-
-<script src="{% static 'js/frontpage.js' %}"></script>
-
-<script>
+{% block extra %}
+{% endblock extra %}

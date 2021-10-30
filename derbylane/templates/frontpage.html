@@ -51,5 +51,10 @@
     {% include 'predictions.html' %}
   {% endif %}
 
-
+  <script id="json-chart-data" type="application/json">
+    {
+      "bets_url": "{% url 'load_bets' %}",
+      "results_url": "{% url 'results' %}"
+    }
+  </script>
 {% endblock content %}

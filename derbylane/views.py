@@ -224,6 +224,20 @@ def make_bet(request):
         'none': participant.prediction.get_bets(),
         'enabled': request.user.is_staff})
 
+def get_daily_bets(request):
+    # venue = Venue.objects.get(
+    #     code=request.GET.get('venue_code'))
+    # charts = Chart.objects.filter(
+    #     program__venue=venue,
+    #     program__date=datetime.datetime.now()
+    # )
+    print("bets")
+    # bets = Bet.objects.filter(participant__race__chart__program__date=)
+    charts = ['a', 'b', 'c']
+    return render(
+        request,
+        'get_daily_bets.html', {'charts': charts, })
+
 
 def load_bets(request):
     print("load bets")
