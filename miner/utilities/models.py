@@ -64,6 +64,7 @@ def create_quiniela(race, posts, cost, payout):
 
 
 def get_participant_from_post(race, post):
+    print(post)
     try:
         return Participant.objects.get(
             race=race,
@@ -71,6 +72,8 @@ def get_participant_from_post(race, post):
         )
     except:
         print("Error get part from post")
+        for part in Participant.objects.filter(race=race):
+            print(part.dog.name)
         raise SystemExit(0)
 
 

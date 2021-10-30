@@ -56,7 +56,9 @@ from miner.utilities.common import (
 def split_position_lengths(entry):
     if entry:
         split_entry = entry.replace("-", " ").split()
-        return split_entry
+        if len(split_entry) > 0:
+            return split_entry
+        return [None, None]
     return [None, None]
 
 
@@ -330,6 +332,11 @@ def get_race_data(race_rows):
             final = final_and_lengths[0]
         current_post = row[1].text
         if not current_post in posts:
+            # for each in row:
+            #     print(each.text)
+            # print("===")
+            # print(split_position_lengths(row[2].text))
+            # print(len(split_position_lengths(row[2].text)))
             posts.append(current_post)
             race_data.append({
                 "dogname": row[0][0].text,
@@ -455,6 +462,7 @@ def handle_race(race, race_setting, race_data, single_bets, exotic_bets):
 
 def single_url_test(results_url, tds, chart):
     # print("\n{}\n".format(results_url))
+    print(results_url)
     if not "GWD$20180915S05" in results_url:
         raw_setting = get_raw_setting(tds)
         # print("Raw Setting: {}\n".format(raw_setting))

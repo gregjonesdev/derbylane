@@ -1,0 +1,48 @@
+{% load static %}
+
+{% block special %}
+{% endblock special %}
+
+{% if charts|length %}
+  <div id= "charts-holder" class="select-holder" style="padding:10px 20px; width:100%; text-align: center">
+    <select
+      class="form-control frontpage-select"
+      id="chart-select" onchange="load_bets();">
+      {% for chart in charts %}
+        <option value="{{ chart.uuid }}">
+          <span >
+            {{ chart.program.venue.kiosk_name }}_{{ chart.kiosk_time }}
+          </span>
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+
+
+  <table
+    class="table table-sm table-borderless"
+    style="background-color:inherit; margin-left: 8px; width:95%">
+
+    <tr>
+    {% block header %}
+    {% endblock header %}
+    </tr>
+
+  </table>
+{% else %}
+<div style="text-align: center; padding: 50px">
+No Charts Found
+</div>
+{% endif %}
+
+<script id="json-chart-data" type="application/json">
+  {
+    "bets_url": "{% url 'load_bets' %}",
+    "results_url": "{% url 'results' %}"
+  }
+</script>
+
+<script src="{% static 'js/frontpage.js' %}"></script>
+
+<script>
