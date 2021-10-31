@@ -73,36 +73,37 @@ yea
     make_bet = () => {
       console.log("make bet")
       // text_content = document.getElementById("json-data").textContent
-      // participant_id = document.getElementById("participant_uuid").textContent
-      console.log(text_content)
+      participant_id = document.getElementById("participant_uuid").textContent
+      console.log(participant_id)
       json_data = JSON.parse(text_content)
       console.log(json_data)
       console.log(document.getElementById("amount_input").value)
-      //   $.ajax({
-      //     url: json_data["bets_url"],
-      //     dataType: "json",
-      //     data: {
-      //       "amount": document.getElementById("amount_input").value,
-      //       "participant_id": participant_id,
-      //       "bet_types": document.getElementById("bet_types").value
-      //     },
-      //     success: function(data) {
-      //       button = document.createElement("button")
-      //       span = document.createElement("span")
-      //       span.setAttribute("style", "font-weight:bold")
-      //       button.appendChild(span)
-      //       button.disabled = !data["enabled"]
-      //       if (data["bets"]) {
-      //         button.setAttribute("class", "btn btn-sm btn-outline-success float-right")
-      //         span.textContent= data["bets"]
-      //       } else {
-      //         button.setAttribute("class", "btn btn-sm btn-outline-light float-right")
-      //         span.textContent= data["none"]
-      //       }
-      //
-      //     $("#" + participant_id + "-bet").html(button);
-      //     }
-      //   })
+        $.ajax({
+          url: json_data["make_bets_url"],
+          dataType: "json",
+          data: {
+            "amount": document.getElementById("amount_input").value,
+            "participant_id": participant_id,
+            "bet_types": document.getElementById("bet_types").value
+          },
+          success: function(data) {
+            console.log("success")
+            button = document.createElement("button")
+            span = document.createElement("span")
+            span.setAttribute("style", "font-weight:bold")
+            button.appendChild(span)
+            button.disabled = !data["enabled"]
+            if (data["bets"]) {
+              button.setAttribute("class", "btn btn-sm btn-outline-success float-right")
+              span.textContent= data["bets"]
+            } else {
+              button.setAttribute("class", "btn btn-sm btn-outline-light float-right")
+              span.textContent= data["none"]
+            }
+
+          $("#" + participant_id + "-bet").html(button);
+          }
+        })
       }
 
 

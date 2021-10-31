@@ -197,6 +197,7 @@ def load_charts(request):
         'load_charts.html', {'charts': charts, })
 
 def make_bet(request):
+    print("make bets()")
     participant = Participant.objects.get(
         uuid=request.GET.get('participant_id'))
     for bet_name in [char for char in request.GET.get('bet_types')]:
