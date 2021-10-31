@@ -1,34 +1,35 @@
-const text_content = document.getElementById("json-chart-data").textContent
+// const text_content = document.getElementById("json-chart-data").textContent
+//
+//
+// const chart_json_data = JSON.parse(text_content)
+// // const input = document.getElementById("target_date")
+// const modal = document.getElementById("bet-modal")
+// const chart_select = document.getElementById("chart-select")
 
-
-const chart_json_data = JSON.parse(text_content)
-// const input = document.getElementById("target_date")
-const modal = document.getElementById("bet-modal")
-const chart_select = document.getElementById("chart-select")
-
- load_bets = () => {
-  if (chart_select) {
-    chart_id = chart_select.value
-    $.ajax({
-      url: chart_json_data["bets_url"],
-      dataType: "html",
-      data: {
-        "chart_id": chart_id,
-      },
-      success: function(data) {
-        $("#bets").html(data)
-      }
-    })
-  }
-}
+// load_bets = () => {
+//   console.log("load bets")
+//   if (chart_select) {
+//     chart_id = chart_select.value
+//     $.ajax({
+//       url: chart_json_data["bets_url"],
+//       dataType: "html",
+//       data: {
+//         "chart_id": chart_id,
+//       },
+//       success: function(data) {
+//         $("#bets").html(data)
+//       }
+//     })
+//   }
+// }
 //
 // input.value = input.getAttribute("data-date")
-
-
-handler = (e) => {
-  window.location = chart_json_data["results_url"] + "?date=" + e.target.value
-}
-
+console.log("Whatda")
+//
+// handler = (e) => {
+//   window.location = chart_json_data["results_url"] + "?date=" + e.target.value
+// }
+//
 
 
 
