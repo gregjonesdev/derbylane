@@ -26,6 +26,21 @@ yea
     "results_url": "{% url 'results' %}"
   }
 </script> -->
-<script src="{% static 'js/frontpage.js' %}"/>
+<!-- <script src="{% static 'js/frontpage.js' %}"/> -->
+
+<script>
+  console.log("predictions.html")
+
+
+
+  window.onload = (event) => {
+    const text_content = document.getElementById("json-chart-data").textContent
+    const chart_json_data = JSON.parse(text_content)
+    const modal = document.getElementById("bet-modal")
+    const chart_select = document.getElementById("chart-select")
+
+  };
+
+</script>
 
 {% endblock extra %}
