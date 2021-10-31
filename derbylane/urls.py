@@ -17,6 +17,7 @@ from derbylane.views import (
     UploadsView,
     load_charts,
     load_bets,
+    get_daily_bets,
     make_bet,
     logout_view,
     # get_daily_charts
@@ -74,6 +75,7 @@ urlpatterns = [
     # url(r'get_daily_charts/$', get_daily_charts, name='get_daily_charts'),
 
     url(r'load_bets/$', load_bets, name='load_bets'),
+    url(r'get_daily_bets/$', get_daily_bets, name='get_daily_bets'),
     url(r'make_bet/$', make_bet, name='make_bet'),
     url(r'password_reset_form/', auth_views.PasswordResetView.as_view(), name ='password_reset'),
 ]

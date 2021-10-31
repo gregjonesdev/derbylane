@@ -51,10 +51,44 @@
     {% include 'predictions.html' %}
   {% endif %}
 
+  {{ datestring }}
+
   <script id="json-chart-data" type="application/json">
     {
       "bets_url": "{% url 'load_bets' %}",
-      "results_url": "{% url 'results' %}"
+      "results_url": "{% url 'results' %}",
+      "daily_bets_url": "{% url 'get_daily_bets' %}"
     }
   </script>
+
+  <script>
+    window.onload = (event) => {
+      console.log("heoa")
+      const text_content = document.getElementById("json-chart-data").textContent
+      const chart_json_data = JSON.parse(text_content)
+      const datestring = "{{ datestring }}"
+      const daily_bets = document.getElementById("daily_bet_table")
+      console.log(chart_json_data["daily_bets_url"] + "?date=" + datestring)
+
+      load_daily_bets = () => {
+      console.log(daily_bets)
+       if (daily_bets) {
+         $.ajax({
+           url: chart_json_data["daily_bets_url"] + "?date=" + datestring,
+           dataType: "html",
+           // data: {
+           //   "chart_id": chart_id,
+           // },
+           success: function(data) {
+             console.log(data)
+             $("#daily_bet_table").html(data)
+           }
+         })
+       }
+     }
+
+     load_daily_bets()
+    };
+  </script>
+
 {% endblock content %}

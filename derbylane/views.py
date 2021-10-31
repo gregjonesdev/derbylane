@@ -231,7 +231,7 @@ def get_daily_bets(request):
     #     program__venue=venue,
     #     program__date=datetime.datetime.now()
     # )
-    print("bets")
+    print(request.GET.get('date'))
     # bets = Bet.objects.filter(participant__race__chart__program__date=)
     charts = ['a', 'b', 'c']
     return render(
