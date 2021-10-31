@@ -38,6 +38,33 @@ yea
     const modal = document.getElementById("bet-modal")
     const chart_select = document.getElementById("chart-select")
 
+    modal.addEventListener("focus", function (e) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var participant_bets = document.getElementById("participant_bets")
+      var dog = button.data('dog')
+      var bets = button.data('bets')
+      var post = button.data('post')
+      console.log(button)
+      var venue = button.data('venue')
+      var chart = button.data('chart')
+      var number = button.data('number')
+      var participant = button.data('participant')
+      var modal = $(this)
+      modal.find('.modal-subtitle').text(
+        post + " | " +
+        dog + " "
+      )
+      modal.find('.modal-title').text(
+        venue + " " +
+        chart + " Race " +
+        number
+      )
+      modal.find('#participant_uuid').text(
+        participant
+      )
+      $('select option[value=' + bets).prop('selected',true);
+    })
+
 
     load_bets = () => {
       console.log("load bets")
