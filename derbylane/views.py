@@ -22,6 +22,8 @@ from rawdat.models import (
     StraightBetType
 )
 
+from pww.models import Prediction
+
 class Welcome(OTPRequiredMixin, View):
 
     template_name = "welcome.html"
@@ -231,12 +233,17 @@ def get_daily_bets(request):
     #     program__venue=venue,
     #     program__date=datetime.datetime.now()
     # )
-    print(request.GET.get('date'))
+    target_date = request.GET.get('date')
+    predictions = Prediction.objects.filter(participant__race__chart__program__date=target_date)
     # bets = Bet.objects.filter(participant__race__chart__program__date=)
     charts = ['a', 'b', 'c']
+    place_bet_count = 0
+    for prediction in predictions:
+        if 'P' in prediction.get_bets():
+            place_bet_count += 1
     return render(
         request,
-        'get_daily_bets.html', {'charts': charts, })
+        'get_daily_bets.html', {'place_bet_count': place_bet_count, })
 
 
 def load_bets(request):

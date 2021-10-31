@@ -16,7 +16,6 @@ const chart_select = document.getElementById("chart-select")
         "chart_id": chart_id,
       },
       success: function(data) {
-        console.log(data)
         $("#bets").html(data)
       }
     })
@@ -61,7 +60,7 @@ modal.addEventListener("focus", function (e) {
 //
 //
 window.onload = (event) => {
-
+  console.log("f")
   // const text_content = document.getElementById("json-chart-data").textContent
 
   load_bets()
