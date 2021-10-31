@@ -32,12 +32,31 @@ yea
   console.log("predictions.html")
 
 
-
   window.onload = (event) => {
     const text_content = document.getElementById("json-chart-data").textContent
     const chart_json_data = JSON.parse(text_content)
     const modal = document.getElementById("bet-modal")
     const chart_select = document.getElementById("chart-select")
+
+
+    load_bets = () => {
+      console.log("load bets")
+      if (chart_select) {
+        chart_id = chart_select.value
+        $.ajax({
+          url: chart_json_data["bets_url"],
+          dataType: "html",
+          data: {
+            "chart_id": chart_id,
+          },
+          success: function(data) {
+            $("#bets").html(data)
+          }
+        })
+      }
+    }
+
+    load_bets()
 
   };
 
