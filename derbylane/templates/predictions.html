@@ -27,18 +27,14 @@ yea
 
   modal.addEventListener("focus", function (e) {
     var button = $(event.relatedTarget) // Button that triggered the modal
-    console.log(event)
     var participant_bets = document.getElementById("participant_bets")
     var dog = button.data('dog')
     var bets = button.data('bets')
     var post = button.data('post')
-    console.log(button)
     var venue = button.data('venue')
     var chart = button.data('chart')
     var number = button.data('number')
     var participant = button.data('participant')
-    console.log("participant.html")
-    console.log(button.participant)
     var modal = $(this)
     modal.find('.modal-subtitle').text(
       post + " | " +
