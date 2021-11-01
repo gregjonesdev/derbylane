@@ -1,11 +1,13 @@
 
-  {% for race in races %}
 {% if wagering %}
+  {% for race in races %}
+    {% include 'race_table.html' %}
+  {% endfor %}
 {% else %}
-:(
+NONONO
 {% endif %}
     {% if race.has_predictions %}
-    {% include 'race_table.html' %}
+
     <!-- <tr>
       <td width="15%" style="text-align: center; vertical-align: middle; border-right: 1px solid #444">
           <span style="font-size: 2em">{{ race.number }}</span><br>
@@ -56,7 +58,7 @@
       </td>
     </tr> -->
     {% endif %}
-  {% endfor %}
+
 
 
 <script>
