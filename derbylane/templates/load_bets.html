@@ -20,24 +20,26 @@
               <td id="{{ participant.uuid }}-bet" style="border: none; float-right; padding-right:5px">
 
                   <div class="btn-group btn-group-sm" role="group"">
-                      {% for wager in participant.get_purchased_wagers %}
-                      <button
-                        type="button"
-                        class="btn btn-outline-success float-right wager-btn"
-                        data-toggle="modal"
-                        data-target="#bet-modal"
-                        data-dog="{{ participant.dog.name }}"
-                        data-post="{{ participant.post }}"
-                        data-venue="{{ participant.race.chart.program.venue.name }}"
-                        data-chart="{{ participant.race.chart.time }}"
-                        data-number="{{ participant.race.number }}"
-                        data-participant="{{ participant.uuid }}"
-                        data-bets="{{ participant.prediction.get_bets }}"
-                        disabled>
-                        <span id="participant_bets" style="font-weight:bold">
-                          {{ wager }}
-                        </span>
-                      </button>
+                    {% for bet in participant.get_bets %}
+
+                    <button
+                      type="button"
+                      class="{{ bet.button_style }}"
+                      data-toggle="modal"
+                      data-target="#bet-modal"
+                      data-dog="{{ participant.dog.name }}"
+                      data-post="{{ participant.post }}"
+                      data-venue="{{ participant.race.chart.program.venue.name }}"
+                      data-chart="{{ participant.race.chart.time }}"
+                      data-number="{{ participant.race.number }}"
+                      data-participant="{{ participant.uuid }}"
+                      data-bets="{{ participant.prediction.get_bets }}"
+                      disabled>
+                      <span id="participant_bets" style="font-weight:bold">
+                        bet
+                      </span>
+                    </button>
+
                     {% endfor %}
                   </div>
               </td>

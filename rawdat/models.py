@@ -463,13 +463,14 @@ class Participant(CoreModel):
         null=True,
         max_length=256)
 
+    def get_bets(self):
+        return Bet.objects.filter(participant=self)
+
     def get_purchased_wagers(self):
-        bet_list = ""
-        amount = None
-        bet_list = []
-        for bet in Bet.objects.filter(participant=self):
-            bet_list.append("${} {}".format(bet.amount, bet.type.name))
-        return (bet_list)
+        wager_list = []
+        for bet in self.get_bets():
+            wager_list.append()
+        return (wager_list)
 
 class Bet(CoreModel):
     participant =  models.ForeignKey(
@@ -482,6 +483,14 @@ class Bet(CoreModel):
     type = models.ForeignKey(
         StraightBetType,
         on_delete=models.CASCADE)
+
+    def button_style(self):
+        # if self.get_return() > 0:
+        #     return "btn btn-outline-success float-right wager-btn"
+        return "btn btn-outline-success float-right wager-btn"
+
+    def get_wager(self):
+        return "${} {}".format(bet.amount, bet.type.name)
 
     def get_return(self):
         final = self.participant.final
