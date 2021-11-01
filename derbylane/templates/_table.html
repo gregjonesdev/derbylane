@@ -7,9 +7,10 @@
 
   </div> -->
 
-
+<div class="cards-body">
 {% if charts|length %}
-  <div id= "charts-holder" class="select-holder" style="margin:10px 0px; text-align: center">
+
+  <div id= "charts-holder" class="select-holder" style="text-align: center">
     <select
       class="form-control frontpage-select"
       id="chart-select">
@@ -27,14 +28,13 @@
 
   <table
     class="table table-sm table-borderless"
-    style="background-color:inherit; margin-left: 8px; width:95%"
+    style="background-color:inherit; border: 1px solid red;"
     id="bets_table">
-    <tbody id="bets" style="max-height: 100%">
-    <tr>
     {% block header %}
     {% endblock header %}
-    </tr>
-    </tbody>
+    <tbody id="bets" style="max-height: 100%">
+
+</tbody>
 
 
   </table>
@@ -46,3 +46,4 @@ No Charts Found
 
 {% block extra %}
 {% endblock extra %}
+</div>
