@@ -1,15 +1,16 @@
-<table class="table table-sm table-borderless" style="background-color:inherit;" >
+<table class="table table-sm table-borderless" style="background-color:inherit; margin: 4px" >
   {% for participant in race.participant_set.all %}
-  <tr>
+  <tr class="race-table-row">
     {% if forloop.first %}
     <td rowspan="0" width="15%" style="text-align: center; vertical-align: middle; border-right: 1px solid #444">
         <span style="font-size: 2em">{{ race.number }}</span><br>
         Grade {{ race.grade.name }}
     </td>
     {% endif %}
-    <td>Win</td>
-    <td>Place</td>
-    <td>Show</td>
+    <td>{{ participant.post }}</td>
+    <td>{{ participant.get_place_bet.amount }}</td>
+    <td>{{ participant.get_place_bet.amount }}</td>
+    <td>{{ participant.get_place_bet.amount }}</td>
   </tr>
   {% endfor %}
 

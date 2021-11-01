@@ -76,3 +76,8 @@ h1 {
 td, th {
   color: #FFF;
 }
+
+.race-table-row td {
+  border: 1px solid red;
+  width: 50px;
+}
