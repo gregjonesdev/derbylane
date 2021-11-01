@@ -3,10 +3,14 @@
   {% for race in races %}
     {% if race.has_predictions %}
       {% include 'race_table.html' %}
-    {% endif %}  
+    {% endif %}
   {% endfor %}
 {% else %}
-NONONO
+  {% for race in races %}
+    {% if race.has_predictions %}
+      {% include 'race_table.html' %}
+    {% endif %}
+  {% endfor %}
 {% endif %}
 
     <!-- <tr>
