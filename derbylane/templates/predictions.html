@@ -1,23 +1,8 @@
 {% extends '_table.html'%}
 {% load static %}
 
-{% block extra_buttons %}
-  <button type="button" class="btn btn-outline-primary btn-md">Large button</button>
-
-{% endblock extra_buttons %}
-
-
 {% block extra %}
 {% include 'betmodal.html' %}
-yea
-
-<!-- <script id="json-chart-data" type="application/json">
-  {
-    "bets_url": "{% url 'load_bets' %}",
-    "results_url": "{% url 'results' %}"
-  }
-</script> -->
-<!-- <script src="{% static 'js/frontpage.js' %}"/> -->
 
 <script>
   console.log("predictions.html")
@@ -116,5 +101,4 @@ yea
   };
 
 </script>
-
 {% endblock extra %}
