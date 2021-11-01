@@ -2,7 +2,8 @@
   {% for race in races %}
     {% if race.has_predictions %}
     {{race}}
-    <tr>
+    {% include 'race_table.html' %}
+    <!-- <tr>
       <td width="15%" style="text-align: center; vertical-align: middle; border-right: 1px solid #444">
           <span style="font-size: 2em">{{ race.number }}</span><br>
           Grade {{ race.grade.name }}
@@ -20,6 +21,7 @@
               <td id="{{ participant.uuid }}-bet" style="border: none; float-right; padding-right:5px">
 
                   <div class="btn-group btn-group-sm" role="group"">
+                    {{ participant.get_place_bet }}
                     {% for bet in participant.get_bets %}
 
                     <button
@@ -49,7 +51,7 @@
             {% endfor %}
           </table>
       </td>
-    </tr>
+    </tr> -->
     {% endif %}
   {% endfor %}
 

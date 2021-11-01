@@ -45,13 +45,9 @@
     </a>
     {% endif %}
   </div>
-  {% if is_past %}
-    {% include 'resultsold.html' %}
-  {% else %}
-    {% include 'predictions.html' %}
-  {% endif %}
 
-  {{ datestring }}
+  {% include 'predictions.html' %}
+
 
   <script id="json-chart-data" type="application/json">
     {
