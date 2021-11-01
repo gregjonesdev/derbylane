@@ -20,9 +20,9 @@
               <td style="border: none; vertical-align: middle" >
                   <span>{{ participant.dog.name }}</span></td>
               <td id="{{ participant.uuid }}-bet" style="border: none; float-right; padding-right:5px">
-                  {% if user.is_staff %}
+                  {% if is_current and user.is_staff %}
                     {% if participant.get_purchased_wagers %}
-                      <!-- <button
+                      <button
                         type="button"
                         class="btn btn-sm btn-outline-success float-right"
                         data-toggle="modal"
@@ -33,13 +33,7 @@
                         data-chart="{{ participant.race.chart.time }}"
                         data-number="{{ participant.race.number }}"
                         data-participant="{{ participant.uuid }}"
-                        data-bets="{{ participant.prediction.get_bets }}"> -->
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-success float-right"
-                          data-toggle="modal"
-                          data-target="#bet-modal"
-                          data-participant="{{ participant.uuid }}">
+                        data-bets="{{ participant.prediction.get_bets }}">
                         <span id="participant_bets" style="font-weight:bold">
                           {{ participant.get_purchased_wagers }}
                         </span>

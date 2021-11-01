@@ -252,15 +252,12 @@ def load_bets(request):
     print(datetime.datetime.now())
     chart = Chart.objects.get(
         uuid=request.GET.get('chart_id'))
-
+    url = 'load_bets.html'
     current_date = datetime.datetime.now().date()
-
+    is_current = True
     if chart.is_complete() or current_date > chart.program.date:
-        url = "results.html"
-    else:
-        url = "load_bets.html"
+        is_current = False
 
-    print("render url: {}".format(url))
     races = chart.race_set.filter(
         grade__value__gt=0)
     # races = chart.race_set.all()
@@ -269,7 +266,8 @@ def load_bets(request):
         request,
         url, {
             'races': races,
-            'user': request.user })
+            'user': request.user,
+            'is_current': is_current })
 
 
 def logout_view(request):

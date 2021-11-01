@@ -1,0 +1,24 @@
+{% extends 'bets_table.html' %}
+
+{% block bet %}
+  {% if participant.get_purchased_wagers %}
+    <button
+      class="btn btn-sm btn-outline-success float-right"
+      disabled>
+      <span id="participant_bets" style="font-weight:bold">
+        {{ participant.get_purchased_wagers }}
+      </span>
+    </button>
+  {% else %}
+    <button
+      type="button"
+      class="btn btn-sm btn-outline-light float-right"
+      style="width:42px"
+      disabled>
+      <span id="participant_bets" style="font-weight:bold">
+        {{ participant.prediction.get_bets }}
+      </span>
+    </button>
+  {% endif %}
+
+{% endblock bet%}
