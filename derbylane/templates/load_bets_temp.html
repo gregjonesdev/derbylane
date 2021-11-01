@@ -1,57 +1,67 @@
-<tr>
-  <td width="20vw" style="text-align: center; vertical-align: middle; border-right: 1px solid #444">
-      <span style="font-size: 2em">{{ race.number }}</span><br>
-      Grade {{ race.grade.name }}
-  </td>
-  <td>
-      <table
-        class="table table-sm table-borderless"
-        style="background-color:inherit;" >
-        {% for participant in race.participant_set.all %}
-        <tr class="prediction-row">
-          {% if participant.prediction.get_bets %}
-          <td style="border: none; vertical-align: middle; font-size:1.25em" width="40vw">
-            <b>{{ participant.post }}</b>
-            <span>{{ participant.dog.name }}</span></td>
-          <td width="10vw" style="border: none; float-right; padding-right:5px">
-            <button
-              class="btn btn-sm btn-outline-success float-right"
-              disabled>
-              <span id="participant_bets" style="font-weight:bold">
-                ddd
-              </span>
-            </button>
-          </td>
-          <td width="10vw" style="border: none; float-right; padding-right:5px">
-            <button
-              class="btn btn-sm btn-outline-success"
-              disabled>
-              <span id="participant_bets" style="font-weight:bold">
-                ddd
-              </span>
-            </button>
-          </td>
-          <td width="10vw" style="border: none; float-right; padding-right:5px">
-            <button
-              class="btn btn-sm btn-outline-success"
-              disabled>
-              <span id="participant_bets" style="font-weight:bold">
-                ddd
-              </span>
-            </button>
-          </td>
-          <td width="10vw" style="border: none; float-right; padding-right:5px">
-            <button
-              class="btn btn-sm btn-outline-success"
-              disabled>
-              <span id="participant_bets" style="font-weight:bold">
-                ddd
-              </span>
-            </button>
-          </td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-      </table>
-  </td>
-</tr>
+<td id="{{ participant.uuid }}-bet" style="border: none; float-right; padding-right:5px">
+    {% if is_current and user.is_staff %}
+      {% if participant.get_purchased_wagers %}
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-success float-right"
+          data-toggle="modal"
+          data-target="#bet-modal"
+          data-dog="{{ participant.dog.name }}"
+          data-post="{{ participant.post }}"
+          data-venue="{{ participant.race.chart.program.venue.name }}"
+          data-chart="{{ participant.race.chart.time }}"
+          data-number="{{ participant.race.number }}"
+          data-participant="{{ participant.uuid }}"
+          data-bets="{{ participant.prediction.get_bets }}">
+          <span id="participant_bets" style="font-weight:bold">
+            {{ participant.get_purchased_wagers }}
+          </span>
+        </button>
+
+
+      {% else %}
+
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-light float-right"
+          style="width:42px"
+          data-toggle="modal"
+          data-target="#bet-modal"
+          data-dog="{{ participant.dog.name }}"
+          data-post="{{ participant.post }}"
+          data-venue="{{ participant.race.chart.program.venue.name }}"
+          data-chart="{{ participant.race.chart.time }}"
+          data-number="{{ participant.race.number }}"
+          data-participant="{{ participant.uuid }}"
+          data-bets="{{ participant.prediction.get_bets }}">
+          <span id="participant_bets" style="font-weight:bold">
+            {{ participant.prediction.get_bets }}
+          </span>
+        </button>
+      {% endif %}
+    {% else %}
+
+
+
+
+      {% if participant.get_purchased_wagers %}
+        <button
+          class="btn btn-sm btn-outline-success float-right"
+          disabled>
+          <span id="participant_bets" style="font-weight:bold">
+            {{ participant.get_purchased_wagers }}
+          </span>
+        </button>
+      {% else %}
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-light float-right"
+          style="width:42px"
+          disabled>
+          <span id="participant_bets" style="font-weight:bold">
+            {{ participant.prediction.get_bets }}
+          </span>
+        </button>
+      {% endif %}
+    {% endif %}
+</td>

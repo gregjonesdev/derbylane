@@ -466,12 +466,10 @@ class Participant(CoreModel):
     def get_purchased_wagers(self):
         bet_list = ""
         amount = None
+        bet_list = []
         for bet in Bet.objects.filter(participant=self):
-            bet_list += bet.type.name
-            amount = bet.amount
-            # NB WILL CURRRENTLY ASSUME BETS FOR WPS ARE SAME
-        if len(bet_list) > 0:
-            return ("${} {}".format(amount, bet_list))
+            bet_list.append("${} {}".format(bet.amount, bet.type.name))
+        return (bet_list)
 
 class Bet(CoreModel):
     participant =  models.ForeignKey(
