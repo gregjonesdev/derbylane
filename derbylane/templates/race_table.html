@@ -9,7 +9,9 @@
     </td>
     {% endif %}
     <td>{{ participant.post }}</td>
-    <td>{{ participant.get_place_bet.amount }}</td>
+    <td>
+      {% include 'enabled_button.html' with participant=participant %}
+    </td>
     <td>{{ participant.get_place_bet.amount }}</td>
     <td>{{ participant.get_place_bet.amount }}</td>
   </tr>

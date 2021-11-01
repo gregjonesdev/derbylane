@@ -1,0 +1,16 @@
+<button
+  type="button"
+  class="btn btn-outline-success btn-block"
+  data-toggle="modal"
+  data-target="#bet-modal"
+  data-dog="{{ participant.dog.name }}"
+  data-post="{{ participant.post }}"
+  data-venue="{{ participant.race.chart.program.venue.name }}"
+  data-chart="{{ participant.race.chart.time }}"
+  data-number="{{ participant.race.number }}"
+  data-participant="{{ participant.uuid }}"
+  data-bets="{{ participant.prediction.get_bets }}">
+  <span id="participant_bets" style="font-weight:bold;">
+    {{ participant.get_place_bet.amount }}
+  </span>
+</button>
