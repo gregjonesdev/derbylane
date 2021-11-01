@@ -1,57 +1,43 @@
 
-<tr>
-  <td width="20%" style="border:none"></td>
-  <td width="80%" style="border:none">
-    <table class="table table-sm table-borderless" style="background-color:inherit; text-align:center;">
-      <tr>
-        <td width="55%" style="border:none"></td>
-        <td width="15%" style="border:none">Win</td>
-        <td width="15%" style="border:none">Plc</td>
-        <td width="15%" style="border:none">Shw</td>
-      </tr>
-    </table>
-  </td>
-</tr>
-  {% for race in races %}
-    {% if race.has_predictions %}
-    <tr>
-      <td width="20%" style="text-align: center; vertical-align: middle; border-right: 1px solid #444">
-          <span style="font-size: 2em">{{ race.number }}</span><br>
-          Grade {{ race.grade.name }}
-      </td>
-      <td width="80%">
-          <table
-            class="table table-sm table-borderless"
-            style="background-color:inherit;" >
-            {% for participant in race.participant_set.all %}
-            <tr class="prediction-row">
-              {% if participant.prediction.get_bets %}
-              <td style="border: none; vertical-align: middle; font-size:1.25em" width="55%">
-                <b>{{ participant.post }}</b>
-                <span>{{ participant.dog.name|truncatechars:9 }}</span></td>
-              <td width="15%" style="border: none;">
+                    <button
+                      type="button"
+                      class="{{ bet.button_style }}"
+                      data-toggle="modal"
+                      data-target="#bet-modal"
+                      data-dog="{{ participant.dog.name }}"
+                      data-post="{{ participant.post }}"
+                      data-venue="{{ participant.race.chart.program.venue.name }}"
+                      data-chart="{{ participant.race.chart.time }}"
+                      data-number="{{ participant.race.number }}"
+                      data-participant="{{ participant.uuid }}"
+                      data-bets="{{ participant.prediction.get_bets }}"
+                      disabled>
+                      <span id="participant_bets" style="font-weight:bold">
+                        {{ participant.get_place_bet.amount }}
 
-                  <span id="participant_bets" style="font-weight:bold">
-                    ddd
-                  </span>
-              </td>
-              <td width="15%" style="border: none;">
+                      </span>
+                    </button>
 
-                  <span id="participant_bets" style="font-weight:bold">
-                    ddd
-                  </span>
-              </td>
-              <td width="15%" style="border: none;">
 
-                  <span id="participant_bets" style="font-weight:bold">
-                    ddd
-                  </span>
-              </td>
-              {% endif %}
-            </tr>
-            {% endfor %}
-          </table>
-      </td>
-    </tr>
-    {% endif %}
-  {% endfor %}
+
+                    <table
+                      class="table table-sm table-borderless"
+                      style="background-color:inherit; margin-left: 8px; width:95%">
+                      {% for participant in race.participant_set.all %}
+                      <tr class="prediction-row">
+                        {% if participant.prediction.get_bets %}
+                        <div style="margin: 12px">
+                        <td style="border: none; vertical-align: middle; font-size:1.25em" width="20px">
+                          <b>{{ participant.post }}</b></td>
+
+                              {% for bet in participant.get_bets %}
+                              <td id="{{ participant.uuid }}-bet" style="border: none; float-right; padding-right:5px">
+
+
+                            </td>
+                              {% endfor %}
+                            </div>
+                        {% endif %}
+                      </tr>
+                      {% endfor %}
+                    </table>

@@ -466,6 +466,9 @@ class Participant(CoreModel):
     def get_bets(self):
         return Bet.objects.filter(participant=self)
 
+    def get_place_bet(self):
+        return Bet.objects.get(participant=self,type__name="P")    
+
     def get_purchased_wagers(self):
         wager_list = []
         for bet in self.get_bets():
@@ -490,7 +493,7 @@ class Bet(CoreModel):
         return "btn btn-outline-success float-right wager-btn"
 
     def get_wager(self):
-        return "${} {}".format(bet.amount, bet.type.name)
+        return "${} {}".format(self.amount, self.type.name)
 
     def get_return(self):
         final = self.participant.final
