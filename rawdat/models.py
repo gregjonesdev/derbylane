@@ -421,7 +421,7 @@ class Participant(CoreModel):
 
     class Meta:
         verbose_name = 'Participant'
-        ordering = ['final', 'post']
+        ordering = ['post']
 
     dog = models.ForeignKey(
         Dog,
@@ -467,7 +467,7 @@ class Participant(CoreModel):
         return Bet.objects.filter(participant=self)
 
     def get_place_bet(self):
-        return Bet.objects.get(participant=self,type__name="P")    
+        return Bet.objects.get(participant=self,type__name="P")
 
     def get_purchased_wagers(self):
         wager_list = []

@@ -1,3 +1,4 @@
+{% if race.has_predictions %}
 <table class="table table-sm table-borderless" style="background-color:inherit; margin: 4px" >
   {% for participant in race.participant_set.all %}
   <tr class="race-table-row">
@@ -13,15 +14,5 @@
     <td>{{ participant.get_place_bet.amount }}</td>
   </tr>
   {% endfor %}
-
-
-
-
-
-
-
-
-
-
-
 </table>
+{% endif %}

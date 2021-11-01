@@ -1,5 +1,9 @@
 
   {% for race in races %}
+{% if wagering %}
+{% else %}
+:(
+{% endif %}
     {% if race.has_predictions %}
     {% include 'race_table.html' %}
     <!-- <tr>
