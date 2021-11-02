@@ -45,8 +45,28 @@
     </a>
     {% endif %}
   </div>
-
-  {% include 'predictions.html' %}
+  {% if charts|length %}
+    <div id= "charts-holder" class="select-holder" style="text-align: center;">
+      <select
+        class="form-control frontpage-select"
+        id="chart-select"
+        style="margin: 0"
+        onchange="load_bets()">
+        {% for chart in charts %}
+          <option value="{{ chart.uuid }}">
+            <span >
+              {{ chart.program.venue.kiosk_name }}_{{ chart.kiosk_time }}
+            </span>
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    {% include 'predictions.html' %}
+  {% else %}
+  <div style="text-align: center; padding: 50px">
+  No Charts Found
+  </div>
+  {% endif %}
 
   <script id="json-chart-data" type="application/json">
     {
@@ -65,7 +85,7 @@
     const chart_select = document.getElementById("chart-select")
 
     load_bets = () => {
-      console.log("load bets")
+      console.log("load betZ")
       if (chart_select) {
         chart_id = chart_select.value
         $.ajax({

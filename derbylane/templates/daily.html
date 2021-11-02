@@ -1,21 +1,8 @@
 {% load static %}
 
-{% if charts|length %}
 
-  <div id= "charts-holder" class="select-holder" style="text-align: center;">
-    <select
-      class="form-control frontpage-select"
-      id="chart-select"
-      style="margin: 0">
-      {% for chart in charts %}
-        <option value="{{ chart.uuid }}">
-          <span >
-            {{ chart.program.venue.kiosk_name }}_{{ chart.kiosk_time }}
-          </span>
-        </option>
-      {% endfor %}
-    </select>
-  </div>
+
+
   <table
   class="table table-sm table-borderless"
   style="background-color:inherit;"
@@ -29,11 +16,7 @@
 
 
 
-{% else %}
-<div style="text-align: center; padding: 50px">
-No Charts Found
-</div>
-{% endif %}
+
 
 {% block extra %}
 {% endblock extra %}

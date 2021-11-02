@@ -1,50 +1,32 @@
-<table class="table table-sm table-borderless" style="background-color:inherit; margin-bottom: 4px" >
-  {% for participant in race.participant_set.all %}
-  <tr class="race-table-row">
-    {% if forloop.first %}
-    <td rowspan="0" style="text-align: center; vertical-align: middle; border-right: 1px solid #444">
-        <span style="font-size: 2em">{{ race.number }}</span><br>
-        Grade {{ race.grade.name }}
-    </td>
-    {% endif %}
-    <td>
-      {{ participant.post }}
-      <br>
-      <span class="dog-name-span">{{ participant.dog.name|truncatechars:9 }}</span>
-    </td>
-    <td>
-      <button
-        type="button"
-        class="btn btn-outline-success btn-block"
-        data-toggle="modal"
-        data-target="#bet-modal"
-        data-dog="{{ participant.dog.name }}"
-        data-post="{{ participant.post }}"
-        data-venue="{{ participant.race.chart.program.venue.name }}"
-        data-chart="{{ participant.race.chart.time }}"
-        data-number="{{ participant.race.number }}"
-        data-participant="{{ participant.uuid }}"
-        data-bets="{{ participant.prediction.get_bets }}">
-        <span id="participant_bets" style="font-weight:bold;">
-          WPS
-        </span>
-      </button>
-    </td>
-    <td>
-      {% if participant.get_win_bet %}
-        {{ participant.get_win_bet.amount }}
-      {% endif %}
-    </td>
-      <td>
-        {% if participant.get_place_bet %}
-          {{ participant.get_place_bet.amount }}
-        {% endif %}
-      </td>
-    <td>
-      {% if participant.get_show_bet %}
-        {{ participant.get_show_bet.amount }}
-      {% endif %}
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+{% extends '_table.html' %}
+
+{% block prediction_button %}
+  <button
+    type="button"
+    class="btn btn-outline-success btn-block"
+    data-toggle="modal"
+    data-target="#bet-modal"
+    data-dog="{{ participant.dog.name }}"
+    data-post="{{ participant.post }}"
+    data-venue="{{ participant.race.chart.program.venue.name }}"
+    data-chart="{{ participant.race.chart.time }}"
+    data-number="{{ participant.race.number }}"
+    data-participant="{{ participant.uuid }}"
+    data-bets="{{ participant.prediction.get_bets }}">
+    <span id="participant_bets" style="font-weight:bold;">
+      WPS
+    </span>
+  </button>
+{% endblock prediction_button %}
+
+{% block win_button %}
+  {{ participant.get_win_bet.amount }}
+{% endblock win_button %}
+
+{% block place_button %}
+  {{ participant.get_place_bet.amount }}
+{% endblock place_button %}
+
+{% block show_button %}
+  {{ participant.get_show_bet.amount }}
+{% endblock show_button %}

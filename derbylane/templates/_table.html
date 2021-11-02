@@ -1,0 +1,41 @@
+<table class="table table-sm table-borderless" style="background-color:inherit; margin-bottom: 4px" >
+  {% for participant in race.participant_set.all %}
+    <tr class="race-table-row">
+      {% if forloop.first %}
+        <td rowspan="0" style="text-align: center; vertical-align: middle; border-right: 1px solid #444">
+            <span style="font-size: 2em">{{ race.number }}</span><br>
+            Grade {{ race.grade.name }}
+        </td>
+      {% endif %}
+      <td>
+        {{ participant.post }}
+        <br>
+        <span class="dog-name-span">{{ participant.dog.name|truncatechars:9 }}</span>
+      </td>
+      <td>
+        {% block prediction_button %}
+        {% endblock prediction_button %}
+
+      </td>
+      <td>
+        {% if participant.get_win_bet %}
+          {% block win_button %}
+          {% endblock win_button %}
+        {% endif %}
+      </td>
+      <td>
+        {% if participant.get_place_bet %}
+          {% block place_button %}
+          {% endblock place_button %}
+        {% endif %}
+      </td>
+      <td>
+        {% if participant.get_show_bet %}
+          {% block show_button %}
+          {% endblock show_button %}
+        {% endif %}
+      </td>
+
+    </tr>
+  {% endfor %}
+</table>
