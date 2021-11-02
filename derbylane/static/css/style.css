@@ -87,3 +87,7 @@ td, th {
   text-align: center;
   vertical-align: middle;
 }
+
+.dog-name-span {
+  font-size: .7em
+}

@@ -7,7 +7,11 @@
         Grade {{ race.grade.name }}
     </td>
     {% endif %}
-    <td>{{ participant.post }}</td>
+    <td>
+      {{ participant.post }}
+      <br>
+      <span class="dog-name-span">{{ participant.dog.name|truncatechars:9 }}</span>
+    </td>
     <td>
       <button
         type="button"
