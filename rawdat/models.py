@@ -466,8 +466,14 @@ class Participant(CoreModel):
     def get_bets(self):
         return Bet.objects.filter(participant=self)
 
+    def get_win_bet(self):
+        return Bet.objects.get(participant=self,type__name="W")
+
     def get_place_bet(self):
         return Bet.objects.get(participant=self,type__name="P")
+
+    def get_show_bet(self):
+        return Bet.objects.get(participant=self,type__name="S")
 
     def get_purchased_wagers(self):
         wager_list = []

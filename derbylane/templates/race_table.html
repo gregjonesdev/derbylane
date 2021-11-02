@@ -28,7 +28,7 @@
     </td>
     <td>
       {% if participant.get_win_bet %}
-        {% include 'enabled_button.html' with participant=participant amount=participant.get_win_bet.amount %}
+        {{ participant.get_win_bet.amount }}
       {% endif %}
     </td>
       <td>
@@ -38,7 +38,7 @@
       </td>
     <td>
       {% if participant.get_show_bet %}
-        {% include 'enabled_button.html' with participant=participant amount=participant.get_show_bet.amount %}
+        {{ participant.get_show_bet.amount }}
       {% endif %}
     </td>
   </tr>

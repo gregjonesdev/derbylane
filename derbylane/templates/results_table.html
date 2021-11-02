@@ -1,0 +1,40 @@
+<table class="table table-sm table-borderless" style="background-color:inherit; margin: 4px" >
+  {% for participant in race.participant_set.all %}
+    {% if participant.get_bets|length > 0 %}
+      <tr class="race-table-row">
+        {% if forloop.first %}
+        <td rowspan="0" style="text-align: center; vertical-align: middle; border-right: 1px solid #444">
+            <span style="font-size: 2em">{{ race.number }}</span><br>
+            Grade {{ race.grade.name }}
+        </td>
+        {% endif %}
+        <td>{{ participant.post }}</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-outline-success btn-block"
+            disabled>
+            <span id="participant_bets" style="font-weight:bold;">
+              WPS
+            </span>
+          </button>
+        </td>
+        <td>
+          {% if participant.get_win_bet %}
+            {% include 'enabled_button.html' with participant=participant amount=participant.get_win_bet.amount %}
+          {% endif %}
+        </td>
+          <td>
+            {% if participant.get_place_bet %}
+              {{ participant.get_place_bet.amount }}
+            {% endif %}
+          </td>
+        <td>
+          {% if participant.get_show_bet %}
+            {% include 'enabled_button.html' with participant=participant amount=participant.get_show_bet.amount %}
+          {% endif %}
+        </td>
+      </tr>
+    {% endif %}
+  {% endfor %}
+</table>

@@ -219,12 +219,12 @@ def make_bet(request):
         if int(amount) == 0:
             bet.delete()
         else:
-            bet.amount = amount
+            bet.amount = float(bet.amount) + float(amount)
             bet.save()
 
     return JsonResponse({
-        'bets': participant.get_purchased_wagers(),
-        'none': participant.prediction.get_bets(),
+        # 'bets': participant.get_purchased_wagers(),
+        # 'none': participant.prediction.get_bets(),
         'enabled': request.user.is_staff})
 
 def get_daily_bets(request):
