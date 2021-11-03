@@ -1,5 +1,7 @@
 {% if wagering %}
-  {% include 'old_bets.html' %}
+  {% for race in races %}
+    {% include 'old_bets.html' %}
+  {% endfor %}
 {% else %}
   No {{ races }}
 {% endif %}
