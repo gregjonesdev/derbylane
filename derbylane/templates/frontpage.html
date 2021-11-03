@@ -100,7 +100,9 @@
     const chart_select = document.getElementById("chart-select")
 
     load_bets = () => {
+      console.log("load bets()")
       if (chart_select) {
+        console.log(chart_select)
         chart_id = chart_select.value
         $.ajax({
           url: chart_json_data["bets_url"],
@@ -109,6 +111,8 @@
             "chart_id": chart_id,
           },
           success: function(data) {
+            console.log("success")
+            console.log(data)
             $("#bets").html(data)
           }
         })
