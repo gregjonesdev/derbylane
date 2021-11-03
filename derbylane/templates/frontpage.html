@@ -108,7 +108,7 @@
       console.log(chart_json_data["bets_url"])
       $.ajax({
         url: chart_json_data["bets_url"],
-        dataType: "json",
+        dataType: "html",
         data: {
           "chart_id": document.getElementById("chart-select").value,
         },
