@@ -38,6 +38,7 @@
           </div>
 
           <div class="modal-footer">
+            <button id="clear_bet" type="button" class="btn btn-danger" onclick="" data-dismiss="modal" disabled>Clear</button>
             <button id="submit_bet" type="button" class="btn btn-outline-success" onclick="make_bet()" data-dismiss="modal">Save</button>
           </div>
           </form>
@@ -49,8 +50,8 @@
 
 
 <script>
+
   make_bet = () => {
-    console.log("make bet")
     // text_content = document.getElementById("json-data").textContent
     participant_id = document.getElementById("participant_uuid").textContent
     //console.log(participant_id)
