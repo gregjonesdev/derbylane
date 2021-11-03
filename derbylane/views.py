@@ -250,8 +250,8 @@ def get_daily_bets(request):
 def load_bets(request):
     # print("load bets")
     # print(datetime.datetime.now())
-    chart = Chart.objects.get(
-        uuid=request.GET.get('chart_id'))
+    chart = Chart.objects.filter(
+        uuid=request.GET.get('chart_id')).count()
     # url = 'load_bets.html'
     # current_date = datetime.datetime.now().date()
     # wagering = None
@@ -267,7 +267,7 @@ def load_bets(request):
     #         'races': races,
     #         'wagering': wagering })
     return JsonResponse({
-        'wagering': chart,
+        'wagering': chart.uuid,
         'races': "races"})
 
 
