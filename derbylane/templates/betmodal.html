@@ -1,4 +1,4 @@
-<div class="modal fade" id="bet-modal" tabindex="-1" role="dialog" >
+<div class="modal fade" id="bet-modal" tabindex="-1" role="dialog"">
   <div class="modal-dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content" style="background-color: #111">
@@ -51,6 +51,10 @@
 
 <script>
 
+  $("#bet-modal").on("hide.bs.modal", function () {
+    console.log("boo")
+});
+
   make_bet = () => {
     // text_content = document.getElementById("json-data").textContent
     participant_id = document.getElementById("participant_uuid").textContent
@@ -68,21 +72,33 @@
         "bet_types": document.getElementById("bet_types").value
       },
       success: function(data) {
-        //console.log("success")
-        button = document.createElement("button")
-        span = document.createElement("span")
-        span.setAttribute("style", "font-weight:bold")
-        button.appendChild(span)
-        button.disabled = !data["enabled"]
-        if (data["bets"]) {
-          button.setAttribute("class", "btn btn-sm btn-outline-success float-right")
-          span.textContent= data["bets"]
-        } else {
-          button.setAttribute("class", "btn btn-sm btn-outline-light float-right")
-          span.textContent= data["none"]
-        }
+        // console.log("made_bet")
+        // console.log(data)
 
-      $("#" + participant_id + "-bet").html(button);
+        const win_bet = data['bets']['W']
+        const place_bet = data['bets']['P']
+        const show_bet = data['bets']['S']
+        if (win_bet) {
+          document.getElementById(data["participant_id"] + "-win-td").textContent = data['bets']['W']
+        }
+        if (place_bet) {
+          document.getElementById(data["participant_id"] + "-place-td").textContent = data['bets']['P']
+
+        }
+        if (show_bet) {
+          document.getElementById(data["participant_id"] + "-show-td").textContent = data['bets']['S']
+
+        }
+        // button = document.createElement("button")
+        // span = document.createElement("span")
+        // span.setAttribute("style", "font-weight:bold")
+        // button.appendChild(span)
+        //
+        // button.setAttribute("class", "btn btn-sm btn-outline-success float-right")
+        // span.textContent= data["bets"]
+
+
+        // $( "#bets" ).load(window.location.href);
       }
     })
   }

@@ -118,7 +118,8 @@
 
     const modal = document.getElementById("bet-modal")
 
-
+    modal.addEventListener("unfocus", function (e) {
+      console.log("hide")})
 
     modal.addEventListener("focus", function (e) {
       // console.log("ok")

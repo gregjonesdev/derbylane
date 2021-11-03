@@ -197,10 +197,12 @@ def load_charts(request):
         'load_charts.html', {'charts': charts, })
 
 def make_bet(request):
-    print("make bets()")
+    # print("mke bets()")
+    participant_id = request.GET.get('participant_id')
     participant = Participant.objects.get(
-        uuid=request.GET.get('participant_id'))
-    for bet_name in [char for char in request.GET.get('bet_types')]:
+        uuid=participant_id)
+    bet_names = [char for char in request.GET.get('bet_types')]
+    for bet_name in bet_names:
         type = StraightBetType.objects.get(name=bet_name)
         try:
             bet = Bet.objects.get(
@@ -222,10 +224,14 @@ def make_bet(request):
             bet.amount = float(amount)
             bet.save()
 
+    bet_update = {'W': 0, 'P': 0, 'S': 0}
+    for bet in participant.get_bets():
+        bet_update[bet.type.name] = bet.amount
+
+    # print(et_update)
     return JsonResponse({
-        # 'bets': participant.get_purchased_wagers(),
-        # 'none': participant.prediction.get_bets(),
-        'enabled': request.user.is_staff})
+        'bets': bet_update,
+        'participant_id': participant_id })
 
 def get_daily_bets(request):
     # venue = Venue.objects.get(
