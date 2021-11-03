@@ -61,23 +61,16 @@
         {% endfor %}
       </select>
     </div>
-    <table
-    class="table table-sm table-borderless"
-    style="background-color:inherit;"
-    id="bets_table">
-    <tbody id="bets" style="max-height: 50%;">
-
-    </tbody>
-
-
-  </table>
-
-
   {% else %}
   <div style="text-align: center; padding: 50px">
   No Charts Found
   </div>
   {% endif %}
+
+
+  <div id="bets" style="max-height: 75vh; overflow-y:scroll">
+
+  </div>
 
 
 
