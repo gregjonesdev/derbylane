@@ -268,7 +268,7 @@ def load_bets(request):
     #         'races': races,
     #         'wagering': wagering })
     return JsonResponse({
-        'wagering': 'chart'})
+        'wagering': request.GET.get('chart_id')})
 
 
 def logout_view(request):
