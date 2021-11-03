@@ -12,14 +12,3 @@
     {% endif %}
   {% endfor %}
 {% endif %}
-
-
-<script>
-  //console.log("{{ wagering }}")
-if ("{{ wagering }}") {
-  wager_buttons = document.getElementsByClassName("wager-btn")
-  for (let i=0; i<wager_buttons.length; i++) {
-    wager_buttons[i].disabled = false;
-  }
-}
-</script>
