@@ -105,6 +105,7 @@
         console.log(chart_select)
         chart_id = chart_select.value
         console.log(chart_id)
+        console.log(chart_json_data["bets_url"])
         $.ajax({
           url: chart_json_data["bets_url"],
           dataType: "json",
