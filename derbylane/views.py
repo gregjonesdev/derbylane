@@ -250,13 +250,13 @@ def get_daily_bets(request):
 def load_bets(request):
     chart = Chart.objects.get(
         uuid=request.GET.get('chart_id'))
-    url = 'load_bets.html'
-    current_date = datetime.datetime.now().date()
+    # current_date = datetime.datetime.now().date()
+    # url = 'results_table.html'
     wagering = 0
-    if not current_date > chart.program.date:
+    if not localdate() > chart.program.date:
+        # url = 'race_table.html'
         wagering = 1
-    #
-
+    url = 'load_bets.html'
     races = chart.race_set.filter(
         grade__value__gt=0)
     return render(
@@ -264,8 +264,6 @@ def load_bets(request):
         url, {
             'races': races,
             'wagering': wagering })
-    # return JsonResponse({
-    #     'wagering': len(races)})
 
 
 def logout_view(request):
