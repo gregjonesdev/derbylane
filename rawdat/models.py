@@ -386,9 +386,25 @@ class Race(CoreModel):
             except:
                 pass
 
+    def count_predictions(self):
+        prediction_count = 0
+        for participant in self.participant_set.all():
+            try:
+                if participant.prediction:
+                    prediction_count += 1
+            except:
+                pass
+        return prediction_count
+
     def has_bets(self):
         for participant in self.participant_set.all():
             return participant.bet_set.count() > 0
+
+    def get_displayed_participants(self):
+        if self.is_complete():
+            return self.count_predictions()
+        else:
+            return self.participant_set.all().count()    
 
     def is_complete(self):
         for participant in self.participant_set.all():
