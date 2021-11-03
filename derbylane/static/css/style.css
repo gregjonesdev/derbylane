@@ -77,8 +77,9 @@ h1 {
   width: 90%;
 }
 
+
 .race-table-row>td {
-  border: 1px solid #666;
+  border: 1px solid #222;
   width: 15%;
   text-align: center;
   vertical-align: middle;
