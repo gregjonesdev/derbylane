@@ -9,8 +9,7 @@
       {% endif %}
       <td>
         {{ participant.post }}
-        <br>
-        <span class="dog-name-span">{{ participant.dog.name|truncatechars:9 }}</span>
+        <span class="dog-name-span" style="display:block">{{ participant.dog.name|truncatechars:9 }}</span>
       </td>
       <td>
         {% block prediction_button %}
