@@ -219,7 +219,7 @@ def make_bet(request):
         if int(amount) == 0:
             bet.delete()
         else:
-            bet.amount = float(bet.amount) + float(amount)
+            bet.amount = float(amount)
             bet.save()
 
     return JsonResponse({

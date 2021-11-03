@@ -7,7 +7,6 @@
 // // const chart_select = document.getElementById("chart-select")
 //
 // // load_bets = () => {
-// //   console.log("load bets")
 // //   if (chart_select) {
 // //     chart_id = chart_select.value
 // //     $.ajax({
@@ -24,7 +23,6 @@
 // // }
 // //
 // // input.value = input.getAttribute("data-date")
-// console.log("Whatda")
 // //
 // // handler = (e) => {
 // //   window.location = chart_json_data["results_url"] + "?date=" + e.target.value
@@ -61,7 +59,7 @@
 // //
 //
 window.onload = (event) => {
-  console.log("f")
+  //console.log("f")
   // const text_content = document.getElementById("json-chart-data").textContent
   //
   //
