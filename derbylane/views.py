@@ -261,11 +261,14 @@ def load_bets(request):
     races = chart.race_set.filter(
         grade__value__gt=0)
     # races = chart.race_set.all()
-    return render(
-        request,
-        url, {
-            'races': races,
-            'wagering': wagering })
+    # return render(
+    #     request,
+    #     url, {
+    #         'races': races,
+    #         'wagering': wagering })
+    return JsonResponse({
+        'wagering': wagering,
+        'races': races})
 
 
 def logout_view(request):

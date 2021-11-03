@@ -104,16 +104,17 @@
       if (chart_select) {
         console.log(chart_select)
         chart_id = chart_select.value
+        console.log(chart_id)
         $.ajax({
           url: chart_json_data["bets_url"],
-          dataType: "html",
+          dataType: "json",
           data: {
             "chart_id": chart_id,
           },
           success: function(data) {
             console.log("success")
             console.log(data)
-            $("#bets").html("data")
+            // $("#bets").html(data)
           }
         })
       }
