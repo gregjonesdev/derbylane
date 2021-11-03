@@ -261,12 +261,10 @@ def load_bets(request):
     races = chart.race_set.filter(
         grade__value__gt=0)
     # races = chart.race_set.all()
-    print(request.user)
     return render(
         request,
         url, {
             'races': races,
-            'user': request.user,
             'wagering': wagering })
 
 
