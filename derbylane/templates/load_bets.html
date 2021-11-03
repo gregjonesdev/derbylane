@@ -1,13 +1,5 @@
 {% if wagering %}
-  {% for race in races %}
-    {% if race.has_predictions %}
-      include 'race_table.html'
-    {% endif %}
-  {% endfor %}
+  Yes
 {% else %}
-  {% for race in races %}
-    {% if race.has_bets %}
-      include 'results_table.html'
-    {% endif %}
-  {% endfor %}
+  No
 {% endif %}
