@@ -267,7 +267,7 @@ def load_bets(request):
     #         'races': races,
     #         'wagering': wagering })
     return JsonResponse({
-        'wagering': chart.uuid,
+        'wagering': chart,
         'races': "races"})
 
 
