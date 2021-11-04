@@ -62,7 +62,7 @@
     </div>
     <table
       id="header-table"
-      class="table table-sm">
+      class="table table-sm table-borderless">
       <tr class="race-table-row">
         <td></td>
         <td></td>
@@ -79,7 +79,14 @@
     </div>
   {% endif %}
 
-  <div id="bets"></div>
+  <div id="bets">
+    <img
+      id="loader-gif"
+      src="{% static 'img/spinner2.gif' %}"
+      height="200px"
+      class="center"
+      alt="spinner-gif">
+  </div>
 
   {% include 'betmodal.html' %}
 

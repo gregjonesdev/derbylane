@@ -100,10 +100,16 @@ body {
 
 
 #header-table {
-  padding: 0px;
-  margin: 0px 0px 5px 0px;
-  width: 95vw;
-  border: none;
+  display: none;
+  width: 100vw;
+  margin-left: 20px;
+}
+
+#header-table td {
+  /* width:15vw; */
+  padding: 0px 4px;
+  margin-left:10px
+
 }
 
 #empty-charts-div {
@@ -112,9 +118,15 @@ body {
 }
 
 #bets {
-  max-height: 75vh;
-  overflow-y:scroll;
+  width: 100%;
+  scrollbar-width: none;
 }
+
+#bets::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+}
+
+
 .race-info-cell {
   border-right: 1px solid #222;
 }
@@ -160,4 +172,14 @@ body {
   color: inherit;
   width: 75px;
   text-align:center;
+}
+
+#loader-gif {
+  display: block;
+  margin: 50px auto;
+}
+
+table {
+   table-layout: fixed;
+   width:100%;
 }

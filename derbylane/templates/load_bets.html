@@ -4,6 +4,8 @@
   {% endfor %}
 {% else %}
   {% for race in races %}
-    {% include 'results_table.html' %}
+    {% if race.has_bets %}
+      {% include 'results_table.html' %}
+    {% endif %}  
   {% endfor %}
 {% endif %}

@@ -406,10 +406,18 @@ class Race(CoreModel):
             return participant.bet_set.count() > 0
 
     def get_displayed_participants(self):
+        all_participants = self.participant_set.all()
+        # print(self.number)
         if self.is_complete():
-            return self.count_predictions()
+            # print("is complete")
+            participant_list=[]
+            for participant in all_participants:
+                if participant.get_bets().count():
+                    participant_list.append(participant)
+            # print(participant_list)
+            return participant_list
         else:
-            return self.participant_set.all().count()
+            return all_participants
 
     def is_complete(self):
         for participant in self.participant_set.all():

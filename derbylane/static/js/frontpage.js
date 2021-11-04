@@ -60,6 +60,10 @@ window.onload = (event) => {
           // console.log("success 2")
           // console.log(data)
           $("#bets").html(data)
+          const bets_container =   document.getElementById("bets")
+          bets_container.style.maxHeight = "75vh";
+          bets_container.style.overflowY = "scroll";
+          document.getElementById("header-table").style.display = "block";
         }
       })
 

@@ -1,10 +1,10 @@
 <table
   class="table table-sm table-borderless">
-  {% for participant in race.participant_set.all %}
+  {% for participant in race.get_displayed_participants %}
     <tr class="race-table-row">
       {% if forloop.first %}
         <td
-          rowspan="8"
+          rowspan="0"
           class="race-info-cell">
           <span class="race-number-cell">
             {{ race.number }}

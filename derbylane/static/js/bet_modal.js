@@ -11,7 +11,6 @@ make_bet = () => {
     },
     success: function(data) {
       // console.log("made_bet")
-      console.log("WHETRE")
 
       const win_bet = data['bets']['W']
       const place_bet = data['bets']['P']
