@@ -79,12 +79,7 @@
     </div>
   {% endif %}
 
-
-  <div id="bets" style="max-height: 75vh; overflow-y:scroll">
-
-  </div>
-
-
+  <div id="bets"></div>
 
   {% include 'betmodal.html' %}
 
@@ -98,85 +93,5 @@
   </script>
 
   <script src="{% static 'js/frontpage.js' %}"></script>
-<!--
-  <script>
-    const text_content = document.getElementById("json-chart-data").textContent
-    const chart_json_data = JSON.parse(text_content)
 
-    const chart_select = document.getElementById("chart-select")
-
-    load_bets = () => {
-      // console.log("load bets()")
-
-      // console.log(chart_select)
-      chart_id = chart_select.value
-      // console.log(chart_id)
-      // console.log(chart_json_data["bets_url"])
-      $.ajax({
-        url: chart_json_data["bets_url"],
-        dataType: "html",
-        data: {
-          "chart_id": document.getElementById("chart-select").value,
-        },
-        success: function(data) {
-          // console.log("success 2")
-          // console.log(data)
-          $("#bets").html(data)
-        }
-      })
-
-    }
-
-    load_bets()
-
-    const modal = document.getElementById("bet-modal")
-
-    modal.addEventListener("unfocus", function (e) {
-      console.log("hide")})
-
-    modal.addEventListener("focus", function (e) {
-      // console.log("ok")
-      // console.log($('#bet-modal').hasClass('show'))
-      var button = $(event.relatedTarget) // Button that triggered the modal
-      if (button.hasClass("bet-button")) {
-        var participant_bets = document.getElementById("participant_bets")
-        var dog = button.data('dog')
-        var bets = button.data('bets')
-        var post = button.data('post')
-        var venue = button.data('venue')
-        var chart = button.data('chart')
-        var number = button.data('number')
-        var participant = button.data('participant')
-        var modal = $(this)
-        modal.find('.modal-subtitle').text(
-          post + " | " +
-          dog + " "
-        )
-        modal.find('.modal-title').text(
-          venue + " " +
-          chart + " Race " +
-          number
-        )
-        modal.find('#participant_uuid').text(
-          participant
-        )
-        $('select option[value=' + bets).prop('selected',true);
-      }
-
-    })
-
-    window.onload = (event) => {
-      const text_content = document.getElementById("json-chart-data").textContent
-      const chart_json_data = JSON.parse(text_content)
-
-
-
-
-
-
-
-    };
-
-
-  </script> -->
   {% endblock content %}
