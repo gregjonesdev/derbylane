@@ -12,13 +12,25 @@
 {% endblock prediction_button %}
 
 {% block win_button %}
-  {{ participant.get_win_bet.amount }}
+  <button
+    class="{{ participant.get_win_bet.button_style }}"
+    disabled>
+    {{ participant.get_win_bet.amount }}
+  </button>
 {% endblock win_button %}
 
 {% block place_button %}
-  {{ participant.get_place_bet.amount }}
+  <button
+    class="{{ participant.get_place_bet.button_style }}"
+    disabled>
+    {{ participant.get_place_bet.amount }}
+  </button>
 {% endblock place_button %}
 
 {% block show_button %}
-  {{ participant.get_show_bet.amount }}
+  <button
+    class="{{ participant.get_show_bet.button_style }}" 
+    disabled>
+    {{ participant.get_show_bet.amount }}
+  </button>
 {% endblock show_button %}

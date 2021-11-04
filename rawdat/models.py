@@ -404,7 +404,7 @@ class Race(CoreModel):
         if self.is_complete():
             return self.count_predictions()
         else:
-            return self.participant_set.all().count()    
+            return self.participant_set.all().count()
 
     def is_complete(self):
         for participant in self.participant_set.all():
@@ -510,15 +510,19 @@ class Bet(CoreModel):
         on_delete=models.CASCADE)
 
     def button_style(self):
-        # if self.get_return() > 0:
-        #     return "btn btn-outline-success float-right wager-btn"
-        return "btn btn-outline-success float-right wager-btn"
+        raw_style = "btn btn-sm btn-block btn-outline-{}"
+        if self.get_return() > 0:
+            return raw_style.format("success")
+        return raw_style.format("danger")
+
+
 
     def get_wager(self):
         return "${} {}".format(self.amount, self.type.name)
 
     def get_return(self):
         final = self.participant.final
+        print(final)
         if final and final <= self.type.cutoff:
             if self.type.name == 'P':
                 return self.participant.straight_wager.place

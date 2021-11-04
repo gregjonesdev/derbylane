@@ -3,5 +3,7 @@
     {% include 'race_table.html' %}
   {% endfor %}
 {% else %}
-  No {{ races }}
+{% for race in races %}
+  {% include 'results_table.html' %}
+{% endfor %}
 {% endif %}
