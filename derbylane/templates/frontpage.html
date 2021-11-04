@@ -62,7 +62,7 @@
     </div>
     <table
       id="header-table"
-      class="table table-sm table-borderless">
+      class="table table-sm table-borderless fade-in">
       <tr class="race-table-row">
         <td></td>
         <td></td>
@@ -82,7 +82,7 @@
   <div id="bets">
     <img
       id="loader-gif"
-      src="{% static 'img/spinner2.gif' %}"
+      src="{% static 'img/preloader.gif' %}"
       height="200px"
       class="center"
       alt="spinner-gif">
@@ -94,7 +94,6 @@
     {
       "bets_url": "{% url 'load_bets' %}",
       "results_url": "{% url 'results' %}",
-      "daily_bets_url": "{% url 'get_daily_bets' %}",
       "make_bets_url": "{% url 'make_bet' %}"
     }
   </script>

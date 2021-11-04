@@ -197,7 +197,6 @@ def load_charts(request):
         'load_charts.html', {'charts': charts, })
 
 def make_bet(request):
-    # print("mke bets()")
     participant_id = request.GET.get('participant_id')
     participant = Participant.objects.get(
         uuid=participant_id)
@@ -226,40 +225,17 @@ def make_bet(request):
             bet.save()
             bet_update[bet_name] = bet.amount
 
-    # print(et_update)
     return JsonResponse({
         'bets': bet_update,
         'participant_id': participant_id })
-
-def get_daily_bets(request):
-    # venue = Venue.objects.get(
-    #     code=request.GET.get('venue_code'))
-    # charts = Chart.objects.filter(
-    #     program__venue=venue,
-    #     program__date=datetime.datetime.now()
-    # )
-    target_date = request.GET.get('date')
-    predictions = Prediction.objects.filter(participant__race__chart__program__date=target_date)
-    # bets = Bet.objects.filter(participant__race__chart__program__date=)
-    charts = ['a', 'b', 'c']
-    place_bet_count = 0
-    for prediction in predictions:
-        if 'P' in prediction.get_bets():
-            place_bet_count += 1
-    return render(
-        request,
-        'get_daily_bets.html', {'place_bet_count': place_bet_count, })
 
 
 def load_bets(request):
     chart = Chart.objects.get(
         uuid=request.GET.get('chart_id'))
-    # current_date = datetime.datetime.now().date()
-    # url = 'results_table.html'
-    wagering = 0
+    wagering = False
     if not localdate() > chart.program.date:
-        # url = 'race_table.html'
-        wagering = 1
+        wagering = True
     url = 'load_bets.html'
     races = chart.race_set.filter(
         grade__value__gt=0)
