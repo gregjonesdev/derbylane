@@ -36,15 +36,43 @@ modal.addEventListener("focus", function (e) {
 
 window.onload = (event) => {
 
+  function load_races (e)  {
+    console.log("load races")
+    console.log(e.currentTarget.getAttribute("data-chart"))
+    const currentTarget = e.currentTarget
 
+    $.ajax({
+      url: json_data["bets_url"],
+      dataType: "html",
+      data: {
+        "chart_id": currentTarget.getAttribute("data-chart"),
+      },
+      success: function(data) {
+        // console.log("success 2")
+        // console.log(data)
+        $("#bets").html(data)
+        const bets_container =   document.getElementById("bets")
+        bets_container.style.maxHeight = "75vh";
+        bets_container.style.overflowY = "scroll";
+        document.getElementById("header-table").style.display = "block";
+        document.getElementById("chart-label").textContent = currentTarget.textContent
+      }
+    })
 
+  }
+
+  dropdowns = document.getElementsByClassName("dropdown-item")
   // const chart_json_data = JSON.parse(text_content)
+  for (let i=0; i<dropdowns.length; i++) {
+    dropdowns[i].addEventListener("click", load_races)
+  }
 
 
   const chart_select = document.getElementById("chart-select")
 
   load_bets = () => {
     console.log("load bets()")
+    console.log()
 
     if (chart_select) {
       chart_id = chart_select.value
@@ -71,7 +99,7 @@ window.onload = (event) => {
 
   }
 
-  load_bets()
+  // load_bets()
 
 
 

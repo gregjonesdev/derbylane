@@ -193,26 +193,33 @@ body {
   font-size: 1.25em;
 }
 
+.modal-body {
+  height: 50vh;
+}
+
 .modal-select {
-  display: flex;
-  flex-flow: row nowrap;
+  border: 1px solid red;
+  margin: 30px 0px 30px 30px
+  /* display: flex;
+  flex-flow: column nowrap;
   justify-content:space-around;
-  margin:30px;
-  padding: 0px;
+  align-items: left;
+  margin:30px; */
+
+
 }
 
 .modal-bet-selector {
   background-color: #222;
   color:inherit;
-  margin: 0px;
   width: 150px;
   height: 40px;
-  font-size: 2.25em;
-  padding: 0px 10px
+  font-size: 1.75em;
+  /* padding: 0px 10px; */
 }
 
 .bet_amount_dollar {
-  font-size:2.25em;
+  font-size:2em;
 }
 
 #participant_uuid {
@@ -224,7 +231,7 @@ body {
   color: inherit;
   width: 100px;
   height: 40px;
-  font-size: 2.25em;
+  font-size: 2em;
   text-align:center;
 }
 

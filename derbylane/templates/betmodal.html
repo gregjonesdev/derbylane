@@ -34,11 +34,11 @@
           <form
             action="{% url 'make_bet' %}"
             method="post">
-            <div class="modal-select">
+
               <select
                 name="bet_type"
                 id="bet_types"
-                class="modal-bet-selector">
+                class="modal-select modal-bet-selector pull-right">
                 <option value="W">WIN</option>
                 <option value="P">PLC</option>
                 <option value="S">SHW</option>
@@ -46,7 +46,7 @@
                 <option value="WPS">WPS</option>
                 <option value="PS">PS</option>
               </select>
-              <div>
+              <div class="modal-select">
                 <span class="bet_amount_dollar">$</span>
                 <span id="participant_uuid"></span>
                 <input
@@ -57,7 +57,7 @@
                   max="1000"
                   value="2">
               </div>
-            </div>
+
             <div class="modal-footer">
               <button
                 id="clear_bet"
