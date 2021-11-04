@@ -19,40 +19,31 @@ body {
   color: var(--font-primary);
   font-family: var(--font-style);
   font-size: 12px;
-  margin: 0 auto;
-}
-
-nav {
-  background-color: var(--bg-primary);
-}
-.main-content {
-    padding: 10px;
-}
-
-.card {
-  background-color: inherit;
 }
 
 .card-header {
   background-color: var(--bg-secondary);
 }
 
-.select-holder {
+.date_arrow {
+  display: inline;
+}
+
+#main-card-header {
+  border: 1px solid #333;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
+  justify-content: space-between;
+}
+
+.select-holder {
+  text-align: center;
   padding: 15px 0px;
 }
 
 #venue-select, #chart-select {
-  background-color: var(--bg-primary);
   color: var(--font-primary);
-  text-align: center;
-  margin: 0 5px;
-}
-
-h1 {
-  font-size: 2em;
+  margin: 0px;
 }
 
 .dropdown-item {
@@ -61,14 +52,112 @@ h1 {
 
 #navbarToggleExternalContent {
   background-color: var(--bg-secondary);
+  margin-bottom: 10px
 }
 
+#username-span {
+  font-size:1em;
+  font-weight: bold;
+}
+
+.navbar {
+  padding: 10px 0;
+}
+
+.navbar-brand {
+  margin-left: 8px;
+}
 .upload-input {
-  border: 1px solid #555;
 }
 
 #chart-select{
   font-weight: bold;
   background-image: linear-gradient(#039be5, black);
   text-align: center;
+}
+
+#date_header {
+  font-size: 1.6em;
+  margin:auto;
+  font-style: italic;
+  font-weight: bold;
+}
+
+
+.race-table-row>td {
+  width: 15vw;
+  text-align: center;
+  vertical-align: middle;
+  color: #FFF;
+  border: none;
+}
+
+.dog-name-span {
+  font-size: .6em;
+  display:block;
+}
+
+
+
+#header-table {
+  padding: 0px;
+  margin: 0px 0px 5px 0px;
+  width: 95vw;
+  border: none;
+}
+
+#empty-charts-div {
+  text-align: center;
+  padding: 50px;
+}
+
+#bets {
+  max-height: 75vh;
+  overflow-y:scroll;
+}
+.race-info-cell {
+  border-right: 1px solid #222;
+}
+
+.race-number-cell {
+  font-size: 2em;
+}
+
+.modal-subtitle {
+  font-size: 1.25em;
+}
+
+.modal-select {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content:space-around;
+  margin:10px 40px;
+  padding: 0px;
+}
+
+.modal-bet-selector {
+  background-color: #222;
+  color:inherit;
+  margin: 0px;
+  width: 100px;
+  font-size:1.2em;
+  padding: 0px 10px
+}
+
+.bet_amount_dollar {
+  font-size:1.5em;
+  line-height: 100%;
+  margin:10px 5px 10px 10px;
+  vertical-align:middle;
+}
+
+#participant_uuid {
+  display:none;
+}
+
+#amount_input {
+  background-color: #222;
+  color: inherit;
+  width: 75px;
+  text-align:center;
 }
