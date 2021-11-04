@@ -80,7 +80,7 @@ h1 {
 
 
 .race-table-row>td {
-  border: 1px solid #111;
+  border: None;
   width: 15vw;
   text-align: center;
   vertical-align: middle;
@@ -89,4 +89,9 @@ h1 {
 
 .dog-name-span {
   font-size: .6em
+}
+
+#header-table {
+  padding: 0px;
+  margin: 0px 0px 5px 0px;
 }
