@@ -19,18 +19,18 @@ make_bet = () => {
       if (win_bet) {
         const target_td = document.getElementById(data["participant_id"] + "-win-td")
         target_td.innerHTML = "";
-        target_td.appendChild(create_button(win_bet))
+        target_td.appendChild(create_button(win_bet.toFixed(2)))
       }
       if (place_bet) {
         const target_td = document.getElementById(data["participant_id"] + "-place-td")
         target_td.innerHTML = "";
-        target_td.appendChild(create_button(place_bet))
+        target_td.appendChild(create_button(place_bet.toFixed(2)))
 
       }
       if (show_bet) {
         const target_td = document.getElementById(data["participant_id"] + "-show-td")
         target_td.innerHTML = "";
-        target_td.appendChild(create_button(show_bet))
+        target_td.appendChild(create_button(show_bet.toFixed(2)))
       }
     }
   })
