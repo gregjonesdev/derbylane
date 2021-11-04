@@ -19,18 +19,6 @@ body {
   color: var(--font-primary);
   font-family: var(--font-style);
   font-size: 12px;
-  /* margin: 0 auto; */
-}
-
-nav {
-  /* background-color: var(--bg-primary); */
-}
-.main-content {
-    /* padding: 10px; */
-}
-
-.card {
-  /* background-color: inherit; */
 }
 
 .card-header {
@@ -50,22 +38,12 @@ nav {
 
 .select-holder {
   text-align: center;
-  /* display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around; */
   padding: 15px 0px;
 }
 
 #venue-select, #chart-select {
-  /* background-color: var(--bg-primary); */
   color: var(--font-primary);
-  /* text-align: center; */
-  /* margin: 0 5px; */
   margin: 0px;
-}
-
-h1 {
-  /* font-size: 2em; */
 }
 
 .dropdown-item {
@@ -90,7 +68,6 @@ h1 {
   margin-left: 8px;
 }
 .upload-input {
-  /* border: 1px solid #555; */
 }
 
 #chart-select{
