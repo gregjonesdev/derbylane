@@ -1,43 +1,45 @@
 {% load static %}
 
 
-    <nav class="navbar navbar-dark" style="padding:10px 0">
-      {% if user.is_authenticated %}
-      <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarToggleExternalContent"
-      aria-controls="navbarToggleExternalContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="pull-right">
-      <span style="font-size:1em"><b>{{ user.username }}</b></span>
-        <a
-          class="navbar-brand"
-          href="{% url 'frontpage' %}"
-          style="margin-left: 8px">
-          <img
-            id="navbar-logo"
-            src="{% static 'img/bootstrap-logo.png' %}"
-            height="30"
-            style="display:inline"
-            class="pull-right"
-            alt="Cashdog Logo">
-        </a>
-        {% endif %}
-        </div>
-    </nav>
-    <div class="collapse" id="navbarToggleExternalContent">
-      <div class="p-1">
-        <!-- <h5><a class="dropdown-item" href="{% url 'analysis' %}">Analysis</a></h5> -->
-        <!-- {% if user.is_staff %}
-        <h5><a class="dropdown-item" href="{% url 'scans' %}">Scans</a></h5>
-        {% endif %} -->
-        <!-- <h5><a class="dropdown-item" href="{% url 'scans' %}">Scans</a></h5>
-        <h5><a class="dropdown-item" href="{% url 'downloads' %}">Downloads</a></h5> -->
-        <h5><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></h5>
-      </div>
-    </div>
+<nav class="navbar navbar-dark">
+  {% if user.is_authenticated %}
+    <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarToggleExternalContent"
+    aria-controls="navbarToggleExternalContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="pull-right">
+    <span id="username-span">
+      {{ user.username }}
+    </span>
+    <a
+      class="navbar-brand"
+      href="{% url 'frontpage' %}">
+      <img
+        id="navbar-logo"
+        src="{% static 'img/bootstrap-logo.png' %}"
+        height="30"
+        class="pull-right"
+        alt="Cashdog Logo">
+    </a>
+  {% endif %}
+  </div>
+</nav>
+<div
+  class="collapse"
+  id="navbarToggleExternalContent">
+  <div class="p-1">
+    <h5>
+      <a
+        class="dropdown-item"
+        href="{% url 'logout' %}">
+        Logout
+      </a>
+    </h5>  
+  </div>
+</div>

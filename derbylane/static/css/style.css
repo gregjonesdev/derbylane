@@ -77,6 +77,18 @@ h1 {
   margin-bottom: 10px
 }
 
+#username-span {
+  font-size:1em;
+  font-weight: bold;
+}
+
+.navbar {
+  padding: 10px 0;
+}
+
+.navbar-brand {
+  margin-left: 8px;
+}
 .upload-input {
   /* border: 1px solid #555; */
 }
