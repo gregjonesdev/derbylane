@@ -202,6 +202,7 @@ def make_bet(request):
     participant = Participant.objects.get(
         uuid=participant_id)
     bet_names = [char for char in request.GET.get('bet_types')]
+    bet_update = {'W': 0, 'P': 0, 'S': 0}
     for bet_name in bet_names:
         type = StraightBetType.objects.get(name=bet_name)
         try:
@@ -223,10 +224,7 @@ def make_bet(request):
         else:
             bet.amount = float(amount)
             bet.save()
-
-    bet_update = {'W': 0, 'P': 0, 'S': 0}
-    for bet in participant.get_bets():
-        bet_update[bet.type.name] = bet.amount
+            bet_update[bet_name] = bet.amount
 
     # print(et_update)
     return JsonResponse({

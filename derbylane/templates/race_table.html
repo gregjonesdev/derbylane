@@ -3,7 +3,7 @@
 {% block prediction_button %}
   <button
     type="button"
-    class="btn btn-outline-success btn-block btn-xs bet-button"
+    class="btn btn-outline-success btn-block btn-sm bet-button"
     data-toggle="modal"
     data-target="#bet-modal"
     data-dog="{{ participant.dog.name }}"
@@ -21,7 +21,7 @@
 
 {% block win_button %}
 <button
-  class="btn btn-sm btn-block btn-outline-info"
+  class="btn btn-sm btn-block btn-outline-secondary"
   disabled>
   {{ participant.get_win_bet.amount }}
 </button>
@@ -29,7 +29,7 @@
 
 {% block place_button %}
 <button
-  class="btn btn-sm btn-block btn-outline-info"
+  class="btn btn-sm btn-block btn-outline-secondary"
   disabled>
   {{ participant.get_place_bet.amount }}
 </button>
@@ -37,7 +37,7 @@
 
 {% block show_button %}
 <button
-  class="btn btn-sm btn-block btn-outline-info"
+  class="btn btn-sm btn-block btn-outline-secondary"
   disabled>
   {{ participant.get_show_bet.amount }}
 </button>
