@@ -243,6 +243,11 @@ class Chart(CoreModel):
         else:
             return self.time
 
+    def get_kiosk_name(self):
+        return "{}_{}".format(
+            self.program.venue.kiosk_name,
+            self.kiosk_time())
+
     def get_rh(self):
         weather = self.program.weather
         if weather:

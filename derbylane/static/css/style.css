@@ -37,7 +37,19 @@ nav {
   background-color: var(--bg-secondary);
 }
 
+.date_arrow {
+  display: inline;
+}
+
+#main-card-header {
+  border: 1px solid #333;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
 .select-holder {
+  text-align: center;
   /* display: flex;
   flex-flow: row nowrap;
   justify-content: space-around; */
@@ -49,6 +61,7 @@ nav {
   color: var(--font-primary);
   /* text-align: center; */
   /* margin: 0 5px; */
+  margin: 0px;
 }
 
 h1 {
@@ -77,22 +90,71 @@ h1 {
 
 
 .race-table-row>td {
-  border: None;
   width: 15vw;
   text-align: center;
   vertical-align: middle;
   color: #FFF;
+  border: none;
 }
 
 .dog-name-span {
-  font-size: .6em
+  font-size: .6em;
+  display:block;
 }
+
+
 
 #header-table {
   padding: 0px;
   margin: 0px 0px 5px 0px;
+  width: 92vw;
+  border: none;
 }
 
-table {
-  border-bottom: 1px solid #383838;
+
+.race-info-cell {
+  border-right: 1px solid #222;
+}
+
+.race-number-cell {
+  font-size: 2em;
+}
+
+.modal-subtitle {
+  font-size: 1.25em;
+}
+
+.modal-select {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content:space-around;
+  margin:10px 40px;
+  padding: 0px;
+}
+
+.modal-bet-selector {
+  background-color: #222;
+  color:inherit;
+  margin: 0px;
+  width: 100px;
+  font-size:1.2em;
+  padding: 0px 10px
+}
+
+.bet_amount_dollar {
+  font-size:1.5em;
+  line-height: 100%;
+  margin:10px 5px 10px 10px;
+  vertical-align:middle;
+}
+
+#participant_uuid {
+  display:none;
+}
+
+#amount_input {
+  background-color: #222;
+  color: inherit;
+  width: 75px;
+  text-align:center;
 }

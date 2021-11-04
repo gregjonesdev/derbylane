@@ -3,16 +3,15 @@
 
 {% block content %}
   <div
-    class="card-header"
-    style="border: 1px solid #333; display: flex; flex-flow: row nowrap; justify-content: space-between">
+    id="main-card-header"
+    class="card-header">
     <a
       class="btn btn-small"
       href="{% url 'frontpage' %}?date={{ previous }}">
       <img
         src="{% static 'img/back.png' %}"
-        style="display:inline"
         height=20
-        class="float-left"
+        class="float-left date_arrow"
         alt="back-icon">
     </a>
     <span
@@ -27,9 +26,8 @@
       href="{% url 'frontpage' %}?date={{ next }}">
       <img
         src="{% static 'img/forward.png' %}"
-        style="display:inline"
         height=20
-        class="float-left"
+        class="float-left date_arrow"
         alt="forward-icon">
     </a>
     {% else %}
@@ -47,16 +45,17 @@
   </div>
   {% if charts|length %}
 
-    <div id= "charts-holder" class="select-holder" style="text-align: center;">
+    <div
+      id="charts-holder"
+      class="select-holder">
       <select
         class="form-control frontpage-select"
         id="chart-select"
-        style="margin: 0"
         onchange="load_bets()">
         {% for chart in charts %}
           <option value="{{ chart.uuid }}">
             <span >
-              {{ chart.program.venue.kiosk_name }}_{{ chart.kiosk_time }}
+              {{ chart.get_kiosk_name }}
             </span>
           </option>
         {% endfor %}

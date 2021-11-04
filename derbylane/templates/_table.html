@@ -1,21 +1,28 @@
-
-<table class="table table-sm table-borderless" style="background-color:inherit;">
+<table
+  class="table table-sm table-borderless">
   {% for participant in race.participant_set.all %}
     <tr class="race-table-row">
       {% if forloop.first %}
-        <td rowspan="8" style="text-align: center; vertical-align: middle; border-right: 1px solid #222">
-            <span style="font-size: 2em">{{ race.number }}</span><br>
-            Grade {{ race.grade.name }}
+        <td
+          rowspan="8"
+          class="race-info-cell">
+          <span class="race-number-cell">
+            {{ race.number }}
+          </span>
+          <br>
+          Grade {{ race.grade.name }}
         </td>
       {% endif %}
       <td>
         {{ participant.post }}
-        <span class="dog-name-span" style="display:block">{{ participant.dog.name|truncatechars:9 }}</span>
+        <span
+          class="dog-name-span">
+          {{ participant.dog.name|truncatechars:9 }}
+        </span>
       </td>
       <td>
         {% block prediction_button %}
         {% endblock prediction_button %}
-
       </td>
       <td id="{{ participant.uuid }}-win-td">
         {% if participant.get_win_bet %}
@@ -35,7 +42,6 @@
           {% endblock show_button %}
         {% endif %}
       </td>
-
     </tr>
   {% endfor %}
 </table>
