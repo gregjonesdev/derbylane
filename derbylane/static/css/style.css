@@ -74,9 +74,6 @@ h1 {
   text-align: center;
 }
 
-.race-table-row {
-  /* width: 90%; */
-}
 
 
 .race-table-row>td {
@@ -94,4 +91,8 @@ h1 {
 #header-table {
   padding: 0px;
   margin: 0px 0px 5px 0px;
+}
+
+table {
+  border-bottom: 1px solid #383838;
 }
