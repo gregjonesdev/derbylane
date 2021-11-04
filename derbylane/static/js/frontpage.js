@@ -51,8 +51,6 @@ make_bet = () => {
 const modal = document.getElementById("bet-modal")
 
 modal.addEventListener("focus", function (e) {
-  // console.log("ok")
-  // console.log($('#bet-modal').hasClass('show'))
   const button = $(event.relatedTarget) // Button that triggered the modal
   if (button.hasClass("bet-button")) {
     var participant_bets = document.getElementById("participant_bets")
@@ -63,7 +61,6 @@ modal.addEventListener("focus", function (e) {
     var chart = button.data('chart')
     var number = button.data('number')
     var participant = button.data('participant')
-    console.log("so far so good")
     var this_modal = $(this)
     this_modal.find('.modal-subtitle').text(
       post + " | " +

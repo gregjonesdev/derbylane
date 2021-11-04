@@ -19,18 +19,18 @@ body {
   color: var(--font-primary);
   font-family: var(--font-style);
   font-size: 12px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
 }
 
 nav {
-  background-color: var(--bg-primary);
+  /* background-color: var(--bg-primary); */
 }
 .main-content {
-    padding: 10px;
+    /* padding: 10px; */
 }
 
 .card {
-  background-color: inherit;
+  /* background-color: inherit; */
 }
 
 .card-header {
@@ -38,21 +38,21 @@ nav {
 }
 
 .select-holder {
-  display: flex;
+  /* display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
+  justify-content: space-around; */
   padding: 15px 0px;
 }
 
 #venue-select, #chart-select {
-  background-color: var(--bg-primary);
+  /* background-color: var(--bg-primary); */
   color: var(--font-primary);
-  text-align: center;
-  margin: 0 5px;
+  /* text-align: center; */
+  /* margin: 0 5px; */
 }
 
 h1 {
-  font-size: 2em;
+  /* font-size: 2em; */
 }
 
 .dropdown-item {
@@ -61,10 +61,11 @@ h1 {
 
 #navbarToggleExternalContent {
   background-color: var(--bg-secondary);
+  margin-bottom: 10px
 }
 
 .upload-input {
-  border: 1px solid #555;
+  /* border: 1px solid #555; */
 }
 
 #chart-select{
@@ -74,12 +75,12 @@ h1 {
 }
 
 .race-table-row {
-  width: 90%;
+  /* width: 90%; */
 }
 
 
 .race-table-row>td {
-  border: 1px solid #222;
+  border: 1px solid #111;
   width: 15vw;
   text-align: center;
   vertical-align: middle;
@@ -87,5 +88,5 @@ h1 {
 }
 
 .dog-name-span {
-  font-size: .5em
+  font-size: .6em
 }
