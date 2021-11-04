@@ -44,7 +44,7 @@ window.onload = (event) => {
   const chart_select = document.getElementById("chart-select")
 
   load_bets = () => {
-    // console.log("load bets()")
+    console.log("load bets()")
 
     if (chart_select) {
       chart_id = chart_select.value

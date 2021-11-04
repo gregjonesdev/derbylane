@@ -11,33 +11,29 @@ make_bet = () => {
     },
     success: function(data) {
       // console.log("made_bet")
-      console.log("WHETRE")
 
       const win_bet = data['bets']['W']
       const place_bet = data['bets']['P']
       const show_bet = data['bets']['S']
 
+      const part_id = data["participant_id"]
+
       if (win_bet) {
-        const target_td = document.getElementById(data["participant_id"] + "-win-td")
-        target_td.appendChild(create_button(win_bet))
+        const target_td = document.getElementById(part_id + "-win-td")
+        target_td.innerHTML = "";
+        target_td.appendChild(create_button(win_bet.toFixed(2)))
       }
       if (place_bet) {
-        const target_td = document.getElementById(data["participant_id"] + "-place-td")
-        target_td.appendChild(create_button(place_bet))
+        const target_td = document.getElementById(part_id + "-place-td")
+        target_td.innerHTML = "";
+        target_td.appendChild(create_button(place_bet.toFixed(2)))
 
       }
       if (show_bet) {
-        const target_td = document.getElementById(data["participant_id"] + "-show-td")
-        target_td.appendChild(create_button(show_bet))
-
+        const target_td = document.getElementById(part_id + "-show-td")
+        target_td.innerHTML = "";
+        target_td.appendChild(create_button(show_bet.toFixed(2)))
       }
-      // span.setAttribute("style", "font-weight:bold")
-      // button.appendChild(span)
-      //
-      // span.textContent= data["bets"]
-
-
-      // $( "#bets" ).load(window.location.href);
     }
   })
 }
@@ -46,7 +42,7 @@ make_bet = () => {
 const create_button = (text_content) => {
   button = document.createElement("button");
   button.setAttribute("type", "button");
-  button.setAttribute("class", "btn btn-outline-secondary btn-block btn-sm");
+  button.setAttribute("class", "btn btn-outline-info btn-block btn-sm");
   button.disabled = true;
   button.textContent = text_content;
   return button;

@@ -70,10 +70,13 @@ body {
 .upload-input {
 }
 
+
 #chart-select{
   font-weight: bold;
-  background-image: linear-gradient(#039be5, black);
+  /* background-image: linear-gradient(var(--cashdog-blue), var(--bg-secondary)); */
+  background-color: var(--bg-secondary);
   text-align: center;
+  border: 1px solid #333;
 }
 
 #date_header {
