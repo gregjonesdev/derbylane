@@ -61,6 +61,7 @@
         {% endfor %}
       </select>
     </div>
+
   {% else %}
   <div style="text-align: center; padding: 50px">
   No Charts Found
@@ -85,7 +86,8 @@
     }
   </script>
 
-
+  <script src="{% static 'js/frontpage.js' %}"></script>
+<!--
   <script>
     const text_content = document.getElementById("json-chart-data").textContent
     const chart_json_data = JSON.parse(text_content)
@@ -165,5 +167,5 @@
     };
 
 
-  </script>
+  </script> -->
   {% endblock content %}
