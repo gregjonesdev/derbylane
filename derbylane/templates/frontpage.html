@@ -44,7 +44,6 @@
     {% endif %}
   </div>
   {% if charts|length %}
-
     <div
       id="charts-holder"
       class="select-holder">
@@ -61,7 +60,9 @@
         {% endfor %}
       </select>
     </div>
-    <table id= "header-table" class="table table-sm">
+    <table
+      id="header-table"
+      class="table table-sm">
       <tr class="race-table-row">
         <td></td>
         <td></td>
@@ -71,11 +72,11 @@
         <td>S</td>
       </tr>
     </table>
-
   {% else %}
-  <div style="text-align: center; padding: 50px">
-  No Charts Found
-  </div>
+    <div
+      id="empty-charts-div">
+      No Charts Found
+    </div>
   {% endif %}
 
 

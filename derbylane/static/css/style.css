@@ -87,6 +87,12 @@ h1 {
   text-align: center;
 }
 
+#date_header {
+  font-size: 1.6em;
+  margin:auto;
+  font-style: italic;
+  font-weight: bold;
+}
 
 
 .race-table-row>td {
@@ -111,7 +117,15 @@ h1 {
   border: none;
 }
 
+#empty-charts-div {
+  text-align: center;
+  padding: 50px;
+}
 
+#bets-container {
+  max-height: 75vh;
+  overflow-y:scroll;
+}
 .race-info-cell {
   border-right: 1px solid #222;
 }
