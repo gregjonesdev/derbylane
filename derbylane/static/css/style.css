@@ -215,6 +215,9 @@ body {
 
 .modal-footer {
   margin-top: 80px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
 }
 
 .modal-bet-selector {
