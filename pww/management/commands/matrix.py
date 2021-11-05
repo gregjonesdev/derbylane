@@ -10,11 +10,11 @@ from django.core.management.base import BaseCommand
 
 from pww.models import Metric
 from rawdat.models import Venue
-from pww.utilities.newweka import compare_predictions
+# from pww.utilities.newweka import compare_predictions
 
 from miner.utilities.constants import csv_columns
 
-cells = 5
+cells = 7
 cell = "\t{}\t|"
 
 class bcolors:
@@ -43,18 +43,23 @@ class Command(BaseCommand):
         for i in range(cells):
             row_string += cell
         print(row_string.format(
-            " ", "1", "2", "3", "4"
+            " ", "1", "2", "3", "4", "5", "6"
         ))
         print(row_string.format(
-            "1", "$1.09", self.highlight_text(2.95), "$3.00", "$2.50"
+            "1", "$1.09", self.highlight_text(2.95), "$3.00", "$2.50", "$2.50", "$2.50"
         ))
         print(row_string.format(
-            "2", "$1.09", "$2.90", "$3.00", "$2.50"
+            "2", "$1.09", "$2.90", "$3.00", "$2.50", "$2.50", "$2.50"
         ))
         print(row_string.format(
-            "3", "$1.09", "$1.45", "$3.00", "$2.50"
+            "3", "$1.09", "$1.45", "$3.00", "$2.50", "$2.50", "$2.50"
         ))
         print(row_string.format(
-            "4", "$1.09", "$2.90", "$3.00", "$2.50"
+            "4", "$1.09", "$2.90", "$3.00", "$2.50", "$2.50", "$2.50"
         ))
-        print()
+        print(row_string.format(
+            "5", "$1.09", "$2.90", "$3.00", "$2.50", "$2.50", "$2.50"
+        ))
+        print(row_string.format(
+            "6", "$1.09", "$2.90", "$3.00", "$2.50", "$2.50", "$2.50"
+        ))
