@@ -3,9 +3,7 @@ import sys
 import weka.core.jvm as jvm
 import datetime
 from pathlib import Path
-from weka.attribute_selection import ASSearch
-from weka.attribute_selection import ASEvaluation
-from weka.attribute_selection import AttributeSelection
+
 from django.core.management.base import BaseCommand
 
 from pww.models import Metric

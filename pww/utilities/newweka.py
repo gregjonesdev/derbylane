@@ -1,38 +1,72 @@
 import weka.core.jvm as jvm
 import weka.core.converters as conv
-
+from weka.attribute_selection import ASSearch
+from weka.attribute_selection import ASEvaluation
+from weka.attribute_selection import AttributeSelection
 from weka.classifiers import Classifier, Evaluation
 from weka.core.classes import Random
 from weka.core.dataset import Instances
 from weka.core.packages import install_missing_packages, LATEST
 from weka.filters import Filter
 
-def evaluate_all(arff_list, venue_code, grade_name):
-    start_jvm()
-    analysis_file = create_analysis_file(venue_code, grade_name)
-    for arff_file in arff_list:
-        evaluate_single(arff_file, analysis_file)
-    analysis_file.close()
-    jvm.stop()
 
-def create_analysis_file(venue_code, grade_name):
-    return open("prediction_analysis_{}_{}.txt".format(
-        venue_code,
-        grade_name), "w")
 
-def evaluate_single(arff_file, analysis_file):
-    race_key = arff_file.replace("arff/", "").replace(".arff", "")
-    scheduled_data = build_scheduled_data(arff_file)
-    # model_names = ["libsvm", "J48_C0_75"]
-    model_names = ['smo']
-    evaluate(arff_file, analysis_file, scheduled_data, model_names)
 
-def get_race_key(arff_file):
-    return arff_file.replace("arff/", "").replace(".arff", "")
 
-def evaluate():
-    print("here")
-
+#
+# def evaluate_all(arff_list, venue_code, grade_name):
+#     start_jvm()
+#     analysis_file = create_analysis_file(venue_code, grade_name)
+#     for arff_file in arff_list:
+#         evaluate_single(arff_file, analysis_file)
+#     analysis_file.close()
+#     jvm.stop()
+#
+# def create_analysis_file(venue_code, grade_name):
+#     return open("prediction_analysis_{}_{}.txt".format(
+#         venue_code,
+#         grade_name), "w")
+#
+# def evaluate_single(arff_file, analysis_file):
+#     race_key = arff_file.replace("arff/", "").replace(".arff", "")
+#     scheduled_data = build_scheduled_data(arff_file)
+#     # model_names = ["libsvm", "J48_C0_75"]
+#     model_names = ['smo']
+#     evaluate(race_key, arff_file, analysis_file, scheduled_data, model_names)
+#
+# def get_race_key(arff_file):
+#     return arff_file.replace("arff/", "").replace(".arff", "")
+#
+# def evaluate(race_key, arff_data, analysis_file, scheduled_data, model_names):
+#         print("evaluate()")
+#         # print(analysis_file.name)
+#         prediction_object = get_prediction_object(arff_data)
+#         prediction_object['predictions'] = {}
+#         # pp = pprint.PrettyPrinter(indent=4)
+#         # pp.pprint(prediction_object)
+#
+#         for model_name in model_names:
+#             model = None
+#             filename = "test_models/{}_{}.model".format(race_key, model_name)
+#             try:
+#                 model = Classifier(jobject=serialization.read(filename))
+#             except:
+#                 print("No model found: {}".format(race_key))
+#             if model:
+#                 prediction_object['predictions'][model_name] = get_prediction_list(
+#                 model,
+#                 scheduled_data,
+#                 prediction_object["lines"])
+#         # save_all_predictions(
+#         #     prediction_object['uuids'],
+#         #     prediction_object['predictions'])
+#         # pp = pprint.PrettyPrinter(indent=4)
+#         # pp.pprint(prediction_object)
+#         # print("\n", file=analysis_file)
+#         # print(race_key, file=analysis_file)
+#         # print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------", file=analysis_file)
+#         do_something(prediction_object, model_names, race_key, analysis_file)
+#
 
 def example(data):
     print("example")
@@ -120,7 +154,7 @@ def build_scheduled_data(arff_data):
     print("# attributes: " + str(attsel.number_attributes_selected))
     print("attributes: " + str(attsel.selected_attributes))
     print("result string:\n" + attsel.results_string)
-    raise SystemExit(0)
+    # raise SystemExit(0)
     return scheduled_data
 
 
