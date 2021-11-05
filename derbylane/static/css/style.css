@@ -197,8 +197,12 @@ body {
   height: 50vh;
 }
 
+#modal-form {
+  text-align: right;
+
+}
+
 .modal-select {
-  border: 1px solid red;
   margin: 30px 0px 30px 30px
   /* display: flex;
   flex-flow: column nowrap;
@@ -207,6 +211,10 @@ body {
   margin:30px; */
 
 
+}
+
+.modal-footer {
+  margin-top: 80px;
 }
 
 .modal-bet-selector {

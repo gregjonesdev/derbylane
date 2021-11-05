@@ -33,7 +33,8 @@
           <span class="modal-subtitle"></span>
           <form
             action="{% url 'make_bet' %}"
-            method="post">
+            method="post"
+            id="modal-form">
 
               <select
                 name="bet_type"
@@ -62,7 +63,7 @@
               <button
                 id="clear_bet"
                 type="button"
-                class="btn btn-outline-danger"
+                class="btn btn-outline-danger pull-left"
                 onclick=""
                 data-dismiss="modal"
                 disabled>
