@@ -103,23 +103,7 @@ class Command(BaseCommand):
             arff_filename,
             metrics,
             is_nominal)
-        # classifier = "weka.classifiers.trees.J48"
-        # options = ["-C", complexity]
 
-        # classifier = "weka.classifiers.functions.LibSVM"
-        # options = [
-        # "-S", "0",
-        # "-K", "2",
-        # "-D", "3",
-        # "-G", "0.0",
-        # "-R", "0.0",
-        # "-N", "0.5",
-        # "-M", "40.0",
-        # "-C", "1.0",
-        # "-E", "0.001",
-        # "-P", "0.1",
-        # "-seed", "1"
-        # ]
 
         smo_options = [
         "-C", "1.0",

@@ -49,7 +49,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         today = datetime.date.today()
-        yesterday = today - datetime.timedelta(days=3)
+        yesterday = today - datetime.timedelta(days=1)
         arff_list = []
         for venue in Venue.objects.filter(is_focused=True):
             print("Building metrics for {}".format(venue))

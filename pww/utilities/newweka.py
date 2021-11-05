@@ -23,11 +23,15 @@ def create_analysis_file(venue_code, grade_name):
 def evaluate_single(arff_file, analysis_file):
     race_key = arff_file.replace("arff/", "").replace(".arff", "")
     scheduled_data = build_scheduled_data(arff_file)
-    model_names = ["libsvm", "J48_C0_75"]
+    # model_names = ["libsvm", "J48_C0_75"]
+    model_names = ['smo']
     evaluate(arff_file, analysis_file, scheduled_data, model_names)
 
 def get_race_key(arff_file):
     return arff_file.replace("arff/", "").replace(".arff", "")
+
+def evaluate():
+    print("here")
 
 
 def example(data):
@@ -90,23 +94,19 @@ def randomize_data(data, folds, seed):
     return rand_data
 
 
-def get_scheduled_data(arff_data):
+
+def build_scheduled_data(arff_data):
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(arff_data)
     anonymous_data = remove_uuid(loaded_data)
     scheduled_data = nominalize(anonymous_data)
     scheduled_data.class_is_last()
-    return scheduled_data
-
-
-def build_scheduled_data(arff_data):
-    scheduled_data = get_scheduled_data(arff_data)
 
     # print(scheduled_data)
+    print("11-06 FORWARD PROGRESS")
+    raise SystemExit(0)
     # New
     example(scheduled_data)
-    print("FORWARD PROGRESS")
-    raise SystemExit(0)
     # search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
     # evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
     #
