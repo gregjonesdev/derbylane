@@ -104,24 +104,24 @@ def build_scheduled_data(arff_data):
 
     # print(scheduled_data)
     print("11-06 FORWARD PROGRESS")
-    raise SystemExit(0)
     # New
-    example(scheduled_data)
-    # search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
-    # evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
-    #
-    # "weka.attributeSelection.WrapperSubsetEval -B"
-    #
-    # attsel = AttributeSelection()
-    # attsel.search(search)
-    # attsel.evaluator(evaluator)
-    # attsel.select_attributes(scheduled_data)
-    #
-    #
-    # print("# attributes: " + str(attsel.number_attributes_selected))
-    # print("attributes: " + str(attsel.selected_attributes))
-    # print("result string:\n" + attsel.results_string)
-    # return scheduled_data
+    # example(scheduled_data)
+    search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
+    evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
+
+    "weka.attributeSelection.WrapperSubsetEval -B"
+
+    attsel = AttributeSelection()
+    attsel.search(search)
+    attsel.evaluator(evaluator)
+    attsel.select_attributes(scheduled_data)
+
+
+    print("# attributes: " + str(attsel.number_attributes_selected))
+    print("attributes: " + str(attsel.selected_attributes))
+    print("result string:\n" + attsel.results_string)
+    raise SystemExit(0)
+    return scheduled_data
 
 
 def remove_uuid(data):
