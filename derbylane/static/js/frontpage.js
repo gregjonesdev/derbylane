@@ -40,25 +40,32 @@ window.onload = (event) => {
     console.log("load races")
     console.log(e.currentTarget.getAttribute("data-chart"))
     const currentTarget = e.currentTarget
+    const label = currentTarget.textContent
+    chart_id = e.currentTarget.getAttribute("data-chart")
+    load_charts(chart_id, label)
 
-    $.ajax({
-      url: json_data["bets_url"],
-      dataType: "html",
-      data: {
-        "chart_id": currentTarget.getAttribute("data-chart"),
-      },
-      success: function(data) {
-        // console.log("success 2")
-        // console.log(data)
-        $("#bets").html(data)
-        const bets_container =   document.getElementById("bets")
-        bets_container.style.maxHeight = "75vh";
-        bets_container.style.overflowY = "scroll";
-        document.getElementById("header-table").style.display = "block";
-        document.getElementById("chart-label").textContent = currentTarget.textContent
-      }
-    })
 
+  }
+
+  function load_charts(chart_id, label) {
+
+        $.ajax({
+          url: json_data["bets_url"],
+          dataType: "html",
+          data: {
+            "chart_id": chart_id,
+          },
+          success: function(data) {
+            // console.log("success 2")
+            // console.log(data)
+            $("#bets").html(data)
+            const bets_container =   document.getElementById("bets")
+            bets_container.style.maxHeight = "75vh";
+            bets_container.style.overflowY = "scroll";
+            document.getElementById("header-table").style.display = "block";
+            document.getElementById("chart-label").textContent = label
+          }
+        })
   }
 
   dropdowns = document.getElementsByClassName("dropdown-item")
