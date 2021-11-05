@@ -35,6 +35,12 @@ modal.addEventListener("focus", function (e) {
 
 
 window.onload = (event) => {
+  dropdowns = document.getElementsByClassName("dropdown-item")
+
+  function initial_load () {
+      console.log(dropdowns[0].textContent)
+      console.log(dropdowns[0].getAttribute("data-chart"))
+  }
 
   function load_races (e)  {
     console.log("load races")
@@ -68,7 +74,8 @@ window.onload = (event) => {
         })
   }
 
-  dropdowns = document.getElementsByClassName("dropdown-item")
+  initial_load()
+
   // const chart_json_data = JSON.parse(text_content)
   for (let i=0; i<dropdowns.length; i++) {
     dropdowns[i].addEventListener("click", load_races)
@@ -106,7 +113,7 @@ window.onload = (event) => {
 
   }
 
-  // load_bets()
+  load_bets()
 
 
 

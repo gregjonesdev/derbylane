@@ -47,7 +47,7 @@
     <div
       id="charts-holder"
       class="select-holder">
-      <!-- <select
+      <select
         class="form-control frontpage-select dropdown-toggle"
         id="chart-select"
         onchange="load_bets()">
@@ -56,12 +56,11 @@
             <span style="color: red">
               {{ chart.get_kiosk_name }}
             </span>
-            <span id="dropdown-chevron" style="border: 1px solid red">⌄</span>
           </option>
         {% endfor %}
-      </select> -->
+      </select>
 
-        <button type="button" class="btn btn-block btn-outline-default dropdown-toggle" style="background-color: #212121; border: 1px solid #333; color: #FFF" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <!-- <button type="button" class="btn btn-block btn-outline-default dropdown-toggle" style="background-color: #212121; border: 1px solid #333; color: #FFF" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span id="chart-label" style="margin-right:3px; font-weight: bold">Charts</span>
         </button>
         <div class="dropdown-menu" style="width:98%; background-color: #212121; text-align: center">
@@ -69,7 +68,7 @@
             <a class="dropdown-item" href="#" data-chart="{{ chart.uuid }}" onclick="load_bets()">{{ chart.get_kiosk_name }}</a>
           {% endfor %}
         </div>
-
+ -->
 
     </div>
     <table
