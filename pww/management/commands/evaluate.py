@@ -113,15 +113,15 @@ class Command(BaseCommand):
                         except:
                             pass
                         if prediction:
-                            if model_name == "libsvm":
-                                if prediction.lib_svm:
-                                    if not prediction.lib_svm in race_predictions[race_key].keys():
-                                        race_predictions[race_key][prediction.lib_svm] = []
-                                    race_predictions[race_key][prediction.lib_svm].append(participant)
+                            if model_name == "smo":
+                                current_prediction = prediction.smo
+                            elif model_name == "libsvm":
+                                current_prediction = prediction.lib_svm
                             elif model_name == "j48":
-                                if prediction.j48:
-                                    if not prediction.j48 in race_predictions[race_key].keys():
-                                        race_predictions[race_key][prediction.j48] = []
-                                    race_predictions[race_key][prediction.j48].append(participant)
+                                current_prediction = prediction.j48
+                            if current_prediction:
+                                if not current_prediction in race_predictions[race_key].keys():
+                                    race_predictions[race_key][current_prediction] = []
+                                race_predictions[race_key][current_prediction].append(participant)
             self.analyze_object(race_predictions, model_name)
             print("Races Analyzed: {}\n".format(len(races_analyzed)))
