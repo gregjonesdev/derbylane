@@ -8,6 +8,10 @@ from pww.models import Prediction
 from pww.utilities.weka import evaluate_all
 from rawdat.models import Program, Venue, Bet, Participant, Race
 
+from miner.utilities.constants import (
+    focused_distances,
+    focused_grades)
+
 class Command(BaseCommand):
 
     def get_win_return(self, participant, bet_size):
@@ -82,46 +86,56 @@ class Command(BaseCommand):
                     self.get_winnings_per_bet(bet_winnings["show"], bet_count)))
             print("\n")
 
+
+
     def add_arguments(self, parser):
         parser.add_argument('--model', type=str)
+
+    # def analyze_race()
 
     def handle(self, *args, **options):
 
         model_name = sys.argv[3]
         today = datetime.datetime.now()
         yesterday = (today - datetime.timedelta(days=1)).date()
-        last_month = (today - datetime.timedelta(days=365)).date()
+        start_date = (today - datetime.timedelta(days=60)).date()
 
-        for venue in Venue.objects.filter(is_active=True):
-            race_predictions = {}
+        linear_predictions = ['smo']
 
+        venue_code = "WD"
+        race_predictions = {}
+
+
+        for grade_name in focused_grades[venue_code]:
+            print(grade_name)
 
             races_analyzed = Race.objects.filter(
-                chart__program__date__gte=last_month,
-                chart__program__venue=venue)
-
-            for race in races_analyzed:
-                if race.has_predictions():
-                    grade_name = race.grade.name
-                    race_key = "{}_{}".format(race.chart.program.venue.code, grade_name)
-                    if not race_key in race_predictions.keys():
-                        race_predictions[race_key] = {}
-                    for participant in race.participant_set.all():
-                        prediction = None
-                        try:
-                            prediction = participant.prediction
-                        except:
-                            pass
-                        if prediction:
-                            if model_name == "smo":
-                                current_prediction = prediction.smo
-                            elif model_name == "libsvm":
-                                current_prediction = prediction.lib_svm
-                            elif model_name == "j48":
-                                current_prediction = prediction.j48
-                            if current_prediction:
-                                if not current_prediction in race_predictions[race_key].keys():
-                                    race_predictions[race_key][current_prediction] = []
-                                race_predictions[race_key][current_prediction].append(participant)
-            self.analyze_object(race_predictions, model_name)
-            print("Races Analyzed: {}\n".format(len(races_analyzed)))
+                chart__program__date__gte=start_date,
+                chart__program__venue__code=venue_code,
+                grade__name=grade_name)
+        #
+        # for race in races_analyzed:
+        #     if race.has_predictions():
+        #         grade_name = race.grade.name
+        #         race_key = "{}_{}".format(venue_code, grade_name)
+        #         if not race_key in race_predictions.keys():
+        #             race_predictions[race_key] = {}
+        #         for participant in race.participant_set.all():
+        #             prediction = None
+        #             try:
+        #                 prediction = participant.prediction
+        #             except:
+        #                 pass
+        #             if prediction:
+        #                 if model_name == "smo":
+        #                     current_prediction = prediction.smo
+        #                 elif model_name == "libsvm":
+        #                     current_prediction = prediction.lib_svm
+        #                 elif model_name == "j48":
+        #                     current_prediction = prediction.j48
+        #                 if current_prediction:
+        #                     if not current_prediction in race_predictions[race_key].keys():
+        #                         race_predictions[race_key][current_prediction] = []
+        #                     race_predictions[race_key][current_prediction].append(participant)
+        #     self.analyze_object(race_predictions, model_name)
+        #     print("Races Analyzed: {}\n".format(len(races_analyzed)))
