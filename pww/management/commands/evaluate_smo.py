@@ -111,12 +111,12 @@ class Command(BaseCommand):
 
     # def analyze_race()
     def build_beginning_object(self, interval_list):
+        object = {}
         for i in interval_list:
-            object[str(i)] = {
-                "win": [],
-                "place": [],
-                "show":[]
-            }
+            object[str(i)] = {}
+            object[str(i)]['win'] = []
+            object[str(i)]['place'] = []
+            object[str(i)]['show'] = []
         return object
 
     def get_interval_list(self, start, end, interval):
@@ -129,7 +129,7 @@ class Command(BaseCommand):
 
     def find_range_start(self, prediction, interval_list, interval):
         for i in interval_list:
-            if i <= prediction and prediction < (interval + i) :
+            if i <= prediction < (interval + i) :
                 return i
 
     def handle(self, *args, **options):
@@ -146,14 +146,6 @@ class Command(BaseCommand):
 
         interval_list = self.get_interval_list(start, end, interval)
 
-        print(interval_list)
-        tests = [1.26, 1.8, 1.75]
-        for number in tests:
-            print("{}: {}".format(number, self.find_range_start(number, interval_list, interval)))
-
-
-
-        raise SystemExit(0)
         for grade_name in focused_grades[venue_code]:
             graded_races = Race.objects.filter(
                 chart__program__date__gte=start_date,
@@ -165,6 +157,7 @@ class Command(BaseCommand):
                     race_key = "{}_{}".format(venue_code, grade_name)
                     if not race_key in race_predictions.keys():
                         race_predictions[race_key] = self.build_beginning_object(interval_list)
+
                         for participant in race.participant_set.all():
                             prediction = None
                             try:
@@ -173,8 +166,11 @@ class Command(BaseCommand):
                                 pass
                             if prediction and prediction.smo:
                                 current_prediction = prediction.smo
-                                print(current_prediction)
-                                race_predictions[race_key]
+                                range_start = self.find_range_start(
+                                    current_prediction, interval_list,
+                                    interval)
+                                print("{}: {}".format(current_prediction, range_start))
+
 
 
         raise SystemExit(0)
