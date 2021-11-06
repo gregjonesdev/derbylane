@@ -14,6 +14,10 @@ from pww.models import Metric
 
 class Command(BaseCommand):
 
+    def add_arguments(self, parser):
+        parser.add_argument('--venue', type=str)
+        parser.add_argument('--grade', type=str)
+
     def get_options(self):
         jason_comment = '''
         weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K
@@ -167,10 +171,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         arff_directory = "arff"
-        venue = Venue.objects.get(code="WD")
-        venue_code = venue.code
+        # venue = Venue.objects.get(code="WD")
+        # venue_code = venue.code
+        # grade_name = "AA"
+
+        venue_code = sys.argv[3]
+        grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
-        grade_name = "AA"
         print("{}_{}_{}".format(
             venue_code,
             distance,
