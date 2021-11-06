@@ -16,6 +16,8 @@ interval = 0.25
 start = 1.0
 end = 8.0
 
+table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}"
+
 class Command(BaseCommand):
 
     def get_win_return(self, participant, bet_size):
@@ -95,6 +97,24 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--model', type=str)
 
+    def output(self, predictions):
+        for each in predictions.keys():
+            print("\n{}".format(each))
+
+            for interval in predictions[each].keys():
+                range = self.get_range(interval)
+                print(table_string.format(
+                    "{} - {}".format(range[0], range[1]),
+                    "# bets",
+                    "W",
+                    "P",
+                    "S"
+                ))
+
+    def get_range(self, nominal):
+        return [float(nominal), float(nominal) + interval]
+
+
     # def analyze_race()
     def build_beginning_object(self):
         object = {}
@@ -125,7 +145,6 @@ class Command(BaseCommand):
         race_predictions = {}
 
         for grade_name in focused_grades[venue_code]:
-            print(grade_name)
             graded_races = Race.objects.filter(
                 chart__program__date__gte=start_date,
                 chart__program__venue__code=venue_code,
@@ -133,7 +152,6 @@ class Command(BaseCommand):
 
             for race in graded_races:
                 if race.is_complete():
-                    print("True")
                     race_key = "{}_{}".format(venue_code, grade_name)
                     if not race_key in race_predictions.keys():
                         race_predictions[race_key] = self.build_beginning_object()
@@ -141,7 +159,7 @@ class Command(BaseCommand):
 
 
 
-        print(race_predictions)
+        self.output(race_predictions)
 
         #
         # for race in races_analyzed:
