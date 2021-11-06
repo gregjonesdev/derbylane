@@ -12,14 +12,14 @@ class Command(BaseCommand):
         '''
 
         return [
-        "-C", "1.0",
+        "-C", "1.0", # The complexity constant C. (default 1)
         "-L", "0.001",
-        "-P", "1.0E-12",
-        "-N", "0",
-        "-W", "1",
-        "-V", "-1",
+        "-P", "1.0E-12", # The epsilon for round-off error. (default 1.0e-12)
+        "-N", "0", # Whether to 0=normalize/1=standardize/2=neither. (default 0=normalize)
+        "-W", "1", # The random number seed. (default 1)
+        "-V", "-1", # The number of folds for the internal cross-validation. (default -1, use training data)
         # Following line will be included in Kernel instantiation
-        # "-K", "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007",
+        "-K", "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007",
         "-calibrator", "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
         ]
 
@@ -50,8 +50,7 @@ class Command(BaseCommand):
         #   Fit calibration models to SVM outputs.
         #
         #  -V <double>
-        #   The number of folds for the internal
-        #   cross-validation. (default -1, use training data)
+        #   The number of folds for the internal cross-validation. (default -1, use training data)
         #
         #  -W <double>
         #   The random number seed. (default 1)

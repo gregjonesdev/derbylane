@@ -37,20 +37,16 @@ def create_model(model_arff, classifier, options, filename):
     model_data.class_is_last()
 
 
-
-
-
-
-
-    cls = Classifier(classname=classifier, options=options)
-    cls.build_classifier(model_data)
-    filename = "test_models/{}.model".format(filename)
-    print("filename: {}".format(filename))
-    serialization.write(filename, cls)
-
-def add_options():
+    classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
     search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
     evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
+    base = Classifier(classname="weka.classifiers.functions.SMO")
 
-    kernel = Kernel(classname="weka.classifiers.functions.supportVector.RBFKernel", options=["-G", "0.001"])
+    classifier.set_property("classifier", base.jobject)
+    classifier.set_property("evaluator", evaluator.jobject)
+    classifier.set_property("search", search.jobject)
+
+def add_options(options):
+
+    # kernel = Kernel(classname="weka.classifiers.functions.supportVector.RBFKernel", options=["-G", "0.001"])
     classifier = KernelClassifier(classname="weka.classifiers.functions.SMO", options=["-M"])
