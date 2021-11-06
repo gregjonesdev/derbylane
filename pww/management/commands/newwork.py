@@ -253,5 +253,4 @@ class Command(BaseCommand):
         options = self.get_options()
         print(arff_file)
         print(options)
-        raise SystemExit(0)
-        create_model(arff_file, options, filename)
+        create_model(arff_file, options, root_filename)

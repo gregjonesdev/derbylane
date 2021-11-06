@@ -24,9 +24,20 @@ from miner.utilities.constants import (
 import os
 import pprint
 
+def remove_uuid(data):
+    remove = Filter(
+        classname="weka.filters.unsupervised.attribute.Remove",
+        options=["-R", "first"])
+    remove.inputformat(data)
+    return remove.filter(data)
 
 
-
+def nominalize(data):
+    nominalize = Filter(
+        classname="weka.filters.unsupervised.attribute.NumericToNominal",
+        options=["-R", "19"])
+    nominalize.inputformat(data)
+    return nominalize.filter(data)
 
 
 def create_model(model_arff, options, filename):
@@ -37,8 +48,6 @@ def create_model(model_arff, options, filename):
     model_data = remove_uuid(model_data)
     model_data = nominalize(model_data)
     model_data.class_is_last()
-
-
     classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
     search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
     evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
@@ -50,6 +59,7 @@ def create_model(model_arff, options, filename):
 
     classifier.build_classifier(model_data)
     filename = "test_models/{}.model".format(filename)
-    print("filename: {}".format(filename))
     serialization.write(filename, classifier)
-    print("done")
+    jvm.stop()
+    print("Model Created Successfully.")
+    print("Filename: {}".format(filename))
