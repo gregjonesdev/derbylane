@@ -12,6 +12,10 @@ from miner.utilities.constants import (
     focused_distances,
     focused_grades)
 
+interval = 0.25
+start = 1.0
+end = 8.0
+
 class Command(BaseCommand):
 
     def get_win_return(self, participant, bet_size):
@@ -92,6 +96,21 @@ class Command(BaseCommand):
         parser.add_argument('--model', type=str)
 
     # def analyze_race()
+    def build_beginning_object(self):
+        object = {}
+        bet_object = {
+            "count": 0,
+            "winnings": 0
+        }
+        i = start
+        while i < end:
+            object[str(i)] = {
+                "win": bet_object,
+                "place": bet_object,
+                "show": bet_object
+            }
+            i += interval
+        return object
 
     def handle(self, *args, **options):
 
@@ -105,10 +124,8 @@ class Command(BaseCommand):
         venue_code = "WD"
         race_predictions = {}
 
-
         for grade_name in focused_grades[venue_code]:
             print(grade_name)
-
             graded_races = Race.objects.filter(
                 chart__program__date__gte=start_date,
                 chart__program__venue__code=venue_code,
@@ -117,9 +134,14 @@ class Command(BaseCommand):
             for race in graded_races:
                 if race.is_complete():
                     print("True")
-                else:
-                    print("False")    
+                    race_key = "{}_{}".format(venue_code, grade_name)
+                    if not race_key in race_predictions.keys():
+                        race_predictions[race_key] = self.build_beginning_object()
 
+
+
+
+        print(race_predictions)
 
         #
         # for race in races_analyzed:
