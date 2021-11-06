@@ -96,16 +96,16 @@ class Command(BaseCommand):
             print("\n{}".format(each))
 
             for interval in predictions[each].keys():
-                range = self.get_range(interval)
+                print(interval)
                 print(table_string.format(
-                    "{} - {}".format(range[0], range[1]),
+                    "{} - {}".format(round(float(interval),3), float(interval) + .249),
                     "# bets",
-                    "W",
+                    len(predictions[each][interval]['win']),
                     "P",
                     "S"
                 ))
 
-    def get_range(self, nominal):
+    def get_range(self, nominal, interval):
         return [float(nominal), float(nominal) + interval]
 
 
@@ -180,9 +180,6 @@ class Command(BaseCommand):
                                 race_predictions[race_key][str(range_start)]['place'].append(self.get_place_return(participant))
                                 race_predictions[race_key][str(range_start)]['show'].append(self.get_show_return(participant))
 
-
-        print(race_predictions)
-        raise SystemExit(0)
 
         self.output(race_predictions)
 
