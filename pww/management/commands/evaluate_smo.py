@@ -90,19 +90,24 @@ class Command(BaseCommand):
                     self.get_winnings_per_bet(bet_winnings["show"], bet_count)))
             print("\n")
 
+    def average_bets(self, bet_list):
+        if len(bet_list) > 0:
+            return round(sum(bet_list)/len(bet_list), 2)
+        else:
+            return "----"
+
 
     def output(self, predictions):
         for each in predictions.keys():
             print("\n{}".format(each))
 
             for interval in predictions[each].keys():
-                print(interval)
                 print(table_string.format(
                     "{} - {}".format(round(float(interval),3), float(interval) + .249),
                     "# bets",
-                    len(predictions[each][interval]['win']),
-                    "P",
-                    "S"
+                    self.average_bets(predictions[each][interval]['win']),
+                    self.average_bets(predictions[each][interval]['place']),
+                    self.average_bets(predictions[each][interval]['show'])
                 ))
 
     def get_range(self, nominal, interval):
