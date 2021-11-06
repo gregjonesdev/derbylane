@@ -18,21 +18,21 @@ table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
 class Command(BaseCommand):
 
-    def get_win_return(self, participant, bet_size):
+    def get_win_return(self, participant):
         try:
-            return (bet_size/2)*float(participant.straight_wager.win)
+            return float(participant.straight_wager.win)
         except:
             return 0
 
-    def get_place_return(self, participant, bet_size):
+    def get_place_return(self, participant):
         try:
-            return (bet_size/2)*float(participant.straight_wager.place)
+            return float(participant.straight_wager.place)
         except:
             return 0
 
-    def get_show_return(self, participant, bet_size):
+    def get_show_return(self, participant):
         try:
-            return (bet_size/2)*float(participant.straight_wager.show)
+            return float(participant.straight_wager.show)
         except:
             return 0
 
@@ -143,7 +143,6 @@ class Command(BaseCommand):
         start = 1.0
         end = 8.0
         interval = 0.25
-
         interval_list = self.get_interval_list(start, end, interval)
 
         for grade_name in focused_grades[venue_code]:
@@ -170,9 +169,19 @@ class Command(BaseCommand):
                                     current_prediction, interval_list,
                                     interval)
                                 print("{}: {}".format(current_prediction, range_start))
+                                print("{}\t{}\t{}\t{}\t{}".format(
+                                    participant.dog.name[:5],
+                                    participant.final,
+                                    self.get_win_return(participant),
+                                    self.get_place_return(participant),
+                                    self.get_show_return(participant)
+                                ))
+                                race_predictions[race_key][str(range_start)]['win'].append(self.get_win_return(participant))
+                                race_predictions[race_key][str(range_start)]['place'].append(self.get_place_return(participant))
+                                race_predictions[race_key][str(range_start)]['show'].append(self.get_show_return(participant))
 
 
-
+        print(race_predictions)
         raise SystemExit(0)
 
         self.output(race_predictions)
