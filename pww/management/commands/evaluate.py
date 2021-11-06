@@ -8,16 +8,6 @@ from pww.models import Prediction
 from pww.utilities.weka import evaluate_all
 from rawdat.models import Program, Venue, Bet, Participant, Race
 
-from miner.utilities.constants import (
-    focused_distances,
-    focused_grades)
-
-interval = 0.25
-start = 1.0
-end = 8.0
-
-table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}"
-
 class Command(BaseCommand):
 
     def get_win_return(self, participant, bet_size):
@@ -92,98 +82,46 @@ class Command(BaseCommand):
                     self.get_winnings_per_bet(bet_winnings["show"], bet_count)))
             print("\n")
 
-
-
     def add_arguments(self, parser):
         parser.add_argument('--model', type=str)
-
-    def output(self, predictions):
-        for each in predictions.keys():
-            print("\n{}".format(each))
-
-            for interval in predictions[each].keys():
-                range = self.get_range(interval)
-                print(table_string.format(
-                    "{} - {}".format(range[0], range[1]),
-                    "# bets",
-                    "W",
-                    "P",
-                    "S"
-                ))
-
-    def get_range(self, nominal):
-        return [float(nominal), float(nominal) + interval]
-
-
-    # def analyze_race()
-    def build_beginning_object(self):
-        object = {}
-        bet_object = {
-            "count": 0,
-            "winnings": 0
-        }
-        i = start
-        while i < end:
-            object[str(i)] = {
-                "win": bet_object,
-                "place": bet_object,
-                "show": bet_object
-            }
-            i += interval
-        return object
 
     def handle(self, *args, **options):
 
         model_name = sys.argv[3]
         today = datetime.datetime.now()
         yesterday = (today - datetime.timedelta(days=1)).date()
-        start_date = (today - datetime.timedelta(days=60)).date()
+        last_month = (today - datetime.timedelta(days=365)).date()
 
-        linear_predictions = ['smo']
+        for venue in Venue.objects.filter(is_active=True):
+            race_predictions = {}
 
-        venue_code = "WD"
-        race_predictions = {}
 
-        for grade_name in focused_grades[venue_code]:
-            graded_races = Race.objects.filter(
-                chart__program__date__gte=start_date,
-                chart__program__venue__code=venue_code,
-                grade__name=grade_name)
+            races_analyzed = Race.objects.filter(
+                chart__program__date__gte=last_month,
+                chart__program__venue=venue)
 
-            for race in graded_races:
-                if race.is_complete():
-                    race_key = "{}_{}".format(venue_code, grade_name)
+            for race in races_analyzed:
+                if race.has_predictions():
+                    grade_name = race.grade.name
+                    race_key = "{}_{}".format(race.chart.program.venue.code, grade_name)
                     if not race_key in race_predictions.keys():
-                        race_predictions[race_key] = self.build_beginning_object()
-
-
-
-
-        self.output(race_predictions)
-
-        #
-        # for race in races_analyzed:
-        #     if race.has_predictions():
-        #         grade_name = race.grade.name
-        #         race_key = "{}_{}".format(venue_code, grade_name)
-        #         if not race_key in race_predictions.keys():
-        #             race_predictions[race_key] = {}
-        #         for participant in race.participant_set.all():
-        #             prediction = None
-        #             try:
-        #                 prediction = participant.prediction
-        #             except:
-        #                 pass
-        #             if prediction:
-        #                 if model_name == "smo":
-        #                     current_prediction = prediction.smo
-        #                 elif model_name == "libsvm":
-        #                     current_prediction = prediction.lib_svm
-        #                 elif model_name == "j48":
-        #                     current_prediction = prediction.j48
-        #                 if current_prediction:
-        #                     if not current_prediction in race_predictions[race_key].keys():
-        #                         race_predictions[race_key][current_prediction] = []
-        #                     race_predictions[race_key][current_prediction].append(participant)
-        #     self.analyze_object(race_predictions, model_name)
-        #     print("Races Analyzed: {}\n".format(len(races_analyzed)))
+                        race_predictions[race_key] = {}
+                    for participant in race.participant_set.all():
+                        prediction = None
+                        try:
+                            prediction = participant.prediction
+                        except:
+                            pass
+                        if prediction:
+                            if model_name == "libsvm":
+                                if prediction.lib_svm:
+                                    if not prediction.lib_svm in race_predictions[race_key].keys():
+                                        race_predictions[race_key][prediction.lib_svm] = []
+                                    race_predictions[race_key][prediction.lib_svm].append(participant)
+                            elif model_name == "j48":
+                                if prediction.j48:
+                                    if not prediction.j48 in race_predictions[race_key].keys():
+                                        race_predictions[race_key][prediction.j48] = []
+                                    race_predictions[race_key][prediction.j48].append(participant)
+            self.analyze_object(race_predictions, model_name)
+            print("Races Analyzed: {}\n".format(len(races_analyzed)))
