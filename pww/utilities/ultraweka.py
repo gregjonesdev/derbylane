@@ -29,7 +29,9 @@ import pprint
 
 
 
-def create_model(model_arff, classifier, options, filename):
+def create_model(model_arff, options, filename):
+    jvm.start(packages=True, max_heap_size="5028m")
+
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     model_data = loader.load_file(model_arff)
     model_data = remove_uuid(model_data)
@@ -40,13 +42,14 @@ def create_model(model_arff, classifier, options, filename):
     classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
     search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
     evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
-    base = Classifier(classname="weka.classifiers.functions.SMO")
+    base = Classifier(classname="weka.classifiers.functions.SMO", options=["-M"])
 
     classifier.set_property("classifier", base.jobject)
     classifier.set_property("evaluator", evaluator.jobject)
     classifier.set_property("search", search.jobject)
 
-def add_options(options):
-
-    # kernel = Kernel(classname="weka.classifiers.functions.supportVector.RBFKernel", options=["-G", "0.001"])
-    classifier = KernelClassifier(classname="weka.classifiers.functions.SMO", options=["-M"])
+    classifier.build_classifier(model_data)
+    filename = "test_models/{}.model".format(filename)
+    print("filename: {}".format(filename))
+    serialization.write(filename, classifier)
+    print("done")

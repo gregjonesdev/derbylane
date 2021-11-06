@@ -1,6 +1,14 @@
 from django.core.management.base import BaseCommand
-
+import datetime
 from pww.utilities.ultraweka import create_model
+from rawdat.models import Venue
+
+from miner.utilities.constants import (
+    focused_distances,
+    csv_columns,
+    )
+from pww.models import Metric
+
 
 class Command(BaseCommand):
 
@@ -123,7 +131,72 @@ class Command(BaseCommand):
         #  -num-decimal-places
         #   The number of decimal places for the output of numbers in the model (default 2).
 
+    def create_arff(self, filename, metrics, is_nominal):
+        scheduled_start = "2021-07-14"
+        start_datetime = datetime.datetime.strptime(scheduled_start, "%Y-%m-%d").date()
+        arff_file = open(filename, "w")
+        arff_file.write("@relation Metric\n")
+
+        arff_file = self.write_headers(arff_file, is_nominal)
+
+        for metric in metrics:
+            csv_metric = metric.build_csv_metric(start_datetime)
+            if csv_metric:
+                arff_file.writelines(csv_metric)
+
+        return filename
+
+    def write_headers(self, arff_file, is_nominal):
+        for each in csv_columns:
+            if is_nominal and each == "Fi":
+                arff_file.write("@attribute {} nominal\n".format(each))
+            elif each == "PID":
+                arff_file.write("@attribute PID string\n")
+                # csv_writer.writerow(["@attribute PID string"])
+            elif each == "Se":
+                arff_file.write("@attribute Se {M, F}\n")
+                # csv_writer.writerow(["@attribute Se {M, F}"])
+            else:
+                # csv_writer.writerow(["@attribute {} numeric".format(each)])
+                arff_file.write("@attribute {} numeric\n".format(each))
+
+        arff_file.write("@data\n")
+        return arff_file
+
     def handle(self, *args, **options):
+        arff_directory = "arff"
+        venue = Venue.objects.get(code="WD")
+        venue_code = venue.code
+        distance = focused_distances[venue_code][0]
+        grade_name = "AA"
+        print("{}_{}_{}".format(
+            venue_code,
+            distance,
+            grade_name))
+        metrics = Metric.objects.filter(
+            participant__race__chart__program__venue=venue,
+            participant__race__distance=distance,
+            participant__race__grade__name=grade_name,
+            participant__race__chart__program__date__lte="2021-09-14",
+            final__isnull=False)
+        print(len(metrics))
+
+
+        race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
+
+        root_filename = "{}_smo".format(
+            race_key)
+        arff_filename = "{}/{}.arff".format(
+            arff_directory,
+            root_filename)
+                    # print(arff_filename)
+        is_nominal = False
+        arff_file = self.create_arff(
+            arff_filename,
+            metrics,
+            is_nominal)
+
+
 
         # Jasons comment
 
@@ -178,5 +251,7 @@ class Command(BaseCommand):
 
 
         options = self.get_options()
+        print(arff_file)
+        print(options)
         raise SystemExit(0)
-        create_model(model_arff, classifier, options, filename)
+        create_model(arff_file, options, filename)

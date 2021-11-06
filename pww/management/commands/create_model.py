@@ -16,7 +16,7 @@ from miner.utilities.constants import (
     # valued_grades,
     # chart_times,
     focused_distances,
-    focused_grades,
+    # focused_grades,
     # focused_venues,
     csv_columns,
     )
