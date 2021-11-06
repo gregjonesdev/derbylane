@@ -12,9 +12,7 @@ from miner.utilities.constants import (
     focused_distances,
     focused_grades)
 
-interval = 0.25
-start = 1.0
-end = 8.0
+
 
 table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
@@ -112,17 +110,22 @@ class Command(BaseCommand):
 
 
     # def analyze_race()
-    def build_beginning_object(self):
-        object = {}
-        i = start
-        while i < end:
+    def build_beginning_object(self, interval_list):
+        for i in interval_list:
             object[str(i)] = {
                 "win": [],
                 "place": [],
                 "show":[]
             }
-            i += interval
         return object
+
+    def get_interval_list(self, start, end, interval):
+        interval_list = []
+        i = start
+        while i <= end:
+            interval_list.append(i)
+            i += interval
+        return interval_list
 
     def find_range_start(self):
         target = 0.99
@@ -131,14 +134,18 @@ class Command(BaseCommand):
                 print(i)
 
     def handle(self, *args, **options):
-        self.find_range_start()
-        raise SystemExit(0)
         today = datetime.datetime.now()
         yesterday = (today - datetime.timedelta(days=1)).date()
         start_date = (today - datetime.timedelta(days=60)).date()
 
         venue_code = "WD"
         race_predictions = {}
+
+        start = 1.0
+        end = 8.0
+        interval = 0.25
+
+        interval_list = self.get_interval_list(start, end, interval)
 
         for grade_name in focused_grades[venue_code]:
             graded_races = Race.objects.filter(
@@ -150,7 +157,7 @@ class Command(BaseCommand):
                 if race.is_complete():
                     race_key = "{}_{}".format(venue_code, grade_name)
                     if not race_key in race_predictions.keys():
-                        race_predictions[race_key] = self.build_beginning_object()
+                        race_predictions[race_key] = self.build_beginning_object(interval_list)
                         for participant in race.participant_set.all():
                             prediction = None
                             try:
