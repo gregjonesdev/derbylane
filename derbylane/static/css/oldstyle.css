@@ -87,13 +87,7 @@ body {
 }
 
 
-.race-table-row>td {
-  width: 15vw;
-  text-align: center;
-  vertical-align: middle;
-  color: #FFF;
-  border: none;
-}
+
 
 .dog-name-span {
   font-size: .6em;
@@ -159,12 +153,7 @@ body {
   }
 }
 
-#header-table td {
-  /* width:15vw; */
-  padding: 0px 4px;
-  margin-left:10px
 
-}
 
 #empty-charts-div {
   text-align: center;
@@ -253,7 +242,8 @@ body {
 
 table {
    table-layout: fixed;
-   width:100%;
+   width:100vw;
+
 }
 
 td {
@@ -262,4 +252,8 @@ td {
   text-align: center;
   vertical-align: middle;
   color: #FFF;
+}
+
+tr td {
+  border: none;
 }

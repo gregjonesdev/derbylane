@@ -59,22 +59,9 @@
           </option>
         {% endfor %}
       </select>
-
-        <!-- <button type="button" class="btn btn-block btn-outline-default dropdown-toggle" style="background-color: #212121; border: 1px solid #333; color: #FFF" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <span id="chart-label" style="margin-right:3px; font-weight: bold">Charts</span>
-        </button>
-        <div class="dropdown-menu" style="width:98%; background-color: #212121; text-align: center">
-          {% for chart in charts %}
-            <a class="dropdown-item" href="#" data-chart="{{ chart.uuid }}" onclick="load_bets()">{{ chart.get_kiosk_name }}</a>
-          {% endfor %}
-        </div>
- -->
-
     </div>
 
-    <div style="border:1px solid red">
     {% include 'bet_header_row.html' %}
-    </div>
   {% else %}
     <div
       id="empty-charts-div">
