@@ -127,11 +127,10 @@ class Command(BaseCommand):
             i += interval
         return interval_list
 
-    def find_range_start(self):
-        target = 0.99
-        for i in [0, 0.25, 0.5, 0.75]:
-            if target-i < interval and target >= i:
-                print(i)
+    def find_range_start(self, prediction, interval_list, interval):
+        for i in interval_list:
+            if i <= prediction and prediction < (interval + i) :
+                return i
 
     def handle(self, *args, **options):
         today = datetime.datetime.now()
@@ -147,6 +146,14 @@ class Command(BaseCommand):
 
         interval_list = self.get_interval_list(start, end, interval)
 
+        print(interval_list)
+        tests = [1.26, 1.8, 1.75]
+        for number in tests:
+            print("{}: {}".format(number, self.find_range_start(number, interval_list, interval)))
+
+
+
+        raise SystemExit(0)
         for grade_name in focused_grades[venue_code]:
             graded_races = Race.objects.filter(
                 chart__program__date__gte=start_date,
@@ -167,6 +174,7 @@ class Command(BaseCommand):
                             if prediction and prediction.smo:
                                 current_prediction = prediction.smo
                                 print(current_prediction)
+                                race_predictions[race_key]
 
 
         raise SystemExit(0)
