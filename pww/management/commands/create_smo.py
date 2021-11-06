@@ -183,7 +183,7 @@ class Command(BaseCommand):
             distance,
             grade_name))
         metrics = Metric.objects.filter(
-            participant__race__chart__program__venue=venue,
+            participant__race__chart__program__venue__code=venue_code,
             participant__race__distance=distance,
             participant__race__grade__name=grade_name,
             participant__race__chart__program__date__lte="2021-09-14",
