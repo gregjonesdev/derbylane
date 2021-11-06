@@ -109,10 +109,18 @@ class Command(BaseCommand):
         for grade_name in focused_grades[venue_code]:
             print(grade_name)
 
-            races_analyzed = Race.objects.filter(
+            graded_races = Race.objects.filter(
                 chart__program__date__gte=start_date,
                 chart__program__venue__code=venue_code,
                 grade__name=grade_name)
+
+            for race in graded_races:
+                if race.is_complete():
+                    print("True")
+                else:
+                    print("False")    
+
+
         #
         # for race in races_analyzed:
         #     if race.has_predictions():
