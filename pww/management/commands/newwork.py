@@ -4,17 +4,29 @@ from pww.utilities.ultraweka import create_model
 
 class Command(BaseCommand):
 
+    def get_options(self):
+        jason_comment = '''
+        weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007"
+        -calibrator "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
+        '''
+
+        return [
+        "-C", "1.0",
+        "-L", "0.001",
+        "-P", "1.0E-12",
+        "-N", "0",
+        "-W", "1",
+        "-V", "-1",
+        "-K", "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007",
+        "-calibrator", "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
+        ]
+
+
     def handle(self, *args, **options):
 
         # Jasons comment
 
 
-        # CREATE MODEL
-        # now this is included in create_model as smo_options
-        one_long_line = '''
-        weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007"
-        -calibrator "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
-        '''
 
         # 10:40:57
         # Two AttributeSelectedClassifier lines with the following in the middle:
@@ -41,4 +53,9 @@ class Command(BaseCommand):
         '''
 
         print("hi")
-        print(create_model)
+
+
+
+        options = self.get_options()
+        raise SystemExit(0)
+        create_model(model_arff, classifier, options, filename)

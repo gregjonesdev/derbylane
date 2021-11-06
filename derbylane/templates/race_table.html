@@ -1,4 +1,4 @@
-{% extends '_table.html' %}
+{% extends 'bet_table_row.html' %}
 
 {% block prediction_button %}
   <button
@@ -21,7 +21,7 @@
 
 {% block win_button %}
 <button
-  class="btn btn-sm btn-block btn-outline-secondary"
+  class="btn btn-sm btn-block btn-outline-light"
   disabled>
   {{ participant.get_win_bet.amount }}
 </button>
@@ -29,7 +29,7 @@
 
 {% block place_button %}
 <button
-  class="btn btn-sm btn-block btn-outline-secondary"
+  class="btn btn-sm btn-block btn-outline-light"
   disabled>
   {{ participant.get_place_bet.amount }}
 </button>
@@ -37,7 +37,7 @@
 
 {% block show_button %}
 <button
-  class="btn btn-sm btn-block btn-outline-secondary"
+  class="btn btn-sm btn-block btn-outline-light"
   disabled>
   {{ participant.get_show_bet.amount }}
 </button>

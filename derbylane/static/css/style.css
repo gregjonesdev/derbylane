@@ -92,7 +92,7 @@ body {
   text-align: center;
   vertical-align: middle;
   color: #FFF;
-  border: none;
+  /* border: none; */
 }
 
 .dog-name-span {
@@ -253,5 +253,5 @@ body {
 
 table {
    table-layout: fixed;
-   width:100%;
+   width:100vw;
 }

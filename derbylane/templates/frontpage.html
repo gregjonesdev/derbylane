@@ -71,18 +71,10 @@
  -->
 
     </div>
-    <table
-      id="header-table"
-      class="table table-sm table-borderless fade-in">
-      <tr class="race-table-row">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>W</td>
-        <td>P</td>
-        <td>S</td>
-      </tr>
-    </table>
+
+    <div style="border:1px solid red">
+    {% include 'bet_header_row.html' %}
+    </div>
   {% else %}
     <div
       id="empty-charts-div">
