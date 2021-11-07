@@ -104,7 +104,7 @@ class Command(BaseCommand):
             for interval in predictions[each].keys():
                 print(table_string.format(
                     "{} - {}".format(round(float(interval),3), float(interval) + .249),
-                    "# bets",
+                    len(predictions[each][interval]['win']),
                     self.average_bets(predictions[each][interval]['win']),
                     self.average_bets(predictions[each][interval]['place']),
                     self.average_bets(predictions[each][interval]['show'])
