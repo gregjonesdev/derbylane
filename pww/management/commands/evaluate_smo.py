@@ -176,16 +176,16 @@ class Command(BaseCommand):
                         range_start = self.find_range_start(
                             current_prediction, interval_list,
                             interval)
-                        print("{}: {}".format(current_prediction, range_start))
-                        print("{}\t{}\t{}\t{}\t{}".format(
-                            participant.dog.name[:5],
-                            participant.final,
-                            self.get_win_return(participant),
-                            self.get_place_return(participant),
-                            self.get_show_return(participant)
-                        ))
+                        # print("{}: {}".format(current_prediction, range_start))
+                        # print("{}\t{}\t{}\t{}\t{}".format(
+                        #     participant.dog.name[:5],
+                        #     participant.final,
+                        #     self.get_win_return(participant),
+                        #     self.get_place_return(participant),
+                        #     self.get_show_return(participant)
+                        # ))
                         race_predictions[race_key][str(range_start)]['win'].append(self.get_win_return(participant))
                         race_predictions[race_key][str(range_start)]['place'].append(self.get_place_return(participant))
                         race_predictions[race_key][str(range_start)]['show'].append(self.get_show_return(participant))
-                    
+
         self.output(race_predictions)
