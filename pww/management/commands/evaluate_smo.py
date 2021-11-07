@@ -150,6 +150,7 @@ class Command(BaseCommand):
         interval = 0.25
         interval_list = self.get_interval_list(start, end, interval)
         print(start_date)
+        participants = 0
         for grade_name in focused_grades[venue_code]:
             graded_races = Race.objects.filter(
                 chart__program__date__gte=start_date,
@@ -157,63 +158,34 @@ class Command(BaseCommand):
                 grade__name=grade_name,
                 distance=548)
 
-            print(len(graded_races))
-
+            # print(len(graded_races))
             for race in graded_races:
-                if race.is_complete():
-                    race_key = "{}_{}".format(venue_code, grade_name)
-                    if not race_key in race_predictions.keys():
-                        race_predictions[race_key] = self.build_beginning_object(interval_list)
+                race_key = "{}_{}".format(venue_code, grade_name)
+                if not race_key in race_predictions.keys():
+                    race_predictions[race_key] = self.build_beginning_object(interval_list)
 
-                        for participant in race.participant_set.all():
-                            prediction = None
-                            try:
-                                prediction = participant.prediction
-                            except:
-                                pass
-                            if prediction and prediction.smo:
-                                current_prediction = prediction.smo
-                                range_start = self.find_range_start(
-                                    current_prediction, interval_list,
-                                    interval)
-                                print("{}: {}".format(current_prediction, range_start))
-                                print("{}\t{}\t{}\t{}\t{}".format(
-                                    participant.dog.name[:5],
-                                    participant.final,
-                                    self.get_win_return(participant),
-                                    self.get_place_return(participant),
-                                    self.get_show_return(participant)
-                                ))
-                                race_predictions[race_key][str(range_start)]['win'].append(self.get_win_return(participant))
-                                race_predictions[race_key][str(range_start)]['place'].append(self.get_place_return(participant))
-                                race_predictions[race_key][str(range_start)]['show'].append(self.get_show_return(participant))
-
-
+                for participant in race.participant_set.all():
+                    participants += 1
+                    prediction = None
+                    try:
+                        prediction = participant.prediction
+                    except:
+                        pass
+                    if prediction and prediction.smo:
+                        current_prediction = prediction.smo
+                        range_start = self.find_range_start(
+                            current_prediction, interval_list,
+                            interval)
+                        print("{}: {}".format(current_prediction, range_start))
+                        print("{}\t{}\t{}\t{}\t{}".format(
+                            participant.dog.name[:5],
+                            participant.final,
+                            self.get_win_return(participant),
+                            self.get_place_return(participant),
+                            self.get_show_return(participant)
+                        ))
+                        race_predictions[race_key][str(range_start)]['win'].append(self.get_win_return(participant))
+                        race_predictions[race_key][str(range_start)]['place'].append(self.get_place_return(participant))
+                        race_predictions[race_key][str(range_start)]['show'].append(self.get_show_return(participant))
+                    
         self.output(race_predictions)
-
-        #
-        # for race in races_analyzed:
-        #     if race.has_predictions():
-        #         grade_name = race.grade.name
-        #         race_key = "{}_{}".format(venue_code, grade_name)
-        #         if not race_key in race_predictions.keys():
-        #             race_predictions[race_key] = {}
-        #         for participant in race.participant_set.all():
-        #             prediction = None
-        #             try:
-        #                 prediction = participant.prediction
-        #             except:
-        #                 pass
-        #             if prediction:
-        #                 if model_name == "smo":
-        #                     current_prediction = prediction.smo
-        #                 elif model_name == "libsvm":
-        #                     current_prediction = prediction.lib_svm
-        #                 elif model_name == "j48":
-        #                     current_prediction = prediction.j48
-        #                 if current_prediction:
-        #                     if not current_prediction in race_predictions[race_key].keys():
-        #                         race_predictions[race_key][current_prediction] = []
-        #                     race_predictions[race_key][current_prediction].append(participant)
-        #     self.analyze_object(race_predictions, model_name)
-        #     print("Races Analyzed: {}\n".format(len(races_analyzed)))
