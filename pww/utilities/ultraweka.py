@@ -126,7 +126,7 @@ def evaluate_single(arff_file):
     model_name ='smo'
     prediction_object = get_prediction_object(arff_file)
     prediction_object['predictions'] = {}
-    filename = "test_models/{}_{}.model".format(race_key, model_name)
+    filename = "test_models/{}_{}_075.model".format(race_key, model_name)
     try:
         model = Classifier(jobject=serialization.read(filename))
     except:
