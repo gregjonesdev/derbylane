@@ -149,13 +149,15 @@ class Command(BaseCommand):
         end = 8.0
         interval = 0.25
         interval_list = self.get_interval_list(start, end, interval)
-
+        print(start_date)
         for grade_name in focused_grades[venue_code]:
             graded_races = Race.objects.filter(
                 chart__program__date__gte=start_date,
                 chart__program__venue__code=venue_code,
                 grade__name=grade_name,
                 distance=548)
+
+            print(len(graded_races))    
 
             for race in graded_races:
                 if race.is_complete():
