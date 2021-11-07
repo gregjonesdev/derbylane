@@ -154,7 +154,8 @@ class Command(BaseCommand):
             graded_races = Race.objects.filter(
                 chart__program__date__gte=start_date,
                 chart__program__venue__code=venue_code,
-                grade__name=grade_name)
+                grade__name=grade_name,
+                distance=548)
 
             for race in graded_races:
                 if race.is_complete():
