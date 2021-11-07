@@ -163,9 +163,7 @@ def save_predictions(participant_id, predictions, index):
     print("save predictions")
     participant = Participant.objects.get(uuid=participant_id)
     pred = get_prediction(participant)
-    print(predictions)
-    print(participant)
-    print(index)
+
     for model_name in predictions.keys():
         print(model_name)
         if 'J48' in model_name:
@@ -177,7 +175,5 @@ def save_predictions(participant_id, predictions, index):
             print(predictions[model_name][index])
             pred.lib_svm = predictions[model_name][index]
         elif 'smo' in model_name:
-            print("smo")
-            print(predictions[model_name][index])
             pred.smo = predictions[model_name][index]
     pred.save()
