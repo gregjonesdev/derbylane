@@ -140,7 +140,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         today = datetime.datetime.now()
         yesterday = (today - datetime.timedelta(days=1)).date()
-        start_date = (today - datetime.timedelta(days=60)).date()
+        start_date = (today - datetime.timedelta(days=365)).date()
 
         venue_code = "WD"
         race_predictions = {}
@@ -157,7 +157,7 @@ class Command(BaseCommand):
                 grade__name=grade_name,
                 distance=548)
 
-            print(len(graded_races))    
+            print(len(graded_races))
 
             for race in graded_races:
                 if race.is_complete():
