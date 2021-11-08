@@ -9,6 +9,25 @@ from pww.models import TestPrediction, Metric
 from miner.utilities.urls import arff_directory
 from miner.utilities.constants import csv_columns
 
+from weka.filters import Filter
+import weka.core.jvm as jvm
+import weka.core.packages as packages
+import weka.core.converters as conv
+import weka.core.serialization as serialization
+from libsvm.svmutil import *
+from rawdat.models import Participant
+from weka.classifiers import Classifier, Evaluation
+from django.core.exceptions import ObjectDoesNotExist
+from pww.models import Prediction
+from weka.attribute_selection import ASSearch
+from weka.attribute_selection import ASEvaluation
+from weka.attribute_selection import AttributeSelection
+# import wekaexamples.helper as helper
+from weka.core.classes import Random
+from weka.core.converters import Loader
+from weka.core.dataset import Instances
+from weka.filters import Filter
+
 table_string = "{}\t\t{}\t\t{}\t\t{}"
 
 class bcolors:
@@ -95,6 +114,47 @@ class Command(BaseCommand):
             formatting += bcolors.BOLD
         return formatting + "${}".format(round(value, 2)) + bcolors.ENDC
 
+    def create_model(training_arff, c, race_key):
+
+        # model_name = SL_583_D_smo_075.model
+
+        # jvm.start(packages=True, max_heap_size="5028m")
+        #
+        # loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+        model_data = loader.load_file(training_arff)
+        model_data = remove_uuid(model_data)
+        model_data = nominalize(model_data)
+        model_data.class_is_last()
+        classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
+        search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
+        evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
+        base = Classifier(classname="weka.classifiers.functions.SMO", options=options)
+
+        classifier.set_property("classifier", base.jobject)
+        classifier.set_property("evaluator", evaluator.jobject)
+        classifier.set_property("search", search.jobject)
+
+        classifier.build_classifier(model_data)
+        filename = "test_models/{}.model".format(filename)
+        serialization.write(filename, classifier)
+        jvm.stop()
+        print("Model Created Successfully.")
+        print("Filename: {}".format(filename))
+
+    def print_returns(self, training_arff, c):
+
+        # model = self.create_model(training_arff, c, race_key)
+        # average_returns = self.get_average_returns(c, )
+        # create_model(arff_file, options, root_filename)
+        average_returns = [2.1, 2.0, 0.5]
+        max_return = max(average_returns)
+        print(table_string.format(
+            c,
+            self.get_formatting(max_return, average_returns[0]),
+            self.get_formatting(max_return, average_returns[1]),
+            self.get_formatting(max_return, average_returns[2])))
+
+
 
 
     def handle(self, *args, **options):
@@ -126,19 +186,13 @@ class Command(BaseCommand):
             cutoff_date)
         c = 0.1
         max_return = 0
+        jvm.start(packages=True, max_heap_size="5028m")
+        loader = conv.Loader(classname="weka.core.converters.ArffLoader")
 
         while c <= 10:
             c = round(c, 2)
-            # model = self.create_model(c, )
-            # average_returns = self.get_average_returns(c, )
-            average_returns = [2.1, 2.0, 0.5]
-            max_return = max(average_returns)
-            print(table_string.format(
-                c,
-                self.get_formatting(max_return, average_returns[0]),
-                self.get_formatting(max_return, average_returns[1]),
-                self.get_formatting(max_return, average_returns[2])))
-            c += 0.1
+            self.print_returns(training_arff, c)
+            c = round(c + 0.1, 2)
 
         end_time = time()
 
