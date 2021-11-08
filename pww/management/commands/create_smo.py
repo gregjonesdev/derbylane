@@ -26,7 +26,7 @@ class Command(BaseCommand):
         '''
 
         return [
-        "-C", "1.25", # The complexity constant C. (default 1)
+        "-C", "0.9", # The complexity constant C. (default 1)
         "-L", "0.001",
         "-P", "1.0E-12", # The epsilon for round-off error. (default 1.0e-12)
         "-N", "0", # Whether to 0=normalize/1=standardize/2=neither. (default 0=normalize)
@@ -193,7 +193,7 @@ class Command(BaseCommand):
 
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
 
-        root_filename = "{}_smo_125".format(
+        root_filename = "{}_smo_090".format(
             race_key)
         arff_filename = "{}/{}.arff".format(
             arff_directory,
