@@ -20,7 +20,7 @@ class Command(BaseCommand):
 
     def get_options(self):
         jason_comment = '''
-        weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K
+        weka.classifiers.functions.SMO -C 1.25 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K
         "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007"
         -calibrator "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
         '''
@@ -193,7 +193,7 @@ class Command(BaseCommand):
 
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
 
-        root_filename = "{}_smo_200".format(
+        root_filename = "{}_smo_125".format(
             race_key)
         arff_filename = "{}/{}.arff".format(
             arff_directory,
