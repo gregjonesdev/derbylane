@@ -182,3 +182,14 @@ class Prediction(CoreModel):
         #     return "S"
         # elif self.j48 == 1:
         #     return "PS"
+
+
+class TestPrediction(CoreModel):
+
+    c = models.DecimalField(
+        max_digits=16,
+        decimal_places=8)
+    participant = models.OneToOneField(
+        Participant,
+        on_delete=models.CASCADE)
+    smo = models.IntegerField()    

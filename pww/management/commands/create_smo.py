@@ -7,6 +7,8 @@ from miner.utilities.constants import (
     focused_distances,
     csv_columns,
     )
+from miner.utilities.urls import arff_directory
+
 from pww.models import Metric
 import sys
 
@@ -170,7 +172,6 @@ class Command(BaseCommand):
         return arff_file
 
     def handle(self, *args, **options):
-        arff_directory = "arff"
         # venue = Venue.objects.get(code="WD")
         # venue_code = venue.code
         # grade_name = "AA"

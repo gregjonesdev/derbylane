@@ -13,6 +13,7 @@ dog_root = "{}dog.jsp?runnername=".format(trackinfo_desktop_base)
 all_race_results = "{}dog-racelines.jsp?page=1&runnername=".format(trackinfo_desktop_base)
 all_race_suffix = "&TotalRowCount=20000"
 
+arff_directory = "arff"
 
 australia_attempt = "https://old.thedogs.com.au/Racing/RacingFormFields.aspx?meetid=260281"
 
