@@ -194,8 +194,7 @@ class Command(BaseCommand):
             self.print_returns(training_arff, c)
             c = round(c + 0.1, 2)
 
-        end_time = time()
-
+        jvm.stop()
         end_time = time()
         seconds_elapsed = end_time - start_time
 
