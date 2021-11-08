@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 import datetime
-from pww.utilities.ultraweka import create_model
+# from pww.utilities.ultraweka import create_model # changed
 from rawdat.models import Venue
 
 from miner.utilities.constants import (

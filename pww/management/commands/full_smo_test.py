@@ -1,32 +1,16 @@
 import datetime
 import sys
+
 from time import time
 
 from django.core.management.base import BaseCommand
-
-from pww.models import TestPrediction, Metric
-
 from miner.utilities.urls import arff_directory
 from miner.utilities.constants import csv_columns
+from pww.models import TestPrediction, Metric
+from pww.utilities.ultraweka import create_model
 
-from weka.filters import Filter
-import weka.core.jvm as jvm
-import weka.core.packages as packages
 import weka.core.converters as conv
-import weka.core.serialization as serialization
-from libsvm.svmutil import *
-from rawdat.models import Participant
-from weka.classifiers import Classifier, Evaluation
-from django.core.exceptions import ObjectDoesNotExist
-from pww.models import Prediction
-from weka.attribute_selection import ASSearch
-from weka.attribute_selection import ASEvaluation
-from weka.attribute_selection import AttributeSelection
-# import wekaexamples.helper as helper
-from weka.core.classes import Random
-from weka.core.converters import Loader
-from weka.core.dataset import Instances
-from weka.filters import Filter
+import weka.core.jvm as jvm
 
 table_string = "{}\t\t{}\t\t{}\t\t{}"
 
@@ -80,25 +64,7 @@ class Command(BaseCommand):
             participant__race__grade__name=grade_name)
 
 
-    def get_options(self, c):
 
-        # jason_comment = '''
-        # weka.classifiers.functions.SMO -C 1.25 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K
-        # "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007"
-        # -calibrator "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
-        # '''
-
-        return [
-        "-C", c, # The complexity constant C. (default 1)
-        "-L", "0.001",
-        "-P", "1.0E-12", # The epsilon for round-off error. (default 1.0e-12)
-        "-N", "0", # Whether to 0=normalize/1=standardize/2=neither. (default 0=normalize)
-        "-W", "1", # The random number seed. (default 1)
-        "-V", "10", # The number of folds for the internal cross-validation. (default -1, use training data)
-        # Following line will be included in Kernel instantiation
-        "-K", "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007",
-        "-calibrator", "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
-        ]
 
     def two_digitizer(self, integer):
         if integer < 10:
@@ -114,36 +80,14 @@ class Command(BaseCommand):
             formatting += bcolors.BOLD
         return formatting + "${}".format(round(value, 2)) + bcolors.ENDC
 
-    def create_model(training_arff, c, race_key):
 
-        # model_name = SL_583_D_smo_075.model
 
-        # jvm.start(packages=True, max_heap_size="5028m")
-        #
-        # loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-        model_data = loader.load_file(training_arff)
-        model_data = remove_uuid(model_data)
-        model_data = nominalize(model_data)
-        model_data.class_is_last()
-        classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
-        search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
-        evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
-        base = Classifier(classname="weka.classifiers.functions.SMO", options=options)
 
-        classifier.set_property("classifier", base.jobject)
-        classifier.set_property("evaluator", evaluator.jobject)
-        classifier.set_property("search", search.jobject)
+    def print_returns(self, training_arff, c, race_key, loader):
 
-        classifier.build_classifier(model_data)
-        filename = "test_models/{}.model".format(filename)
-        serialization.write(filename, classifier)
-        jvm.stop()
-        print("Model Created Successfully.")
-        print("Filename: {}".format(filename))
-
-    def print_returns(self, training_arff, c):
-
-        # model = self.create_model(training_arff, c, race_key)
+        model = create_model(training_arff, c, race_key, loader)
+        print(model)
+        raise SystemExit(0)
         # average_returns = self.get_average_returns(c, )
         # create_model(arff_file, options, root_filename)
         average_returns = [2.1, 2.0, 0.5]
@@ -171,8 +115,6 @@ class Command(BaseCommand):
 
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
 
-        print("SMO Prediction Accuracy vs Confidence Factor")
-        print("{} {} {}\n".format(venue_code, grade_name, distance))
 
         arff_filename = "{}/{}.arff".format(
             arff_directory,
@@ -189,9 +131,11 @@ class Command(BaseCommand):
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
 
+        print("\n\nSMO Prediction Accuracy vs Confidence Factor")
+        print("{} {} {}\n".format(venue_code, grade_name, distance))
         while c <= 10:
             c = round(c, 2)
-            self.print_returns(training_arff, c)
+            self.print_returns(training_arff, str(c), race_key, loader)
             c = round(c + 0.1, 2)
 
         jvm.stop()
