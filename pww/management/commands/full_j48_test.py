@@ -31,9 +31,12 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
+
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
+        parser.add_argument('--model', type=str)
         parser.add_argument('--venue', type=str)
         parser.add_argument('--grade', type=str)
 
@@ -201,12 +204,10 @@ class Command(BaseCommand):
         max_return = 0
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+        classifier_name = sys.argv[3]
 
-
-        options = ["-C", "0.3"]
-
-
-        print("\n\nJ48 Prediction Accuracy vs Confidence Factor")
+        print("\n\n{} Prediction Accuracy vs Confidence Factor".format(
+            classifier_name.upper()))
         print("{} {} {}\n".format(venue_code, grade_name, distance))
         print("Dogs Predicted to Finish 4th")
         print(table_string.format(
@@ -216,8 +217,10 @@ class Command(BaseCommand):
             "Show",
             "Bet Count"))
         while c <= 0.3:
+
+
             c = round(c, 2)
-            model_name = create_j48_model(training_arff, options, race_key, loader)
+            model_name = create_j48_model(training_arff, classifier_name, c, race_key, loader)
             print('arrived')
             raise SystemExit(0)
             self.print_returns(model_name, testing_arff, str(c), race_key, loader)
