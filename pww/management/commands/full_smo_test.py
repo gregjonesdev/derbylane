@@ -196,7 +196,7 @@ class Command(BaseCommand):
             testing_metrics,
             is_nominal,
             cutoff_date)
-        c = 0.1
+        c = 0.01
         max_return = 0
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
@@ -210,11 +210,11 @@ class Command(BaseCommand):
             "Place",
             "Show",
             "Bet Count"))
-        while c <= 10:
+        while c <= 0.3:
             c = round(c, 2)
             model_name = create_model(training_arff, str(c), race_key, loader)
             self.print_returns(model_name, testing_arff, str(c), race_key, loader)
-            c = round(c + 0.1, 2)
+            c = round(c + 0.01, 2)
 
         jvm.stop()
         end_time = time()
