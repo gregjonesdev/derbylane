@@ -154,13 +154,13 @@ def nominalize(data):
 #         pred = new_pred
 #     return pred
 #
-# def build_scheduled_data(arff_data):
-#     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-#     loaded_data = loader.load_file(arff_data)
-#     anonymous_data = remove_uuid(loaded_data)
-#     scheduled_data = nominalize(anonymous_data)
-#     scheduled_data.class_is_last()
-#     return scheduled_data
+def build_scheduled_data(arff_data):
+    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+    loaded_data = loader.load_file(arff_data)
+    anonymous_data = remove_uuid(loaded_data)
+    scheduled_data = nominalize(anonymous_data)
+    scheduled_data.class_is_last()
+    return scheduled_data
 #
 # def evaluate_single(arff_file):
 #     race_key = arff_file.replace("arff/", "").replace(".arff", "")

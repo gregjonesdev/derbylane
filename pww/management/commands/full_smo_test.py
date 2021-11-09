@@ -7,11 +7,11 @@ from django.core.management.base import BaseCommand
 from miner.utilities.urls import arff_directory
 from miner.utilities.constants import csv_columns
 from pww.models import TestPrediction, Metric
-from pww.utilities.ultraweka import create_model
-
+from pww.utilities.ultraweka import create_model, build_scheduled_data
+from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
-
+import weka.core.serialization as serialization
 table_string = "{}\t\t{}\t\t{}\t\t{}"
 
 class bcolors:
@@ -86,15 +86,17 @@ class Command(BaseCommand):
     def print_returns(self, model_name, testing_arff, c, race_key, loader):
         print("print returns")
         print(model_name)
-        raise SystemExit(0)
         model = Classifier(jobject=serialization.read(model_name))
+        print(type(testing_arff))
+        testing_data = build_scheduled_data(testing_arff)
+        # model.build_classifier(testing_data)
+        print("ok")
 
-        model.build_classifier(testing_arff)
-
-        for index, inst in enumerate(data):
+        for index, inst in enumerate(testing_data):
             pred = model.classify_instance(inst)
             dist = model.distribution_for_instance(inst)
-
+            print(pred)
+        raise SystemExit(0)
         # average_returns = self.get_average_returns(c, )
         # create_model(arff_file, options, root_filename)
         average_returns = [2.1, 2.0, 0.5]
