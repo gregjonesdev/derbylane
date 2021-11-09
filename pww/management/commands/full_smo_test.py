@@ -83,11 +83,18 @@ class Command(BaseCommand):
 
 
 
-    def print_returns(self, training_arff, c, race_key, loader):
-
-        model = create_model(training_arff, c, race_key, loader)
-        print(model)
+    def print_returns(self, model_name, testing_arff, c, race_key, loader):
+        print("print returns")
+        print(model_name)
         raise SystemExit(0)
+        model = Classifier(jobject=serialization.read(model_name))
+
+        model.build_classifier(testing_arff)
+
+        for index, inst in enumerate(data):
+            pred = model.classify_instance(inst)
+            dist = model.distribution_for_instance(inst)
+
         # average_returns = self.get_average_returns(c, )
         # create_model(arff_file, options, root_filename)
         average_returns = [2.1, 2.0, 0.5]
@@ -111,19 +118,27 @@ class Command(BaseCommand):
 
         all_metrics = self.get_metrics(venue_code, distance, grade_name)
         training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
-        test_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
+        testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
 
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
 
 
-        arff_filename = "{}/{}.arff".format(
+        training_arff_filename = "{}/train_{}.arff".format(
+            arff_directory,
+            race_key)
+        testing_arff_filename = "{}/test_{}.arff".format(
             arff_directory,
             race_key)
         is_nominal = False
 
         training_arff = self.create_arff(
-            arff_filename,
+            training_arff_filename,
             training_metrics,
+            is_nominal,
+            cutoff_date)
+        testing_arff = self.create_arff(
+            testing_arff_filename,
+            testing_metrics,
             is_nominal,
             cutoff_date)
         c = 0.1
@@ -135,7 +150,8 @@ class Command(BaseCommand):
         print("{} {} {}\n".format(venue_code, grade_name, distance))
         while c <= 10:
             c = round(c, 2)
-            self.print_returns(training_arff, str(c), race_key, loader)
+            model_name = create_model(training_arff, str(c), race_key, loader)
+            self.print_returns(model_name, testing_arff, str(c), race_key, loader)
             c = round(c + 0.1, 2)
 
         jvm.stop()
