@@ -137,7 +137,7 @@ class Command(BaseCommand):
         bet_count = 0
         # Only focus on prediction = 4!
         for uuid in prediction_list:
-            if int(prediction_list[uuid]) == 4:
+            if int(prediction_list[uuid]) == 3:
                 bet_count += 1
                 participant = Participant.objects.get(uuid=uuid)
                 win_returns += self.get_win_return(participant)
