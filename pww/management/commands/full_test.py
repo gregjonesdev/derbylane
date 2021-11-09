@@ -220,9 +220,7 @@ class Command(BaseCommand):
 
 
             c = round(c, 2)
-            model_name = create_j48_model(training_arff, classifier_name, c, race_key, loader)
-            print('arrived')
-            raise SystemExit(0)
+            model_name = create_j48_model(training_arff, classifier_name, str(c), race_key, loader)
             self.print_returns(model_name, testing_arff, str(c), race_key, loader)
             c = round(c + 0.01, 2)
 

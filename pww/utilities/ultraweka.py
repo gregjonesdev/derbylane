@@ -110,12 +110,25 @@ def create_model(training_arff, c, race_key, loader):
     serialization.write(filename, classifier)
     return filename
 
+def add_c_to_options(options, c):
+    print(options)
+    if "-C" in options:
+        c_index = options.index("-C") + 1
+        options[c_index] = c
+    else:
+        options.append("-C")
+        options.append(c)
+    print(options)
+    return options
 
 def create_j48_model(training_arff, classifier_name, c, race_key, loader):
     classifier = classifiers[classifier_name]
     options = classifier["options"]
-    options.append("-C")
-    options.append(str(c))
+    # options.append("-C")
+    # options.append(str(c))
+    # print(options)
+    options = add_c_to_options(options, c)
+
     classname = classifier["classname"]
     model_data = loader.load_file(training_arff)
     model_data = remove_uuid(model_data)
@@ -131,11 +144,11 @@ def create_j48_model(training_arff, classifier_name, c, race_key, loader):
     classifier.set_property("search", search.jobject)
 
     classifier.build_classifier(model_data)
-    c_index = options.index("-C") + 1
+
     filename = "test_models/{}_{}_{}.model".format(
         race_key,
         classifier_name,
-        options[c_index].replace(".", "")
+        c.replace(".", "")
     )
     serialization.write(filename, classifier)
     return filename
