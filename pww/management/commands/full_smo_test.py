@@ -2,12 +2,16 @@ import datetime
 import sys
 
 from time import time
-
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 from miner.utilities.urls import arff_directory
 from miner.utilities.constants import csv_columns
 from pww.models import TestPrediction, Metric
-from pww.utilities.ultraweka import create_model, build_scheduled_data, get_uuid_line_index
+from pww.utilities.ultraweka import (
+    create_model,
+    build_scheduled_data,
+    get_uuid_line_index,
+    get_prediction_list)
 from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
@@ -81,24 +85,38 @@ class Command(BaseCommand):
         return formatting + "${}".format(round(value, 2)) + bcolors.ENDC
 
 
+    def save_prediction(self, participant_uuid, smo_prediction, c):
+        pass
+        c = float(c)
+        try:
+            prediction = TestPrediction.objects.get(
+                participant_id=participant_uuid,
+                c=c)
+        except ObjectDoesNotExist:
+            new_prediction = TestPrediction(
+                participant_id=participant_uuid,
+                c=c)
+            new_prediction.set_fields_to_base()
+            prediction = new_prediction
+        prediction.smo = smo_prediction
+        prediction.save()
 
 
     def print_returns(self, model_name, testing_arff, c, race_key, loader):
         print("print returns")
-        print(model_name)
+        # print(model_name)
         model = Classifier(jobject=serialization.read(model_name))
-        print(type(testing_arff))
+        # print(type(testing_arff))
         uuid_line_index = get_uuid_line_index(testing_arff)
-        print(uuid_line_index)
-        raise SystemExit(0)
+        # print(uuid_line_index)
         testing_data = build_scheduled_data(testing_arff)
         # model.build_classifier(testing_data)
-        print("ok")
-
-        for index, inst in enumerate(testing_data):
-            pred = model.classify_instance(inst)
-            dist = model.distribution_for_instance(inst)
-            print(pred)
+        prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+        print(prediction_list)
+        print(c)
+        print(type(c))
+        for uuid in prediction_list:
+            self.save_prediction(uuid, int(prediction_list[uuid]), c)
         raise SystemExit(0)
         # average_returns = self.get_average_returns(c, )
         # create_model(arff_file, options, root_filename)

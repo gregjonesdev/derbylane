@@ -125,15 +125,16 @@ def get_uuid_line_index(filename):
         if len(line) > 100:
             split_line = line.split(",")
             uuid = line.split(",")[0]
-            uuid_line_index[uuid] = i
+            uuid_line_index[i] = uuid
             i += 1
     return uuid_line_index
 #
-def get_prediction_list(cls, data, lines):
-    prediction_list = []
+def get_prediction_list(cls, data, uuid_line_index):
+    prediction_list = {}
     for index, inst in enumerate(data):
-        if index in lines:
-            prediction_list.append(cls.classify_instance(inst))
+        if index in uuid_line_index.keys():
+            uuid = uuid_line_index[index]
+            prediction_list[uuid] = cls.classify_instance(inst)
     return prediction_list
 #
 #
