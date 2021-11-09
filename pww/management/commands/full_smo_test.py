@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 from miner.utilities.urls import arff_directory
 from miner.utilities.constants import csv_columns
 from pww.models import TestPrediction, Metric
-from pww.utilities.ultraweka import create_model, build_scheduled_data
+from pww.utilities.ultraweka import create_model, build_scheduled_data, get_uuid_line_index
 from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
@@ -88,6 +88,9 @@ class Command(BaseCommand):
         print(model_name)
         model = Classifier(jobject=serialization.read(model_name))
         print(type(testing_arff))
+        uuid_line_index = get_uuid_line_index(testing_arff)
+        print(uuid_line_index)
+        raise SystemExit(0)
         testing_data = build_scheduled_data(testing_arff)
         # model.build_classifier(testing_data)
         print("ok")

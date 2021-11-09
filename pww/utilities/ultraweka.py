@@ -117,29 +117,24 @@ def nominalize(data):
 #         evaluate_single(arff_file)
 #     jvm.stop()
 #
-# def get_prediction_object(filename):
-#     arff_file = open(filename, "r")
-#     prediction_object = {
-#         "lines": [],
-#         "uuids": []
-#     }
-#     i = 0
-#     for line in arff_file:
-#         print(line)
-#         if len(line) > 100:
-#             split_line = line.split(",")
-#             prediction_object["lines"].append(i)
-#             prediction_object["uuids"].append(split_line[0])
-#             i += 1
-#     print(prediction_object)
-#     return prediction_object
+def get_uuid_line_index(filename):
+    arff_file = open(filename, "r")
+    uuid_line_index = {}
+    i = 0
+    for line in arff_file:
+        if len(line) > 100:
+            split_line = line.split(",")
+            uuid = line.split(",")[0]
+            uuid_line_index[uuid] = i
+            i += 1
+    return uuid_line_index
 #
-# def get_prediction_list(cls, data, lines):
-#     prediction_list = []
-#     for index, inst in enumerate(data):
-#         if index in lines:
-#             prediction_list.append(cls.classify_instance(inst))
-#     return prediction_list
+def get_prediction_list(cls, data, lines):
+    prediction_list = []
+    for index, inst in enumerate(data):
+        if index in lines:
+            prediction_list.append(cls.classify_instance(inst))
+    return prediction_list
 #
 #
 # def get_prediction(participant):
@@ -167,7 +162,7 @@ def build_scheduled_data(arff_data):
 #     scheduled_data = build_scheduled_data(arff_file)
 #     # model_names = ["libsvm", "J48_C0_75"]
 #     model_name ='smo'
-#     prediction_object = get_prediction_object(arff_file)
+#     prediction_object = get_uuid_line_index(arff_file)
 #     prediction_object['predictions'] = {}
 #     filename = "test_models/{}_{}_275.model".format(race_key, model_name)
 #     try:
