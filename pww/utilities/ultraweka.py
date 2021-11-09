@@ -67,6 +67,74 @@ def create_model(training_arff, c, race_key, loader):
     serialization.write(filename, classifier)
     return filename
 
+
+def create_j48_model(training_arff, options, race_key, loader):
+     # -U
+     #  Use unpruned tree.
+     #
+     # -O
+     #  Do not collapse tree.
+     #
+     # -C <pruning confidence>
+     #  Set confidence threshold for pruning.
+     #  (default 0.25)
+     #
+     # -M <minimum number of instances>
+     #  Set minimum number of instances per leaf.
+     #  (default 2)
+     #
+     # -R
+     #  Use reduced error pruning.
+     #
+     # -N <number of folds>
+     #  Set number of folds for reduced error
+     #  pruning. One fold is used as pruning set.
+     #  (default 3)
+     #
+     # -B
+     #  Use binary splits only.
+     #
+     # -S
+     #  Don't perform subtree raising.
+     #
+     # -L
+     #  Do not clean up after the tree has been built.
+     #
+     # -A
+     #  Laplace smoothing for predicted probabilities.
+     #
+     # -J
+     #  Do not use MDL correction for info gain on numeric attributes.
+     #
+     # -Q <seed>
+     #  Seed for random data shuffling (default 1).
+     #
+     # -doNotMakeSplitPointActualValue
+     #  Do not make split point actual value.
+     #
+     model_data = loader.load_file(training_arff)
+     model_data = remove_uuid(model_data)
+     model_data = nominalize(model_data)
+     model_data.class_is_last()
+     classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
+     search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
+     evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
+     base = Classifier(classname="weka.classifiers.trees.J48", options=options)
+
+     classifier.set_property("classifier", base.jobject)
+     classifier.set_property("evaluator", evaluator.jobject)
+     classifier.set_property("search", search.jobject)
+
+     classifier.build_classifier(model_data)
+     c_index = options.index("-C") + 1
+     filename = "test_models/{}_j48_{}.model".format(
+         race_key,
+
+         options[c_index].replace(".", "")
+     )
+     serialization.write(filename, classifier)
+     return filename
+
 def remove_uuid(data):
     remove = Filter(
         classname="weka.filters.unsupervised.attribute.Remove",
