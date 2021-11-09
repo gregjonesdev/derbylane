@@ -171,7 +171,6 @@ class Command(BaseCommand):
         today = datetime.datetime.now()
         cutoff_date = (today - datetime.timedelta(weeks=26)).date()
         start_time = time()
-
         all_metrics = self.get_metrics(venue_code, distance, grade_name)
         training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
         testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
@@ -211,7 +210,7 @@ class Command(BaseCommand):
             "Place",
             "Show",
             "Bet Count"))
-        while c <= 1:
+        while c <= 10:
             c = round(c, 2)
             model_name = create_model(training_arff, str(c), race_key, loader)
             self.print_returns(model_name, testing_arff, str(c), race_key, loader)
