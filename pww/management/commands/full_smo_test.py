@@ -211,7 +211,7 @@ class Command(BaseCommand):
             "Place",
             "Show",
             "Bet Count"))
-        while c <= 10:
+        while c <= 1:
             c = round(c, 2)
             model_name = create_model(training_arff, str(c), race_key, loader)
             self.print_returns(model_name, testing_arff, str(c), race_key, loader)
