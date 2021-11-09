@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 from miner.utilities.urls import arff_directory
 from miner.utilities.constants import csv_columns
+from rawdat.models import Participant
 from pww.models import TestPrediction, Metric
 from pww.utilities.ultraweka import (
     create_model,
@@ -16,7 +17,7 @@ from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
 import weka.core.serialization as serialization
-table_string = "{}\t\t{}\t\t{}\t\t{}"
+table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
 class bcolors:
     HEADER = '\033[95m'
@@ -80,13 +81,12 @@ class Command(BaseCommand):
         formatting = ""
         if value > 2.00:
             formatting += bcolors.OKGREEN
-        if value >= max:
             formatting += bcolors.BOLD
         return formatting + "${}".format(round(value, 2)) + bcolors.ENDC
 
 
     def save_prediction(self, participant_uuid, smo_prediction, c):
-        pass
+        # just keep it all in local memory
         c = float(c)
         try:
             prediction = TestPrediction.objects.get(
@@ -102,8 +102,26 @@ class Command(BaseCommand):
         prediction.save()
 
 
+    def get_win_return(self, participant):
+        try:
+            return float(participant.straight_wager.win)
+        except:
+            return 0
+
+    def get_place_return(self, participant):
+        try:
+            return float(participant.straight_wager.place)
+        except:
+            return 0
+
+    def get_show_return(self, participant):
+        try:
+            return float(participant.straight_wager.show)
+        except:
+            return 0
+
+
     def print_returns(self, model_name, testing_arff, c, race_key, loader):
-        print("print returns")
         # print(model_name)
         model = Classifier(jobject=serialization.read(model_name))
         # print(type(testing_arff))
@@ -112,21 +130,36 @@ class Command(BaseCommand):
         testing_data = build_scheduled_data(testing_arff)
         # model.build_classifier(testing_data)
         prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
-        print(prediction_list)
-        print(c)
-        print(type(c))
+
+        win_returns = 0
+        place_returns = 0
+        show_returns = 0
+        bet_count = 0
+        # Only focus on prediction = 4!
         for uuid in prediction_list:
-            self.save_prediction(uuid, int(prediction_list[uuid]), c)
-        raise SystemExit(0)
+            if int(prediction_list[uuid]) == 4:
+                bet_count += 1
+                participant = Participant.objects.get(uuid=uuid)
+                win_returns += self.get_win_return(participant)
+                place_returns += self.get_place_return(participant)
+                show_returns += self.get_show_return(participant)
+
+        # for uuid in prediction_list:
+        #     self.save_prediction(uuid, int(prediction_list[uuid]), c)
         # average_returns = self.get_average_returns(c, )
         # create_model(arff_file, options, root_filename)
-        average_returns = [2.1, 2.0, 0.5]
-        max_return = max(average_returns)
-        print(table_string.format(
-            c,
-            self.get_formatting(max_return, average_returns[0]),
-            self.get_formatting(max_return, average_returns[1]),
-            self.get_formatting(max_return, average_returns[2])))
+        if bet_count > 0:
+            average_returns = [
+                win_returns/bet_count,
+                place_returns/bet_count,
+                show_returns/bet_count]
+            max_return = max(average_returns)
+            print(table_string.format(
+                c,
+                self.get_formatting(max_return, average_returns[0]),
+                self.get_formatting(max_return, average_returns[1]),
+                self.get_formatting(max_return, average_returns[2]),
+                bet_count))
 
 
 
@@ -171,6 +204,13 @@ class Command(BaseCommand):
 
         print("\n\nSMO Prediction Accuracy vs Confidence Factor")
         print("{} {} {}\n".format(venue_code, grade_name, distance))
+        print("Dogs Predicted to Finish 4th")
+        print(table_string.format(
+            "C",
+            "Win",
+            "Place",
+            "Show",
+            "Bet Count"))
         while c <= 10:
             c = round(c, 2)
             model_name = create_model(training_arff, str(c), race_key, loader)
@@ -186,7 +226,7 @@ class Command(BaseCommand):
 
         print("\nAll metrics: {}".format(len(all_metrics)))
         print("Training metrics: {}".format(len(training_metrics)))
-        print("Test metrics: {}".format(len(test_metrics)))
+        print("Test metrics: {}".format(len(testing_metrics)))
 
         print("\nCompleted Analysis in {}:{}:{}".format(
         self.two_digitizer(int(hours)),

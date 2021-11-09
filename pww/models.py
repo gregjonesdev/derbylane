@@ -189,7 +189,7 @@ class TestPrediction(CoreModel):
     c = models.DecimalField(
         max_digits=16,
         decimal_places=8)
-    participant = models.OneToOneField(
+    participant = models.ForeignKey(
         Participant,
         on_delete=models.CASCADE)
-    smo = models.IntegerField()    
+    smo = models.IntegerField()
