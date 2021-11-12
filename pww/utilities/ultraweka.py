@@ -88,40 +88,40 @@ def get_options(c):
     ]
 
 
-def create_model(training_arff, c, race_key, loader):
-    model_data = loader.load_file(training_arff)
-    model_data = remove_uuid(model_data)
-    model_data = nominalize(model_data)
-    model_data.class_is_last()
-    classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
-    search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
-    evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
-    base = Classifier(classname="weka.classifiers.functions.SMO", options=get_options(c))
-
-    classifier.set_property("classifier", base.jobject)
-    classifier.set_property("evaluator", evaluator.jobject)
-    classifier.set_property("search", search.jobject)
-
-    classifier.build_classifier(model_data)
-    filename = "test_models/{}_smo_{}.model".format(
-        race_key,
-        c.replace(".", "")
-    )
-    serialization.write(filename, classifier)
-    return filename
+# def create_model(training_arff, c, race_key, loader):
+#     model_data = loader.load_file(training_arff)
+#     model_data = remove_uuid(model_data)
+#     model_data = nominalize(model_data)
+#     model_data.class_is_last()
+#     classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
+#     search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
+#     evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
+#     base = Classifier(classname="weka.classifiers.functions.SMO", options=get_options(c))
+#
+#     classifier.set_property("classifier", base.jobject)
+#     classifier.set_property("evaluator", evaluator.jobject)
+#     classifier.set_property("search", search.jobject)
+#
+#     classifier.build_classifier(model_data)
+#     filename = "test_models/{}_smo_{}.model".format(
+#         race_key,
+#         c.replace(".", "")
+#     )
+#     serialization.write(filename, classifier)
+#     return filename
 
 def add_c_to_options(options, c):
-    print(options)
+    # print(options)
     if "-C" in options:
         c_index = options.index("-C") + 1
         options[c_index] = c
     else:
         options.append("-C")
         options.append(c)
-    print(options)
+    # print(options)
     return options
 
-def create_j48_model(training_arff, classifier_name, c, race_key, loader):
+def create_model(training_arff, classifier_name, c, race_key, loader):
     classifier = classifiers[classifier_name]
     options = classifier["options"]
     # options.append("-C")

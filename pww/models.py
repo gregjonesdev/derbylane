@@ -10,26 +10,32 @@ class Metric(CoreModel):
     scaled_fastest_time = models.DecimalField(
         max_digits=8,
         decimal_places=4,
+        null=True
     )
     win = models.DecimalField(
         max_digits=8,
         decimal_places=4,
+        null=True
     )
     place = models.DecimalField(
         max_digits=8,
         decimal_places=4,
+        null=True
     )
     show = models.DecimalField(
         max_digits=8,
         decimal_places=4,
+        null=True
     )
     break_avg = models.DecimalField(
         max_digits=8,
         decimal_places=4,
+        null=True
     )
     eighth_avg = models.DecimalField(
         max_digits=8,
         decimal_places=4,
+        null=True
     )
     straight_avg = models.DecimalField(
         max_digits=8,
