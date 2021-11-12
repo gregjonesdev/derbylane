@@ -148,13 +148,20 @@ class Command(BaseCommand):
         show_returns = 0
         bet_count = 0
         # Only focus on prediction = 4!
+        guesses = {}
         for uuid in prediction_list:
-            if int(prediction_list[uuid]) == int(prediction):
-                bet_count += 1
-                participant = Participant.objects.get(uuid=uuid)
-                win_returns += self.get_win_return(participant)
-                place_returns += self.get_place_return(participant)
-                show_returns += self.get_show_return(participant)
+            guess = str(int(prediction_list[uuid]))
+            if not guess in guesses.keys():
+                guesses[guess] = 1
+            else:
+                guesses[guess] += 1
+        print(guesses)            
+            # if int(prediction_list[uuid]) == int(prediction):
+            #     bet_count += 1
+            #     participant = Participant.objects.get(uuid=uuid)
+            #     win_returns += self.get_win_return(participant)
+            #     place_returns += self.get_place_return(participant)
+            #     show_returns += self.get_show_return(participant)
 
         # for uuid in prediction_list:
         #     self.save_prediction(uuid, int(prediction_list[uuid]), c)
