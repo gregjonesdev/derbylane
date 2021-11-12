@@ -32,13 +32,21 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
+pred_format = {
+    "1": "1st",
+    "2": "2nd",
+    "3": "3rd",
+    "4": "4th"
+}
+
 
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--model', type=str)
-        parser.add_argument('--venue', type=str)
-        parser.add_argument('--grade', type=str)
+        parser.add_argument('--prediction', type=str)
+        # parser.add_argument('--grade', type=str)
+
 
     def create_arff(self, filename, metrics, is_nominal, cutoff_date):
 
@@ -125,7 +133,7 @@ class Command(BaseCommand):
             return 0
 
 
-    def print_returns(self, model_name, testing_arff, c, race_key, loader):
+    def print_returns(self, model_name, testing_arff, c, race_key, loader, prediction):
         # print(model_name)
         model = Classifier(jobject=serialization.read(model_name))
         # print(type(testing_arff))
@@ -141,7 +149,7 @@ class Command(BaseCommand):
         bet_count = 0
         # Only focus on prediction = 4!
         for uuid in prediction_list:
-            if int(prediction_list[uuid]) == 1:
+            if int(prediction_list[uuid]) == int(prediction):
                 bet_count += 1
                 participant = Participant.objects.get(uuid=uuid)
                 win_returns += self.get_win_return(participant)
@@ -205,11 +213,11 @@ class Command(BaseCommand):
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         classifier_name = sys.argv[3]
-
+        prediction = sys.argv[5]
         print("\n\n{} Prediction Accuracy vs Confidence Factor".format(
             classifier_name.upper()))
         print("{} {} {}\n".format(venue_code, grade_name, distance))
-        print("Dogs Predicted to Finish 4th")
+        print("Dogs Predicted to Finish {}".format(pred_format[prediction]))
         print(table_string.format(
             "C",
             "Win",
@@ -221,7 +229,7 @@ class Command(BaseCommand):
 
             c = round(c, 2)
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
-            self.print_returns(model_name, testing_arff, str(c), race_key, loader)
+            self.print_returns(model_name, testing_arff, str(c), race_key, loader, prediction)
             c = round(c + 0.01, 2)
 
         jvm.stop()
