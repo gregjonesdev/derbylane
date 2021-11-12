@@ -220,11 +220,16 @@ def get_prediction_list(cls, data, uuid_line_index):
 #     return pred
 #
 def build_scheduled_data(arff_data):
+    print()"Define loader")
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+    print("get loaded data")
     loaded_data = loader.load_file(arff_data)
     anonymous_data = remove_uuid(loaded_data)
-    # scheduled_data = nominalize(anonymous_data)
+    print("nominalize:")
+    scheduled_data = nominalize(anonymous_data)
+    print("set class")
     scheduled_data.class_is_last()
+    print("return scheduled_data")
     return scheduled_data
 #
 # def evaluate_single(arff_file):

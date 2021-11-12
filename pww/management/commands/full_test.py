@@ -196,7 +196,7 @@ class Command(BaseCommand):
             participant__race__chart__program__venue__code=venue_code,
             participant__race__distance=distance,
             participant__race__grade__name=grade_name,
-            participant__race__chart__program__date__gte="2019-01-01")
+            participant__race__chart__program__date__gte="2021-11-01")
         training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
         testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
@@ -220,6 +220,8 @@ class Command(BaseCommand):
             testing_metrics,
             is_nominal,
             False)
+
+        raise SystemExit(0)        
         c = 0.01
         max_return = 0
         jvm.start(packages=True, max_heap_size="5028m")
