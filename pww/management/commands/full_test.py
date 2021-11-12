@@ -158,8 +158,7 @@ class Command(BaseCommand):
         # print(guesses)
 
 
-        print(prediction_list[uuid])
-        print(type(prediction_list[uuid]))
+        print(prediction_list)
 
 
             # if int(prediction_list[uuid]) == int(prediction):
