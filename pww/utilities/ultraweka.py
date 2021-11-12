@@ -145,7 +145,6 @@ def remove_uuid(data):
 
 
 def nominalize(data):
-    print()
     nominalize = Filter(
         classname="weka.filters.unsupervised.attribute.NumericToNominal",
         options=["-R", "{}".format(csv_columns.index('Fi'))])
