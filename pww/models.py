@@ -89,16 +89,13 @@ class Metric(CoreModel):
         null=True
     )
 
-    def build_csv_metric(self, start_date):
-        print(start_date)
-        print(type(start_date))
-        print(self.participant.race.chart.program.date >= start_date)
-        print(self.participant.race.chart.program.date < start_date)
-        if self.participant.race.chart.program.date >= start_date:
-            print("inc")
-            final = "?"
-        else:
+    def build_csv_metric(self, is_training):
+        print("Is training: {}".format(is_training))
+
+        if is_training:
             final = self.participant.final
+        else:
+            final = "?"
         post_factor = self.post_factor if self.post_factor else 0.5
         temp_factor = self.temp_factor if self.temp_factor else 0.5
         rh_factor = self.rh_factor if self.rh_factor else 0.5
@@ -127,8 +124,11 @@ class Metric(CoreModel):
                 # rh_factor,
                 final)
             if not "None" in metric_csv_string:
+                print("Complete:")
+                print(metric_csv_string)
                 return metric_csv_string
             else:
+                print("Incomplete")
                 print(metric_csv_string)
 
 

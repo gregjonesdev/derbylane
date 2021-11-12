@@ -48,7 +48,7 @@ class Command(BaseCommand):
         # parser.add_argument('--grade', type=str)
 
 
-    def create_arff(self, filename, metrics, is_nominal, cutoff_date):
+    def create_arff(self, filename, metrics, is_nominal, is_training):
 
         arff_file = open(filename, "w")
         arff_file.write("@relation Metric\n")
@@ -57,12 +57,11 @@ class Command(BaseCommand):
         total = 0
         for metric in metrics:
             total += 1
-            csv_metric = metric.build_csv_metric(cutoff_date)
+            csv_metric = metric.build_csv_metric(is_training)
             if csv_metric:
                 yes += 1
                 arff_file.writelines(csv_metric)
         print(" {} / {}".format(yes, total))
-        raise SystemExit(0)
         return filename
 
     def write_headers(self, arff_file, is_nominal):
@@ -215,12 +214,12 @@ class Command(BaseCommand):
             training_arff_filename,
             training_metrics,
             is_nominal,
-            cutoff_date)
+            True)
         testing_arff = self.create_arff(
             testing_arff_filename,
             testing_metrics,
             is_nominal,
-            cutoff_date)
+            False)
         c = 0.01
         max_return = 0
         jvm.start(packages=True, max_heap_size="5028m")
