@@ -123,6 +123,8 @@ class Metric(CoreModel):
                 final)
             if not "None" in metric_csv_string:
                 return metric_csv_string
+            else:
+                print(metric_csv_string)    
 
 
 class Bet_Margin(CoreModel):
