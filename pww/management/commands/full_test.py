@@ -200,7 +200,8 @@ class Command(BaseCommand):
         all_metrics = self.get_metrics(venue_code, distance, grade_name)
         training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
         testing_metrics = all_metrics.filter(participant__race__chart__program__date__range=[cutoff_date, training_cutoff])
-
+        print(len(testing_metrics))
+        raise SystemExit(0)
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
 
 
