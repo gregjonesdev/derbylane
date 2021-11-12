@@ -10,7 +10,7 @@ from rawdat.models import Participant
 from pww.models import TestPrediction, Metric
 from pww.utilities.ultraweka import (
     create_model,
-    create_j48_model,
+    create_model,
     build_scheduled_data,
     get_uuid_line_index,
     get_prediction_list)
@@ -220,7 +220,7 @@ class Command(BaseCommand):
 
 
             c = round(c, 2)
-            model_name = create_j48_model(training_arff, classifier_name, str(c), race_key, loader)
+            model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
             self.print_returns(model_name, testing_arff, str(c), race_key, loader)
             c = round(c + 0.01, 2)
 
