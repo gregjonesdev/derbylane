@@ -199,7 +199,7 @@ class Command(BaseCommand):
             participant__race__grade__name=grade_name,
             participant__race__chart__program__date__gte="2019-01-01")
         training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
-        testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=training_cutoff)
+        testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
 
 
