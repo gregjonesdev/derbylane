@@ -155,7 +155,7 @@ class Command(BaseCommand):
                 guesses[guess] = 1
             else:
                 guesses[guess] += 1
-        print(guesses)            
+        print(guesses)
             # if int(prediction_list[uuid]) == int(prediction):
             #     bet_count += 1
             #     participant = Participant.objects.get(uuid=uuid)
@@ -189,10 +189,11 @@ class Command(BaseCommand):
         distance = 548
         today = datetime.datetime.now()
         cutoff_date = (today - datetime.timedelta(weeks=26)).date()
+        training_cutoff = (today - datetime.timedelta(days=2)).date()
         start_time = time()
         all_metrics = self.get_metrics(venue_code, distance, grade_name)
         training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
-        testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
+        testing_metrics = all_metrics.filter(participant__race__chart__program__date__range=[cutoff_date, training_cutoff])
 
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
 
