@@ -95,7 +95,7 @@ class Metric(CoreModel):
         if is_training:
             final = self.participant.final
         else:
-            final = "?"
+            final = "4"
         post_factor = self.post_factor if self.post_factor else 0.5
         temp_factor = self.temp_factor if self.temp_factor else 0.5
         rh_factor = self.rh_factor if self.rh_factor else 0.5
