@@ -53,11 +53,16 @@ class Command(BaseCommand):
         arff_file = open(filename, "w")
         arff_file.write("@relation Metric\n")
         arff_file = self.write_headers(arff_file, is_nominal)
+        yes = 0
+        total = 0
         for metric in metrics:
+            total += 1
             csv_metric = metric.build_csv_metric(cutoff_date)
             if csv_metric:
+                yes += 1
                 arff_file.writelines(csv_metric)
-
+        print(" {} / {}".format(yes, total))
+        raise SystemExit(0)
         return filename
 
     def write_headers(self, arff_file, is_nominal):
