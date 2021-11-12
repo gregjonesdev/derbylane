@@ -79,15 +79,6 @@ class Command(BaseCommand):
         return arff_file
 
 
-    def get_metrics(self, venue_code, distance, grade_name):
-        return Metric.objects.filter(
-            participant__race__chart__program__venue__code=venue_code,
-            participant__race__distance=distance,
-            participant__race__grade__name=grade_name)
-
-
-
-
     def two_digitizer(self, integer):
         if integer < 10:
             return "0{}".format(integer)
@@ -199,12 +190,16 @@ class Command(BaseCommand):
         grade_name = "A"
         distance = 548
         today = datetime.datetime.now()
-        cutoff_date = (today - datetime.timedelta(weeks=26)).date()
-        training_cutoff = (today - datetime.timedelta(days=2)).date()
+        cutoff_date = (today - datetime.timedelta(days=7)).date()
+        # training_cutoff = (today - datetime.timedelta(days=7)).date()
         start_time = time()
-        all_metrics = self.get_metrics(venue_code, distance, grade_name)
+        all_metrics = Metric.objects.filter(
+            participant__race__chart__program__venue__code=venue_code,
+            participant__race__distance=distance,
+            participant__race__grade__name=grade_name,
+            participant__race__chart__program__date__gte="2019-01-01")
         training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
-        testing_metrics = all_metrics.filter(participant__race__chart__program__date__range=[cutoff_date, training_cutoff])
+        testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=training_cutoff)
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
 
 
