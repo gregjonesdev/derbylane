@@ -141,6 +141,8 @@ class Command(BaseCommand):
         # print(uuid_line_index)
         testing_data = build_scheduled_data(testing_arff)
         # model.build_classifier(testing_data)
+        print(testing_data)
+        print(uuid_line_index)
         prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
 
         win_returns = 0
@@ -158,7 +160,6 @@ class Command(BaseCommand):
         # print(guesses)
 
 
-        print(prediction_list)
 
 
             # if int(prediction_list[uuid]) == int(prediction):
