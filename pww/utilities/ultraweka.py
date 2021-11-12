@@ -223,7 +223,7 @@ def build_scheduled_data(arff_data):
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(arff_data)
     anonymous_data = remove_uuid(loaded_data)
-    scheduled_data = nominalize(anonymous_data)
+    # scheduled_data = nominalize(anonymous_data)
     scheduled_data.class_is_last()
     return scheduled_data
 #
