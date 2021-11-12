@@ -86,7 +86,7 @@ class Command(BaseCommand):
         if value > 2.00:
             formatting += bcolors.OKGREEN
             formatting += bcolors.BOLD
-        return formatting + "${}".format(round(value, 2)) + bcolors.ENDC
+        return formatting + "${:.2f}".format(value) + bcolors.ENDC
 
 
     def save_prediction(self, participant_uuid, smo_prediction, c):
