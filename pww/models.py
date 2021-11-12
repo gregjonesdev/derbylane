@@ -90,7 +90,12 @@ class Metric(CoreModel):
     )
 
     def build_csv_metric(self, start_date):
+        print(start_date)
+        print(type(start_date))
+        print(self.participant.race.chart.program.date >= start_date)
+        print(self.participant.race.chart.program.date < start_date)
         if self.participant.race.chart.program.date >= start_date:
+            print("inc")
             final = "?"
         else:
             final = self.participant.final
@@ -123,6 +128,8 @@ class Metric(CoreModel):
                 final)
             if not "None" in metric_csv_string:
                 return metric_csv_string
+            else:
+                print(metric_csv_string)
 
 
 class Bet_Margin(CoreModel):
