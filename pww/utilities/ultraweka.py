@@ -19,6 +19,7 @@ from weka.filters import Filter
 
 from weka.core.packages import install_missing_packages, LATEST
 from miner.utilities.constants import (
+    csv_columns,
     models_directory,
     packages_directory)
 import os
@@ -47,68 +48,6 @@ classifiers = {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def get_options(c):
-
-    # jason_comment = '''
-    # weka.classifiers.functions.SMO -C 1.25 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K
-    # "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007"
-    # -calibrator "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
-    # '''
-
-    return [
-    "-C", c, # The complexity constant C. (default 1)
-    "-L", "0.001",
-    "-P", "1.0E-12", # The epsilon for round-off error. (default 1.0e-12)
-    "-N", "0", # Whether to 0=normalize/1=standardize/2=neither. (default 0=normalize)
-    "-W", "1", # The random number seed. (default 1)
-    "-V", "10", # The number of folds for the internal cross-validation. (default -1, use training data)
-    # Following line will be included in Kernel instantiation
-    "-K", "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007",
-    "-calibrator", "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
-    ]
-
-
-# def create_model(training_arff, c, race_key, loader):
-#     model_data = loader.load_file(training_arff)
-#     model_data = remove_uuid(model_data)
-#     model_data = nominalize(model_data)
-#     model_data.class_is_last()
-#     classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
-#     search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
-#     evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
-#     base = Classifier(classname="weka.classifiers.functions.SMO", options=get_options(c))
-#
-#     classifier.set_property("classifier", base.jobject)
-#     classifier.set_property("evaluator", evaluator.jobject)
-#     classifier.set_property("search", search.jobject)
-#
-#     classifier.build_classifier(model_data)
-#     filename = "test_models/{}_smo_{}.model".format(
-#         race_key,
-#         c.replace(".", "")
-#     )
-#     serialization.write(filename, classifier)
-#     return filename
 
 def add_c_to_options(options, c):
     # print(options)
@@ -206,9 +145,10 @@ def remove_uuid(data):
 
 
 def nominalize(data):
+    print()
     nominalize = Filter(
         classname="weka.filters.unsupervised.attribute.NumericToNominal",
-        options=["-R", "19"])
+        options=["-R", "{}".format(csv_columns.index('Fi'))])
     nominalize.inputformat(data)
     return nominalize.filter(data)
 #

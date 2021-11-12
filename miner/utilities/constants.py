@@ -25,8 +25,8 @@ csv_columns = [
     "Se",
     "LB",
     "PF",
-    "TF",
-    "RHF",
+    # "TF",
+    # "RHF",
     "Fi",
 ]
 focused_bets = ["EXACTA", "QUINELLA", "TRIFECTA", "SUPERFECTA"]
