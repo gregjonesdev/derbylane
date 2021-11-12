@@ -149,13 +149,19 @@ class Command(BaseCommand):
         bet_count = 0
         # Only focus on prediction = 4!
         guesses = {}
-        for uuid in prediction_list:
-            guess = str(int(prediction_list[uuid]))
-            if not guess in guesses.keys():
-                guesses[guess] = 1
-            else:
-                guesses[guess] += 1
-        print(guesses)
+        # for uuid in prediction_list:
+        #     guess = str(int(prediction_list[uuid]))
+        #     if not guess in guesses.keys():
+        #         guesses[guess] = 1
+        #     else:
+        #         guesses[guess] += 1
+        # print(guesses)
+
+
+        print(prediction_list[uuid])
+        print(type(prediction_list[uuid]))
+
+
             # if int(prediction_list[uuid]) == int(prediction):
             #     bet_count += 1
             #     participant = Participant.objects.get(uuid=uuid)
