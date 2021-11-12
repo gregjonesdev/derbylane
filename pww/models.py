@@ -93,7 +93,7 @@ class Metric(CoreModel):
         if self.participant.race.chart.program.date >= start_date:
             final = "?"
         else:
-            final = self.final
+            final = self.participant.final
         post_factor = self.post_factor if self.post_factor else 0.5
         temp_factor = self.temp_factor if self.temp_factor else 0.5
         rh_factor = self.rh_factor if self.rh_factor else 0.5
@@ -124,7 +124,7 @@ class Metric(CoreModel):
             if not "None" in metric_csv_string:
                 return metric_csv_string
             else:
-                print(metric_csv_string)    
+                print(metric_csv_string)
 
 
 class Bet_Margin(CoreModel):
