@@ -102,7 +102,7 @@ class Metric(CoreModel):
         age = self.age if self.age else 990 # 33 months
         sex = self.sex if self.sex else "M"
         if self.post_weight_avg:
-            metric_csv_string = "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
+            metric_csv_string = "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
                 self.participant.uuid,
                 self.scaled_fastest_time,
                 self.win,
@@ -117,7 +117,7 @@ class Metric(CoreModel):
                 self.time_three,
                 self.upgrade,
                 age,
-                sex,
+                # sex,
                 self.post_weight_avg,
                 post_factor,
                 # temp_factor,

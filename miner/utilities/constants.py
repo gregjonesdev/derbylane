@@ -22,7 +22,7 @@ csv_columns = [
     "T3",
     "U",
     "A",
-    "Se",
+    # "Se",
     "LB",
     "PF",
     # "TF",
