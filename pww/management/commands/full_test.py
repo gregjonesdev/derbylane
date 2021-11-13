@@ -209,7 +209,7 @@ class Command(BaseCommand):
             arff_directory,
             race_key)
         is_nominal = False
-        print("training metrics: {}".format(len(training_metrics))
+        print("training metrics: {}".format(len(training_metrics)))
         training_arff = self.create_arff(
             training_arff_filename,
             training_metrics,
