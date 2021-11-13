@@ -90,8 +90,6 @@ class Metric(CoreModel):
     )
 
     def build_csv_metric(self, is_training):
-        print("Is training: {}".format(is_training))
-
         if is_training:
             final = self.participant.final
         else:
@@ -123,12 +121,7 @@ class Metric(CoreModel):
             # rh_factor,
             final)
         if not "None" in metric_csv_string:
-            print("Complete:")
-            print(metric_csv_string)
             return metric_csv_string
-        else:
-            print("Incomplete")
-            print(metric_csv_string)
 
 
 class Bet_Margin(CoreModel):

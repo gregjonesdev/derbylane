@@ -61,7 +61,7 @@ class Command(BaseCommand):
             if csv_metric:
                 yes += 1
                 arff_file.writelines(csv_metric)
-        print(" {} / {}".format(yes, total))
+        # print(" {} / {}".format(yes, total))
         return filename
 
     def write_headers(self, arff_file, is_nominal):
@@ -136,8 +136,6 @@ class Command(BaseCommand):
         # print(uuid_line_index)
         testing_data = build_scheduled_data(testing_arff)
         # model.build_classifier(testing_data)
-        print(testing_data)
-        print(uuid_line_index)
         prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
 
         win_returns = 0
@@ -145,24 +143,16 @@ class Command(BaseCommand):
         show_returns = 0
         bet_count = 0
         # Only focus on prediction = 4!
-        guesses = {}
-        # for uuid in prediction_list:
-        #     guess = str(int(prediction_list[uuid]))
-        #     if not guess in guesses.keys():
-        #         guesses[guess] = 1
-        #     else:
-        #         guesses[guess] += 1
-        # print(guesses)
 
 
 
 
-            # if int(prediction_list[uuid]) == int(prediction):
-            #     bet_count += 1
-            #     participant = Participant.objects.get(uuid=uuid)
-            #     win_returns += self.get_win_return(participant)
-            #     place_returns += self.get_place_return(participant)
-            #     show_returns += self.get_show_return(participant)
+        if int(prediction_list[uuid]) == int(prediction):
+            bet_count += 1
+            participant = Participant.objects.get(uuid=uuid)
+            win_returns += self.get_win_return(participant)
+            place_returns += self.get_place_return(participant)
+            show_returns += self.get_show_return(participant)
 
         # for uuid in prediction_list:
         #     self.save_prediction(uuid, int(prediction_list[uuid]), c)
@@ -209,7 +199,7 @@ class Command(BaseCommand):
             arff_directory,
             race_key)
         is_nominal = False
-        print("training metrics: {}".format(len(training_metrics)))
+        # print("training metrics: {}".format(len(training_metrics)))
         training_arff = self.create_arff(
             training_arff_filename,
             training_metrics,
@@ -241,7 +231,6 @@ class Command(BaseCommand):
 
             c = round(c, 2)
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
-            print("... . .. .")
             self.print_returns(model_name, testing_arff, str(c), race_key, loader, prediction)
             c = round(c + 0.01, 2)
 
