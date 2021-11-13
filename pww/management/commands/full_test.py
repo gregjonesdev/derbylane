@@ -220,7 +220,6 @@ class Command(BaseCommand):
             testing_metrics,
             is_nominal,
             False)
-\
         c = 0.01
         max_return = 0
         jvm.start(packages=True, max_heap_size="5028m")
