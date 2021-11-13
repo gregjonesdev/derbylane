@@ -205,10 +205,32 @@ class Command(BaseCommand):
             False)
         c = 0.01
         max_return = 0
+
+
+        if
+
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         classifier_name = sys.argv[3]
+        c_data = {
+            "j48": {
+                c_start: 0.01,
+                c_stop: 0.99,
+                interval: 0.01,
+            },
+            "smo": {
+                c_start: 0.25,
+                c_stop: 10,
+                interval: 0.25,
+            },
+        }
         prediction = sys.argv[5]
+
+        c_start = c_data[classifier_name]["c_start"]
+        c_stop = c_data[classifier_name]["c_stop"]
+        interval = c_data[classifier_name]["interval"]
+
+
         print("\n\n{} Prediction Accuracy vs Confidence Factor".format(
             classifier_name.upper()))
         print("{} {} {}\n".format(venue_code, grade_name, distance))
@@ -219,13 +241,14 @@ class Command(BaseCommand):
             "Place",
             "Show",
             "Bet Count"))
-        while c <= 0.3:
+        c = c_start
+        while c <= c_stop:
 
 
             c = round(c, 2)
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
             self.print_returns(model_name, testing_arff, str(c), race_key, loader, prediction)
-            c = round(c + 0.01, 2)
+            c = round(c + interval, 2)
 
         jvm.stop()
         end_time = time()
