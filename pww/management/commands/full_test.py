@@ -137,7 +137,7 @@ class Command(BaseCommand):
         testing_data = build_scheduled_data(testing_arff)
         # model.build_classifier(testing_data)
         prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
-
+        print(prediction_list)
         win_returns = 0
         place_returns = 0
         show_returns = 0
