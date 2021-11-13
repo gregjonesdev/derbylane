@@ -212,14 +212,14 @@ class Command(BaseCommand):
         classifier_name = sys.argv[3]
         c_data = {
             "j48": {
-                c_start: 0.01,
-                c_stop: 0.99,
-                interval: 0.01,
+                "c_start": 0.01,
+                "c_stop": 0.99,
+                "interval": 0.01,
             },
             "smo": {
-                c_start: 0.25,
-                c_stop: 10,
-                interval: 0.25,
+                "c_start": 0.25,
+                "c_stop": 10,
+                "interval": 0.25,
             },
         }
         prediction = sys.argv[5]
