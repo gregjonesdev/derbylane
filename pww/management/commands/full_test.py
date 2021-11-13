@@ -172,7 +172,7 @@ class Command(BaseCommand):
         grade_name = "A"
         distance = 548
         today = datetime.datetime.now()
-        cutoff_date = (today - datetime.timedelta(days=14)).date()
+        cutoff_date = (today - datetime.timedelta(days=21).date()
         # training_cutoff = (today - datetime.timedelta(days=7)).date()
         start_time = time()
         all_metrics = Metric.objects.filter(
