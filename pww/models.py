@@ -101,6 +101,7 @@ class Metric(CoreModel):
         rh_factor = self.rh_factor if self.rh_factor else 0.5
         age = self.age if self.age else 990 # 33 months
         sex = self.sex if self.sex else "M"
+        print(self.post_weight_avg)
         if self.post_weight_avg:
             metric_csv_string = "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
                 self.participant.uuid,

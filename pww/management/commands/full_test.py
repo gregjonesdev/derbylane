@@ -62,6 +62,7 @@ class Command(BaseCommand):
                 yes += 1
                 arff_file.writelines(csv_metric)
         print(" {} / {}".format(yes, total))
+        raise SystemExit(0)
         return filename
 
     def write_headers(self, arff_file, is_nominal):
