@@ -209,7 +209,7 @@ class Command(BaseCommand):
             arff_directory,
             race_key)
         is_nominal = False
-
+        print("training metrics: {}".format*len(training_metrics))
         training_arff = self.create_arff(
             training_arff_filename,
             training_metrics,
@@ -241,6 +241,7 @@ class Command(BaseCommand):
 
             c = round(c, 2)
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
+            print("... . .. .")
             self.print_returns(model_name, testing_arff, str(c), race_key, loader, prediction)
             c = round(c + 0.01, 2)
 
