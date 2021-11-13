@@ -220,7 +220,7 @@ def get_prediction_list(cls, data, uuid_line_index):
 #     return pred
 #
 def build_scheduled_data(arff_data):
-    print()"Define loader")
+    print("Define loader")
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
     print("get loaded data")
     loaded_data = loader.load_file(arff_data)
