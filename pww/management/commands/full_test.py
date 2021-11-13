@@ -137,16 +137,11 @@ class Command(BaseCommand):
         testing_data = build_scheduled_data(testing_arff)
         # model.build_classifier(testing_data)
         prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
-        print(prediction_list)
         win_returns = 0
         place_returns = 0
         show_returns = 0
         bet_count = 0
-        # Only focus on prediction = 4!
 
-
-
-        #
         for uuid in prediction_list.keys():
 
             if int(prediction_list[uuid]) == int(prediction):
@@ -156,9 +151,6 @@ class Command(BaseCommand):
                 place_returns += self.get_place_return(participant)
                 show_returns += self.get_show_return(participant)
 
-        #     self.save_prediction(uuid, int(prediction_list[uuid]), c)
-        # average_returns = self.get_average_returns(c, )
-        # create_model(arff_file, options, root_filename)
         if bet_count > 0:
             average_returns = [
                 win_returns/bet_count,
@@ -187,7 +179,7 @@ class Command(BaseCommand):
             participant__race__chart__program__venue__code=venue_code,
             participant__race__distance=distance,
             participant__race__grade__name=grade_name,
-            participant__race__chart__program__date__gte="2021-11-01")
+            participant__race__chart__program__date__gte="2019-01-01")
         training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
         testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
