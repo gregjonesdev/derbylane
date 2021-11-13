@@ -101,36 +101,34 @@ class Metric(CoreModel):
         rh_factor = self.rh_factor if self.rh_factor else 0.5
         age = self.age if self.age else 990 # 33 months
         sex = self.sex if self.sex else "M"
-        print(self.post_weight_avg)
-        if self.post_weight_avg:
-            metric_csv_string = "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
-                self.participant.uuid,
-                self.scaled_fastest_time,
-                self.win,
-                self.place,
-                self.show,
-                self.break_avg,
-                self.eighth_avg,
-                self.straight_avg,
-                self.finish_avg,
-                self.grade_avg,
-                self.time_seven,
-                self.time_three,
-                self.upgrade,
-                age,
-                # sex,
-                self.post_weight_avg,
-                post_factor,
-                # temp_factor,
-                # rh_factor,
-                final)
-            if not "None" in metric_csv_string:
-                print("Complete:")
-                print(metric_csv_string)
-                return metric_csv_string
-            else:
-                print("Incomplete")
-                print(metric_csv_string)
+        metric_csv_string = "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
+            self.participant.uuid,
+            self.scaled_fastest_time,
+            self.win,
+            self.place,
+            self.show,
+            self.break_avg,
+            self.eighth_avg,
+            self.straight_avg,
+            self.finish_avg,
+            self.grade_avg,
+            self.time_seven,
+            self.time_three,
+            self.upgrade,
+            age,
+            # sex,
+            # self.post_weight_avg,
+            post_factor,
+            # temp_factor,
+            # rh_factor,
+            final)
+        if not "None" in metric_csv_string:
+            print("Complete:")
+            print(metric_csv_string)
+            return metric_csv_string
+        else:
+            print("Incomplete")
+            print(metric_csv_string)
 
 
 class Bet_Margin(CoreModel):
