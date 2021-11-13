@@ -147,14 +147,15 @@ class Command(BaseCommand):
 
 
         #
-        # if int(prediction_list[uuid]) == int(prediction):
-        #     bet_count += 1
-        #     participant = Participant.objects.get(uuid=uuid)
-        #     win_returns += self.get_win_return(participant)
-        #     place_returns += self.get_place_return(participant)
-        #     show_returns += self.get_show_return(participant)
+        for uuid in prediction_list.keys():
 
-        # for uuid in prediction_list:
+            if int(prediction_list[uuid]) == int(prediction):
+                bet_count += 1
+                participant = Participant.objects.get(uuid=uuid)
+                win_returns += self.get_win_return(participant)
+                place_returns += self.get_place_return(participant)
+                show_returns += self.get_show_return(participant)
+
         #     self.save_prediction(uuid, int(prediction_list[uuid]), c)
         # average_returns = self.get_average_returns(c, )
         # create_model(arff_file, options, root_filename)
