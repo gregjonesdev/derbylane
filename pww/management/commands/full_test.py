@@ -207,8 +207,6 @@ class Command(BaseCommand):
         max_return = 0
 
 
-        if
-
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         classifier_name = sys.argv[3]
@@ -243,8 +241,6 @@ class Command(BaseCommand):
             "Bet Count"))
         c = c_start
         while c <= c_stop:
-
-
             c = round(c, 2)
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
             self.print_returns(model_name, testing_arff, str(c), race_key, loader, prediction)
