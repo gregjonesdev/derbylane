@@ -222,7 +222,7 @@ class Command(BaseCommand):
             },
             "smo": {
                 "c_start": 0.01,
-                "c_stop": 1.20,
+                "c_stop": 5.20,
                 "interval": 0.01,
             },
         }
