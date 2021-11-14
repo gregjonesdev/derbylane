@@ -9,7 +9,7 @@ import datetime
 from django.core.management.base import BaseCommand
 
 from pww.models import Metric
-from rawdat.models import Venue
+from rawdat.models import Participant
 from pww.utilities.weka import predict_all
 
 from miner.utilities.constants import (
@@ -28,7 +28,7 @@ prediction_models = {
 }
 
 
-betting_venues = ["WD, TS", "SL"]
+betting_venues = ["WD", "TS", "SL"]
 
 betting_distances = {
     "WD": 548,
@@ -44,7 +44,9 @@ betting_grades = {
 
 class Command(BaseCommand):
 
-    def assign_predictions(self, participants, model_name):
+    def assign_predictions(self, participants, model_name, race_key):
+        print("For race_key {} use model {}".format(race_key, model_name))
+
         # build training arff
         # build testing arff
 
@@ -52,21 +54,24 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         today = datetime.date.today()
-        for venue in betting_venues:
-            venue_code = venue.code
+        for venue_code in betting_venues:
             distance = betting_distances[venue_code]
-            for grade in betting_grades[venue_code]:
-                race_key = "{}_{}_{}".format(venue_code, distance, grade)
+            for grade_name in betting_grades[venue_code]:
+                race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
                 model_name = prediction_models[race_key]
+
+
                 participants = Participant.objects.filter(
                     race__distance=distance,
-                    race__grade=grade,
-                    race__chart__program__venue=venue,
+                    race__grade__name=grade_name,
+                    race__chart__program__venue__code=venue_code,
                     race__chart__program__date=today
                 )
-                self.assign_predictions(
-                    participants,
-                    model_name)
+                if len(participants) > 0 :
+                    self.assign_predictions(
+                        participants,
+                        model_name,
+                        race_key)
 
 
     # def create_arff(self, filename, metrics, start_date):
