@@ -146,7 +146,6 @@ class Command(BaseCommand):
         place_returns = 0
         show_returns = 0
         bet_count = 0
-
         for uuid in prediction_list.keys():
 
             if int(prediction_list[uuid]) == int(prediction):
@@ -224,7 +223,7 @@ class Command(BaseCommand):
             "smo": {
                 "c_start": 0.25,
                 "c_stop": 10,
-                "interval": 0.01,
+                "interval": 0.05,
             },
         }
         prediction = sys.argv[7]
