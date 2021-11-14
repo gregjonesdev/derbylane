@@ -33,7 +33,7 @@ class bcolors:
 
 
 pred_format = {
-    "0": "0"
+    "0": "0",
     "1": "1st",
     "2": "2nd",
     "3": "3rd",
