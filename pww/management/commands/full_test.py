@@ -49,8 +49,8 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--model', type=str)
-        parser.add_argument('--prediction', type=str)
         parser.add_argument('--grade', type=str)
+        parser.add_argument('--prediction', type=str)
 
 
     def create_arff(self, filename, metrics, is_nominal, is_training):
@@ -174,7 +174,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         venue_code = "WD"
-        grade_name = sys.argv[7]
+        grade_name = sys.argv[5]
         distance = 548
         today = datetime.datetime.now()
         cutoff_date = (today - datetime.timedelta(days=21)).date()
@@ -227,7 +227,7 @@ class Command(BaseCommand):
                 "interval": 0.25,
             },
         }
-        prediction = sys.argv[5]
+        prediction = sys.argv[7]
 
         c_start = c_data[classifier_name]["c_start"]
         c_stop = c_data[classifier_name]["c_stop"]
