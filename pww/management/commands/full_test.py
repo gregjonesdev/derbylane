@@ -172,7 +172,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        venue_code = "WD"
+        venue_code = "TS"
         grade_name = sys.argv[5]
         distance = 548
         today = datetime.datetime.now()
@@ -222,8 +222,8 @@ class Command(BaseCommand):
             },
             "smo": {
                 "c_start": 0.01,
-                "c_stop": 2.0,
-                "interval": 0.01,
+                "c_stop": 8.0,
+                "interval": 0.05,
             },
         }
         prediction = sys.argv[7]
