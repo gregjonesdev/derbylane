@@ -221,9 +221,9 @@ class Command(BaseCommand):
                 "interval": 0.01,
             },
             "smo": {
-                "c_start": 0.01,
-                "c_stop": 8.0,
-                "interval": 0.05,
+                "c_start": 0.45,
+                "c_stop": 0.55,
+                "interval": 0.01,
             },
         }
         prediction = sys.argv[7]
