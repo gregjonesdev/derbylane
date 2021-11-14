@@ -221,8 +221,8 @@ class Command(BaseCommand):
                 "interval": 0.01,
             },
             "smo": {
-                "c_start": 0.01,
-                "c_stop": 5.20,
+                "c_start": 5.20,
+                "c_stop": 8.0,
                 "interval": 0.01,
             },
         }
