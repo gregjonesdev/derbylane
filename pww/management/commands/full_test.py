@@ -5,7 +5,7 @@ from time import time
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 from miner.utilities.urls import arff_directory
-from miner.utilities.constants import csv_columns
+from miner.utilities.constants import csv_columns, focused_distances
 from rawdat.models import Participant
 from pww.models import TestPrediction, Metric
 from pww.utilities.ultraweka import (
@@ -174,7 +174,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         venue_code = "TS"
         grade_name = sys.argv[5]
-        distance = 548
+        distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
         cutoff_date = (today - datetime.timedelta(days=49)).date()
         # training_cutoff = (today - datetime.timedelta(days=7)).date()
