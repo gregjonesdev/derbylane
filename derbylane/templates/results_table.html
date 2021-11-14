@@ -16,7 +16,7 @@
   <button
     class="{{ participant.get_win_bet.button_style }}"
     disabled>
-    {{ participant.get_win_bet.amount }}
+    {{ participant.straight_wager.win }}
   </button>
 {% endblock win_button %}
 
@@ -24,7 +24,7 @@
   <button
     class="{{ participant.get_place_bet.button_style }}"
     disabled>
-    {{ participant.get_place_bet.amount }}
+    {{ participant.straight_wager.place }}
   </button>
 {% endblock place_button %}
 
@@ -32,6 +32,6 @@
   <button
     class="{{ participant.get_show_bet.button_style }}"
     disabled>
-    {{ participant.get_show_bet.amount }}
+    {{ participant.straight_wager.show }}
   </button>
 {% endblock show_button %}
