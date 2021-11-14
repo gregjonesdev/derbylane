@@ -50,7 +50,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--model', type=str)
         parser.add_argument('--prediction', type=str)
-        # parser.add_argument('--grade', type=str)
+        parser.add_argument('--grade', type=str)
 
 
     def create_arff(self, filename, metrics, is_nominal, is_training):
@@ -174,7 +174,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         venue_code = "WD"
-        grade_name = "A"
+        grade_name = sys.argv[7]
         distance = 548
         today = datetime.datetime.now()
         cutoff_date = (today - datetime.timedelta(days=21)).date()
