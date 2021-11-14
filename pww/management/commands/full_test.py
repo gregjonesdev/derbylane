@@ -18,7 +18,7 @@ from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
 import weka.core.serialization as serialization
-table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}"
+table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
 class bcolors:
     HEADER = '\033[95m'
@@ -166,7 +166,8 @@ class Command(BaseCommand):
                 self.get_formatting(max_return, average_returns[0]),
                 self.get_formatting(max_return, average_returns[1]),
                 self.get_formatting(max_return, average_returns[2]),
-                bet_count))
+                bet_count,
+                round(max_return*bet_count, 3)))
 
 
 
@@ -221,9 +222,9 @@ class Command(BaseCommand):
                 "interval": 0.01,
             },
             "smo": {
-                "c_start": 0.01,
-                "c_stop": 9.0,
-                "interval": 0.05,
+                "c_start": 3.81,
+                "c_stop": 12,
+                "interval": 0.01,
             },
         }
         prediction = sys.argv[7]
