@@ -45,6 +45,7 @@ pred_format = {
 }
 
 
+
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
@@ -167,7 +168,7 @@ class Command(BaseCommand):
                 self.get_formatting(max_return, average_returns[1]),
                 self.get_formatting(max_return, average_returns[2]),
                 bet_count,
-                round(max_return*bet_count, 3)))
+                "\t{}".format(round(max_return*bet_count, 3))))
 
 
 
@@ -222,8 +223,8 @@ class Command(BaseCommand):
                 "interval": 0.01,
             },
             "smo": {
-                "c_start": 3.81,
-                "c_stop": 12,
+                "c_start": 0,
+                "c_stop": 4,
                 "interval": 0.01,
             },
         }
