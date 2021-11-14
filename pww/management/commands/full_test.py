@@ -243,7 +243,8 @@ class Command(BaseCommand):
             "Win",
             "Place",
             "Show",
-            "Bet Count"))
+            "Bet Count",
+            "Potential"))
         c = c_start
         while c <= c_stop:
             c = round(c, 2)
