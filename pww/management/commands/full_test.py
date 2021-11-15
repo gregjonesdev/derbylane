@@ -5,7 +5,7 @@ from time import time
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 from miner.utilities.urls import arff_directory
-from miner.utilities.constants import csv_columns, focused_distances
+from miner.utilities.constants import focused_distances
 from rawdat.models import Participant
 from pww.models import TestPrediction, Metric
 from pww.utilities.ultraweka import (
@@ -17,6 +17,7 @@ from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
 import weka.core.serialization as serialization
+from pww.utilities.arff import create_arff
 table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
 class bcolors:
@@ -51,36 +52,6 @@ class Command(BaseCommand):
         parser.add_argument('--model', type=str)
         parser.add_argument('--grade', type=str)
         parser.add_argument('--prediction', type=str)
-
-
-    def create_arff(self, filename, metrics, is_nominal, is_training):
-
-        arff_file = open(filename, "w")
-        arff_file.write("@relation Metric\n")
-        arff_file = self.write_headers(arff_file, is_nominal)
-        yes = 0
-        total = 0
-        for metric in metrics:
-            total += 1
-            csv_metric = metric.build_csv_metric(is_training)
-            if csv_metric:
-                yes += 1
-                arff_file.writelines(csv_metric)
-        # print(" {} / {}".format(yes, total))
-        return filename
-
-    def write_headers(self, arff_file, is_nominal):
-        for each in csv_columns:
-            if is_nominal and each == "Fi":
-                arff_file.write("@attribute {} nominal\n".format(each))
-            elif each == "PID":
-                arff_file.write("@attribute PID string\n")
-            elif each == "Se":
-                arff_file.write("@attribute Se {M, F}\n")
-            else:
-                arff_file.write("@attribute {} numeric\n".format(each))
-        arff_file.write("@data\n")
-        return arff_file
 
 
     def two_digitizer(self, integer):
@@ -198,12 +169,12 @@ class Command(BaseCommand):
             race_key)
         is_nominal = False
         # print("training metrics: {}".format(len(training_metrics)))
-        training_arff = self.create_arff(
+        training_arff = create_arff(
             training_arff_filename,
             training_metrics,
             is_nominal,
             True)
-        testing_arff = self.create_arff(
+        testing_arff = create_arff(
             testing_arff_filename,
             testing_metrics,
             is_nominal,
