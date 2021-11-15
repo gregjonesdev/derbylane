@@ -4,13 +4,19 @@ import os
 import fnmatch
 from pathlib import Path
 import weka.core.jvm as jvm
+import weka.core.converters as conv
+import weka.core.serialization as serialization
 import datetime
 
 from django.core.management.base import BaseCommand
-
+from weka.classifiers import Classifier
 from pww.models import Metric
 from rawdat.models import Participant
-from pww.utilities.weka import predict_all
+from pww.utilities.ultraweka import (
+    create_model,
+    build_scheduled_data,
+    get_uuid_line_index,
+    get_prediction_list)
 from miner.utilities.urls import arff_directory
 from miner.utilities.constants import (
     csv_columns,
@@ -26,6 +32,16 @@ prediction_models = {
     "SL_583_C": "SL_583_C_smo_025.model",
 
 }
+
+c_options = {
+    "WD_548_B": "1.04",
+    "WD_548_C": "0.08",
+    "TS_550_B": "0.51",
+    "TS_550_C": "0.53",
+    "SL_583_C": "0.25",
+
+}
+
 
 
 betting_venues = ["WD", "TS", "SL"]
@@ -63,15 +79,10 @@ class Command(BaseCommand):
         arff_file = open(filename, "w")
         arff_file.write("@relation Metric\n")
         arff_file = self.write_headers(arff_file, is_nominal)
-        yes = 0
-        total = 0
         for metric in metrics:
-            total += 1
             csv_metric = metric.build_csv_metric(is_training)
             if csv_metric:
-                yes += 1
                 arff_file.writelines(csv_metric)
-        # print(" {} / {}".format(yes, total))
         return filename
 
 
@@ -79,6 +90,8 @@ class Command(BaseCommand):
     def assign_predictions(self, training_metrics, prediction_metrics, race_key):
         model_name = prediction_models[race_key]
         print("For race_key {} use model {}".format(race_key, model_name))
+        classifier_name = 'smo'
+        string_c = c_options[race_key]
         training_arff_filename = "{}/train_{}.arff".format(
             arff_directory,
             race_key)
@@ -100,23 +113,23 @@ class Command(BaseCommand):
 
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-        model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
+        model_name = create_model(training_arff, classifier_name, string_c, race_key, loader)
+        self.make_predictions(model_name, testing_arff, loader)
 
 
-    def print_returns(self, model_name, testing_arff, c, race_key, loader, prediction):
-        # print(model_name)
+
+    def make_predictions(self, model_name, testing_arff, loader):
         model = Classifier(jobject=serialization.read(model_name))
-        # print(type(testing_arff))
         uuid_line_index = get_uuid_line_index(testing_arff)
-        # print(uuid_line_index)
         testing_data = build_scheduled_data(testing_arff)
-        # model.build_classifier(testing_data)
         prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
 
-    
+
         for uuid in prediction_list.keys():
             print(uuid)
+            prediction = prediction_list[uuid]
             print(int(prediction))
+
 
 
 
@@ -175,6 +188,7 @@ class Command(BaseCommand):
                             prediction_metrics,
                             race_key)
 
+        jvm.stop()
                 #
                 # race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
                 # model_name = prediction_models[race_key]

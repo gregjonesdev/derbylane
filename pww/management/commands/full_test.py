@@ -10,7 +10,6 @@ from rawdat.models import Participant
 from pww.models import TestPrediction, Metric
 from pww.utilities.ultraweka import (
     create_model,
-    create_model,
     build_scheduled_data,
     get_uuid_line_index,
     get_prediction_list)
