@@ -138,7 +138,6 @@ class Command(BaseCommand):
         pred = get_prediction(participant)
         pred.smo = int(prediction)
         pred.save()
-        print(pred.__dict__)
 
 
 
