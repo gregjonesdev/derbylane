@@ -60,14 +60,15 @@
         {% endfor %}
       </select>
     </div>
-
-    {% include 'bet_header_row.html' %}
   {% else %}
     <div
       id="empty-charts-div">
       No Predictions Today
     </div>
   {% endif %}
+  <div id="bet-header-row" style="display:none">
+    {% include 'bet_header_row.html' %}
+  </div>
 
   <div id="bets">
     <img

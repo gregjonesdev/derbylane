@@ -1,21 +1,19 @@
 const text_content = document.getElementById("json-chart-data").textContent
-json_data = JSON.parse(text_content)
-
-
+const json_data = JSON.parse(text_content)
 const modal = document.getElementById("bet-modal")
 
 modal.addEventListener("focus", function (e) {
   const button = $(event.relatedTarget) // Button that triggered the modal
   if (button.hasClass("bet-button")) {
-    var participant_bets = document.getElementById("participant_bets")
-    var dog = button.data('dog')
-    var bets = button.data('bets')
-    var post = button.data('post')
-    var venue = button.data('venue')
-    var chart = button.data('chart')
-    var number = button.data('number')
-    var participant = button.data('participant')
-    var this_modal = $(this)
+    const participant_bets = document.getElementById("participant_bets")
+    const dog = button.data('dog')
+    const bets = button.data('bets')
+    const post = button.data('post')
+    const venue = button.data('venue')
+    const chart = button.data('chart')
+    const number = button.data('number')
+    const participant = button.data('participant')
+    const this_modal = $(this)
     this_modal.find('.modal-subtitle').text(
       post + " | " +
       dog + " "
@@ -37,20 +35,19 @@ modal.addEventListener("focus", function (e) {
 window.onload = (event) => {
   dropdowns = document.getElementsByClassName("dropdown-item")
 
-  function initial_load () {
-      console.log(dropdowns[0].textContent)
-      console.log(dropdowns[0].getAttribute("data-chart"))
-  }
+  // function initial_load () {
+  //     console.log(dropdowns[0].textContent)
+  //     console.log(dropdowns[0].getAttribute("data-chart"))
+  // }
 
   function load_races (e)  {
     console.log("load races")
-    console.log(e.currentTarget.getAttribute("data-chart"))
     const currentTarget = e.currentTarget
     const label = currentTarget.textContent
-    chart_id = e.currentTarget.getAttribute("data-chart")
+    const chart_id = e.currentTarget.getAttribute("data-chart")
     load_charts(chart_id, label)
 
-
+    document.getElementById("bet-header-row").style.display="block"
   }
 
   function load_charts(chart_id, label) {
@@ -68,15 +65,13 @@ window.onload = (event) => {
             const bets_container =   document.getElementById("bets")
             bets_container.style.maxHeight = "75vh";
             bets_container.style.overflowY = "scroll";
-            document.getElementById("header-table").style.display = "block";
             document.getElementById("chart-label").textContent = label
           }
         })
   }
 
-  initial_load()
+  // initial_load()
 
-  // const chart_json_data = JSON.parse(text_content)
   for (let i=0; i<dropdowns.length; i++) {
     dropdowns[i].addEventListener("click", load_races)
   }
@@ -85,13 +80,8 @@ window.onload = (event) => {
   const chart_select = document.getElementById("chart-select")
 
   load_bets = () => {
-    console.log("load bets()")
-    console.log()
-
     if (chart_select) {
       chart_id = chart_select.value
-      // console.log(chart_id)
-      // console.log(chart_json_data["bets_url"])
       $.ajax({
         url: json_data["bets_url"],
         dataType: "html",
@@ -99,13 +89,10 @@ window.onload = (event) => {
           "chart_id": document.getElementById("chart-select").value,
         },
         success: function(data) {
-          // console.log("success 2")
-          // console.log(data)
           $("#bets").html(data)
           const bets_container =   document.getElementById("bets")
           bets_container.style.maxHeight = "75vh";
           bets_container.style.overflowY = "scroll";
-          document.getElementById("header-table").style.display = "block";
         }
       })
 
@@ -114,10 +101,5 @@ window.onload = (event) => {
   }
 
   load_bets()
-
-
-
-
-
 
 };
