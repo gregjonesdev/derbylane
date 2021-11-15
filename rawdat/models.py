@@ -396,7 +396,6 @@ class Race(CoreModel):
             return False
 
     def has_predictions(self):
-
         for participant in self.participant_set.all():
             try:
                 if participant.prediction.get_bets():
@@ -506,6 +505,7 @@ class Participant(CoreModel):
         max_length=256)
 
     def get_recommended_bet(self):
+        return "W"
         try:
             prediction = self.prediction.smo
             recommended_bet = Bet_Recommendation.objects.get(

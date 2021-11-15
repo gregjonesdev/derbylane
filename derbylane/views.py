@@ -49,9 +49,13 @@ class FrontPage(OTPRequiredMixin, View):
         predicted_charts = []
         for chart in charts:
             if chart.has_predictions():
+                print("yes")
                 print(chart)
                 predicted_charts.append(chart)
-        self.context["charts"] = Chart.objects.filter(program__date=date_obj)
+            else:
+                print("no")
+                print(chart)
+        self.context["charts"] = predicted_charts
         return render(request, self.template_name, self.context)
 
 
@@ -118,7 +122,7 @@ class ResultsView(OTPRequiredMixin, View):
         response = redirect('results')
         response['Location'] += '?date={}'.format(
             request.POST.get("date"))
-        return response        
+        return response
 
 
 class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):
