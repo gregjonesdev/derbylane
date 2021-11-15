@@ -508,7 +508,6 @@ class Participant(CoreModel):
     def get_recommended_bet(self):
         try:
             prediction = self.prediction.smo
-            prediction = 4
             recommended_bet = Bet_Recommendation.objects.get(
                 venue=self.race.chart.program.venue,
                 grade=self.race.grade,
