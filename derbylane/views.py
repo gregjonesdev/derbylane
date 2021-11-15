@@ -9,7 +9,7 @@ from django.core.files.storage import FileSystemStorage
 from django.views.generic import View
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse, HttpResponse, Http404
+from django.http import JsonResponse
 from two_factor.views.mixins import OTPRequiredMixin
 
 from rawdat.models import (
@@ -19,10 +19,7 @@ from rawdat.models import (
     Program,
     Participant,
     Bet,
-    StraightBetType
-)
-
-from pww.models import Prediction
+    StraightBetType)
 
 class Welcome(OTPRequiredMixin, View):
 
@@ -70,15 +67,6 @@ class ProfileView(OTPRequiredMixin, View):
         return render(request, self.template_name, self.context)
 
 
-class VenueView(OTPRequiredMixin, View):
-
-    template_name = 'venues.html'
-    context = {}
-
-    def get(self, request, *args, **kwargs):
-        self.context["venues"] = Venue.objects.filter(is_active=True)
-        return render(request, self.template_name, self.context)
-
 class ScanView(OTPRequiredMixin, View):
 
     template_name = 'scans.html'
@@ -87,67 +75,6 @@ class ScanView(OTPRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         self.context["scans"] = CronJob.objects.all()[:10]
         return render(request, self.template_name, self.context)
-
-class DownloadsView(OTPRequiredMixin, View):
-
-    template_name = 'downloads.html'
-    context = {}
-
-    def get(self, request, *args, **kwargs):
-        filenames = fnmatch.filter(os.listdir('arff'), '*_model.arff')
-        self.context["filenames"] = filenames
-        return render(request, self.template_name, self.context)
-
-    def post(self, request, *args, **kwargs):
-        print("post")
-        files = request.POST.getlist('files')
-        # print(os.listdir("arff"))
-        # self.context["filenames"] = os.listdir("arff")
-        file_path = 'downloads.7z'
-        if len(files) > 0:
-            with py7zr.SevenZipFile(
-                file_path,
-                'w',
-                # password=config('FILE_PASSWORD')) as archive:
-                password='') as archive:
-                for filename in files:
-                    archive.write("arff/{}".format(filename))
-            if os.path.exists(file_path):
-                with open(file_path, 'rb') as fh:
-                    response = HttpResponse(fh.read(), content_type="application/*")
-                    response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-                    return response
-            raise Http404
-        else:
-            response = redirect('frontpage')
-            return response
-
-
-class ResultsView(OTPRequiredMixin, View):
-
-    template_name = 'results.html'
-    context = {}
-
-    def get(self, request, *args, **kwargs):
-        print("Results view")
-        try:
-            target_date = datetime.datetime.fromisoformat(
-                request.GET.get("date"))
-        except:
-            target_date = localdate()
-        bets = Bet.objects.filter(
-            participant__race__chart__program__date=target_date).order_by(
-                'participant__race__chart', 'participant__race')
-        self.context["bets"] = bets
-        self.context["day"] = target_date.strftime("%A")
-        self.context["date"] = target_date.strftime("%Y-%m-%d")
-        return render(request, self.template_name, self.context)
-
-    def post(self, request, *args, **kwargs):
-        response = redirect('results')
-        response['Location'] += '?date={}'.format(
-            request.POST.get("date"))
-        return response
 
 
 class AnalysisView(OTPRequiredMixin, View):
@@ -168,21 +95,6 @@ class AnalysisView(OTPRequiredMixin, View):
         # self.context["day"] = target_date.strftime("%A")
         # self.context["date"] = target_date.strftime("%Y-%m-%d")
         return render(request, self.template_name, self.context)
-
-
-class UploadsView(OTPRequiredMixin, View):
-
-    template_name = 'uploads.html'
-    context = {}
-
-    def get(self, request, *args, **kwargs):
-        print("get uplaodz")
-
-        return render(request, self.template_name, self.context)
-
-    def post(self, request, *args, **kwargs):
-        print("post uplaodz")
-        print(request.FILES)
 
 
 class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):
