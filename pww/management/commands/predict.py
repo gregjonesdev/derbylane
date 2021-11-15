@@ -11,7 +11,7 @@ from django.core.management.base import BaseCommand
 from pww.models import Metric
 from rawdat.models import Participant
 from pww.utilities.weka import predict_all
-
+from miner.utilities.urls import arff_directory
 from miner.utilities.constants import (
     csv_columns,
     focused_distances,
@@ -44,21 +44,107 @@ betting_grades = {
 
 class Command(BaseCommand):
 
+    def write_headers(self, arff_file, is_nominal):
+        for each in csv_columns:
+            if is_nominal and each == "Fi":
+                arff_file.write("@attribute {} nominal\n".format(each))
+            elif each == "PID":
+                arff_file.write("@attribute PID string\n")
+            elif each == "Se":
+                arff_file.write("@attribute Se {M, F}\n")
+            else:
+                arff_file.write("@attribute {} numeric\n".format(each))
+        arff_file.write("@data\n")
+        return arff_file
+
+
+    def create_arff(self, filename, metrics, is_nominal, is_training):
+
+        arff_file = open(filename, "w")
+        arff_file.write("@relation Metric\n")
+        arff_file = self.write_headers(arff_file, is_nominal)
+        yes = 0
+        total = 0
+        for metric in metrics:
+            total += 1
+            csv_metric = metric.build_csv_metric(is_training)
+            if csv_metric:
+                yes += 1
+                arff_file.writelines(csv_metric)
+        # print(" {} / {}".format(yes, total))
+        return filename
+
+
 
     def assign_predictions(self, training_metrics, prediction_metrics, race_key):
         model_name = prediction_models[race_key]
         print("For race_key {} use model {}".format(race_key, model_name))
-        #
-        # all_metrics = Metric.objects.filter(
-        #     participant__race__chart__program__venue__code=venue_code,
-        #     participant__race__distance=distance,
-        #     participant__race__grade__name=grade_name,
-        #     participant__race__chart__program__date__gte="2019-01-01")
-        # training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
-        # testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
+        training_arff_filename = "{}/train_{}.arff".format(
+            arff_directory,
+            race_key)
+        testing_arff_filename = "{}/test_{}.arff".format(
+            arff_directory,
+            race_key)
+        is_nominal = False
+        # print("training metrics: {}".format(len(training_metrics)))
+        training_arff = self.create_arff(
+            training_arff_filename,
+            training_metrics,
+            is_nominal,
+            True)
+        testing_arff = self.create_arff(
+            testing_arff_filename,
+            prediction_metrics,
+            is_nominal,
+            False)
 
-        # build training arff
-        # build testing arff
+        jvm.start(packages=True, max_heap_size="5028m")
+        loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+        model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
+
+
+    def print_returns(self, model_name, testing_arff, c, race_key, loader, prediction):
+        # print(model_name)
+        model = Classifier(jobject=serialization.read(model_name))
+        # print(type(testing_arff))
+        uuid_line_index = get_uuid_line_index(testing_arff)
+        # print(uuid_line_index)
+        testing_data = build_scheduled_data(testing_arff)
+        # model.build_classifier(testing_data)
+        prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+
+    
+        for uuid in prediction_list.keys():
+            print(uuid)
+            print(int(prediction))
+
+
+
+        #
+        #     if int(prediction_list[uuid]) == int(prediction):
+        #         bet_count += 1
+        #         participant = Participant.objects.get(uuid=uuid)
+        #         win_returns += self.get_win_return(participant)
+        #         place_returns += self.get_place_return(participant)
+        #         show_returns += self.get_show_return(participant)
+        #
+        # if bet_count > 0:
+        #     average_returns = [
+        #         win_returns/bet_count,
+        #         place_returns/bet_count,
+        #         show_returns/bet_count]
+        #     max_return = max(average_returns)
+        #     print(table_string.format(
+        #         c,
+        #         self.get_formatting(max_return, average_returns[0]),
+        #         self.get_formatting(max_return, average_returns[1]),
+        #         self.get_formatting(max_return, average_returns[2]),
+        #         bet_count,
+        #         "\t{}".format(round(max_return*bet_count, 3))))
+
+
+
+
 
     def build_race_key(self, venue_code, distance, grade_name):
         return "{}_{}_{}".format(venue_code, distance, grade_name)
