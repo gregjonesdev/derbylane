@@ -144,14 +144,6 @@ class Prediction(CoreModel):
             null=True
             )
 
-    def get_bets(self):
-        if self.lib_svm == 1:
-            return "P"
-        # if self.j48 == 2:
-        #     return "S"
-        # elif self.j48 == 1:
-        #     return "PS"
-
 
 class TestPrediction(CoreModel):
 

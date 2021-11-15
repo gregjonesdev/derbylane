@@ -505,7 +505,6 @@ class Participant(CoreModel):
         max_length=256)
 
     def get_recommended_bet(self):
-        return "W"
         try:
             prediction = self.prediction.smo
             recommended_bet = Bet_Recommendation.objects.get(
@@ -514,7 +513,7 @@ class Participant(CoreModel):
                 distance=self.race.distance,
                 prediction=prediction
             )
-            return "{} {}".format(prediction, recommended_bet.bet)
+            return recommended_bet.bet
         except:
             return None
 
