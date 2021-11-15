@@ -16,7 +16,8 @@ from pww.utilities.ultraweka import (
     create_model,
     build_scheduled_data,
     get_uuid_line_index,
-    get_prediction_list)
+    get_prediction_list,
+    get_prediction)
 from miner.utilities.urls import arff_directory
 from miner.utilities.constants import (
     csv_columns,
@@ -129,32 +130,15 @@ class Command(BaseCommand):
             print(uuid)
             prediction = prediction_list[uuid]
             print(int(prediction))
+            self.save_smo_prediction(uuid, prediction)
 
 
-
-
-        #
-        #     if int(prediction_list[uuid]) == int(prediction):
-        #         bet_count += 1
-        #         participant = Participant.objects.get(uuid=uuid)
-        #         win_returns += self.get_win_return(participant)
-        #         place_returns += self.get_place_return(participant)
-        #         show_returns += self.get_show_return(participant)
-        #
-        # if bet_count > 0:
-        #     average_returns = [
-        #         win_returns/bet_count,
-        #         place_returns/bet_count,
-        #         show_returns/bet_count]
-        #     max_return = max(average_returns)
-        #     print(table_string.format(
-        #         c,
-        #         self.get_formatting(max_return, average_returns[0]),
-        #         self.get_formatting(max_return, average_returns[1]),
-        #         self.get_formatting(max_return, average_returns[2]),
-        #         bet_count,
-        #         "\t{}".format(round(max_return*bet_count, 3))))
-
+    def save_smo_prediction(self, participant_uuid, prediction):
+        participant = Participant.objects.get(uuid=participant_uuid)
+        pred = get_prediction(participant)
+        pred.smo = int(prediction)
+        pred.save()
+        print(pred.__dict__)
 
 
 
@@ -189,78 +173,3 @@ class Command(BaseCommand):
                             race_key)
 
         jvm.stop()
-                #
-                # race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
-                # model_name = prediction_models[race_key]
-                #
-                #
-                # participants = Participant.objects.filter(
-                #     race__distance=distance,
-                #     race__grade__name=grade_name,
-                #     race__chart__program__venue__code=venue_code,
-                #     race__chart__program__date=today
-                # )
-                # if len(participants) > 0 :
-                #     self.assign_predictions(
-                #         participants,
-                #         model_name,
-                #         race_key)
-
-
-    # def create_arff(self, filename, metrics, start_date):
-    #     arff_file = open(filename, "w")
-    #     arff_file.write("@relation Metric\n")
-    #
-    #     arff_file = self.write_headers(arff_file)
-    #
-    #     for metric in metrics:
-    #         csv_metric = metric.build_csv_metric(start_date)
-    #         if csv_metric:
-    #             arff_file.writelines(csv_metric)
-    #
-    #     return filename
-    #
-    #
-    # def write_headers(self, arff_file):
-    #     for each in csv_columns:
-    #         if each == "PID":
-    #             arff_file.write("@attribute PID string\n")
-    #         elif each == "Se":
-    #             arff_file.write("@attribute Se {M, F}\n")
-    #         else:
-    #             arff_file.write("@attribute {} numeric\n".format(each))
-    #
-    #     arff_file.write("@data\n")
-    #     return arff_file
-    #
-    #
-    # def handle(self, *args, **options):
-    #     today = datetime.date.today()
-    #     yesterday = today - datetime.timedelta(days=1)
-    #     arff_list = []
-    #     for venue in Venue.objects.filter(is_focused=True):
-    #         print("Building metrics for {}".format(venue))
-    #         venue_code = venue.code
-    #         venue_metrics = Metric.objects.filter(
-    #             participant__race__chart__program__venue=venue)
-    #         for distance in focused_distances[venue_code]:
-    #             print("Distance: {}".format(distance))
-    #             distance_metrics = venue_metrics.filter(
-    #                 participant__race__distance=distance,
-    #             )
-    #             for grade_name in focused_grades[venue_code]:
-    #                 print("Grade: {}".format(grade_name))
-    #                 graded_metrics = distance_metrics.filter(
-    #                     participant__race__grade__name=grade_name,
-    #                     participant__race__chart__program__date=yesterday
-    #                 )
-    #                 if len(graded_metrics) > 0:
-    #                     scheduled_metrics = graded_metrics.filter(
-    #                     participant__race__chart__program__date__gte=yesterday)
-    #                     if len(scheduled_metrics) > 0:
-    #                         race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
-    #                         arff_list.append(self.create_arff(
-    #                             "arff/{}.arff".format(race_key),
-    #                             graded_metrics, today))
-    #
-    #     predict_all(arff_list)

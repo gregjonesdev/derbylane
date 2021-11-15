@@ -205,20 +205,20 @@ def get_prediction_list(cls, data, uuid_line_index):
             uuid = uuid_line_index[index]
             prediction_list[uuid] = cls.classify_instance(inst)
     return prediction_list
-#
-#
-# def get_prediction(participant):
-#     try:
-#         pred = Prediction.objects.get(participant=participant)
-#     except ObjectDoesNotExist:
-#         new_pred = Prediction(
-#             participant = participant
-#         )
-#         new_pred.set_fields_to_base()
-#         new_pred.save()
-#         pred = new_pred
-#     return pred
-#
+
+
+def get_prediction(participant):
+    try:
+        pred = Prediction.objects.get(participant=participant)
+    except ObjectDoesNotExist:
+        new_pred = Prediction(
+            participant = participant
+        )
+        new_pred.set_fields_to_base()
+        new_pred.save()
+        pred = new_pred
+    return pred
+
 def build_scheduled_data(arff_data):
     # print("Define loader")
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
