@@ -1,11 +1,9 @@
-import os, fnmatch
-import py7zr
+# import os, fnmatch
 from django.utils.timezone import localdate
 from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
 import datetime
 from django.shortcuts import redirect
-from django.core.files.storage import FileSystemStorage
 from django.views.generic import View
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
@@ -95,6 +93,32 @@ class AnalysisView(OTPRequiredMixin, View):
         # self.context["day"] = target_date.strftime("%A")
         # self.context["date"] = target_date.strftime("%Y-%m-%d")
         return render(request, self.template_name, self.context)
+
+class ResultsView(OTPRequiredMixin, View):
+
+    template_name = 'results.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        print("Results view")
+        try:
+            target_date = datetime.datetime.fromisoformat(
+                request.GET.get("date"))
+        except:
+            target_date = localdate()
+        bets = Bet.objects.filter(
+            participant__race__chart__program__date=target_date).order_by(
+                'participant__race__chart', 'participant__race')
+        self.context["bets"] = bets
+        self.context["day"] = target_date.strftime("%A")
+        self.context["date"] = target_date.strftime("%Y-%m-%d")
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        response = redirect('results')
+        response['Location'] += '?date={}'.format(
+            request.POST.get("date"))
+        return response        
 
 
 class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):
