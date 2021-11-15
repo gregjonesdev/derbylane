@@ -398,7 +398,7 @@ class Race(CoreModel):
     def has_predictions(self):
         for participant in self.participant_set.all():
             try:
-                if participant.prediction.get_bets():
+                if participant.get_recommended_bet():
                     return True
             except:
                 pass
