@@ -136,7 +136,7 @@ class Command(BaseCommand):
                 training_metrics = graded_metrics.filter(
                     participant__race__chart__program__date__lt=today)
                 prediction_metrics = graded_metrics.filter(
-                    participant__race__chart__program__date=today)
+                    participant__race__chart__program__date__gte=today)
 
                 race_key = self.build_race_key(venue_code, distance, grade_name)
                 if len(prediction_metrics) > 0:
