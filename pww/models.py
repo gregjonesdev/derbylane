@@ -124,49 +124,13 @@ class Metric(CoreModel):
             return metric_csv_string
 
 
-class Bet_Margin(CoreModel):
-
-    venue =  models.ForeignKey(
-        Venue,
-        on_delete=models.CASCADE)
-    distance = models.IntegerField()
-    grade = models.ForeignKey(
-        Grade,
-        on_delete=models.CASCADE)
-    prediction = models.DecimalField(
-            max_digits=16,
-            decimal_places=1,
-            null=True
-        )
-    win = models.DecimalField(
-            max_digits=16,
-            decimal_places=2,
-            null=True
-        )
-    place = models.DecimalField(
-            max_digits=16,
-            decimal_places=2,
-            null=True
-        )
-    show = models.DecimalField(
-            max_digits=16,
-            decimal_places=2,
-            null=True
-        )
-
-
-
-
 class Prediction(CoreModel):
 
     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
     j48 = models.IntegerField(
             null=True)
-    smo = models.DecimalField(
-            max_digits=16,
-            decimal_places=8,
-            null=True
-            )
+    smo = models.IntegerField(
+            null=True)
     lib_linear = models.DecimalField(
             max_digits=16,
             decimal_places=8,

@@ -61,9 +61,6 @@ betting_grades = {
 class Command(BaseCommand):
 
 
-
-
-
     def assign_predictions(self, training_metrics, prediction_metrics, race_key):
         model_name = prediction_models[race_key]
         print("For race_key {} use model {}".format(race_key, model_name))
@@ -76,7 +73,6 @@ class Command(BaseCommand):
             arff_directory,
             race_key)
         is_nominal = False
-        # print("training metrics: {}".format(len(training_metrics)))
         training_arff = create_arff(
             training_arff_filename,
             training_metrics,
@@ -88,7 +84,7 @@ class Command(BaseCommand):
             is_nominal,
             False)
 
-        jvm.start(packages=True, max_heap_size="5028m")
+
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         model_name = create_model(training_arff, classifier_name, string_c, race_key, loader)
         self.make_predictions(model_name, testing_arff, loader)
@@ -127,6 +123,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         start_date = "2019-01-01"
         today = datetime.date.today()
+        jvm.start(packages=True, max_heap_size="5028m")
         for venue_code in betting_venues:
             distance = betting_distances[venue_code]
             venue_metrics = Metric.objects.filter(

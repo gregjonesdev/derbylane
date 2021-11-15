@@ -14,7 +14,7 @@
     data-participant="{{ participant.uuid }}"
     data-bets="{{ participant.prediction.get_bets }}">
     <span id="participant_bets">
-      WPS
+      {{ participant.get_recommended_bet }}
     </span>
   </button>
 {% endblock prediction_button %}

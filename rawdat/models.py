@@ -4,6 +4,7 @@ from django.db import models
 
 from derbylane.applib.models import CoreModel
 
+
 class WeatherLookup(CoreModel):
     """ Specific to wunderground. """
     wunderground = models.CharField(
@@ -298,6 +299,20 @@ class Grade(CoreModel):
         null=True
     )
 
+class Bet_Recommendation(CoreModel):
+    venue =  models.ForeignKey(
+        Venue,
+        on_delete=models.CASCADE)
+    distance = models.IntegerField()
+    grade = models.ForeignKey(
+        Grade,
+        on_delete=models.CASCADE)
+    prediction = models.IntegerField()
+    bet = models.CharField(
+        max_length=16,
+        null=True
+    )
+
 
 class Race(CoreModel):
 
@@ -386,8 +401,6 @@ class Race(CoreModel):
             try:
                 if participant.prediction:
                     return True
-                # if participant.prediction.get_bets():
-                    # return participant.prediction.j48
             except:
                 pass
 
@@ -408,16 +421,16 @@ class Race(CoreModel):
     def get_displayed_participants(self):
         all_participants = self.participant_set.all()
         # print(self.number)
+        participant_list=[]
         if self.is_complete():
-            # print("is complete")
-            participant_list=[]
             for participant in all_participants:
                 if participant.get_bets().count():
                     participant_list.append(participant)
-            # print(participant_list)
-            return participant_list
         else:
-            return all_participants
+            for participant in all_participants:
+                if participant.get_recommended_bet():
+                    participant_list.append(participant)
+        return participant_list
 
     def is_complete(self):
         for participant in self.participant_set.all():
@@ -491,6 +504,20 @@ class Participant(CoreModel):
     comment = models.CharField(
         null=True,
         max_length=256)
+
+    def get_recommended_bet(self):
+        try:
+            prediction = self.prediction.smo
+            prediction = 4
+            recommended_bet = Bet_Recommendation.objects.get(
+                venue=self.race.chart.program.venue,
+                grade=self.race.grade,
+                distance=self.race.distance,
+                prediction=prediction
+            )
+            return "{} {}".format(prediction, recommended_bet.bet)
+        except:
+            return None
 
     def get_bets(self):
         return Bet.objects.filter(participant=self)
