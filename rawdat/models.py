@@ -399,7 +399,7 @@ class Race(CoreModel):
 
         for participant in self.participant_set.all():
             try:
-                if participant.prediction:
+                if participant.prediction.get_bets():
                     return True
             except:
                 pass

@@ -50,6 +50,12 @@ class FrontPage(OTPRequiredMixin, View):
         self.context["date_header"] = date_obj.strftime("%A, %B %-d")
         self.context["is_past"] = localdate() > date_obj
         self.context["datestring"] = datestring
+        charts = Chart.objects.filter(program__date=date_obj)
+        predicted_charts = []
+        for chart in charts:
+            if chart.has_predictions():
+                print(chart)
+                predicted_charts.append(chart)
         self.context["charts"] = Chart.objects.filter(program__date=date_obj)
         return render(request, self.template_name, self.context)
 
