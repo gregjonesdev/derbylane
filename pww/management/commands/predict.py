@@ -44,34 +44,67 @@ betting_grades = {
 
 class Command(BaseCommand):
 
-    def assign_predictions(self, participants, model_name, race_key):
+
+    def assign_predictions(self, training_metrics, prediction_metrics, race_key):
+        model_name = prediction_models[race_key]
         print("For race_key {} use model {}".format(race_key, model_name))
+        #
+        # all_metrics = Metric.objects.filter(
+        #     participant__race__chart__program__venue__code=venue_code,
+        #     participant__race__distance=distance,
+        #     participant__race__grade__name=grade_name,
+        #     participant__race__chart__program__date__gte="2019-01-01")
+        # training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
+        # testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
 
         # build training arff
         # build testing arff
 
+    def build_race_key(self, venue_code, distance, grade_name):
+        return "{}_{}_{}".format(venue_code, distance, grade_name)
+
 
 
     def handle(self, *args, **options):
+        start_date = "2019-01-01"
         today = datetime.date.today()
         for venue_code in betting_venues:
             distance = betting_distances[venue_code]
+            venue_metrics = Metric.objects.filter(
+                participant__race__distance=distance,
+                participant__race__chart__program__venue__code=venue_code,
+                participant__race__chart__program__date__gte=start_date)
             for grade_name in betting_grades[venue_code]:
-                race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
-                model_name = prediction_models[race_key]
+                graded_metrics = venue_metrics.filter(
+                    participant__race__grade__name=grade_name)
+                training_metrics = graded_metrics.filter(
+                    participant__race__chart__program__date__lt=today)
+                prediction_metrics = graded_metrics.filter(
+                    participant__race__chart__program__date=today)
 
-
-                participants = Participant.objects.filter(
-                    race__distance=distance,
-                    race__grade__name=grade_name,
-                    race__chart__program__venue__code=venue_code,
-                    race__chart__program__date=today
-                )
-                if len(participants) > 0 :
+                race_key = self.build_race_key(venue_code, distance, grade_name)
+                if len(prediction_metrics) > 0:
                     self.assign_predictions(
-                        participants,
-                        model_name,
-                        race_key)
+                            training_metrics,
+                            prediction_metrics,
+                            race_key)
+
+                #
+                # race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
+                # model_name = prediction_models[race_key]
+                #
+                #
+                # participants = Participant.objects.filter(
+                #     race__distance=distance,
+                #     race__grade__name=grade_name,
+                #     race__chart__program__venue__code=venue_code,
+                #     race__chart__program__date=today
+                # )
+                # if len(participants) > 0 :
+                #     self.assign_predictions(
+                #         participants,
+                #         model_name,
+                #         race_key)
 
 
     # def create_arff(self, filename, metrics, start_date):
