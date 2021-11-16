@@ -101,10 +101,10 @@ class Command(BaseCommand):
     #
 
     def get_same(self, prediction_list, race, prediction):
-        # matches_prediction = []
-        # for participant in race.participant_set.all():
-        #     if prediction_list[participant.uuid] = prediction:
-        #         matches_prediction.append(participant)
+        matches_prediction = []
+        for participant in race.participant_set.all():
+            if prediction_list[participant.uuid] = prediction:
+                matches_prediction.append(participant)
         i = 0
         unique_tuples = []
         while i < len(matches_prediction):
@@ -115,6 +115,23 @@ class Command(BaseCommand):
             i += 1
         print("unique tuples:")
         print(unique_tuples)
+
+
+    def get_different(self, prediction_list, race, first_prediction, second_prediction):
+        # matches_prediction = []
+        # for participant in race.participant_set.all():
+        #     if prediction_list[participant.uuid] = prediction:
+        #         matches_prediction.append(participant)
+        # i = 0
+        # unique_tuples = []
+        # while i < len(matches_prediction):
+        #     j = i + 1
+        #     while j < len(matches_prediction):
+        #         unique_tuples.append((matches_prediction[i], matches_prediction[j]))
+        #         j += 1
+        #     i += 1
+        # print("unique tuples:")
+        # print(unique_tuples)
 
 
 
