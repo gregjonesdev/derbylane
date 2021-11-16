@@ -103,7 +103,7 @@ class Command(BaseCommand):
     def get_same(self, prediction_list, race, prediction):
         matches_prediction = []
         for participant in race.participant_set.all():
-            if prediction_list[participant.uuid] = prediction:
+            if prediction_list[participant.uuid] == prediction:
                 matches_prediction.append(participant)
         i = 0
         unique_tuples = []
@@ -118,11 +118,16 @@ class Command(BaseCommand):
 
 
     def get_different(self, prediction_list, race, first_prediction, second_prediction):
-        # matches_prediction = []
-        # for participant in race.participant_set.all():
-        #     if prediction_list[participant.uuid] = prediction:
-        #         matches_prediction.append(participant)
-        # i = 0
+        matches_first = []
+        matches_second = []
+        for participant in race.participant_set.all():
+            if prediction_list[participant.uuid] == first_prediction:
+                matches_first.append(participant)
+            elif prediction_list[participant.uuid] == second_prediction:
+                matches_second.append(participant)
+        i = 0
+        matches_first = []
+        matches_second = []
         # unique_tuples = []
         # while i < len(matches_prediction):
         #     j = i + 1
@@ -187,14 +192,18 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         i = 0
-        matches_prediction = [1, 3, 5, 7]
+        matches_first = [2,4,6]
+        matches_second = [1,3,5]
         unique_tuples = []
-        while i < len(matches_prediction):
-            j = i + 1
-            while j < len(matches_prediction):
-                unique_tuples.append((matches_prediction[i], matches_prediction[j]))
+        while i < len(matches_first):
+            j = 0
+            while j < len(matches_second):
+                unique_tuples.append((matches_first[i], matches_second[j]))
                 j += 1
             i += 1
+        # print("unique tuples:")
+        # print(unique_tuples)
+
         print("unique tuples:")
         print(unique_tuples)
         raise SystemExit(0)
