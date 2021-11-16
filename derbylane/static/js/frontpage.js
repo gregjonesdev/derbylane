@@ -80,7 +80,6 @@ window.onload = (event) => {
   const chart_select = document.getElementById("chart-select")
 
   load_bets = () => {
-    console.log("load bets")
     if (chart_select) {
       chart_id = chart_select.value
       $.ajax({
@@ -90,7 +89,6 @@ window.onload = (event) => {
           "chart_id": document.getElementById("chart-select").value,
         },
         success: function(data) {
-          console.log("loaded bets")
           $("#bets").html(data)
           const bets_container =   document.getElementById("bets")
           bets_container.style.maxHeight = "75vh";
