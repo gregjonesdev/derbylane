@@ -18,16 +18,7 @@
       id="date_header"
       class="text-center"
       style="font-size: 1.6em; margin:auto; font-style: italic; font-weight: bold">
-      {% if is_past %}
         {{ date_header }}
-      {% else %}
-        <a
-          href="https://m.trackinfo.com/index.jsp?next=tracks&showdate=todays"
-          target="_blank"
-          style="text-decoration:none">
-          {{ date_header }}
-        </a>
-      {% endif %}
     </span>
     {% if next_day_scheduled %}
     <a
