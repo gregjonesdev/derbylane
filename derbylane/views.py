@@ -182,6 +182,40 @@ def make_bet(request):
         'bets': bet_update,
         'participant_id': participant_id })
 
+def clear_bets(request):
+    print("clear bets")
+    participant_id = request.GET.get('participant_id')
+    # participant = Participant.objects.get(
+    #     uuid=participant_id)
+    # bet_names = [char for char in request.GET.get('bet_types')]
+    # bet_update = {'W': 0, 'P': 0, 'S': 0}
+    # for bet_name in bet_names:
+    #     type = StraightBetType.objects.get(name=bet_name)
+    #     try:
+    #         bet = Bet.objects.get(
+    #             participant = participant,
+    #             type = type
+    #         )
+    #     except ObjectDoesNotExist:
+    #         new_bet = Bet(
+    #             participant = participant,
+    #             type = type
+    #         )
+    #         new_bet.set_fields_to_base()
+    #         new_bet.save()
+    #         bet = new_bet
+    #     amount = request.GET.get('amount')
+    #     if int(amount) == 0:
+    #         bet.delete()
+    #     else:
+    #         bet.amount = float(amount)
+    #         bet.save()
+    #         bet_update[bet_name] = bet.amount
+    #
+    # return JsonResponse({
+    #     'bets': bet_update,
+    #     'participant_id': participant_id })
+
 
 def load_bets(request):
     chart = Chart.objects.get(

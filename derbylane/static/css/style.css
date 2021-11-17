@@ -194,7 +194,7 @@ body {
 }
 
 .modal-body {
-  height: 50vh;
+  min-height: 50vh;
 }
 
 #modal-form {
