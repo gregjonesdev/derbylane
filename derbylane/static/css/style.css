@@ -48,6 +48,7 @@ body {
 
 .dropdown-item {
   color: var(--font-primary);
+  margin-top: 10px;
 }
 
 #navbarToggleExternalContent {

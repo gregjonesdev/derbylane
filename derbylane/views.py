@@ -218,19 +218,23 @@ def clear_bets(request):
 
 
 def load_bets(request):
-    chart = Chart.objects.get(
-        uuid=request.GET.get('chart_id'))
-    wagering = False
-    if not localdate() > chart.program.date:
-        wagering = True
-    url = 'load_bets.html'
-    races = chart.race_set.filter(
-        grade__value__gt=0)
-    return render(
-        request,
-        url, {
-            'races': races,
-            'wagering': wagering })
+    try:
+        chart = Chart.objects.get(
+            uuid=request.GET.get('chart_id'))
+    except:
+        pass
+    if chart:
+        wagering = False
+        if not localdate() > chart.program.date:
+            wagering = True
+        url = 'load_bets.html'
+        races = chart.race_set.filter(
+            grade__value__gt=0)
+        return render(
+            request,
+            url, {
+                'races': races,
+                'wagering': wagering })
 
 
 def logout_view(request):
