@@ -24,6 +24,15 @@ from miner.utilities.constants import (
     focused_grades)
 from pww.utilities.arff import create_arff
 
+# prediction_models = {
+#     "WD_548_B": "WD_548_B_smo_104.model",
+#     "WD_548_C": "WD_548_C_smo_008.model",
+#     "TS_550_B": "TS_550_B_smo_051.model",
+#     "TS_550_C": "TS_550_C_smo_053.model",
+#     "SL_583_C": "SL_583_C_smo_025.model",
+#
+# }
+
 prediction_models = {
     "WD_548_B": "WD_548_B_smo_104.model",
     "WD_548_C": "WD_548_C_smo_008.model",
@@ -33,12 +42,22 @@ prediction_models = {
 
 }
 
+
 c_options = {
-    "WD_548_B": "1.04",
-    "WD_548_C": "0.08",
-    "TS_550_B": "0.51",
-    "TS_550_C": "0.53",
-    "SL_583_C": "0.25",
+    "smo": {
+        "WD_548_B": "1.04",
+        "WD_548_C": "0.08",
+        "TS_550_B": "0.51",
+        "TS_550_C": "0.53",
+        "SL_583_C": "0.25",
+    },
+    "j48": {
+        "WD_548_B": "0.06",
+        "WD_548_C": "0.05",
+        "TS_550_A": "0.38",
+        "TS_550_B": "0.03",
+        "TS_550_C": "0.27",
+    }
 
 }
 
@@ -54,18 +73,27 @@ betting_distances = {
 
 betting_grades = {
     "WD": ["B", "C"],
-    "TS": ["B", "C"],
+    "TS": ["A", "B", "C"],
     "SL": ["C"],
 }
 
 class Command(BaseCommand):
 
 
-    def assign_predictions(self, training_metrics, prediction_metrics, race_key):
-        model_name = prediction_models[race_key]
+    def assign_predictions(
+        self,
+        classifier_name,
+        training_metrics,
+        prediction_metrics,
+        race_key):
+        string_c = c_options[classifier_name][race_key]
+        model_name = "{}_{}_{}.model".format(
+            race_key,
+            classifier_name,
+            string_c.replace(".","")
+        )
         print("For race_key {} use model {}".format(race_key, model_name))
-        classifier_name = 'smo'
-        string_c = c_options[race_key]
+
         training_arff_filename = "{}/train_{}.arff".format(
             arff_directory,
             race_key)
@@ -123,6 +151,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         start_date = "2019-01-01"
         today = datetime.date.today()
+        classifier_name = 'smo'
+        classifier_name = 'j48'
         jvm.start(packages=True, max_heap_size="5028m")
         for venue_code in betting_venues:
             distance = betting_distances[venue_code]
@@ -141,6 +171,7 @@ class Command(BaseCommand):
                 race_key = self.build_race_key(venue_code, distance, grade_name)
                 if len(prediction_metrics) > 0:
                     self.assign_predictions(
+                            classifier_name,
                             training_metrics,
                             prediction_metrics,
                             race_key)
