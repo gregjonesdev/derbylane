@@ -1,6 +1,20 @@
-make_bet = () => {
+handle_submit = (action) => {
   participant_id = document.getElementById("participant_uuid").textContent
+  console.log("ok")
+  console.log(action)
+  if (action == 'clear') {
+    clear_bet(participant_id)
+  } else if (action == 'make') {
+    make_bet(participant_id)
+  }
 
+}
+
+clear_bet = (participant_id) => {
+  console.log("wtf")
+}
+
+make_bet = (participant_id) => {
   $.ajax({
     url: json_data["make_bets_url"],
     dataType: "json",
@@ -39,43 +53,6 @@ make_bet = () => {
 }
 
 
-clear_bet = () => {
-  participant_id = document.getElementById("participant_uuid").textContent
-
-  $.ajax({
-    url: json_data["clear_bets_url"],
-    dataType: "json",
-    data: {
-      "participant_id": participant_id,
-    },
-    success: function(data) {
-      // console.log("clear_bet")
-  //
-  //     const win_bet = data['bets']['W']
-  //     const place_bet = data['bets']['P']
-  //     const show_bet = data['bets']['S']
-  //
-  //     const part_id = data["participant_id"]
-  //
-  //     if (win_bet) {
-  //       const target_td = document.getElementById(part_id + "-win-td")
-  //       target_td.innerHTML = "";
-  //       target_td.appendChild(create_button(win_bet.toFixed(2)))
-  //     }
-  //     if (place_bet) {
-  //       const target_td = document.getElementById(part_id + "-place-td")
-  //       target_td.innerHTML = "";
-  //       target_td.appendChild(create_button(place_bet.toFixed(2)))
-  //
-  //     }
-  //     if (show_bet) {
-  //       const target_td = document.getElementById(part_id + "-show-td")
-  //       target_td.innerHTML = "";
-  //       target_td.appendChild(create_button(show_bet.toFixed(2)))
-  //     }
-    }
-  })
-}
 
 
 const create_button = (text_content) => {
