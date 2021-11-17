@@ -38,6 +38,7 @@ make_bet = () => {
   })
 }
 
+
 clear_bet = () => {
   participant_id = document.getElementById("participant_uuid").textContent
 
