@@ -127,9 +127,7 @@ class Command(BaseCommand):
 
 
         for uuid in prediction_list.keys():
-            print(uuid)
             prediction = prediction_list[uuid]
-            print(int(prediction))
             self.save_smo_prediction(uuid, prediction)
 
 
