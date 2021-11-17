@@ -46,6 +46,7 @@ class Command(BaseCommand):
             new_recommendation = Bet_Recommendation(
                 venue=venue,
                 grade=grade,
+                classifier=classifier,
                 distance=distance,
                 prediction=prediction)
             new_recommendation.set_fields_to_base()

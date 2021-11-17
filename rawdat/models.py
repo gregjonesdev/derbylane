@@ -511,6 +511,7 @@ class Participant(CoreModel):
         try:
             prediction = self.prediction.smo
             recommended_bet = Bet_Recommendation.objects.get(
+                classifier="j48",
                 venue=self.race.chart.program.venue,
                 grade=self.race.grade,
                 distance=self.race.distance,
