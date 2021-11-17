@@ -56,12 +56,7 @@ class FrontPage(OTPRequiredMixin, View):
         predicted_charts = []
         for chart in charts:
             if chart.has_predictions():
-                print("yes")
-                print(chart)
                 predicted_charts.append(chart)
-            else:
-                print("no")
-                print(chart)
         self.context["charts"] = predicted_charts
         return render(request, self.template_name, self.context)
 
@@ -111,7 +106,6 @@ class ResultsView(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-        print("Results view")
         try:
             target_date = datetime.datetime.fromisoformat(
                 request.GET.get("date"))
