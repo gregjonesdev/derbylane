@@ -303,6 +303,10 @@ class Bet_Recommendation(CoreModel):
     venue =  models.ForeignKey(
         Venue,
         on_delete=models.CASCADE)
+    classifier = models.CharField(
+        null=True,
+        max_length=16
+    )
     distance = models.IntegerField()
     grade = models.ForeignKey(
         Grade,

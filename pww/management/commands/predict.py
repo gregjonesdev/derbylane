@@ -149,7 +149,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         start_date = "2019-01-01"
         today = datetime.date.today()
-        classifier_name = 'smo'
+        # classifier_name = 'smo'
         classifier_name = 'j48'
         jvm.start(packages=True, max_heap_size="5028m")
         for venue_code in betting_venues:

@@ -4,18 +4,29 @@ from django.core.management.base import BaseCommand
 from rawdat.models import Bet_Recommendation
 from rawdat.models import Venue, Grade
 
-recommendations = [
+classifiers = {
+    'smo': [
     ['WD', 'B', 548, 4, "P"],
     ['WD', 'C', 548, 2, "W"],
     ['TS', 'B', 550, 2, "P"],
     ['TS', 'C', 550, 1, "S"],
     ['SL', 'C', 583, 4, "WP"],
+    ],
+    'j48': [
+    ['WD', 'B', 548, 1, "P"],
+    ['WD', 'C', 548, 2, "W"],
+    ['TS', 'B', 550, 2, "P"],
+    ['TS', 'C', 550, 1, "S"],
+    ['SL', 'C', 583, 4, "WP"],
+    ],
+}
 ]
 
 class Command(BaseCommand):
 
     def build_recommendation(
         self,
+        classifier,
         venue_code,
         grade_name,
         distance,
@@ -27,6 +38,7 @@ class Command(BaseCommand):
             recommendation = Bet_Recommendation.objects.get(
                 venue=venue,
                 grade=grade,
+                classifier=classifier,
                 distance=distance,
                 prediction=prediction)
         except ObjectDoesNotExist:
@@ -42,10 +54,12 @@ class Command(BaseCommand):
         recommendation.save()
 
     def handle(self, *args, **options):
-        for recommendation in recommendations:
-            self.build_recommendation(
-                recommendation[0],
-                recommendation[1],
-                recommendation[2],
-                recommendation[3],
-                recommendation[4])
+        for classifier in classifiers:
+            for recommendation in classifiers[classifier]:
+                self.build_recommendation(
+                    classifier,
+                    recommendation[0],
+                    recommendation[1],
+                    recommendation[2],
+                    recommendation[3],
+                    recommendation[4])
