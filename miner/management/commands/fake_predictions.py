@@ -25,6 +25,8 @@ class Command(BaseCommand):
                     participant = participant
                 )
                 new_pred.set_fields_to_base()
-                new_pred.j48 = 1
-                new_pred.lib_svm = 1
-                new_pred.save()
+                pred = new_pred
+            pred.j48 = 2
+            pred.lib_svm = 3
+            pred.smo = 2
+            pred.save()

@@ -9,6 +9,10 @@ from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from two_factor.views.mixins import OTPRequiredMixin
+from django.utils import timezone
+
+
+
 
 from rawdat.models import (
     Venue,
@@ -33,6 +37,9 @@ class FrontPage(OTPRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
+
+        print(localdate())
+
         datestring = request.GET.get("date")
         if datestring:
             date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()

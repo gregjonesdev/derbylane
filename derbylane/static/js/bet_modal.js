@@ -1,6 +1,6 @@
 make_bet = () => {
   participant_id = document.getElementById("participant_uuid").textContent
-  json_data = JSON.parse(text_content)
+
   $.ajax({
     url: json_data["make_bets_url"],
     dataType: "json",
