@@ -25,6 +25,14 @@ body {
   background-color: var(--bg-secondary);
 }
 
+.card {
+  border: 1px solid #333;
+}
+
+#summary-card {
+  margin-top: 10px;
+}
+
 .date_arrow {
   display: inline;
 }
@@ -38,7 +46,7 @@ body {
 
 .select-holder {
   text-align: center;
-  padding: 15px 0px;
+  padding: 10px 0px;
 }
 
 #venue-select, #chart-select {
@@ -254,7 +262,7 @@ body {
 
 #loader-gif {
   display: block;
-  margin: 200px auto;
+  margin: 150px auto;
 }
 
 #main-table {
