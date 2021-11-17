@@ -48,6 +48,7 @@ body {
 
 .dropdown-item {
   color: var(--font-primary);
+  margin-top: 10px;
 }
 
 #navbarToggleExternalContent {
@@ -70,9 +71,6 @@ body {
 .upload-input {
 }
 
-#dropdown-chevron {
-  color: red;
-}
 
 #chart-select{
   font-weight: bold;
@@ -196,26 +194,48 @@ body {
   font-size: 1.25em;
 }
 
+.modal-body {
+  min-height: 50vh;
+}
+
+#modal-form {
+  text-align: right;
+
+}
+
+.two-factor {
+  text-align: left;
+}
+
 .modal-select {
+  margin: 30px 0px 30px 30px
+  /* display: flex;
+  flex-flow: column nowrap;
+  justify-content:space-around;
+  align-items: left;
+  margin:30px; */
+
+
+}
+
+.modal-footer {
+  margin-top: 80px;
   display: flex;
   flex-flow: row nowrap;
-  justify-content:space-around;
-  margin:30px;
-  padding: 0px;
+  justify-content: space-between;
 }
 
 .modal-bet-selector {
   background-color: #222;
   color:inherit;
-  margin: 0px;
   width: 150px;
   height: 40px;
-  font-size: 2.25em;
-  padding: 0px 10px
+  font-size: 1.75em;
+  /* padding: 0px 10px; */
 }
 
 .bet_amount_dollar {
-  font-size:2.25em;
+  font-size:2em;
 }
 
 #participant_uuid {
@@ -227,16 +247,24 @@ body {
   color: inherit;
   width: 100px;
   height: 40px;
-  font-size: 2.25em;
+  font-size: 2em;
   text-align:center;
 }
 
 #loader-gif {
   display: block;
-  margin: 50px auto;
+  margin: 200px auto;
 }
 
 table {
    table-layout: fixed;
    width:100%;
+}
+
+td {
+  border: none;
+  width: 15vw;
+  text-align: center;
+  vertical-align: middle;
+  color: #FFF;
 }

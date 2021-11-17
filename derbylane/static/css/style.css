@@ -203,6 +203,11 @@ body {
 
 }
 
+
+.two-factor {
+  text-align: left;
+}
+
 .modal-select {
   margin: 30px 0px 30px 30px
   /* display: flex;
@@ -252,12 +257,13 @@ body {
   margin: 200px auto;
 }
 
-table {
+#main-table {
    table-layout: fixed;
    width:100%;
 }
 
-td {
+
+#main-table td {
   border: none;
   width: 15vw;
   text-align: center;
