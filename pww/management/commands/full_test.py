@@ -132,19 +132,23 @@ class Command(BaseCommand):
                 place_returns/bet_count,
                 show_returns/bet_count]
             max_return = max(average_returns)
+            if max_return > 2.00:
+                potential = round(max_return*bet_count, 3)
+            else:
+                potential = ""
             print(table_string.format(
                 c,
                 self.get_formatting(max_return, average_returns[0]),
                 self.get_formatting(max_return, average_returns[1]),
                 self.get_formatting(max_return, average_returns[2]),
                 bet_count,
-                "\t{}".format(round(max_return*bet_count, 3))))
+                "\t{}".format(potential)))
 
 
 
 
     def handle(self, *args, **options):
-        venue_code = "WD"
+        venue_code = "TS"
         grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
