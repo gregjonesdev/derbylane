@@ -128,7 +128,17 @@ class Command(BaseCommand):
 
         for uuid in prediction_list.keys():
             prediction = prediction_list[uuid]
-            self.save_smo_prediction(uuid, prediction)
+            if 'smo' in model_name:
+                self.save_smo_prediction(uuid, prediction)
+            elif 'j48' in model_name:
+                self.save_j48_prediction(uuid, prediction)    
+
+    def save_j48_prediction(self, participant_uuid, prediction):
+        participant = Participant.objects.get(uuid=participant_uuid)
+        pred = get_prediction(participant)
+        pred.j48 = int(prediction)
+        pred.save()
+        print(pred.__dict__)
 
 
     def save_smo_prediction(self, participant_uuid, prediction):
