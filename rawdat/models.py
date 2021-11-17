@@ -423,7 +423,6 @@ class Race(CoreModel):
 
     def get_displayed_participants(self):
         all_participants = self.participant_set.all()
-        # print(self.number)
         participant_list=[]
         if self.is_complete():
             for participant in all_participants:
