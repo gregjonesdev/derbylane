@@ -45,15 +45,17 @@
   </div>
 
   <div id="summary-card" class="card">
-    <div class="card-header">
-      At a Glance
-      <img
+
+      <span>At a Glance
+        <img
         src="{% static 'img/transaction.png' %}"
         style="display:inline"
         height=20
-        class="pull-right"
+        width=20
+        class="float-right"
         alt="transaction-icon">
-    </div>
+
+      </span>
   </div>
   {% if charts|length %}
     <div
