@@ -86,6 +86,7 @@ class Command(BaseCommand):
         training_metrics,
         prediction_metrics,
         race_key):
+        string_c = None
         try:
             string_c = c_options[classifier_name][race_key]
         except KeyError:
