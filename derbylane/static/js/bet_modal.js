@@ -1,3 +1,37 @@
+const modal = document.getElementById("bet-modal")
+
+modal.addEventListener("focus", function (e) {
+  const button = $(event.relatedTarget) // Button that triggered the modal
+  if (button.hasClass("bet-button")) {
+    const participant_bets = document.getElementById("participant_bets")
+    const dog = button.data('dog')
+    const bets = button.data('bets')
+    const post = button.data('post')
+    const venue = button.data('venue')
+    const chart = button.data('chart')
+    const number = button.data('number')
+    const participant = button.data('participant')
+    const this_modal = $(this)
+    this_modal.find('.modal-subtitle').text(
+      post + " | " +
+      dog + " "
+    )
+    this_modal.find('.modal-title').text(
+      venue + " " +
+      chart + " Race " +
+      number
+    )
+    this_modal.find('#participant_uuid').text(
+      participant
+   )
+    // $('select option[value=' + bets).prop('selected',true);
+  }
+
+})
+
+
+
+
 handle_submit = (action) => {
   participant_id = document.getElementById("participant_uuid").textContent
   console.log("ok")

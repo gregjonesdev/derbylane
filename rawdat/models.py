@@ -422,7 +422,6 @@ class Race(CoreModel):
             return participant.bet_set.count() > 0
 
     def get_displayed_participants(self):
-        return self.participant_set.all()
         all_participants = self.participant_set.all()
         participant_list=[]
         if self.is_complete():
@@ -510,7 +509,7 @@ class Participant(CoreModel):
 
     def get_recommended_bet(self):
         try:
-            prediction = self.prediction.smo
+            prediction = self.prediction.j48
             recommended_bet = Bet_Recommendation.objects.get(
                 classifier="j48",
                 venue=self.race.chart.program.venue,
@@ -565,7 +564,6 @@ class Bet(CoreModel):
 
     def get_return(self):
         final = self.participant.final
-        print(final)
         if final and final <= self.type.cutoff:
             if self.type.name == 'P':
                 return self.participant.straight_wager.place

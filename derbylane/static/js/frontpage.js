@@ -1,38 +1,11 @@
 const text_content = document.getElementById("json-chart-data").textContent
 const json_data = JSON.parse(text_content)
-const modal = document.getElementById("bet-modal")
 
-modal.addEventListener("focus", function (e) {
-  const button = $(event.relatedTarget) // Button that triggered the modal
-  if (button.hasClass("bet-button")) {
-    const participant_bets = document.getElementById("participant_bets")
-    const dog = button.data('dog')
-    const bets = button.data('bets')
-    const post = button.data('post')
-    const venue = button.data('venue')
-    const chart = button.data('chart')
-    const number = button.data('number')
-    const participant = button.data('participant')
-    const this_modal = $(this)
-    this_modal.find('.modal-subtitle').text(
-      post + " | " +
-      dog + " "
-    )
-    this_modal.find('.modal-title').text(
-      venue + " " +
-      chart + " Race " +
-      number
-    )
-    this_modal.find('#participant_uuid').text(
-      participant
-   )
-    // $('select option[value=' + bets).prop('selected',true);
-  }
-
-})
 
 
 window.onload = (event) => {
+  console.log("load")
+
   dropdowns = document.getElementsByClassName("dropdown-item")
 
   // function initial_load () {
@@ -43,8 +16,12 @@ window.onload = (event) => {
   function load_races (e)  {
     console.log("load races")
     const currentTarget = e.currentTarget
+    console.log(currentTarget)
     const label = currentTarget.textContent
+    console.log(label)
     const chart_id = e.currentTarget.getAttribute("data-chart")
+    console.log(chart_id)
+    console.log(label)
     load_charts(chart_id, label)
 
 
