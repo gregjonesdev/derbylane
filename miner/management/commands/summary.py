@@ -65,7 +65,7 @@ class Command(BaseCommand):
         last_week = yesterday = (today - datetime.timedelta(days=7))
         winnings = {}
         for participant in Participant.objects.filter(
-            race__chart__program__date=yesterday):
+            race__chart__program__date__gt=last_week):
             recommended_bets = participant.get_recommended_bet()
             if recommended_bets:
                 race_key = self.get_race_key_from_race(participant.race)
