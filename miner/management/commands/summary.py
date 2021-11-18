@@ -41,7 +41,7 @@ class Command(BaseCommand):
 
     def get_average(self, list):
         if len(list) > 0:
-            round(sum(list)/len(list), 2)
+            return round(sum(list)/len(list), 2)
         return "---"
     def build_table(self, winnings):
         print("\nReturns By Race Type:\n")
