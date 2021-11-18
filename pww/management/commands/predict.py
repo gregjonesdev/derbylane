@@ -86,36 +86,40 @@ class Command(BaseCommand):
         training_metrics,
         prediction_metrics,
         race_key):
-        string_c = c_options[classifier_name][race_key]
-        model_name = "{}_{}_{}.model".format(
-            race_key,
-            classifier_name,
-            string_c.replace(".","")
-        )
-        print("For race_key {} use model {}".format(race_key, model_name))
+        try:
+            string_c = c_options[classifier_name][race_key]
+        except KeyError:
+            pass
+        if string_c:
+            model_name = "{}_{}_{}.model".format(
+                race_key,
+                classifier_name,
+                string_c.replace(".","")
+            )
+            print("For race_key {} use model {}".format(race_key, model_name))
 
-        training_arff_filename = "{}/train_{}.arff".format(
-            arff_directory,
-            race_key)
-        testing_arff_filename = "{}/test_{}.arff".format(
-            arff_directory,
-            race_key)
-        is_nominal = False
-        training_arff = create_arff(
-            training_arff_filename,
-            training_metrics,
-            is_nominal,
-            True)
-        testing_arff = create_arff(
-            testing_arff_filename,
-            prediction_metrics,
-            is_nominal,
-            False)
+            training_arff_filename = "{}/train_{}.arff".format(
+                arff_directory,
+                race_key)
+            testing_arff_filename = "{}/test_{}.arff".format(
+                arff_directory,
+                race_key)
+            is_nominal = False
+            training_arff = create_arff(
+                training_arff_filename,
+                training_metrics,
+                is_nominal,
+                True)
+            testing_arff = create_arff(
+                testing_arff_filename,
+                prediction_metrics,
+                is_nominal,
+                False)
 
 
-        loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-        model_name = create_model(training_arff, classifier_name, string_c, race_key, loader)
-        self.make_predictions(model_name, testing_arff, loader)
+            loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+            model_name = create_model(training_arff, classifier_name, string_c, race_key, loader)
+            self.make_predictions(model_name, testing_arff, loader)
 
 
 
@@ -131,7 +135,7 @@ class Command(BaseCommand):
             if 'smo' in model_name:
                 self.save_smo_prediction(uuid, prediction)
             elif 'j48' in model_name:
-                self.save_j48_prediction(uuid, prediction)    
+                self.save_j48_prediction(uuid, prediction)
 
     def save_j48_prediction(self, participant_uuid, prediction):
         participant = Participant.objects.get(uuid=participant_uuid)
