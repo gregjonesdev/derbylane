@@ -422,6 +422,7 @@ class Race(CoreModel):
             return participant.bet_set.count() > 0
 
     def get_displayed_participants(self):
+        return self.participant_set.all()
         all_participants = self.participant_set.all()
         participant_list=[]
         if self.is_complete():
