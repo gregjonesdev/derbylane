@@ -80,5 +80,5 @@ class Command(BaseCommand):
                 if "S" in recommended_bets:
                     winnings[race_key]["P"].append(
                         self.get_place_return(participant))
-
+        print(winnings)
         self.build_table(winnings)
