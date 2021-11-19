@@ -65,6 +65,7 @@ class Command(BaseCommand):
         last_week = yesterday = (today - datetime.timedelta(days=7))
         winnings = {}
         for participant in Participant.objects.filter(
+            final__isnull=False,
             race__chart__program__date__gt=last_week):
             recommended_bets = participant.get_recommended_bet()
             if recommended_bets:
@@ -80,5 +81,4 @@ class Command(BaseCommand):
                 if "S" in recommended_bets:
                     winnings[race_key]["P"].append(
                         self.get_place_return(participant))
-        print(winnings)
         self.build_table(winnings)
