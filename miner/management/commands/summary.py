@@ -54,9 +54,15 @@ class Command(BaseCommand):
     def write_table_row(self, grade, grade_winnings, table_string):
         print(table_string.format(
             grade,
-            self.get_average(grade_winnings["W"]),
-            self.get_average(grade_winnings["P"]),
-            self.get_average(grade_winnings["S"])))
+            "{} ({})".format(
+                self.get_average(grade_winnings["W"]),
+                len(grade_winnings["W"])),
+            "{} ({})".format(
+                self.get_average(grade_winnings["P"]),
+                len(grade_winnings["W"])),
+            "{} ({})".format(
+                self.get_average(grade_winnings["S"]),
+                len(grade_winnings["W"]))))
 
     def handle(self, *args, **options):
 
