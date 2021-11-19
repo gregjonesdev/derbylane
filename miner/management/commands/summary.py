@@ -59,10 +59,8 @@ class Command(BaseCommand):
                 len(grade_winnings["W"])),
             "{} ({})".format(
                 self.get_average(grade_winnings["P"]),
-                len(grade_winnings["W"])),
-            "{} ({})".format(
-                self.get_average(grade_winnings["S"]),
-                len(grade_winnings["W"]))))
+                len(grade_winnings["P"])),
+            ""))
 
     def handle(self, *args, **options):
 
