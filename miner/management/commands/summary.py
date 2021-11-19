@@ -46,10 +46,11 @@ class Command(BaseCommand):
     def build_table(self, winnings):
         print("\nReturns By Race Type:\n")
         table_string = "{}\t\t{}\t\t{}\t\t{}"
-        print(table_string.format("\t", "Win", "Place", "Show"))
+        print(table_string.format("\t", "Win", "Place", " "))
         for grade in winnings.keys():
             grade_winnings = winnings[grade]
             self.write_table_row(grade, grade_winnings, table_string)
+        print("\n")    
 
     def write_table_row(self, grade, grade_winnings, table_string):
         print(table_string.format(
@@ -61,6 +62,7 @@ class Command(BaseCommand):
                 self.get_average(grade_winnings["P"]),
                 len(grade_winnings["P"])),
             ""))
+
 
     def handle(self, *args, **options):
 
