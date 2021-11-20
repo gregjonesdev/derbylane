@@ -4,24 +4,12 @@ const json_data = JSON.parse(text_content)
 
 
 window.onload = (event) => {
-  console.log("load")
-
   dropdowns = document.getElementsByClassName("dropdown-item")
 
-  // function initial_load () {
-  //     console.log(dropdowns[0].textContent)
-  //     console.log(dropdowns[0].getAttribute("data-chart"))
-  // }
-
   function load_races (e)  {
-    console.log("load races")
     const currentTarget = e.currentTarget
-    console.log(currentTarget)
     const label = currentTarget.textContent
-    console.log(label)
     const chart_id = e.currentTarget.getAttribute("data-chart")
-    console.log(chart_id)
-    console.log(label)
     load_charts(chart_id, label)
 
 
@@ -46,8 +34,6 @@ window.onload = (event) => {
           }
         })
   }
-
-  // initial_load()
 
   for (let i=0; i<dropdowns.length; i++) {
     dropdowns[i].addEventListener("click", load_races)

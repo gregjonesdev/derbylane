@@ -34,8 +34,6 @@ modal.addEventListener("focus", function (e) {
 
 handle_submit = (action) => {
   participant_id = document.getElementById("participant_uuid").textContent
-  console.log("ok")
-  console.log(action)
   if (action == 'clear') {
     clear_bet(participant_id)
   } else if (action == 'make') {
@@ -45,8 +43,6 @@ handle_submit = (action) => {
 }
 
 clear_bet = (participant_id) => {
-  console.log("wtf")
-  console.log(json_data["clear_bets_url"])
   $.ajax({
     url: json_data["clear_bets_url"],
     dataType: "json",
@@ -54,7 +50,10 @@ clear_bet = (participant_id) => {
       "participant_id": participant_id,
     },
     success: function(data) {
-      console.log("success")}
+      const part_id = data["participant_id"]
+      document.getElementById(part_id + "-win-td").innerHTML = "";
+      document.getElementById(part_id + "-place-td").innerHTML = "";
+      document.getElementById(part_id + "-show-td").innerHTML = "";}
 })
 }
 
