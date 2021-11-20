@@ -46,6 +46,16 @@ handle_submit = (action) => {
 
 clear_bet = (participant_id) => {
   console.log("wtf")
+  console.log(json_data["clear_bets_url"])
+  $.ajax({
+    url: json_data["clear_bets_url"],
+    dataType: "json",
+    data: {
+      "participant_id": participant_id,
+    },
+    success: function(data) {
+      console.log("success")}
+})
 }
 
 make_bet = (participant_id) => {

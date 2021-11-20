@@ -177,7 +177,7 @@ def make_bet(request):
         'participant_id': participant_id })
 
 def clear_bets(request):
-    print("clear bets")
+    print("view clear bets")
     participant_id = request.GET.get('participant_id')
     # participant = Participant.objects.get(
     #     uuid=participant_id)
