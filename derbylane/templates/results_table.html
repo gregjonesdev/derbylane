@@ -7,11 +7,12 @@
     disabled>
     <span
       id="participant_bets">
-      WPS
+      {{ participant.get_purchased_wagers }}
     </span>
   </button>
 {% endblock prediction_button %}
 
+{% if participant.final %}
 {% block win_button %}
   <button
     class="{{ participant.get_win_bet.button_style }}"
@@ -47,3 +48,4 @@
     {% endif %}
   </button>
 {% endblock show_button %}
+{% endif %}

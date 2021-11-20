@@ -534,9 +534,9 @@ class Participant(CoreModel):
         return Bet.objects.get(participant=self,type__name="S")
 
     def get_purchased_wagers(self):
-        wager_list = []
+        wager_list = ""
         for bet in self.get_bets():
-            wager_list.append()
+            wager_list += bet.type.name
         return (wager_list)
 
 class Bet(CoreModel):
