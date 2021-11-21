@@ -425,9 +425,10 @@ class Race(CoreModel):
         all_participants = self.participant_set.all()
         participant_list=[]
         if self.is_complete():
-            for participant in all_participants:
-                if participant.get_bets().count():
-                    participant_list.append(participant)
+            return all_participants
+            # for participant in all_participants:
+            #     if participant.get_bets().count():
+            #         participant_list.append(participant)
         else:
             for participant in all_participants:
                 if participant.get_recommended_bet():
