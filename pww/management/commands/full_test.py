@@ -148,7 +148,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        venue_code = "SL"
+        venue_code = "TS"
         grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
