@@ -31,11 +31,11 @@ class Command(BaseCommand):
     def evaluate_predicions(self, prediction_1, prediction_2):
         pass
 
-    def print_returns(self, model_name, c, race_key, cutoff_date, loader):
+    def print_returns(self, model_name, testing_races, c, race_key, cutoff_date, loader):
         model = Classifier(jobject=serialization.read(model_name))
 
         print("here3")
-        print(Race.objects.filter(chart__program__date__gt=cutoff_date))
+        print(testing_races)
         # testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
         # testing_arff = get_testing_arff(
         #     race_key,
@@ -91,7 +91,7 @@ class Command(BaseCommand):
             training_metrics,
             is_nominal)
 
-
+        testing_races = Race.objects.filter(chart__program__date__gt=cutoff_date)
         c = 0.01
         max_return = 0
 
@@ -121,7 +121,7 @@ class Command(BaseCommand):
         while c <= c_stop:
             c = round(c, 2)
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
-            self.print_returns(model_name, str(c), race_key, cutoff_date, loader)
+            self.print_returns(model_name, testing_races, str(c), race_key, cutoff_date, loader)
             c = round(c + interval, 2)
 
         jvm.stop()
