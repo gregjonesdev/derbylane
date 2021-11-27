@@ -7,21 +7,17 @@ from libsvm.svmutil import *
 from rawdat.models import Participant
 from weka.classifiers import Classifier, Evaluation
 from django.core.exceptions import ObjectDoesNotExist
-from pww.models import Prediction
+from pww.models import Prediction, Metric
 from weka.attribute_selection import ASSearch
 from weka.attribute_selection import ASEvaluation
-from weka.attribute_selection import AttributeSelection
-# import wekaexamples.helper as helper
+# from weka.attribute_selection import AttributeSelection
 from weka.core.classes import Random
 from weka.core.converters import Loader
 from weka.core.dataset import Instances
 from weka.filters import Filter
 
 from weka.core.packages import install_missing_packages, LATEST
-from miner.utilities.constants import (
-    csv_columns,
-    models_directory,
-    packages_directory)
+from miner.utilities.constants import csv_columns
 import os
 import pprint
 
@@ -48,6 +44,13 @@ classifiers = {
     }
 }
 
+
+def get_metrics(venue_code, distance, grade_name):
+    return Metric.objects.filter(
+        participant__race__chart__program__venue__code=venue_code,
+        participant__race__distance=distance,
+        participant__race__grade__name=grade_name,
+        participant__race__chart__program__date__gte="2019-01-01")
 
 def add_c_to_options(options, c):
     # print(options)

@@ -153,7 +153,6 @@ class Command(BaseCommand):
         distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
         cutoff_date = (today - datetime.timedelta(days=49)).date()
-        # training_cutoff = (today - datetime.timedelta(days=7)).date()
         start_time = time()
         all_metrics = Metric.objects.filter(
             participant__race__chart__program__venue__code=venue_code,

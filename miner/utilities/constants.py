@@ -65,7 +65,29 @@ chart_times = [
 models_directory = "../../../allmodels"
 packages_directory = "../../../packages"
 
+c_data = {
+    "j48": {
+        "c_start": 0.01,
+        "c_stop": 0.49,
+        "interval": 0.01,
+    },
+    "smo": {
+        "c_start": 0,
+        "c_stop": 2,
+        "interval": 0.01,
+    },
+}
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 
 

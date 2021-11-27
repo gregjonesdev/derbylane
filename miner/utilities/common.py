@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime, date
+from miner.utilities.urls import arff_directory
 from lxml import html
 
 
@@ -26,3 +27,13 @@ def force_date(input):
         return datetime.strptime(input, "%Y-%m-%d").date()
     else:
         return input
+
+def get_race_key(venue_code, distance, grade_name):
+    return "{}_{}_{}".format(venue_code, distance, grade_name)
+
+
+def two_digitizer(self, integer):
+    if integer < 10:
+        return "0{}".format(integer)
+    else:
+        return integer
