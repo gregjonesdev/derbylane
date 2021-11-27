@@ -91,7 +91,7 @@ class Command(BaseCommand):
     def get_unique_quinellas(self, first_prediction, second_prediction):
         print("get unique quinells:")
         matches_first = [1,3,5]
-        matches_second = [2,4,6]
+        matches_second = [1,3,5]
         unique_quinellas = []
         i = 0
         while i < len(matches_first):
@@ -101,7 +101,8 @@ class Command(BaseCommand):
                 second = matches_second[j]
                 if not first == second:
                     if not (first, second) in unique_quinellas:
-                        unique_quinellas.append((first, second))
+                        if not (second, first) in unique_quinellas:
+                            unique_quinellas.append((first, second))
                 j += 1
             i += 1
         print(unique_quinellas)
