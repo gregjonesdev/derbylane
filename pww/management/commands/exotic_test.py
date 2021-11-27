@@ -28,9 +28,86 @@ class Command(BaseCommand):
         parser.add_argument('--grade', type=str)
         parser.add_argument('--prediction', type=str)
 
+    def get_race_predictions(self, race):
+        pass
+
     def evaluate_predicions(self, testing_races, prediction_1, prediction_2):
         print("Evaluate predcitions")
         print("{} - {}".format(prediction_1, prediction_2))
+
+        for race in testing_races:
+            # get race predictions
+
+            # testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
+            # testing_arff = get_testing_arff(
+            #     race_key,
+            #     training_metrics,
+            #     is_nominal)
+            for participant in race.participant_set.all():
+                print("{} {}".format(participant.post, participant.dog.name))
+
+
+    def get_same(self, prediction_list, race, prediction):
+        matches_prediction = []
+        for participant in race.participant_set.all():
+            if prediction_list[participant.uuid] == prediction:
+                matches_prediction.append(participant)
+        i = 0
+        unique_tuples = []
+        while i < len(matches_prediction):
+            j = i + 1
+            while j < len(matches_prediction):
+                unique_tuples.append((matches_prediction[i], matches_prediction[j]))
+                j += 1
+            i += 1
+        print("unique tuples:")
+        print(unique_tuples)
+
+
+    def get_different(self, prediction_list, race, first_prediction, second_prediction):
+        matches_first = []
+        matches_second = []
+        for participant in race.participant_set.all():
+            if prediction_list[participant.uuid] == first_prediction:
+                matches_first.append(participant)
+            elif prediction_list[participant.uuid] == second_prediction:
+                matches_second.append(participant)
+        i = 0
+        matches_first = []
+        matches_second = []
+        unique_tuples = []
+        # while i < len(matches_prediction):
+        #     j = i + 1
+        #     while j < len(matches_prediction):
+        #         unique_tuples.append((matches_prediction[i], matches_prediction[j]))
+        #         j += 1
+        #     i += 1
+        # print("unique tuples:")
+        # print(unique_tuples)
+
+
+
+
+    def get_unique_quinellas(self, first_prediction, second_prediction):
+        print("get unique quinells:")
+        matches_first = [1,3,5]
+        matches_second = [2,4,6]
+        unique_quinellas = []
+        i = 0
+        while i < len(matches_first):
+            first = matches_first[i]
+            j = 0
+            while j < len(matches_second):
+                second = matches_second[j]
+                if not first == second:
+                    if not (first, second) in unique_quinellas:
+                        unique_quinellas.append((first, second))
+                j += 1
+            i += 1
+        print(unique_quinellas)
+
+
+
     def print_returns(self, model_name, testing_races, c, race_key, cutoff_date, loader):
         model = Classifier(jobject=serialization.read(model_name))
 
@@ -43,11 +120,6 @@ class Command(BaseCommand):
                 self.evaluate_predicions(testing_races, prediction_1, prediction_2)
                 prediction_2 += 1
             prediction_1 += 1
-        # testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
-        # testing_arff = get_testing_arff(
-        #     race_key,
-        #     training_metrics,
-        #     is_nominal)
 
 
 
@@ -83,6 +155,8 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
+        self.get_unique_quinellas("a", "b")
+        raise SystemExit(0)
         venue_code = "TS"
         grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
