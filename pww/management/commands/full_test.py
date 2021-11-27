@@ -105,16 +105,11 @@ class Command(BaseCommand):
             return 0
 
 
-    def print_returns(self, model_name, testing_arff, c, race_key, loader, prediction):
+    def print_returns(self, prediction_list, c, race_key, loader, prediction):
         # print(model_name)
-        model = Classifier(jobject=serialization.read(model_name))
-        # print(type(testing_arff))
-        uuid_line_index = get_uuid_line_index(testing_arff)
+
         # print(uuid_line_index)
-        print(testing_arff)
-        testing_data = build_scheduled_data(testing_arff)
-        # model.build_classifier(testing_data)
-        prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+
         win_returns = 0
         place_returns = 0
         show_returns = 0
@@ -160,12 +155,13 @@ class Command(BaseCommand):
             participant__race__chart__program__venue__code=venue_code,
             participant__race__distance=distance,
             participant__race__grade__name=grade_name,
-            participant__race__chart__program__date__gte="2017-01-01")
-        training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
-        testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
+            participant__race__chart__program__date__gte="2019-01-01")
+        training_metrics = all_metrics.filter(
+            participant__race__chart__program__date__lte=cutoff_date)
+        testing_metrics = all_metrics.filter(
+            participant__race__chart__program__date__gt=cutoff_date)
         race_key = get_race_key(venue_code, distance, grade_name)
         is_nominal = False
-        # print("training metrics: {}".format(len(training_metrics)))
         training_arff = get_training_arff(
             race_key,
             training_metrics,
@@ -217,7 +213,13 @@ class Command(BaseCommand):
         while c <= c_stop:
             c = round(c, 2)
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
-            self.print_returns(model_name, testing_arff, str(c), race_key, loader, prediction)
+            model = Classifier(jobject=serialization.read(model_name))
+            # print(type(testing_arff))
+            uuid_line_index = get_uuid_line_index(testing_arff)
+            testing_data = build_scheduled_data(testing_arff)
+                # model.build_classifier(testing_data)
+            prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+            self.print_returns(prediction_list, str(c), race_key, loader, prediction)
             c = round(c + interval, 2)
 
         jvm.stop()
