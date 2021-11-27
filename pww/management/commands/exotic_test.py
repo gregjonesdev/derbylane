@@ -47,47 +47,6 @@ class Command(BaseCommand):
                 print("{} {}".format(participant.post, participant.dog.name))
 
 
-    def get_same(self, prediction_list, race, prediction):
-        matches_prediction = []
-        for participant in race.participant_set.all():
-            if prediction_list[participant.uuid] == prediction:
-                matches_prediction.append(participant)
-        i = 0
-        unique_tuples = []
-        while i < len(matches_prediction):
-            j = i + 1
-            while j < len(matches_prediction):
-                unique_tuples.append((matches_prediction[i], matches_prediction[j]))
-                j += 1
-            i += 1
-        print("unique tuples:")
-        print(unique_tuples)
-
-
-    def get_different(self, prediction_list, race, first_prediction, second_prediction):
-        matches_first = []
-        matches_second = []
-        for participant in race.participant_set.all():
-            if prediction_list[participant.uuid] == first_prediction:
-                matches_first.append(participant)
-            elif prediction_list[participant.uuid] == second_prediction:
-                matches_second.append(participant)
-        i = 0
-        matches_first = []
-        matches_second = []
-        unique_tuples = []
-        # while i < len(matches_prediction):
-        #     j = i + 1
-        #     while j < len(matches_prediction):
-        #         unique_tuples.append((matches_prediction[i], matches_prediction[j]))
-        #         j += 1
-        #     i += 1
-        # print("unique tuples:")
-        # print(unique_tuples)
-
-
-
-
     def get_unique_quinellas(self, first_prediction, second_prediction):
         print("get unique quinells:")
         matches_first = [1,3,5]
