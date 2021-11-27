@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 from miner.utilities.urls import arff_directory
 from miner.utilities.constants import focused_distances
+from miner.utilities.common import get_race_key
 from rawdat.models import Participant
 from pww.models import TestPrediction, Metric
 from pww.utilities.ultraweka import (
@@ -17,7 +18,7 @@ from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
 import weka.core.serialization as serialization
-from pww.utilities.arff import create_arff
+from pww.utilities.arff import create_arff, get_training_arff, get_testing_arff
 table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
 class bcolors:
@@ -110,6 +111,7 @@ class Command(BaseCommand):
         # print(type(testing_arff))
         uuid_line_index = get_uuid_line_index(testing_arff)
         # print(uuid_line_index)
+        print(testing_arff)
         testing_data = build_scheduled_data(testing_arff)
         # model.build_classifier(testing_data)
         prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
@@ -161,27 +163,19 @@ class Command(BaseCommand):
             participant__race__chart__program__date__gte="2017-01-01")
         training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
         testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
-        race_key = "{}_{}_{}".format(venue_code, distance, grade_name)
-
-
-        training_arff_filename = "{}/train_{}.arff".format(
-            arff_directory,
-            race_key)
-        testing_arff_filename = "{}/test_{}.arff".format(
-            arff_directory,
-            race_key)
+        race_key = get_race_key(venue_code, distance, grade_name)
         is_nominal = False
         # print("training metrics: {}".format(len(training_metrics)))
-        training_arff = create_arff(
-            training_arff_filename,
+        training_arff = get_training_arff(
+            race_key,
             training_metrics,
-            is_nominal,
-            True)
-        testing_arff = create_arff(
-            testing_arff_filename,
+            is_nominal
+        )
+        testing_arff = get_testing_arff(
+            race_key,
             testing_metrics,
-            is_nominal,
-            False)
+            is_nominal
+        )
         c = 0.01
         max_return = 0
 

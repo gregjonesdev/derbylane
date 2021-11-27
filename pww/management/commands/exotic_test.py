@@ -38,16 +38,20 @@ class Command(BaseCommand):
         for race in testing_races:
             # get race predictions
 
-            # testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
-            # testing_arff = get_testing_arff(
-            #     race_key,
-            #     training_metrics,
-            #     is_nominal)
+
             for participant in race.participant_set.all():
                 print("{} {}".format(participant.post, participant.dog.name))
 
+    def get_matching_participants(self, race, prediction):
+        matching_participants = []
+        for participant in race.participant_set.all():
+            # get prediction
+            if "participant_prediction" == prediction:
+                matching_participants.append(participant)
+        return matching_participants
 
-    def get_unique_quinellas(self, first_prediction, second_prediction):
+
+    def get_unique_quinellas(self, matches_first, matches_second):
         print("get unique quinells:")
         matches_first = [1,3,5]
         matches_second = [1,3,5]
@@ -68,10 +72,10 @@ class Command(BaseCommand):
 
 
 
-    def print_returns(self, model_name, testing_races, c, race_key, cutoff_date, loader):
-        model = Classifier(jobject=serialization.read(model_name))
-
+    def print_returns(self, prediction_list, testing_races, c, race_key, cutoff_date, loader):
         print("here3")
+        print(prediction_list[:5])
+        raise SystemExit(0)
         print(testing_races)
         prediction_1 = 0
         while prediction_1 < 5:
@@ -114,25 +118,39 @@ class Command(BaseCommand):
 
 
 
+
+
     def handle(self, *args, **options):
-        self.get_unique_quinellas("a", "b")
-        raise SystemExit(0)
         venue_code = "TS"
         grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
         cutoff_date = (today - datetime.timedelta(days=49)).date()
         start_time = time()
-        all_metrics = get_metrics(venue_code, distance, grade_name)
-        training_metrics = all_metrics.filter(participant__race__chart__program__date__lte=cutoff_date)
+        all_metrics = get_metrics(
+            venue_code,
+            distance,
+            grade_name)
+        training_metrics = all_metrics.filter(
+            participant__race__chart__program__date__lte=cutoff_date)
+        testing_metrics = all_metrics.filter(
+            participant__race__chart__program__date__gt=cutoff_date)
         race_key = get_race_key(venue_code, distance, grade_name)
         is_nominal = False
         training_arff = get_training_arff(
             race_key,
             training_metrics,
             is_nominal)
-
-        testing_races = Race.objects.filter(chart__program__date__gt=cutoff_date)
+        testing_arff = get_testing_arff(
+            race_key,
+            testing_metrics,
+            is_nominal)
+        uuid_line_index = get_uuid_line_index(testing_arff)
+        print(testing_arff)
+        testing_data = build_scheduled_data(testing_arff)
+        print("oof")
+        testing_races = Race.objects.filter(
+            chart__program__date__gt=cutoff_date)
         c = 0.01
         max_return = 0
 
@@ -162,7 +180,9 @@ class Command(BaseCommand):
         while c <= c_stop:
             c = round(c, 2)
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
-            self.print_returns(model_name, testing_races, str(c), race_key, cutoff_date, loader)
+            model = Classifier(jobject=serialization.read(model_name))
+            prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+            self.print_returns(prediction_list, testing_races, str(c), race_key, cutoff_date, loader)
             c = round(c + interval, 2)
 
         jvm.stop()

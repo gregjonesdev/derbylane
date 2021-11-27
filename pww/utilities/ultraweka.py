@@ -223,16 +223,18 @@ def get_prediction(participant):
     return pred
 
 def build_scheduled_data(arff_data):
-    # print("Define loader")
+    print("Define loader")
+    print(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    # print("get loaded data")
+    print("get loaded data")
     loaded_data = loader.load_file(arff_data)
     anonymous_data = remove_uuid(loaded_data)
-    # print("nominalize:")
+
+    print("nominalize:")
     scheduled_data = nominalize(anonymous_data)
-    # print("set class")
+    print("set class")
     scheduled_data.class_is_last()
-    # print("return scheduled_data")
+    print("return scheduled_data")
     return scheduled_data
 #
 # def evaluate_single(arff_file):
