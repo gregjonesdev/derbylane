@@ -28,14 +28,21 @@ class Command(BaseCommand):
         parser.add_argument('--grade', type=str)
         parser.add_argument('--prediction', type=str)
 
-    def evaluate_predicions(self, prediction_1, prediction_2):
-        pass
-
+    def evaluate_predicions(self, testing_races, prediction_1, prediction_2):
+        print("Evaluate predcitions")
+        print("{} - {}".format(prediction_1, prediction_2))
     def print_returns(self, model_name, testing_races, c, race_key, cutoff_date, loader):
         model = Classifier(jobject=serialization.read(model_name))
 
         print("here3")
         print(testing_races)
+        prediction_1 = 0
+        while prediction_1 < 5:
+            prediction_2 = 0
+            while prediction_2 < 5:
+                self.evaluate_predicions(testing_races, prediction_1, prediction_2)
+                prediction_2 += 1
+            prediction_1 += 1
         # testing_metrics = all_metrics.filter(participant__race__chart__program__date__gt=cutoff_date)
         # testing_arff = get_testing_arff(
         #     race_key,
@@ -133,7 +140,6 @@ class Command(BaseCommand):
 
         print("\nAll metrics: {}".format(len(all_metrics)))
         print("Training metrics: {}".format(len(training_metrics)))
-        print("Test metrics: {}".format(len(testing_metrics)))
 
         print("\nCompleted Analysis in {}:{}:{}".format(
         self.two_digitizer(int(hours)),
