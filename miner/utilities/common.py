@@ -2,7 +2,7 @@ import requests
 from datetime import datetime, date
 from miner.utilities.urls import arff_directory
 from lxml import html
-
+from miner.utilities.constants import bcolors
 
 def get_node_elements(url, string):
     return get_node(url).xpath(string)
@@ -32,8 +32,16 @@ def get_race_key(venue_code, distance, grade_name):
     return "{}_{}_{}".format(venue_code, distance, grade_name)
 
 
-def two_digitizer(self, integer):
+def two_digitizer(integer):
     if integer < 10:
         return "0{}".format(integer)
     else:
         return integer
+
+
+def get_formatting(max, value):
+    formatting = ""
+    if value > 2.00:
+        formatting += bcolors.OKGREEN
+        formatting += bcolors.BOLD
+    return formatting + "${:.2f}".format(value) + bcolors.ENDC
