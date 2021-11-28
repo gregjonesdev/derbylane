@@ -31,7 +31,7 @@ class Command(BaseCommand):
     def get_race_predictions(self, race):
         pass
 
-    def evaluate_predicions(
+    def evaluate_quinellas(
         self,
         testing_races,
         prediction_list,
@@ -40,21 +40,6 @@ class Command(BaseCommand):
 
         print("{} - {}".format(prediction_1, prediction_2))
 
-                # testing_arff = get_testing_arff(
-                #     race_key,
-                #     testing_metrics,
-                #     is_nominal)
-        # testing_metrics = all_metrics.filter(
-        #     participant__race__chart__program__date__gt=cutoff_date)
-        # testing_arff = get_testing_arff(
-        #     race_key,
-        #     testing_metrics,
-        #     is_nominal)
-
-        # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
-
-        # uuid_line_index = get_uuid_line_index(testing_arff)
-        #
         for race in testing_races:
             matches_predictions = self.get_matching_participants(
                 race,
@@ -69,7 +54,7 @@ class Command(BaseCommand):
             if len(unique_quinellas) > 0:
                 for pair in unique_quinellas:
                     print("{} - {}".format(pair[0].dog.name, pair[1].dog.name))
-                print("---------")        
+                print("---------")
 
 
     def get_testing_metrics(self, testing_races):
@@ -122,13 +107,52 @@ class Command(BaseCommand):
         return unique_quinellas
 
 
+    def get_unique_exactas(self, matches_first, matches_second):
+        unique_exactas = []
+        i = 0
+        while i < len(matches_first):
+            first = matches_first[i]
+            j = 0
+            while j < len(matches_second):
+                second = matches_second[j]
+                if not first == second:
+                    if not (first, second) in unique_exactas:
+                        unique_exactas.append((first, second))
+                j += 1
+            i += 1
+
+        return unique_exactas
+
+    def get_unique_trifectas(self, matches_first, matches_second, matches_third):
+        unique_trifectas = []
+        i = 0
+        while i < len(matches_first):
+            first = matches_first[i]
+            j = 0
+            while j < len(matches_second):
+                second = matches_second[j]
+                k = 0
+                while k < len(matches_third):
+                    if not (
+                        first == second and
+                        first == third and
+                        second == third):
+                        if not (first, second, third) in unique_trifectas:
+                            unique_trifectas.append((first, second, third))
+                    k += 1
+                j += 1
+            i += 1
+
+        return unique_trifectas
+
+
 
     def print_returns(self, testing_races, prediction_list, c, race_key, cutoff_date, loader):
         prediction_1 = 0
         while prediction_1 < 5:
             prediction_2 = 0
             while prediction_2 < 5:
-                self.evaluate_predicions(
+                self.evaluate_quinellas(
                     testing_races,
                     prediction_list,
                     prediction_1,
