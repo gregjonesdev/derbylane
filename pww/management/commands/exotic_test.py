@@ -58,7 +58,7 @@ class Command(BaseCommand):
         # uuid_line_index = get_uuid_line_index(testing_arff)
         #
         for race in testing_races:
-            self.get_matching_participants(race, prediction_1, prediction_list)
+            print(self.get_matching_participants(race, prediction_1, prediction_list))
         #     # get race predictions
         #
         #
@@ -80,12 +80,12 @@ class Command(BaseCommand):
         matching_participants = []
         for participant in race.participant_set.all():
             try:
-                print(prediction_list[str(participant.uuid)])
+                str_uuid = str(participant.uuid)
+                participant_prediction = prediction_list[str_uuid]
+                if int(participant_prediction) == prediction:
+                    matching_participants.append(participant)
             except:
                 pass
-            # get prediction
-            # if "participant_prediction" == prediction:
-            #     matching_participants.append(participant)
         return matching_participants
 
 
