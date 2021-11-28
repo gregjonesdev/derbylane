@@ -34,29 +34,31 @@ class Command(BaseCommand):
     def evaluate_predicions(
         self,
         testing_races,
+        prediction_list,
         prediction_1,
         prediction_2):
         print("Evaluate predcitions")
         print("{} - {}".format(prediction_1, prediction_2))
         print(len(testing_races))
+        print(len(prediction_list))
 
-
-        for race in testing_races:
-            print(len(self.get_testing_metrics(race)))
-        raise SystemExit(0)
+                # testing_arff = get_testing_arff(
+                #     race_key,
+                #     testing_metrics,
+                #     is_nominal)
         # testing_metrics = all_metrics.filter(
         #     participant__race__chart__program__date__gt=cutoff_date)
         # testing_arff = get_testing_arff(
         #     race_key,
         #     testing_metrics,
         #     is_nominal)
-        # testing_data = build_scheduled_data(testing_arff)
-        # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+
         # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
 
         # uuid_line_index = get_uuid_line_index(testing_arff)
         #
-        # for race in testing_races:
+        for race in testing_races:
+            self.get_matching_participants(race, prediction_1, prediction_list)
         #     # get race predictions
         #
         #
@@ -64,21 +66,26 @@ class Command(BaseCommand):
         #         print(participant.uuid in prediction_list.keys())
 
 
-    def get_testing_metrics(self, race):
+    def get_testing_metrics(self, testing_races):
         testing_metrics = []
-        for participant in race.participant_set.all():
-            try:
-                testing_metrics.append(participant.metric)
-            except:
-                pass
+        for race in testing_races:
+            for participant in race.participant_set.all():
+                try:
+                    testing_metrics.append(participant.metric)
+                except:
+                    pass
         return testing_metrics
 
-    def get_matching_participants(self, race, prediction):
+    def get_matching_participants(self, race, prediction, prediction_list):
         matching_participants = []
         for participant in race.participant_set.all():
+            try:
+                print(prediction_list[str(participant.uuid)])
+            except:
+                pass
             # get prediction
-            if "participant_prediction" == prediction:
-                matching_participants.append(participant)
+            # if "participant_prediction" == prediction:
+            #     matching_participants.append(participant)
         return matching_participants
 
 
@@ -103,13 +110,14 @@ class Command(BaseCommand):
 
 
 
-    def print_returns(self, testing_races, c, race_key, cutoff_date, loader):
+    def print_returns(self, testing_races, prediction_list, c, race_key, cutoff_date, loader):
         prediction_1 = 0
         while prediction_1 < 5:
             prediction_2 = 0
             while prediction_2 < 5:
                 self.evaluate_predicions(
                     testing_races,
+                    prediction_list,
                     prediction_1,
                     prediction_2)
                 prediction_2 += 1
@@ -169,20 +177,22 @@ class Command(BaseCommand):
             race_key,
             training_metrics,
             is_nominal)
-        # testing_metrics = self.get_testing_metrics(testing_races)
-        # testing_arff = get_testing_arff(
-        #     race_key,
-        #     testing_metrics,
-        #     is_nominal)
-        # uuid_line_index = get_uuid_line_index(testing_arff)
+        testing_metrics = self.get_testing_metrics(testing_races)
+        testing_arff = get_testing_arff(
+            race_key,
+            testing_metrics,
+            is_nominal)
         c = 0.01
         max_return = 0
+        classifier_name = sys.argv[3]
 
 
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-        classifier_name = sys.argv[3]
 
+        testing_data = build_scheduled_data(testing_arff)
+        uuid_line_index = get_uuid_line_index(testing_arff)
+        # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
 
         c_start = c_data[classifier_name]["c_start"]
         c_stop = c_data[classifier_name]["c_stop"]
@@ -206,8 +216,8 @@ class Command(BaseCommand):
             c = round(c, 2)
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
             model = Classifier(jobject=serialization.read(model_name))
-            # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
-            self.print_returns(testing_races, str(c), race_key, cutoff_date, loader)
+            prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+            self.print_returns(testing_races, prediction_list, str(c), race_key, cutoff_date, loader)
             c = round(c + interval, 2)
 
         jvm.stop()
