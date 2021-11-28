@@ -74,7 +74,7 @@ class Command(BaseCommand):
 
     def print_returns(self, prediction_list, testing_races, c, race_key, cutoff_date, loader):
         print("here3")
-        print(prediction_list[:5])
+        print(prediction_list)
         raise SystemExit(0)
         print(testing_races)
         prediction_1 = 0
@@ -147,7 +147,6 @@ class Command(BaseCommand):
             is_nominal)
         uuid_line_index = get_uuid_line_index(testing_arff)
         print(testing_arff)
-        testing_data = build_scheduled_data(testing_arff)
         print("oof")
         testing_races = Race.objects.filter(
             chart__program__date__gt=cutoff_date)
@@ -176,6 +175,7 @@ class Command(BaseCommand):
         #     "Show",
         #     "Bet Count",
         #     "Potential"))
+        testing_data = build_scheduled_data(testing_arff)
         c = c_start
         while c <= c_stop:
             c = round(c, 2)

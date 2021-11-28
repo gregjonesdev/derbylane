@@ -11,6 +11,7 @@ from rawdat.models import Participant
 from pww.models import TestPrediction, Metric
 from pww.utilities.ultraweka import (
     create_model,
+    get_metrics,
     build_scheduled_data,
     get_uuid_line_index,
     get_prediction_list)
@@ -151,11 +152,10 @@ class Command(BaseCommand):
         today = datetime.datetime.now()
         cutoff_date = (today - datetime.timedelta(days=49)).date()
         start_time = time()
-        all_metrics = Metric.objects.filter(
-            participant__race__chart__program__venue__code=venue_code,
-            participant__race__distance=distance,
-            participant__race__grade__name=grade_name,
-            participant__race__chart__program__date__gte="2019-01-01")
+        all_metrics = get_metrics(
+            venue_code,
+            distance,
+            grade_name)
         training_metrics = all_metrics.filter(
             participant__race__chart__program__date__lte=cutoff_date)
         testing_metrics = all_metrics.filter(
@@ -165,13 +165,12 @@ class Command(BaseCommand):
         training_arff = get_training_arff(
             race_key,
             training_metrics,
-            is_nominal
-        )
+            is_nominal)
         testing_arff = get_testing_arff(
             race_key,
             testing_metrics,
-            is_nominal
-        )
+            is_nominal)
+        uuid_line_index = get_uuid_line_index(testing_arff)
         c = 0.01
         max_return = 0
 
@@ -209,14 +208,13 @@ class Command(BaseCommand):
             "Show",
             "Bet Count",
             "Potential"))
+        testing_data = build_scheduled_data(testing_arff)
         c = c_start
         while c <= c_stop:
             c = round(c, 2)
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
             model = Classifier(jobject=serialization.read(model_name))
             # print(type(testing_arff))
-            uuid_line_index = get_uuid_line_index(testing_arff)
-            testing_data = build_scheduled_data(testing_arff)
                 # model.build_classifier(testing_data)
             prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
             self.print_returns(prediction_list, str(c), race_key, loader, prediction)
