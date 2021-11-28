@@ -38,22 +38,40 @@ class Command(BaseCommand):
         prediction_2):
         print("Evaluate predcitions")
         print("{} - {}".format(prediction_1, prediction_2))
+        print(len(testing_races))
 
+
+        for race in testing_races:
+            print(len(self.get_testing_metrics(race)))
         raise SystemExit(0)
         # testing_metrics = all_metrics.filter(
         #     participant__race__chart__program__date__gt=cutoff_date)
+        # testing_arff = get_testing_arff(
+        #     race_key,
+        #     testing_metrics,
+        #     is_nominal)
         # testing_data = build_scheduled_data(testing_arff)
         # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
         # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
 
-        uuid_line_index = get_uuid_line_index(testing_arff)
+        # uuid_line_index = get_uuid_line_index(testing_arff)
+        #
+        # for race in testing_races:
+        #     # get race predictions
+        #
+        #
+        #     for participant in race.participant_set.all():
+        #         print(participant.uuid in prediction_list.keys())
 
-        for race in testing_races:
-            # get race predictions
 
-
-            for participant in race.participant_set.all():
-                print(participant.uuid in prediction_list.keys())
+    def get_testing_metrics(self, race):
+        testing_metrics = []
+        for participant in race.participant_set.all():
+            try:
+                testing_metrics.append(participant.metric)
+            except:
+                pass
+        return testing_metrics
 
     def get_matching_participants(self, race, prediction):
         matching_participants = []
@@ -143,8 +161,6 @@ class Command(BaseCommand):
             grade_name)
         training_metrics = all_metrics.filter(
             participant__race__chart__program__date__lte=cutoff_date)
-        # testing_metrics = all_metrics.filter(
-        #     participant__race__chart__program__date__gt=cutoff_date)
         testing_races = Race.objects.filter(
             chart__program__date__gt=cutoff_date)
         race_key = get_race_key(venue_code, distance, grade_name)
@@ -153,6 +169,7 @@ class Command(BaseCommand):
             race_key,
             training_metrics,
             is_nominal)
+        # testing_metrics = self.get_testing_metrics(testing_races)
         # testing_arff = get_testing_arff(
         #     race_key,
         #     testing_metrics,
