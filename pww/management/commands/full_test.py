@@ -173,28 +173,28 @@ class Command(BaseCommand):
         uuid_line_index = get_uuid_line_index(testing_arff)
         c = 0.01
         max_return = 0
-
-
-        jvm.start(packages=True, max_heap_size="5028m")
-        loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         classifier_name = sys.argv[3]
         c_data = {
-            "j48": {
-                "c_start": 0.01,
-                "c_stop": 0.49,
-                "interval": 0.01,
-            },
-            "smo": {
-                "c_start": 0,
-                "c_stop": 2,
-                "interval": 0.01,
-            },
+        "j48": {
+        "c_start": 0.01,
+        "c_stop": 0.49,
+        "interval": 0.01,
+        },
+        "smo": {
+        "c_start": 0,
+        "c_stop": 2,
+        "interval": 0.01,
+        },
         }
         prediction = sys.argv[7]
 
         c_start = c_data[classifier_name]["c_start"]
         c_stop = c_data[classifier_name]["c_stop"]
         interval = c_data[classifier_name]["interval"]
+
+
+        jvm.start(packages=True, max_heap_size="5028m")
+        loader = conv.Loader(classname="weka.core.converters.ArffLoader")
 
 
         print("\n\n{} Prediction Accuracy vs Confidence Factor".format(

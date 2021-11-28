@@ -31,16 +31,29 @@ class Command(BaseCommand):
     def get_race_predictions(self, race):
         pass
 
-    def evaluate_predicions(self, testing_races, prediction_1, prediction_2):
+    def evaluate_predicions(
+        self,
+        testing_races,
+        prediction_1,
+        prediction_2):
         print("Evaluate predcitions")
         print("{} - {}".format(prediction_1, prediction_2))
+
+        raise SystemExit(0)
+        # testing_metrics = all_metrics.filter(
+        #     participant__race__chart__program__date__gt=cutoff_date)
+        # testing_data = build_scheduled_data(testing_arff)
+        # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+        # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+
+        uuid_line_index = get_uuid_line_index(testing_arff)
 
         for race in testing_races:
             # get race predictions
 
 
             for participant in race.participant_set.all():
-                print("{} {}".format(participant.post, participant.dog.name))
+                print(participant.uuid in prediction_list.keys())
 
     def get_matching_participants(self, race, prediction):
         matching_participants = []
@@ -72,16 +85,15 @@ class Command(BaseCommand):
 
 
 
-    def print_returns(self, prediction_list, testing_races, c, race_key, cutoff_date, loader):
-        print("here3")
-        print(prediction_list)
-        raise SystemExit(0)
-        print(testing_races)
+    def print_returns(self, testing_races, c, race_key, cutoff_date, loader):
         prediction_1 = 0
         while prediction_1 < 5:
             prediction_2 = 0
             while prediction_2 < 5:
-                self.evaluate_predicions(testing_races, prediction_1, prediction_2)
+                self.evaluate_predicions(
+                    testing_races,
+                    prediction_1,
+                    prediction_2)
                 prediction_2 += 1
             prediction_1 += 1
 
@@ -118,8 +130,6 @@ class Command(BaseCommand):
 
 
 
-
-
     def handle(self, *args, **options):
         venue_code = "TS"
         grade_name = sys.argv[5]
@@ -133,23 +143,21 @@ class Command(BaseCommand):
             grade_name)
         training_metrics = all_metrics.filter(
             participant__race__chart__program__date__lte=cutoff_date)
-        testing_metrics = all_metrics.filter(
-            participant__race__chart__program__date__gt=cutoff_date)
+        # testing_metrics = all_metrics.filter(
+        #     participant__race__chart__program__date__gt=cutoff_date)
+        testing_races = Race.objects.filter(
+            chart__program__date__gt=cutoff_date)
         race_key = get_race_key(venue_code, distance, grade_name)
         is_nominal = False
         training_arff = get_training_arff(
             race_key,
             training_metrics,
             is_nominal)
-        testing_arff = get_testing_arff(
-            race_key,
-            testing_metrics,
-            is_nominal)
-        uuid_line_index = get_uuid_line_index(testing_arff)
-        print(testing_arff)
-        print("oof")
-        testing_races = Race.objects.filter(
-            chart__program__date__gt=cutoff_date)
+        # testing_arff = get_testing_arff(
+        #     race_key,
+        #     testing_metrics,
+        #     is_nominal)
+        # uuid_line_index = get_uuid_line_index(testing_arff)
         c = 0.01
         max_return = 0
 
@@ -175,14 +183,14 @@ class Command(BaseCommand):
         #     "Show",
         #     "Bet Count",
         #     "Potential"))
-        testing_data = build_scheduled_data(testing_arff)
+        # testing_data = build_scheduled_data(testing_arff)
         c = c_start
         while c <= c_stop:
             c = round(c, 2)
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
             model = Classifier(jobject=serialization.read(model_name))
-            prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
-            self.print_returns(prediction_list, testing_races, str(c), race_key, cutoff_date, loader)
+            # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+            self.print_returns(testing_races, str(c), race_key, cutoff_date, loader)
             c = round(c + interval, 2)
 
         jvm.stop()
