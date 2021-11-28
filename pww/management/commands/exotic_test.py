@@ -37,10 +37,8 @@ class Command(BaseCommand):
         prediction_list,
         prediction_1,
         prediction_2):
-        print("Evaluate predcitions")
+
         print("{} - {}".format(prediction_1, prediction_2))
-        print(len(testing_races))
-        print(len(prediction_list))
 
                 # testing_arff = get_testing_arff(
                 #     race_key,
@@ -58,12 +56,20 @@ class Command(BaseCommand):
         # uuid_line_index = get_uuid_line_index(testing_arff)
         #
         for race in testing_races:
-            print(self.get_matching_participants(race, prediction_1, prediction_list))
-        #     # get race predictions
-        #
-        #
-        #     for participant in race.participant_set.all():
-        #         print(participant.uuid in prediction_list.keys())
+            matches_predictions = self.get_matching_participants(
+                race,
+                prediction_1,
+                prediction_2,
+                prediction_list)
+            matches_first = matches_predictions[0]
+            matches_second = matches_predictions[1]
+            unique_quinellas = self.get_unique_quinellas(
+                matches_first,
+                matches_second)
+            if len(unique_quinellas) > 0:
+                for pair in unique_quinellas:
+                    print("{} - {}".format(pair[0].dog.name, pair[1].dog.name))
+                print("---------")        
 
 
     def get_testing_metrics(self, testing_races):
@@ -76,23 +82,29 @@ class Command(BaseCommand):
                     pass
         return testing_metrics
 
-    def get_matching_participants(self, race, prediction, prediction_list):
-        matching_participants = []
+    def get_matching_participants(
+        self,
+        race,
+        prediction_1,
+        prediction_2,
+        prediction_list):
+        matches_1 = []
+        matches_2 = []
         for participant in race.participant_set.all():
             try:
                 str_uuid = str(participant.uuid)
                 participant_prediction = prediction_list[str_uuid]
-                if int(participant_prediction) == prediction:
-                    matching_participants.append(participant)
+                int_pred = int(participant_prediction)
+                if int_pred == prediction_1:
+                    matches_1.append(participant)
+                elif int_pred == prediction_2:
+                    matches_2.append(participant)
             except:
                 pass
-        return matching_participants
+        return [matches_1, matches_2]
 
 
     def get_unique_quinellas(self, matches_first, matches_second):
-        print("get unique quinells:")
-        matches_first = [1,3,5]
-        matches_second = [1,3,5]
         unique_quinellas = []
         i = 0
         while i < len(matches_first):
@@ -106,7 +118,8 @@ class Command(BaseCommand):
                             unique_quinellas.append((first, second))
                 j += 1
             i += 1
-        print(unique_quinellas)
+
+        return unique_quinellas
 
 
 
