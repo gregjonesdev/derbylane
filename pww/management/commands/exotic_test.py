@@ -133,9 +133,10 @@ class Command(BaseCommand):
                 second = matches_second[j]
                 k = 0
                 while k < len(matches_third):
+                    third = matches_third[k]
                     if not (
-                        first == second and
-                        first == third and
+                        first == second or
+                        first == third or
                         second == third):
                         if not (first, second, third) in unique_trifectas:
                             unique_trifectas.append((first, second, third))
@@ -194,6 +195,11 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
+        matches_first = ["a", "b", "c"]
+        matches_second = ["a", "b", "c"]
+        matches_third = ["a", "b", "c"]
+        print(self.get_unique_trifectas(matches_first, matches_second, matches_third))
+        raise SystemExit(0)
         venue_code = "TS"
         grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
