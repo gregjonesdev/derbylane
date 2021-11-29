@@ -35,26 +35,27 @@ class Command(BaseCommand):
         self,
         testing_races,
         prediction_list,
-        prediction_1,
-        prediction_2):
+        prediction_numbers):
 
-        print("{} - {}".format(prediction_1, prediction_2))
-
-        for race in testing_races:
-            matches_predictions = self.get_matching_participants(
-                race,
-                prediction_1,
-                prediction_2,
-                prediction_list)
-            matches_first = matches_predictions[0]
-            matches_second = matches_predictions[1]
-            unique_quinellas = self.get_unique_quinellas(
-                matches_first,
-                matches_second)
-            if len(unique_quinellas) > 0:
-                for pair in unique_quinellas:
-                    print("{} - {}".format(pair[0].dog.name, pair[1].dog.name))
-                print("---------")
+        print("{} - {}".format(
+            prediction_numbers[0],
+            prediction_numbers[1]))
+        #
+        # for race in testing_races:
+        #     matches_predictions = self.get_matching_participants(
+        #         race,
+        #         prediction_1,
+        #         prediction_2,
+        #         prediction_list)
+        #     matches_first = matches_predictions[0]
+        #     matches_second = matches_predictions[1]
+        #     unique_quinellas = self.get_unique_quinellas(
+        #         matches_first,
+        #         matches_second)
+        #     if len(unique_quinellas) > 0:
+        #         for pair in unique_quinellas:
+        #             print("{} - {}".format(pair[0].dog.name, pair[1].dog.name))
+        #         print("---------")
 
 
     def get_testing_metrics(self, testing_races):
@@ -149,17 +150,23 @@ class Command(BaseCommand):
 
 
     def print_returns(self, testing_races, prediction_list, c, race_key, cutoff_date, loader):
-        prediction_1 = 0
-        while prediction_1 < 5:
-            prediction_2 = 0
-            while prediction_2 < 5:
+        prediction_numbers = [0, 0, 0, 0]
+        highest_number = 5
+        while prediction_numbers[0] < highest_number:
+            prediction_numbers[1] = 0
+            while prediction_numbers[1] < highest_number:
                 self.evaluate_quinellas(
                     testing_races,
                     prediction_list,
-                    prediction_1,
-                    prediction_2)
-                prediction_2 += 1
-            prediction_1 += 1
+                    prediction_numbers)
+                prediction_numbers[2] = 0
+                while prediction_numbers[2] < highest_number:
+                    prediction_numbers[3] = 0
+                    while prediction_numbers[3] < highest_number:
+                        prediction_numbers[3] += 1
+                    prediction_numbers[2] += 1
+                prediction_numbers[1] += 1
+            prediction_numbers[0] += 1
 
 
 
@@ -195,11 +202,6 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        matches_first = ["a", "b", "c"]
-        matches_second = ["a", "b", "c"]
-        matches_third = ["a", "b", "c"]
-        print(self.get_unique_trifectas(matches_first, matches_second, matches_third))
-        raise SystemExit(0)
         venue_code = "TS"
         grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
@@ -257,6 +259,7 @@ class Command(BaseCommand):
         c = c_start
         while c <= c_stop:
             c = round(c, 2)
+            print("\nc = {}\n".format(c))
             model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
             model = Classifier(jobject=serialization.read(model_name))
             prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
