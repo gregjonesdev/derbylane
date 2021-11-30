@@ -31,15 +31,59 @@ class Command(BaseCommand):
     def get_race_predictions(self, race):
         pass
 
-    def evaluate_quinellas(
+    def evaluate_superfectas(
         self,
         testing_races,
         prediction_list,
         prediction_numbers):
 
-        print("{} - {}".format(
+        scenario = "{}-{}-{}-{}".format(
             prediction_numbers[0],
-            prediction_numbers[1]))
+            prediction_numbers[1],
+            prediction_numbers[2],
+            prediction_numbers[3])
+
+        print("{}\t\t{}".format(
+            scenario,
+            "Superfecta"
+        ))
+
+    def evaluate_trifectas(
+        self,
+        testing_races,
+        prediction_list,
+        prediction_numbers):
+
+        scenario = "{}-{}-{}".format(
+            prediction_numbers[0],
+            prediction_numbers[1],
+            prediction_numbers[2])
+
+        print("{}\t\t{}".format(
+            scenario,
+            "Trifecta"
+        ))
+
+    def get_quinella_return(
+        self,
+        testing_races,
+        prediction_list,
+        prediction_numbers):
+
+        scenario = "{}-{}".format(
+            prediction_numbers[0],
+            prediction_numbers[1])
+
+        print("{}\t\t{}".format(
+            scenario,
+            "Quienlla"
+        ))
+        #
+
+
+        #
+        #
+        #
         #
         # for race in testing_races:
         #     matches_predictions = self.get_matching_participants(
@@ -56,6 +100,8 @@ class Command(BaseCommand):
         #         for pair in unique_quinellas:
         #             print("{} - {}".format(pair[0].dog.name, pair[1].dog.name))
         #         print("---------")
+
+        raise SystemExit(0)
 
 
     def get_testing_metrics(self, testing_races):
@@ -155,14 +201,22 @@ class Command(BaseCommand):
         while prediction_numbers[0] < highest_number:
             prediction_numbers[1] = 0
             while prediction_numbers[1] < highest_number:
-                self.evaluate_quinellas(
+                self.get_quinella_return(
                     testing_races,
                     prediction_list,
                     prediction_numbers)
                 prediction_numbers[2] = 0
                 while prediction_numbers[2] < highest_number:
                     prediction_numbers[3] = 0
+                    self.evaluate_trifectas(
+                        testing_races,
+                        prediction_list,
+                        prediction_numbers)
                     while prediction_numbers[3] < highest_number:
+                        # self.evaluate_superfectas(
+                        #     testing_races,
+                        #     prediction_list,
+                        #     prediction_numbers)
                         prediction_numbers[3] += 1
                     prediction_numbers[2] += 1
                 prediction_numbers[1] += 1
