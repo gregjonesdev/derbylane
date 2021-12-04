@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 
 from miner.utilities.constants import focused_distances, c_data, bcolors
 from miner.utilities.common import get_race_key
-from rawdat.models import Participant, Race
+from rawdat.models import Participant, Race, Quiniela
 from pww.utilities.ultraweka import (
     create_model,
     build_scheduled_data,
@@ -26,7 +26,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--model', type=str)
         parser.add_argument('--grade', type=str)
-        parser.add_argument('--prediction', type=str)
+        # parser.add_argument('--prediction', type=str)
 
     def get_race_predictions(self, race):
         pass
@@ -79,30 +79,49 @@ class Command(BaseCommand):
             "Quienlla"
         ))
         #
-
+        bet_winnings = []
 
         #
         #
         #
         #
-        # for race in testing_races:
-        #     matches_predictions = self.get_matching_participants(
-        #         race,
-        #         prediction_1,
-        #         prediction_2,
-        #         prediction_list)
-        #     matches_first = matches_predictions[0]
-        #     matches_second = matches_predictions[1]
-        #     unique_quinellas = self.get_unique_quinellas(
-        #         matches_first,
-        #         matches_second)
-        #     if len(unique_quinellas) > 0:
-        #         for pair in unique_quinellas:
-        #             print("{} - {}".format(pair[0].dog.name, pair[1].dog.name))
-        #         print("---------")
+        for race in testing_races:
+            matches_predictions = self.get_matching_participants(
+                race,
+                prediction_numbers[0],
+                prediction_numbers[1],
+                prediction_list)
+            matches_first = matches_predictions[0]
+            matches_second = matches_predictions[1]
+            unique_quinellas = self.get_unique_quinellas(
+                matches_first,
+                matches_second)
+            for pair in unique_quinellas:
+                print("{} - {}".format(pair[0].dog.name, pair[1].dog.name))
 
-        raise SystemExit(0)
+        return {
+            "scenario": "",
+            "average_return": "",
+            "potential": 0,
+        }
 
+    def get_quinela_winnings(self, participant_1, participant_2):
+        try:
+            quienla = Quiniela.objects.get(
+                left=participant_1,
+                right=participant_2
+            )
+            print("FOUND!")
+        except ObjectDoesNotExist:
+            try:
+                quienla = Quiniela.objects.get(
+                    left=participant_2,
+                    right=participant_1
+                )
+                print("FOUND!")
+            except ObjectDoesNotExist:
+                pass
+        return 0
 
     def get_testing_metrics(self, testing_races):
         testing_metrics = []
@@ -143,11 +162,12 @@ class Command(BaseCommand):
             first = matches_first[i]
             j = 0
             while j < len(matches_second):
-                second = matches_second[j]
-                if not first == second:
-                    if not (first, second) in unique_quinellas:
-                        if not (second, first) in unique_quinellas:
-                            unique_quinellas.append((first, second))
+                # second = matches_second[j]
+                # if not first == second:
+                #     if not (first, second) in unique_quinellas:
+                #         if not (second, first) in unique_quinellas:
+                #             print(second)
+                #             unique_quinellas.append((first, second))
                 j += 1
             i += 1
 
@@ -198,27 +218,33 @@ class Command(BaseCommand):
     def print_returns(self, testing_races, prediction_list, c, race_key, cutoff_date, loader):
         prediction_numbers = [0, 0, 0, 0]
         highest_number = 5
+        optimal_quinela = {
+            "scenario": "",
+            "average_return": "",
+            "potential": 0,
+        }
         while prediction_numbers[0] < highest_number:
             prediction_numbers[1] = 0
             while prediction_numbers[1] < highest_number:
-                self.get_quinella_return(
+                current_quinela_returns = self.get_quinella_return(
                     testing_races,
                     prediction_list,
                     prediction_numbers)
-                prediction_numbers[2] = 0
-                while prediction_numbers[2] < highest_number:
-                    prediction_numbers[3] = 0
-                    self.evaluate_trifectas(
-                        testing_races,
-                        prediction_list,
-                        prediction_numbers)
-                    while prediction_numbers[3] < highest_number:
-                        # self.evaluate_superfectas(
-                        #     testing_races,
-                        #     prediction_list,
-                        #     prediction_numbers)
-                        prediction_numbers[3] += 1
-                    prediction_numbers[2] += 1
+                print(current_quinela_returns)
+                # prediction_numbers[2] = 0
+                # while prediction_numbers[2] < highest_number:
+                #     prediction_numbers[3] = 0
+                #     self.evaluate_trifectas(
+                #         testing_races,
+                #         prediction_list,
+                #         prediction_numbers)
+                #     while prediction_numbers[3] < highest_number:
+                #         self.evaluate_superfectas(
+                #             testing_races,
+                #             prediction_list,
+                #             prediction_numbers)
+                #         prediction_numbers[3] += 1
+                #     prediction_numbers[2] += 1
                 prediction_numbers[1] += 1
             prediction_numbers[0] += 1
 
