@@ -73,11 +73,11 @@ class Command(BaseCommand):
         scenario = "{}-{}".format(
             prediction_numbers[0],
             prediction_numbers[1])
-
-        print("{}\t\t{}".format(
-            scenario,
-            "Quienlla"
-        ))
+        #
+        # print("{}\t\t{}".format(
+        #     scenario,
+        #     "Quienlla"
+        # ))
         #
         bet_winnings = []
 
@@ -97,30 +97,37 @@ class Command(BaseCommand):
                 matches_first,
                 matches_second)
             for pair in unique_quinellas:
-                print("{} - {}".format(pair[0].dog.name, pair[1].dog.name))
+                bet_winnings.append(
+                    self.get_quinela_winnings(pair[0], pair[1]))
+
+        if len(bet_winnings) > 0:
+            average_return = float(round(sum(bet_winnings)/len(bet_winnings), 2))
+        else:
+            average_return = 0
 
         return {
-            "scenario": "",
-            "average_return": "",
+            "scenario": scenario,
+            "average_return": average_return,
             "potential": 0,
         }
 
     def get_quinela_winnings(self, participant_1, participant_2):
+        quienla = None
         try:
             quienla = Quiniela.objects.get(
                 left=participant_1,
                 right=participant_2
             )
-            print("FOUND!")
         except ObjectDoesNotExist:
             try:
                 quienla = Quiniela.objects.get(
                     left=participant_2,
                     right=participant_1
                 )
-                print("FOUND!")
             except ObjectDoesNotExist:
                 pass
+        if quienla:
+            return quienla.payout
         return 0
 
     def get_testing_metrics(self, testing_races):
@@ -162,12 +169,11 @@ class Command(BaseCommand):
             first = matches_first[i]
             j = 0
             while j < len(matches_second):
-                # second = matches_second[j]
-                # if not first == second:
-                #     if not (first, second) in unique_quinellas:
-                #         if not (second, first) in unique_quinellas:
-                #             print(second)
-                #             unique_quinellas.append((first, second))
+                second = matches_second[j]
+                if not first == second:
+                    if not (first, second) in unique_quinellas:
+                        if not (second, first) in unique_quinellas:
+                            unique_quinellas.append((first, second))
                 j += 1
             i += 1
 
@@ -220,17 +226,18 @@ class Command(BaseCommand):
         highest_number = 5
         optimal_quinela = {
             "scenario": "",
-            "average_return": "",
+            "average_return": 0,
             "potential": 0,
         }
         while prediction_numbers[0] < highest_number:
             prediction_numbers[1] = 0
             while prediction_numbers[1] < highest_number:
-                current_quinela_returns = self.get_quinella_return(
+                current_quinela = self.get_quinella_return(
                     testing_races,
                     prediction_list,
                     prediction_numbers)
-                print(current_quinela_returns)
+                if current_quinela["average_return"] > optimal_quinela["average_return"]:
+                    optimal_quinela = current_quinela
                 # prediction_numbers[2] = 0
                 # while prediction_numbers[2] < highest_number:
                 #     prediction_numbers[3] = 0
@@ -248,7 +255,7 @@ class Command(BaseCommand):
                 prediction_numbers[1] += 1
             prediction_numbers[0] += 1
 
-
+        print(optimal_quinela)
 
 
 
