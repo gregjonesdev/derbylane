@@ -7,7 +7,13 @@ from django.core.management.base import BaseCommand
 
 from miner.utilities.constants import focused_distances, c_data, bcolors
 from miner.utilities.common import get_race_key
-from rawdat.models import Participant, Race, Quiniela
+from rawdat.models import (
+    Participant,
+    Race,
+    Quiniela,
+    Exacta,
+    Trifecta,
+    Superfecta)
 from pww.utilities.ultraweka import (
     create_model,
     build_scheduled_data,
@@ -64,27 +70,14 @@ class Command(BaseCommand):
             "Trifecta"
         ))
 
-    def get_quinella_return(
+    def get_quiniela_return(
         self,
         testing_races,
         prediction_list,
         prediction_numbers):
 
-        scenario = "{}-{}".format(
-            prediction_numbers[0],
-            prediction_numbers[1])
-        #
-        # print("{}\t\t{}".format(
-        #     scenario,
-        #     "Quienlla"
-        # ))
-        #
         bet_winnings = []
 
-        #
-        #
-        #
-        #
         for race in testing_races:
             matches_predictions = self.get_matching_participants(
                 race,
@@ -93,17 +86,37 @@ class Command(BaseCommand):
                 prediction_list)
             matches_first = matches_predictions[0]
             matches_second = matches_predictions[1]
-            unique_quinellas = self.get_unique_quinellas(
+            unique_quinielas = self.get_unique_quinielas(
                 matches_first,
                 matches_second)
-            for pair in unique_quinellas:
+            for pair in unique_quinielas:
                 bet_winnings.append(
-                    self.get_quinela_winnings(pair[0], pair[1]))
+                    self.get_quiniela_winnings(pair[0], pair[1]))
 
-        if len(bet_winnings) > 0:
-            average_return = float(round(sum(bet_winnings)/len(bet_winnings), 2))
-        else:
-            average_return = 0
+        return bet_winnings
+
+    def get_exacta_return(
+        self,
+        testing_races,
+        prediction_list,
+        prediction_numbers):
+
+        bet_winnings = []
+
+        for race in testing_races:
+            matches_predictions = self.get_matching_participants(
+                race,
+                prediction_numbers[0],
+                prediction_numbers[1],
+                prediction_list)
+            matches_first = matches_predictions[0]
+            matches_second = matches_predictions[1]
+            unique_exactas = self.get_unique_exactas(
+                matches_first,
+                matches_second)
+            for pair in unique_exactas:
+                bet_winnings.append(
+                    self.get_exacta_winnings(pair[0], pair[1]))
 
         return bet_winnings
 
@@ -113,7 +126,7 @@ class Command(BaseCommand):
         else:
             return 0
 
-    def get_quinela_winnings(self, participant_1, participant_2):
+    def get_quiniela_winnings(self, participant_1, participant_2):
         quienla = None
         try:
             quienla = Quiniela.objects.get(
@@ -130,6 +143,19 @@ class Command(BaseCommand):
                 pass
         if quienla:
             return quienla.payout
+        return 0
+
+    def get_exacta_winnings(self, participant_1, participant_2):
+        exacta = None
+        try:
+            exacta = Exacta.objects.get(
+                win=participant_1,
+                place=participant_2
+            )
+        except ObjectDoesNotExist:
+            pass
+        if exacta:
+            return exacta.payout
         return 0
 
     def get_testing_metrics(self, testing_races):
@@ -164,8 +190,8 @@ class Command(BaseCommand):
         return [matches_1, matches_2]
 
 
-    def get_unique_quinellas(self, matches_first, matches_second):
-        unique_quinellas = []
+    def get_unique_quinielas(self, matches_first, matches_second):
+        unique_quinielas = []
         i = 0
         while i < len(matches_first):
             first = matches_first[i]
@@ -173,13 +199,13 @@ class Command(BaseCommand):
             while j < len(matches_second):
                 second = matches_second[j]
                 if not first == second:
-                    if not (first, second) in unique_quinellas:
-                        if not (second, first) in unique_quinellas:
-                            unique_quinellas.append((first, second))
+                    if not (first, second) in unique_quinielas:
+                        if not (second, first) in unique_quinielas:
+                            unique_quinielas.append((first, second))
                 j += 1
             i += 1
 
-        return unique_quinellas
+        return unique_quinielas
 
 
     def get_unique_exactas(self, matches_first, matches_second):
@@ -227,31 +253,58 @@ class Command(BaseCommand):
         else:
             return 0
 
-    def get_optimal_quinella(
+    def get_optimal_quiniela(
         self,
-        optimal_quinela,
+        optimal_quiniela,
         testing_races,
         prediction_list,
         prediction_numbers):
-        current_quinela = self.get_quinella_return(
+        current_quiniela = self.get_quiniela_return(
             testing_races,
             prediction_list,
             prediction_numbers)
-        average_return = self.get_average_return(current_quinela)
+        average_return = self.get_average_return(current_quiniela)
         if average_return > 2:
-            current_potential = self.get_potential(average_return, current_quinela)
-            if current_potential > optimal_quinela["potential"]:
+            current_potential = self.get_potential(average_return, current_quiniela)
+            if current_potential > optimal_quiniela["potential"]:
                 return {
                     "scenario": "{}-{}".format(prediction_numbers[0], prediction_numbers[1]),
                     "average_return": average_return,
                     "potential": current_potential,
                 }
-        return optimal_quinela
+        return optimal_quiniela
+
+    def get_optimal_exacta(
+        self,
+        optimal_exacta,
+        testing_races,
+        prediction_list,
+        prediction_numbers):
+        current_exacta = self.get_exacta_return(
+            testing_races,
+            prediction_list,
+            prediction_numbers)
+        average_return = self.get_average_return(current_exacta)
+        if average_return > 2:
+            current_potential = self.get_potential(average_return, current_exacta)
+            if current_potential > optimal_exacta["potential"]:
+                return {
+                    "scenario": "{}-{}".format(prediction_numbers[0], prediction_numbers[1]),
+                    "average_return": average_return,
+                    "potential": current_potential,
+                }
+        return optimal_exacta
+
 
     def print_returns(self, testing_races, prediction_list, c, race_key, cutoff_date, loader):
         prediction_numbers = [0, 0, 0, 0]
         highest_number = 5
-        optimal_quinela = {
+        optimal_quiniela = {
+            "scenario": "",
+            "average_return": 0,
+            "potential": 0,
+        }
+        optimal_exacta = {
             "scenario": "",
             "average_return": 0,
             "potential": 0,
@@ -259,8 +312,13 @@ class Command(BaseCommand):
         while prediction_numbers[0] < highest_number:
             prediction_numbers[1] = 0
             while prediction_numbers[1] < highest_number:
-                optimal_quinela = self.get_optimal_quinella(
-                    optimal_quinela,
+                optimal_quiniela = self.get_optimal_quiniela(
+                    optimal_quiniela,
+                    testing_races,
+                    prediction_list,
+                    prediction_numbers)
+                optimal_exacta = self.get_optimal_exacta(
+                    optimal_exacta,
                     testing_races,
                     prediction_list,
                     prediction_numbers)
@@ -281,7 +339,8 @@ class Command(BaseCommand):
                 prediction_numbers[1] += 1
             prediction_numbers[0] += 1
 
-        print(optimal_quinela)
+        print("Optimal Quiniela: {}".format(optimal_quiniela))
+        print("Optimal Exacta: {}".format(optimal_exacta))
 
 
 
