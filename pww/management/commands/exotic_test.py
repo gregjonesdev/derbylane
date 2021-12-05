@@ -343,7 +343,7 @@ class Command(BaseCommand):
         average_return = self.get_average_return(current_trifecta)
         if average_return > 2:
             current_potential = self.get_potential(average_return, current_trifecta)
-            if current_potential > optimal_exacta["potential"]:
+            if current_potential > optimal_trifecta["potential"]:
                 return {
                     "scenario": "{}-{}".format(prediction_numbers[0], prediction_numbers[1]),
                     "average_return": average_return,
