@@ -221,7 +221,7 @@ class Command(BaseCommand):
 
         return unique_trifectas
 
-    def get_potential(average_return, bet_winnings):
+    def get_potential(self, average_return, bet_winnings):
         if average_return > 2:
             return average_return*len(bet_winnings)
         else:
