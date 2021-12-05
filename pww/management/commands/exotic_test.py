@@ -108,7 +108,7 @@ class Command(BaseCommand):
         return {
             "scenario": scenario,
             "average_return": average_return,
-            "potential": 0,
+            "potential": len(bet_winnings)*average_return,
         }
 
     def get_quinela_winnings(self, participant_1, participant_2):
@@ -236,8 +236,9 @@ class Command(BaseCommand):
                     testing_races,
                     prediction_list,
                     prediction_numbers)
-                if current_quinela["average_return"] > optimal_quinela["average_return"]:
-                    optimal_quinela = current_quinela
+                if current_quinela["average_return"] > 2:
+                    if current_quinela["potential"] > optimal_quinela["potential"]:
+                        optimal_quinela = current_quinela
                 # prediction_numbers[2] = 0
                 # while prediction_numbers[2] < highest_number:
                 #     prediction_numbers[3] = 0
