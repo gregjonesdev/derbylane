@@ -105,11 +105,13 @@ class Command(BaseCommand):
         else:
             average_return = 0
 
-        return {
-            "scenario": scenario,
-            "average_return": average_return,
-            "potential": len(bet_winnings)*average_return,
-        }
+        return bet_winnings
+
+    def get_average_return(self, bet_winnings):
+        if len(bet_winnings) > 0:
+            return float(round(sum(bet_winnings)/len(bet_winnings), 2))
+        else:
+            return 0
 
     def get_quinela_winnings(self, participant_1, participant_2):
         quienla = None
@@ -219,7 +221,32 @@ class Command(BaseCommand):
 
         return unique_trifectas
 
+    def get_potential(average_return, bet_winnings):
+        if average_return > 2:
+            return average_return*len(bet_winnings)
+        else:
+            return 0
 
+    def get_optimal_quinella(
+        self,
+        optimal_quinela,
+        testing_races,
+        prediction_list,
+        prediction_numbers):
+        current_quinela = self.get_quinella_return(
+            testing_races,
+            prediction_list,
+            prediction_numbers)
+        average_return = self.get_average_return(current_quinela)
+        if average_return > 2:
+            current_potential = self.get_potential(average_return, current_quinela)
+            if current_potential > optimal_quinela["potential"]:
+                return {
+                    "scenario": "{}-{}".format(prediction_numbers[0], prediction_numbers[1]),
+                    "average_return": average_return,
+                    "potential": current_potential,
+                }
+        return optimal_quinela
 
     def print_returns(self, testing_races, prediction_list, c, race_key, cutoff_date, loader):
         prediction_numbers = [0, 0, 0, 0]
@@ -232,13 +259,11 @@ class Command(BaseCommand):
         while prediction_numbers[0] < highest_number:
             prediction_numbers[1] = 0
             while prediction_numbers[1] < highest_number:
-                current_quinela = self.get_quinella_return(
+                optimal_quinela = self.get_optimal_quinella(
+                    optimal_quinela,
                     testing_races,
                     prediction_list,
                     prediction_numbers)
-                if current_quinela["average_return"] > 2:
-                    if current_quinela["potential"] > optimal_quinela["potential"]:
-                        optimal_quinela = current_quinela
                 # prediction_numbers[2] = 0
                 # while prediction_numbers[2] < highest_number:
                 #     prediction_numbers[3] = 0
