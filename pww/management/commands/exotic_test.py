@@ -416,7 +416,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        venue_code = "TS"
+        venue_code = "WD"
         grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
@@ -441,7 +441,7 @@ class Command(BaseCommand):
             race_key,
             testing_metrics,
             is_nominal)
-        c = 0.01
+        c = 0.20
         max_return = 0
         classifier_name = sys.argv[3]
 
