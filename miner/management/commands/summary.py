@@ -1,7 +1,7 @@
 
 from django.core.management.base import BaseCommand
 import datetime
-from rawdat.models import Race
+from rawdat.models import Race, Program
 from miner.utilities.urls import build_race_results_url
 from miner.utilities.scrape import (
     get_node_elements,
@@ -50,7 +50,7 @@ class Command(BaseCommand):
         for grade in winnings.keys():
             grade_winnings = winnings[grade]
             self.write_table_row(grade, grade_winnings, table_string)
-        print("\n")    
+        print("\n")
 
     def write_table_row(self, grade, grade_winnings, table_string):
         print(table_string.format(
@@ -68,23 +68,29 @@ class Command(BaseCommand):
 
         today = datetime.date.today()
         yesterday = (today - datetime.timedelta(days=1))
-        last_week = yesterday = (today - datetime.timedelta(days=7))
-        winnings = {}
-        for participant in Participant.objects.filter(
-            final__isnull=False,
-            race__chart__program__date__gt=last_week):
-            recommended_bets = participant.get_recommended_bet()
-            if recommended_bets:
-                race_key = self.get_race_key_from_race(participant.race)
-                if not race_key in winnings.keys():
-                    winnings[race_key] = {"W": [], "P": [], "S":[]}
-                if "W" in recommended_bets:
-                    winnings[race_key]["W"].append(
-                        self.get_win_return(participant))
-                if "P" in recommended_bets:
-                    winnings[race_key]["P"].append(
-                        self.get_place_return(participant))
-                if "S" in recommended_bets:
-                    winnings[race_key]["P"].append(
-                        self.get_place_return(participant))
-        self.build_table(winnings)
+
+        print("Analysis for: {}".format(yesterday))
+        for program in Program.objects.filter(date='2021-11-04'):
+            print(program.date)
+            for chart in program.chart_set.all():
+                print(chart.time)
+        # last_week = yesterday = (today - datetime.timedelta(days=7))
+        # winnings = {}
+        # for participant in Participant.objects.filter(
+        #     final__isnull=False,
+        #     race__chart__program__date__gt=last_week):
+        #     recommended_bets = participant.get_recommended_bet()
+        #     if recommended_bets:
+        #         race_key = self.get_race_key_from_race(participant.race)
+        #         if not race_key in winnings.keys():
+        #             winnings[race_key] = {"W": [], "P": [], "S":[]}
+        #         if "W" in recommended_bets:
+        #             winnings[race_key]["W"].append(
+        #                 self.get_win_return(participant))
+        #         if "P" in recommended_bets:
+        #             winnings[race_key]["P"].append(
+        #                 self.get_place_return(participant))
+        #         if "S" in recommended_bets:
+        #             winnings[race_key]["P"].append(
+        #                 self.get_place_return(participant))
+        # self.build_table(winnings)

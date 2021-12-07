@@ -441,7 +441,6 @@ class Command(BaseCommand):
             race_key,
             testing_metrics,
             is_nominal)
-        c = 0.20
         max_return = 0
         classifier_name = sys.argv[3]
 
