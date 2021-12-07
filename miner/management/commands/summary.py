@@ -63,17 +63,36 @@ class Command(BaseCommand):
                 len(grade_winnings["P"])),
             ""))
 
+    def print_straight_wager_table(self, race):
+        print("{}\t\t{}\t{}\t{}".format(
+            "Dog",
+            "Win",
+            "Place",
+            "Show"
+        ))
+        for participant in race.participant_set.filter(final__lte=3).order_by("final"):
+            straight_wager = participant.straight_wager
+            print("{}\t\t{}\t{}\t{}".format(
+                "{} {}".format(participant.post, participant.dog.name),
+                straight_wager.win,
+                straight_wager.place,
+                straight_wager.show
+            ))
 
     def handle(self, *args, **options):
 
         today = datetime.date.today()
         yesterday = (today - datetime.timedelta(days=1))
-
-        print("Analysis for: {}".format(yesterday))
-        for program in Program.objects.filter(date='2021-11-04'):
-            print(program.date)
+        # yesterday = "2021-11-04"
+        print("\nAnalysis for: {}\n".format(yesterday))
+        for program in Program.objects.filter(date=yesterday):
             for chart in program.chart_set.all():
-                print(chart.time)
+                print("{}: {}\n".format(
+                    program.venue.name,
+                    chart.get_time_display()))
+                for race in chart.race_set.all():
+                    print("Race {}:".format(race.number))
+                    self.print_straight_wager_table(race)
         # last_week = yesterday = (today - datetime.timedelta(days=7))
         # winnings = {}
         # for participant in Participant.objects.filter(
