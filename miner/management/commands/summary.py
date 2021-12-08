@@ -64,8 +64,8 @@ class Command(BaseCommand):
             ""))
 
     def print_straight_wager_table(self, race):
-        print("{}\t\t{}\t{}\t{}".format(
-            "Dog",
+        print("{}\t\t\t{}\t{}\t{}".format(
+            " ",
             "Win",
             "Place",
             "Show"
@@ -73,11 +73,12 @@ class Command(BaseCommand):
         for participant in race.participant_set.filter(final__lte=3).order_by("final"):
             straight_wager = participant.straight_wager
             print("{}\t\t{}\t{}\t{}".format(
-                "{} {}".format(participant.post, participant.dog.name),
+                "{} {}".format(participant.post, participant.dog.name[:8]),
                 straight_wager.win,
                 straight_wager.place,
                 straight_wager.show
             ))
+            print("\n")
 
     def handle(self, *args, **options):
 

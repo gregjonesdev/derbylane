@@ -1,5 +1,6 @@
 import datetime
 import sys
+import numpy as geek
 
 from time import time
 from django.core.exceptions import ObjectDoesNotExist
@@ -24,7 +25,10 @@ from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
 import weka.core.serialization as serialization
-from pww.utilities.arff import get_training_arff, get_testing_arff, get_arff_filename
+from pww.utilities.arff import (
+    get_training_arff,
+    get_testing_arff,
+    get_arff_filename)
 
 
 class Command(BaseCommand):
@@ -288,6 +292,13 @@ class Command(BaseCommand):
         else:
             return 0
 
+    def get_success_rate(self, return_list):
+        print(return_list)
+        total_count = len(return_list)
+        correct_count = geek.count_nonzero(return_list)
+        return int(100*correct_count/total_count)
+
+
     def get_optimal_quiniela(
         self,
         optimal_quiniela,
@@ -298,6 +309,7 @@ class Command(BaseCommand):
             testing_races,
             prediction_list,
             prediction_numbers)
+
         average_return = self.get_average_return(current_quiniela)
         if average_return > 2:
             current_potential = self.get_potential(average_return, current_quiniela)
@@ -306,6 +318,7 @@ class Command(BaseCommand):
                     "scenario": "{}-{}".format(prediction_numbers[0], prediction_numbers[1]),
                     "average_return": average_return,
                     "potential": current_potential,
+                    "success_rate": self.get_success_rate(current_quiniela)
                 }
         return optimal_quiniela
 
@@ -319,6 +332,7 @@ class Command(BaseCommand):
             testing_races,
             prediction_list,
             prediction_numbers)
+
         average_return = self.get_average_return(current_exacta)
         if average_return > 2:
             current_potential = self.get_potential(average_return, current_exacta)
@@ -327,6 +341,7 @@ class Command(BaseCommand):
                     "scenario": "{}-{}".format(prediction_numbers[0], prediction_numbers[1]),
                     "average_return": average_return,
                     "potential": int(current_potential),
+                    "success_rate": self.get_success_rate(current_exacta)
                 }
         return optimal_exacta
 
@@ -348,16 +363,18 @@ class Command(BaseCommand):
                     "scenario": "{}-{}-{}".format(prediction_numbers[0], prediction_numbers[1], prediction_numbers[2]),
                     "average_return": average_return,
                     "potential": int(current_potential),
+                    "success_rate": self.get_success_rate(current_trifecta)
                 }
         return optimal_trifecta
 
     def print_optimal_bet(self, optimal_bet, bet_name):
         if optimal_bet["average_return"] > 0:
-            print("Optimal {}:\t{}\t{}\t{}".format(
+            print("Optimal {}:\t{}\t{}\t{}\t{}".format(
                 bet_name,
                 optimal_bet["scenario"],
                 optimal_bet["average_return"],
-                optimal_bet["potential"]))
+                optimal_bet["potential"],
+                "{}%".format(optimal_bet["success_rate"])))
 
 
 
@@ -368,16 +385,19 @@ class Command(BaseCommand):
             "scenario": "",
             "average_return": 0,
             "potential": 0,
+            "success_rate": 0,
         }
         optimal_exacta = {
             "scenario": "",
             "average_return": 0,
             "potential": 0,
+            "success_rate": 0,
         }
         optimal_trifecta = {
             "scenario": "",
             "average_return": 0,
             "potential": 0,
+            "success_rate": 0,
         }
         while prediction_numbers[0] < highest_number:
             prediction_numbers[1] = 0
@@ -399,6 +419,9 @@ class Command(BaseCommand):
                         testing_races,
                         prediction_list,
                         prediction_numbers)
+
+
+
                     # prediction_numbers[3] = 0
                 #     while prediction_numbers[3] < highest_number:
                 #         self.evaluate_superfectas(
@@ -406,6 +429,9 @@ class Command(BaseCommand):
                 #             prediction_list,
                 #             prediction_numbers)
                 #         prediction_numbers[3] += 1
+
+
+
                     prediction_numbers[2] += 1
                 prediction_numbers[1] += 1
             prediction_numbers[0] += 1
