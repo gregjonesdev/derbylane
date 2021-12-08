@@ -293,7 +293,6 @@ class Command(BaseCommand):
             return 0
 
     def get_success_rate(self, return_list):
-        print(return_list)
         total_count = len(return_list)
         correct_count = geek.count_nonzero(return_list)
         return int(100*correct_count/total_count)
