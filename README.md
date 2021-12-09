@@ -15,3 +15,8 @@ Here's how it works:
 Planned Updates:
 
 Currently running simulations to establish profitability of exotic wagers (exacta, trifecta, etc)
+
+![Bet Modal](https://imgur.com/lyFLDHz)
+
+![Daily Results](https://imgur.com/3lOXsou)
+
