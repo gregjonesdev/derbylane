@@ -319,7 +319,7 @@ class Command(BaseCommand):
                     "scenario": "{}-{}".format(prediction_numbers[0], prediction_numbers[1]),
                     "average_return": average_return,
                     "potential": current_potential,
-                    "success_rate":
+                    "success_rate": current_success_rate
                 }
         return optimal_quiniela
 
