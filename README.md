@@ -1,4 +1,4 @@
-This program generates daily predictions for greyhound races, and records bets that are placed.
+This program generates daily predictions for greyhound races, and records bets that are placed. This website is live and in use.
 
 Here's how it works:
 
@@ -15,3 +15,8 @@ Here's how it works:
 Planned Updates:
 
 Currently running simulations to establish profitability of exotic wagers (exacta, trifecta, etc)
+
+![Bet Modal](bet.jpg)
+
+![Daily Results](results.jpg)
+
