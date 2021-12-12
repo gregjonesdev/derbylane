@@ -294,9 +294,10 @@ class Command(BaseCommand):
 
     def get_success_rate(self, return_list):
         total_count = len(return_list)
-        correct_count = geek.count_nonzero(return_list)
-        return (correct_count/total_count)
-
+        if total_count:
+            correct_count = geek.count_nonzero(return_list)
+            return (correct_count/total_count)
+        return 0
 
     def get_optimal_quiniela(
         self,
