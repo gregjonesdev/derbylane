@@ -403,16 +403,16 @@ class Command(BaseCommand):
         while prediction_numbers[0] < highest_number:
             prediction_numbers[1] = 0
             while prediction_numbers[1] < highest_number:
-                optimal_quiniela = self.get_optimal_quiniela(
-                    optimal_quiniela,
-                    testing_races,
-                    prediction_list,
-                    prediction_numbers)
-                optimal_exacta = self.get_optimal_exacta(
-                    optimal_exacta,
-                    testing_races,
-                    prediction_list,
-                    prediction_numbers)
+                # optimal_quiniela = self.get_optimal_quiniela(
+                #     optimal_quiniela,
+                #     testing_races,
+                #     prediction_list,
+                #     prediction_numbers)
+                # optimal_exacta = self.get_optimal_exacta(
+                #     optimal_exacta,
+                #     testing_races,
+                #     prediction_list,
+                #     prediction_numbers)
                 prediction_numbers[2] = 0
                 while prediction_numbers[2] < highest_number:
                     optimal_trifecta = self.get_optimal_trifecta(
@@ -443,7 +443,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        venue_code = "WD"
+        venue_code = "TS"
         grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
