@@ -311,13 +311,15 @@ class Command(BaseCommand):
 
         average_return = self.get_average_return(current_quiniela)
         if average_return > 2:
+            current_success_rate = self.get_success_rate(current_quiniela)
             current_potential = self.get_potential(average_return, current_quiniela)
-            if current_potential > optimal_quiniela["potential"]:
+            if current_success_rate > optimal_quiniela["success_rate"]:
+            # if current_potential > optimal_quiniela["potential"]:
                 return {
                     "scenario": "{}-{}".format(prediction_numbers[0], prediction_numbers[1]),
                     "average_return": average_return,
                     "potential": current_potential,
-                    "success_rate": self.get_success_rate(current_quiniela)
+                    "success_rate":
                 }
         return optimal_quiniela
 
