@@ -357,14 +357,15 @@ class Command(BaseCommand):
             prediction_list,
             prediction_numbers)
         average_return = self.get_average_return(current_trifecta)
+        current_success_rate = self.get_success_rate(current_trifecta)
         if average_return > 2:
-            current_potential = self.get_potential(average_return, current_trifecta)
-            if current_potential > optimal_trifecta["potential"]:
+            if current_success_rate > optimal_trifecta["success_rate"]:
+                current_potential = self.get_potential(average_return, current_trifecta)
                 return {
                     "scenario": "{}-{}-{}".format(prediction_numbers[0], prediction_numbers[1], prediction_numbers[2]),
                     "average_return": average_return,
                     "potential": int(current_potential),
-                    "success_rate": self.get_success_rate(current_trifecta)
+                    "success_rate": current_success_rate
                 }
         return optimal_trifecta
 
