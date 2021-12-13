@@ -410,18 +410,19 @@ class Command(BaseCommand):
                 #     testing_races,
                 #     prediction_list,
                 #     prediction_numbers)
-                # optimal_exacta = self.get_optimal_exacta(
-                #     optimal_exacta,
-                #     testing_races,
-                #     prediction_list,
-                #     prediction_numbers)
-                prediction_numbers[2] = 0
-                while prediction_numbers[2] < highest_number:
-                    optimal_trifecta = self.get_optimal_trifecta(
-                        optimal_trifecta,
-                        testing_races,
-                        prediction_list,
-                        prediction_numbers)
+                optimal_exacta = self.get_optimal_exacta(
+                    optimal_exacta,
+                    testing_races,
+                    prediction_list,
+                    prediction_numbers)
+                #
+                # prediction_numbers[2] = 0
+                # while prediction_numbers[2] < highest_number:
+                #     optimal_trifecta = self.get_optimal_trifecta(
+                #         optimal_trifecta,
+                #         testing_races,
+                #         prediction_list,
+                #         prediction_numbers)
 
 
 

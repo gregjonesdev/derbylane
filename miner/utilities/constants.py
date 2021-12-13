@@ -67,8 +67,8 @@ packages_directory = "../../../packages"
 
 c_data = {
     "j48": {
-        "c_start": 0.01,
-        "c_stop": 0.49,
+        "c_start": 0.49,
+        "c_stop": 0.99,
         "interval": 0.01,
     },
     "smo": {
