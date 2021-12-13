@@ -320,7 +320,7 @@ class Command(BaseCommand):
                     "scenario": "{}-{}".format(prediction_numbers[0], prediction_numbers[1]),
                     "average_return": average_return,
                     "potential": current_potential,
-                    "success_rate": current_success_rate
+                    "success_rate": round(current_success_rate, 4)
                 }
         return optimal_quiniela
 
@@ -366,7 +366,7 @@ class Command(BaseCommand):
                     "scenario": "{}-{}-{}".format(prediction_numbers[0], prediction_numbers[1], prediction_numbers[2]),
                     "average_return": average_return,
                     "potential": int(current_potential),
-                    "success_rate": current_success_rate
+                    "success_rate": round(current_success_rate, 4)
                 }
         return optimal_trifecta
 
@@ -445,7 +445,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        venue_code = "TS"
+        venue_code = "WD"
         grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
