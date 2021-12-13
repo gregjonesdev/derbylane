@@ -436,7 +436,7 @@ class Command(BaseCommand):
 
 
 
-                    prediction_numbers[2] += 1
+                    # prediction_numbers[2] += 1
                 prediction_numbers[1] += 1
             prediction_numbers[0] += 1
 
