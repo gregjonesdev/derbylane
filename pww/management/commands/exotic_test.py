@@ -310,6 +310,9 @@ class Command(BaseCommand):
             prediction_list,
             prediction_numbers)
 
+        for each in prediction_list:
+            print(prediction_list[each])
+        raise SystemExit(0)
         average_return = self.get_average_return(current_quiniela)
         if average_return > 2:
             current_success_rate = self.get_success_rate(current_quiniela)
@@ -410,19 +413,19 @@ class Command(BaseCommand):
                     testing_races,
                     prediction_list,
                     prediction_numbers)
-                optimal_exacta = self.get_optimal_exacta(
-                    optimal_exacta,
-                    testing_races,
-                    prediction_list,
-                    prediction_numbers)
+                # optimal_exacta = self.get_optimal_exacta(
+                #     optimal_exacta,
+                #     testing_races,
+                #     prediction_list,
+                #     prediction_numbers)
                 #
-                prediction_numbers[2] = 0
-                while prediction_numbers[2] < highest_number:
-                    optimal_trifecta = self.get_optimal_trifecta(
-                        optimal_trifecta,
-                        testing_races,
-                        prediction_list,
-                        prediction_numbers)
+                # prediction_numbers[2] = 0
+                # while prediction_numbers[2] < highest_number:
+                #     optimal_trifecta = self.get_optimal_trifecta(
+                #         optimal_trifecta,
+                #         testing_races,
+                #         prediction_list,
+                #         prediction_numbers)
 
 
 
@@ -436,7 +439,7 @@ class Command(BaseCommand):
 
 
 
-                    prediction_numbers[2] += 1
+                    # prediction_numbers[2] += 1
                 prediction_numbers[1] += 1
             prediction_numbers[0] += 1
 
