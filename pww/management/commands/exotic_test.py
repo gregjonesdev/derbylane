@@ -312,7 +312,6 @@ class Command(BaseCommand):
 
         for each in prediction_list:
             print(prediction_list[each])
-        raise SystemExit(0)
         average_return = self.get_average_return(current_quiniela)
         if average_return > 2:
             current_success_rate = self.get_success_rate(current_quiniela)
