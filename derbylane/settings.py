@@ -4,11 +4,6 @@ from .settingsconf.base import *
 
 LOGIN_URL = 'two_factor:login'
 
-# this one is optional
-
-
-
-
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DATABASES = {

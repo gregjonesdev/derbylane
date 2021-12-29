@@ -8,8 +8,6 @@ from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from derbylane.views import (
     FrontPage,
     ProfileView,
-    ScanView,
-    AnalysisView,
     ResultsView,
     load_charts,
     load_bets,
@@ -32,17 +30,9 @@ urlpatterns = [
         FrontPage.as_view(),
         name='frontpage'),
     url(
-        r'^scans/$',
-        ScanView.as_view(),
-        name='scans'),
-    url(
         r'^results/$',
         ResultsView.as_view(),
         name='results'),
-    url(
-        r'^analysis/$',
-        AnalysisView.as_view(),
-        name='analysis'),
     url(
         r'^profile/$',
         ProfileView.as_view(),

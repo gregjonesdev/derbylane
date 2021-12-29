@@ -17,9 +17,9 @@ class Command(BaseCommand):
         self.stdout.write("Starting Bootstrap script..")
         data = open('./rawdat/json/data.json').read()
         jsonData = json.loads(data)
-        # self.seed_users(jsonData["users"])
-        # self.seed_venues(jsonData["venues"])
-        # self.seed_grades(jsonData["race_grades"])
+        self.seed_users(jsonData["users"])
+        self.seed_venues(jsonData["venues"])
+        self.seed_grades(jsonData["race_grades"])
         self.seed_bettypes(jsonData["straight_bet_types"])
         self.stdout.write("Complete.")
 
