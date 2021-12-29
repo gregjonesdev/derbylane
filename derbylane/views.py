@@ -24,13 +24,6 @@ from rawdat.models import (
     Bet,
     StraightBetType)
 
-class Welcome(LoginRequiredMixin, View):
-
-    template_name = "welcome.html"
-    context = {}
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, self.context)
 
 class FrontPage(LoginRequiredMixin, View):
 
@@ -38,9 +31,6 @@ class FrontPage(LoginRequiredMixin, View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-
-        print(localdate())
-
         datestring = request.GET.get("date")
         if datestring:
             date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
