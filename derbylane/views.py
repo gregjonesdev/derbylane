@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from two_factor.views.mixins import OTPRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 
 
@@ -23,7 +24,7 @@ from rawdat.models import (
     Bet,
     StraightBetType)
 
-class Welcome(View):
+class Welcome(LoginRequiredMixin, View):
 
     template_name = "welcome.html"
     context = {}
@@ -31,7 +32,7 @@ class Welcome(View):
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.context)
 
-class FrontPage(View):
+class FrontPage(LoginRequiredMixin, View):
 
     template_name = 'frontpage.html'
     context = {}
@@ -71,7 +72,7 @@ class ProfileView(OTPRequiredMixin, View):
         return render(request, self.template_name, self.context)
 
 
-class ResultsView(View):
+class ResultsView(LoginRequiredMixin, View):
 
     template_name = 'results.html'
     context = {}
