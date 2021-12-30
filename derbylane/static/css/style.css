@@ -280,3 +280,16 @@ body {
   vertical-align: middle;
   color: #FFF;
 }
+
+p label {
+  width: 25%;
+}
+
+p input {
+  width: 70%;
+  vertical-align: top;
+}
+
+.errorlist {
+
+}

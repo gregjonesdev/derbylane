@@ -11,8 +11,8 @@ from django.http import JsonResponse
 from two_factor.views.mixins import OTPRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
-
-
+from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 from rawdat.models import (
@@ -88,10 +88,11 @@ class ResultsView(LoginRequiredMixin, View):
         return response
 
 
-class PasswordReset(OTPRequiredMixin, auth_views.PasswordResetView):
+class PasswordReset(auth_views.PasswordResetView):
 
     context = {}
     def get(self, request, *args, **kwargs):
+        print("hola")
         return render(request, self.template_name, self.context)
 
 def load_charts(request):
@@ -167,6 +168,28 @@ def load_bets(request):
             url, {
                 'races': races,
                 'wagering': wagering })
+
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
+def change_password(request):
+    print(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect("/")
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'accounts/change_password.html', {
+        'form': form,
+        'user': request.user
+    })
 
 
 def logout_view(request):
