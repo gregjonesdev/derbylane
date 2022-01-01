@@ -34,13 +34,14 @@ classifiers = {
             "-K", "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007",
             "-calibrator", "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
         ],
-        # 'is_nominal':
-
     },
     "j48": {
         "classname": "weka.classifiers.trees.J48",
         "options": [],
-        # 'is_nominal':
+    },
+    "randomforest": {
+        "classname": "weka.classifiers.trees.RandomForest",
+        "options": [],
     }
 }
 
@@ -69,7 +70,8 @@ def create_model(training_arff, classifier_name, c, race_key, loader):
     # options.append("-C")
     # options.append(str(c))
     # print(options)
-    options = add_c_to_options(options, c)
+    if c:
+        options = add_c_to_options(options, c)
 
     classname = classifier["classname"]
     model_data = loader.load_file(training_arff)
