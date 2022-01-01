@@ -42,8 +42,8 @@ classifiers = {
     "randomforest": {
         "classname": "weka.classifiers.trees.RandomForest",
         "options": [
-            # "-B", # Break ties randomly when several attributes look equally good.
-            "-U" # Allow unclassified instances.
+            "-B", # Break ties randomly when several attributes look equally good.
+            # "-U" # Allow unclassified instances.
         ],
     }
 }
