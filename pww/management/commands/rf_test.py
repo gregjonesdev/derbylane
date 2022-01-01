@@ -183,6 +183,7 @@ class Command(BaseCommand):
 
         model = Classifier(jobject=serialization.read(model_name))
         prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+
         self.print_returns(prediction_list, str(c), race_key, loader, prediction)
 
         jvm.stop()
