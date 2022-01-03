@@ -43,20 +43,16 @@ class FrontPage(LoginRequiredMixin, View):
             for chart in Chart.objects.filter(program__date=date_obj):
                 if chart.has_predictions():
                     displayed_charts.append(chart)
-            print("pred")
         else:
             content_type = "Bets"
             for chart in Chart.objects.filter(program__date=date_obj):
                 if chart.has_bets():
                     displayed_charts.append(chart)
-            print("Bets")
-
-
-
         self.context["previous"] = (date_obj - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
         next_day = date_obj + datetime.timedelta(days=1)
         self.context["next"] = next_day.strftime("%Y-%m-%d")
-        self.context["next_day_scheduled"] = Program.objects.filter(date=next_day).exists()
+        self.context["next_day_scheduled"] = next_day - datetime.timedelta(days=1) <= today
+
         self.context["date_header"] = date_obj.strftime("%A, %B %-d")
         self.context["is_past"] = localdate() > date_obj
         self.context["datestring"] = datestring
