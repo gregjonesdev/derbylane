@@ -93,11 +93,12 @@ class Command(BaseCommand):
                 print("{}\n".format(
                     chart.get_kiosk_name()))
                 for race in chart.race_set.all():
-                    print("Race {}:\n".format(race.number))
+                    if race.has_bets();
+                        print("Race {}:\n".format(race.number))
                     # self.print_straight_wager_table(race)
-                    for participant in race.participant_set.all():
-                        for bet in participant.straight_wager_set.all():
-                            print(bet)
+                        for participant in race.participant_set.all():
+                            if participant.bet_set.count():
+                                print(participant.dog.name)
         # last_week = yesterday = (today - datetime.timedelta(days=7))
         # winnings = {}
         # for participant in Participant.objects.filter(
