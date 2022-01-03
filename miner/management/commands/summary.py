@@ -97,8 +97,8 @@ class Command(BaseCommand):
                     for race in chart.race_set.all():
                         if race.has_bets():
                             print("Race {}:\n".format(race.number))
+                            grade_name = race.grade.name
                             if not grade_name in graded_results.keys():
-                                grade_name = race.grade.name
                                 graded_results[grade_name] = {
                                     "W": [],
                                     "P": [],
