@@ -111,7 +111,7 @@ class Command(BaseCommand):
                                         # print(bet.amount)
                                         # print(bet.get_return())
                                         graded_results[grade_name][bet.type.name].append(
-                                            (bet.amount, bet.return))
+                                            (bet.amount, bet.get_return()))
         for grade in graded_results:
             print(grade)
             print("Spent: {}".format(sum(grade["P"][0])))
