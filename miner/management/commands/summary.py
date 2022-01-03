@@ -102,7 +102,7 @@ class Command(BaseCommand):
                                 graded_results[grade_name] = {
                                     "W": {"spent": 0, "earned": 0},
                                     "P": {"spent": 0, "earned": 0},
-                                    "S": {"spent": 0, "earned": 0}]
+                                    "S": {"spent": 0, "earned": 0}}
                         # self.print_straight_wager_table(race)
                             for participant in race.participant_set.all():
                                 if participant.bet_set.count():
