@@ -107,9 +107,16 @@ class Command(BaseCommand):
                             for participant in race.participant_set.all():
                                 if participant.bet_set.count():
                                     for bet in participant.bet_set.all():
-                                        print(bet.type.name)
-                                        print(bet.amount)
-                                        print(bet.get_return())
+                                        # print(bet.type.name)
+                                        # print(bet.amount)
+                                        # print(bet.get_return())
+                                        graded_results[grade_name][bet.type.name].append(
+                                            (bet.amount, bet.return))
+        for grade in graded_results:
+            print(grade)
+            print("Spent: {}".format(sum(grade["P"][0])))
+            print("Earned: {}".format(sum(grade["P"][1])))
+
 
 
         # last_week = yesterday = (today - datetime.timedelta(days=7))
