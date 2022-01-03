@@ -96,8 +96,8 @@ class Command(BaseCommand):
                     print("Race {}:\n".format(race.number))
                     # self.print_straight_wager_table(race)
                     for participant in race.participant_set.all():
-                        if participant.has_bets():
-                            print(participant.dog.name)
+                        for bet in participant.straight_wager_set.all():
+                            print(bet)
         # last_week = yesterday = (today - datetime.timedelta(days=7))
         # winnings = {}
         # for participant in Participant.objects.filter(
