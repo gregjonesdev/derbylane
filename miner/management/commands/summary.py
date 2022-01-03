@@ -100,9 +100,9 @@ class Command(BaseCommand):
                             grade_name = race.grade.name
                             if not grade_name in graded_results.keys():
                                 graded_results[grade_name] = {
-                                    "W": [],
-                                    "P": [],
-                                    "S": []}
+                                    "W": {"spent": 0, "earned": 0},
+                                    "P": {"spent": 0, "earned": 0},
+                                    "S": {"spent": 0, "earned": 0}]
                         # self.print_straight_wager_table(race)
                             for participant in race.participant_set.all():
                                 if participant.bet_set.count():
@@ -110,12 +110,12 @@ class Command(BaseCommand):
                                         # print(bet.type.name)
                                         # print(bet.amount)
                                         # print(bet.get_return())
-                                        graded_results[grade_name][bet.type.name].append(
-                                            (bet.amount, bet.get_return()))
+                                        graded_results[grade_name][bet.type.name]["spent"] += bet.amount
+                                        graded_results[grade_name][bet.type.name]["earned"] += bet.get_return()
         for grade in graded_results:
             print(grade)
-            print("Spent: {}".format(sum(grade["P"][0])))
-            print("Earned: {}".format(sum(grade["P"][1])))
+            print("Spent: {}".format(graded_results[grade]["P"]["spent"])
+            print("Earned: {}".format(graded_results[grade]["P"]["earned"])
 
 
 
