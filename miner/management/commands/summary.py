@@ -114,8 +114,8 @@ class Command(BaseCommand):
                                         graded_results[grade_name][bet.type.name]["earned"] += bet.get_return()
         for grade in graded_results:
             print(grade)
-            print("Spent: {}".format(graded_results[grade]["P"]["spent"])
-            print("Earned: {}".format(graded_results[grade]["P"]["earned"])
+            print("Spent: {}".format(graded_results[grade]["P"]["spent"]))
+            print("Earned: {}".format(graded_results[grade]["P"]["earned"]))
 
 
 
