@@ -88,6 +88,7 @@ class Command(BaseCommand):
         str_date = sys.argv[3]
         target_date = datetime.strptime(str_date, '%Y-%m-%d')
         print("\nAnalysis for: {}\n".format(target_date))
+        graded_results = {}
         for program in Program.objects.filter(date=target_date):
             for chart in program.chart_set.all():
                 if chart.has_bets():
@@ -96,10 +97,21 @@ class Command(BaseCommand):
                     for race in chart.race_set.all():
                         if race.has_bets():
                             print("Race {}:\n".format(race.number))
+                            if not grade_name in graded_results.keys():
+                                grade_name = race.grade.name
+                                graded_results[grade_name] = {
+                                    "W": [],
+                                    "P": [],
+                                    "S": []}
                         # self.print_straight_wager_table(race)
                             for participant in race.participant_set.all():
                                 if participant.bet_set.count():
-                                    print(participant.dog.name)
+                                    for bet in participant.bet_set.all():
+                                        print(bet.type.name)
+                                        print(bet.amount)
+                                        pruint(bet.get_return)
+
+
         # last_week = yesterday = (today - datetime.timedelta(days=7))
         # winnings = {}
         # for participant in Participant.objects.filter(
