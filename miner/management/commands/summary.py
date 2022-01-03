@@ -90,15 +90,16 @@ class Command(BaseCommand):
         print("\nAnalysis for: {}\n".format(target_date))
         for program in Program.objects.filter(date=target_date):
             for chart in program.chart_set.all():
-                print("{}\n".format(
-                    chart.get_kiosk_name()))
-                for race in chart.race_set.all():
-                    if race.has_bets():
-                        print("Race {}:\n".format(race.number))
-                    # self.print_straight_wager_table(race)
-                        for participant in race.participant_set.all():
-                            if participant.bet_set.count():
-                                print(participant.dog.name)
+                if chart.has_bets():
+                    print("{}\n".format(
+                        chart.get_kiosk_name()))
+                    for race in chart.race_set.all():
+                        if race.has_bets():
+                            print("Race {}:\n".format(race.number))
+                        # self.print_straight_wager_table(race)
+                            for participant in race.participant_set.all():
+                                if participant.bet_set.count():
+                                    print(participant.dog.name)
         # last_week = yesterday = (today - datetime.timedelta(days=7))
         # winnings = {}
         # for participant in Participant.objects.filter(
