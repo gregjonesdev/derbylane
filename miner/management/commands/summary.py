@@ -93,7 +93,7 @@ class Command(BaseCommand):
                 print("{}\n".format(
                     chart.get_kiosk_name()))
                 for race in chart.race_set.all():
-                    if race.has_bets();
+                    if race.has_bets():
                         print("Race {}:\n".format(race.number))
                     # self.print_straight_wager_table(race)
                         for participant in race.participant_set.all():
