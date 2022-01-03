@@ -33,16 +33,26 @@ class FrontPage(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         datestring = request.GET.get("date")
         displayed_charts = []
+        today = localdate()
         if datestring:
             date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
-            for chart in Chart.objects.filter(program__date=date_obj):
-                if chart.has_bets():
-                    displayed_charts.append(chart)
         else:
-            date_obj = localdate()
+            date_obj = today
+        if date_obj >= today:
+            content_type = "Predictions"
             for chart in Chart.objects.filter(program__date=date_obj):
                 if chart.has_predictions():
                     displayed_charts.append(chart)
+            print("pred")
+        else:
+            content_type = "Bets"
+            for chart in Chart.objects.filter(program__date=date_obj):
+                if chart.has_bets():
+                    displayed_charts.append(chart)
+            print("Bets")
+
+
+
         self.context["previous"] = (date_obj - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
         next_day = date_obj + datetime.timedelta(days=1)
         self.context["next"] = next_day.strftime("%Y-%m-%d")
@@ -51,6 +61,7 @@ class FrontPage(LoginRequiredMixin, View):
         self.context["is_past"] = localdate() > date_obj
         self.context["datestring"] = datestring
         self.context["charts"] = displayed_charts
+        self.context["content_type"] = content_type
         return render(request, self.template_name, self.context)
 
 

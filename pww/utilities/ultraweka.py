@@ -42,7 +42,7 @@ classifiers = {
     "randomforest": {
         "classname": "weka.classifiers.trees.RandomForest",
         "options": [
-            # "-B", # Break ties randomly when several attributes look equally good.
+            #  "-B", # Break ties randomly when several attributes look equally good.
             # "-U" # Allow unclassified instances.
         ],
     }
@@ -211,7 +211,10 @@ def get_prediction_list(cls, data, uuid_line_index):
     for index, inst in enumerate(data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
-            prediction_list[uuid] = cls.classify_instance(inst)
+            # prediction_list[uuid] = cls.classify_instance(inst)
+            dist = cls.distribution_for_instance(inst)
+            print(str(dist))
+    raise SystemExit(0)
     return prediction_list
 
 

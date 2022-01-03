@@ -1,6 +1,6 @@
 
 from django.core.management.base import BaseCommand
-import datetime
+from datetime import datetime
 from rawdat.models import Race, Program
 from miner.utilities.urls import build_race_results_url
 from miner.utilities.scrape import (
@@ -9,10 +9,14 @@ from miner.utilities.scrape import (
     save_single_bets,
     get_single_bets
 )
+import sys
 from rawdat.models import Participant
 
 
 class Command(BaseCommand):
+
+    def add_arguments(self, parser):
+        parser.add_argument('--date', type=str)
 
     def get_race_key_from_race(self, race):
         return "{}_{}_{}".format(
@@ -81,12 +85,10 @@ class Command(BaseCommand):
             print("\n")
 
     def handle(self, *args, **options):
-
-        today = datetime.date.today()
-        yesterday = (today - datetime.timedelta(days=1))
-        # yesterday = "2021-11-04"
-        print("\nAnalysis for: {}\n".format(yesterday))
-        for program in Program.objects.filter(date=yesterday):
+        str_date = sys.argv[3]
+        target_date = datetime.strptime(str_date, '%Y-%m-%d')
+        print("\nAnalysis for: {}\n".format(target_date))
+        for program in Program.objects.filter(date=target_date):
             for chart in program.chart_set.all():
                 print("{}: {}\n".format(
                     program.venue.name,
