@@ -109,7 +109,7 @@ class Command(BaseCommand):
                                     for bet in participant.bet_set.all():
                                         print(bet.type.name)
                                         print(bet.amount)
-                                        pruint(bet.get_return)
+                                        print(bet.get_return())
 
 
         # last_week = yesterday = (today - datetime.timedelta(days=7))
