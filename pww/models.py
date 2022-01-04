@@ -144,6 +144,14 @@ class Prediction(CoreModel):
             null=True
             )
 
+# class Distribution(CoreModel):
+#
+#     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
+#     distribution = ArrayField(
+#             models.IntegerField(null=True),
+#             size=8
+#         ),
+#
 
 class TestPrediction(CoreModel):
 

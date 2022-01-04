@@ -24,15 +24,6 @@ from miner.utilities.constants import (
     focused_grades)
 from pww.utilities.arff import create_arff
 
-# prediction_models = {
-#     "WD_548_B": "WD_548_B_smo_104.model",
-#     "WD_548_C": "WD_548_C_smo_008.model",
-#     "TS_550_B": "TS_550_B_smo_051.model",
-#     "TS_550_C": "TS_550_C_smo_053.model",
-#     "SL_583_C": "SL_583_C_smo_025.model",
-#
-# }
-
 prediction_models = {
     "WD_548_B": "WD_548_B_smo_104.model",
     "WD_548_C": "WD_548_C_smo_008.model",
@@ -120,30 +111,31 @@ class Command(BaseCommand):
 
             loader = conv.Loader(classname="weka.core.converters.ArffLoader")
             model_name = create_model(training_arff, classifier_name, string_c, race_key, loader)
-            self.make_predictions(model_name, testing_arff, loader)
+            prediction_list = get_prediction_list(testing_arff, model_name)
+            if 'smo' in model_name:
+                self.save_smo_predictions(prediction_list)
+            elif 'j48' in model_name:
+                self.save_j48_predictions(prediction_list)
 
 
 
-    def make_predictions(self, model_name, testing_arff, loader):
-        model = Classifier(jobject=serialization.read(model_name))
-        uuid_line_index = get_uuid_line_index(testing_arff)
-        testing_data = build_scheduled_data(testing_arff)
-        prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
-
-
+    def save_smo_predictions(self, prediction_list):
         for uuid in prediction_list.keys():
             prediction = prediction_list[uuid]
-            if 'smo' in model_name:
-                self.save_smo_prediction(uuid, prediction)
-            elif 'j48' in model_name:
-                self.save_j48_prediction(uuid, prediction)
+            self.save_smo_prediction(uuid, prediction)
+
+    def save_j48_predictions(self, prediction_list):
+        for uuid in prediction_list.keys():
+            prediction = prediction_list[uuid]
+            self.save_j48_prediction(uuid, prediction)
+
 
     def save_j48_prediction(self, participant_uuid, prediction):
         participant = Participant.objects.get(uuid=participant_uuid)
         pred = get_prediction(participant)
         pred.j48 = int(prediction)
         pred.save()
-        print(pred.__dict__)
+        # print(pred.__dict__)
 
 
     def save_smo_prediction(self, participant_uuid, prediction):
@@ -151,7 +143,7 @@ class Command(BaseCommand):
         pred = get_prediction(participant)
         pred.smo = int(prediction)
         pred.save()
-        print(pred.__dict__)
+        # print(pred.__dict__)
 
 
 

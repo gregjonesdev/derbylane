@@ -186,7 +186,7 @@ class Command(BaseCommand):
         "interval": 0.01,
         },
         }
-        prediction = sys.argv[7]
+        # prediction = sys.argv[7]
 
         c_start = c_data[classifier_name]["c_start"]
         c_stop = c_data[classifier_name]["c_stop"]
@@ -200,7 +200,7 @@ class Command(BaseCommand):
         print("\n\n{} Prediction Accuracy vs Confidence Factor".format(
             classifier_name.upper()))
         print("{} {} {}\n".format(venue_code, grade_name, distance))
-        print("Dogs Predicted to Finish {}".format(pred_format[prediction]))
+        # print("Dogs Predicted to Finish {}".format(pred_format[prediction]))
         print(table_string.format(
             "C",
             "Win",
@@ -212,12 +212,12 @@ class Command(BaseCommand):
         c = c_start
         while c <= c_stop:
             c = round(c, 2)
-            model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
-            model = Classifier(jobject=serialization.read(model_name))
-            # print(type(testing_arff))
-                # model.build_classifier(testing_data)
-            prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
-            self.print_returns(prediction_list, str(c), race_key, loader, prediction)
+            print("C Factor: {}".format(c))
+            # model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
+            # model = Classifier(jobject=serialization.read(model_name))
+            #
+            # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+            # self.print_returns(prediction_list, str(c), race_key, loader, prediction)
             c = round(c + interval, 2)
 
         jvm.stop()

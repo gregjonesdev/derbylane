@@ -205,16 +205,41 @@ def get_uuid_line_index(filename):
             uuid_line_index[i] = uuid
             i += 1
     return uuid_line_index
-#
-def get_prediction_list(cls, data, uuid_line_index):
+
+def get_prediction_list(testing_arff, model_name):
+    model = Classifier(jobject=serialization.read(model_name))
+    uuid_line_index = get_uuid_line_index(testing_arff)
+    testing_data = build_scheduled_data(testing_arff)
     prediction_list = {}
-    for index, inst in enumerate(data):
+    print("Confidence:")
+    print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+        "Pred.",
+        "Conf.",
+        "Win",
+        "Place",
+        "Show"))
+    for index, inst in enumerate(testing_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
-            # prediction_list[uuid] = cls.classify_instance(inst)
-            dist = cls.distribution_for_instance(inst)
-            print(str(dist))
-    raise SystemExit(0)
+            prediction_list[uuid] = model.classify_instance(inst)
+            dist = model.distribution_for_instance(inst)
+            # print(str(dist))
+            # print(model.classify_instance(inst))
+            index = int(model.classify_instance(inst))
+            # print(index)
+            # print("---")
+            # print(dist)
+            # print(dist[:2])
+            # print(dist[:3])
+            print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+                model.classify_instance(inst),
+                round(dist[index],2),
+                round(dist[0], 2),
+                round(sum(dist[:2]), 2),
+                round(sum(dist[:3]), 2)))
+            # print(dist[index])
+            # print("---")
+    # raise SystemExit(0)
     return prediction_list
 
 

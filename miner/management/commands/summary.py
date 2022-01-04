@@ -89,6 +89,7 @@ class Command(BaseCommand):
         target_date = datetime.strptime(str_date, '%Y-%m-%d')
         print("\nAnalysis for: {}\n".format(target_date))
         graded_results = {}
+        graded_predictions = {}
         for program in Program.objects.filter(date=target_date):
             for chart in program.chart_set.all():
                 if chart.has_bets():
@@ -96,7 +97,7 @@ class Command(BaseCommand):
                         chart.get_kiosk_name()))
                     for race in chart.race_set.all():
                         if race.has_bets():
-                            print("Race {}:\n".format(race.number))
+                            # print("Race {}:\n".format(race.number))
                             grade_name = race.grade.name
                             if not grade_name in graded_results.keys():
                                 graded_results[grade_name] = {
@@ -105,6 +106,7 @@ class Command(BaseCommand):
                                     "S": {"spent": 0, "earned": 0}}
                         # self.print_straight_wager_table(race)
                             for participant in race.participant_set.all():
+
                                 if participant.bet_set.count():
                                     for bet in participant.bet_set.all():
                                         # print(bet.type.name)
