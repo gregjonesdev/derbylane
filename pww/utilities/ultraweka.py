@@ -206,7 +206,7 @@ def get_uuid_line_index(filename):
             i += 1
     return uuid_line_index
 
-def get_prediction_list(testing_arff, model_name):
+def get_prediction_list(testing_arff, model_name, confidence_cutoff):
     model = Classifier(jobject=serialization.read(model_name))
     uuid_line_index = get_uuid_line_index(testing_arff)
     testing_data = build_scheduled_data(testing_arff)
@@ -241,7 +241,6 @@ def get_prediction_list(testing_arff, model_name):
             # print("---")
     # raise SystemExit(0)
     return prediction_list
-
 
 def get_prediction(participant):
     try:

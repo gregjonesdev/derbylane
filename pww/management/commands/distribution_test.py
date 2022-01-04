@@ -156,36 +156,36 @@ class Command(BaseCommand):
             venue_code,
             distance,
             grade_name)
-        training_metrics = all_metrics.filter(
-            participant__race__chart__program__date__lte=cutoff_date)
-        testing_metrics = all_metrics.filter(
-            participant__race__chart__program__date__gt=cutoff_date)
-        race_key = get_race_key(venue_code, distance, grade_name)
-        is_nominal = False
-        training_arff = get_training_arff(
-            race_key,
-            training_metrics,
-            is_nominal)
-        testing_arff = get_testing_arff(
-            race_key,
-            testing_metrics,
-            is_nominal)
-        uuid_line_index = get_uuid_line_index(testing_arff)
-        c = 0.01
-        max_return = 0
+        # training_metrics = all_metrics.filter(
+        #     participant__race__chart__program__date__lte=cutoff_date)
+        # testing_metrics = all_metrics.filter(
+        #     participant__race__chart__program__date__gt=cutoff_date)
+        # race_key = get_race_key(venue_code, distance, grade_name)
+        # is_nominal = False
+        # training_arff = get_training_arff(
+        #     race_key,
+        #     training_metrics,
+        #     is_nominal)
+        # testing_arff = get_testing_arff(
+        #     race_key,
+        #     testing_metrics,
+        #     is_nominal)
+        # uuid_line_index = get_uuid_line_index(testing_arff)
+        # c = 0.01
+        # max_return = 0
         classifier_name = sys.argv[3]
-        c_data = {
-        "j48": {
-        "c_start": 0.01,
-        "c_stop": 0.49,
-        "interval": 0.01,
-        },
-        "smo": {
-        "c_start": 0,
-        "c_stop": 6,
-        "interval": 0.01,
-        },
-        }
+        # c_data = {
+        # "j48": {
+        # "c_start": 0.01,
+        # "c_stop": 0.49,
+        # "interval": 0.01,
+        # },
+        # "smo": {
+        # "c_start": 0,
+        # "c_stop": 6,
+        # "interval": 0.01,
+        # },
+        # }
         # prediction = sys.argv[7]
 
         c_start = c_data[classifier_name]["c_start"]
@@ -196,19 +196,19 @@ class Command(BaseCommand):
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
 
-
-        print("\n\n{} Prediction Accuracy vs Confidence Factor".format(
-            classifier_name.upper()))
-        print("{} {} {}\n".format(venue_code, grade_name, distance))
+        #
+        # print("\n\n{} Prediction Accuracy vs Confidence Factor".format(
+        #     classifier_name.upper()))
+        # print("{} {} {}\n".format(venue_code, grade_name, distance))
         # print("Dogs Predicted to Finish {}".format(pred_format[prediction]))
-        print(table_string.format(
-            "C",
-            "Win",
-            "Place",
-            "Show",
-            "Bet Count",
-            "Potential"))
-        testing_data = build_scheduled_data(testing_arff)
+        # print(table_string.format(
+        #     "C",
+        #     "Win",
+        #     "Place",
+        #     "Show",
+        #     "Bet Count",
+        #     "Potential"))
+        # testing_data = build_scheduled_data(testing_arff)
         c = c_start
         while c <= c_stop:
             c = round(c, 2)
@@ -223,13 +223,8 @@ class Command(BaseCommand):
         jvm.stop()
         end_time = time()
         seconds_elapsed = end_time - start_time
-
         hours, rest = divmod(seconds_elapsed, 3600)
         minutes, seconds = divmod(rest, 60)
-
-        print("\nAll metrics: {}".format(len(all_metrics)))
-        print("Training metrics: {}".format(len(training_metrics)))
-        print("Test metrics: {}".format(len(testing_metrics)))
 
         print("\nCompleted Analysis in {}:{}:{}".format(
         self.two_digitizer(int(hours)),
