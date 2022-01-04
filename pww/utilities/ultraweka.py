@@ -212,7 +212,9 @@ def get_prediction_list(testing_arff, model_name, confidence_cutoff):
     testing_data = build_scheduled_data(testing_arff)
     prediction_list = {}
     print("Confidence:")
-    print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+    print("{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+        "Race",
+        "Dog",
         "Pred.",
         "Conf.",
         "Win",
@@ -224,6 +226,7 @@ def get_prediction_list(testing_arff, model_name, confidence_cutoff):
             prediction_list[uuid] = model.classify_instance(inst)
             dist = model.distribution_for_instance(inst)
             # print(str(dist))
+            participant = Participant.objects.get(uuid=uuid)
             # print(model.classify_instance(inst))
             index = int(model.classify_instance(inst))
             # print(index)
@@ -231,7 +234,9 @@ def get_prediction_list(testing_arff, model_name, confidence_cutoff):
             # print(dist)
             # print(dist[:2])
             # print(dist[:3])
-            print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+            print("{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+                participant.race.number,
+                participant.dog.name[:5],
                 model.classify_instance(inst),
                 round(dist[index],2),
                 round(dist[0], 2),
