@@ -7,11 +7,17 @@ from pww.utilities.ultraweka import (
     create_model,
     get_uuid_line_index)
 
+from miner.utilities.common import two_digitizer
+
+
+table_string = "{}\t\t{}\t\t{}\t\t{}"
+
 def get_daily_results(
     classifier_name,
     race_key,
     target_date,
     all_metrics,
+    prediction,
     loader):
     daily_results = {} # uuid: pred
 
@@ -30,6 +36,13 @@ def get_daily_results(
         is_nominal)
     uuid_line_index = get_uuid_line_index(testing_arff)
 
+    print("Profitability of bets (W/P/S) on dogs predicted to finish: {}\n".format(prediction))
+
+    print(table_string.format(
+        "Cutoff",
+        "W",
+        "P",
+        "S"))
     c = 0.27
     while c < 0.30:
         model = create_model(
@@ -38,22 +51,27 @@ def get_daily_results(
             str(c),
             race_key,
             loader)
-        evaluate_model_cutoffs(model)
+        evaluate_model_cutoffs(model, prediction)
         c += 0.01
 
 
 
     return daily_results
 
-def evaluate_model_cutoffs(model):
-
+def evaluate_model_cutoffs(model, prediction):
     starting_cutoff = 0.7
     ending_cutoff = 1.0
     cutoff_increment = 0.05
     confidence_cutoff = 0.5
     cutoff = starting_cutoff
     while cutoff <= ending_cutoff:
-        print("Evaluate Bets for Confidence cutoff: {}".format(cutoff))
+        cutoff = round(cutoff, 2)
+        print(table_string.format(
+            cutoff,
+            "W",
+            "P",
+            "S"
+        ))
         cutoff += cutoff_increment
 
         # prediction_list = get_prediction_list(

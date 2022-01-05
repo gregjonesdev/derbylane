@@ -20,7 +20,7 @@ class Command(BaseCommand):
         parser.add_argument('--model', type=str)
         parser.add_argument('--venue', type=str)
         parser.add_argument('--grade', type=str)
-        parser.add_argument('--prediction', type=str)
+        parser.add_argument('--prediction', type=int)
 
 
     def handle(self, *args, **options):
@@ -44,14 +44,19 @@ class Command(BaseCommand):
 
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-
-
+        print("\n")
+        print("Model: {}\tVenue: {}\tGrade: {}\n".format(
+            classifier_name,
+            venue_code,
+            grade_name
+        ))
 
         get_daily_results(
             classifier_name,
             race_key,
             target_date,
             all_metrics,
+            prediction,
             loader)
 
 
@@ -62,6 +67,6 @@ class Command(BaseCommand):
         minutes, seconds = divmod(rest, 60)
 
         print("\nCompleted Analysis in {}:{}:{}".format(
-        self.two_digitizer(int(hours)),
-        self.two_digitizer(int(minutes)),
-        self.two_digitizer(int(seconds))))
+        two_digitizer(int(hours)),
+        two_digitizer(int(minutes)),
+        two_digitizer(int(seconds))))
