@@ -5,7 +5,8 @@ from pww.utilities.arff import (
 
 from pww.utilities.ultraweka import (
     create_model,
-    get_uuid_line_index)
+    get_uuid_line_index,
+    get_prediction_list)
 
 from miner.utilities.common import two_digitizer
 
@@ -43,7 +44,7 @@ def get_daily_results(
     c = c_min
     while c <= c_max:
         c = round(c, 2)
-        print("Confidence factor: {}".format(c))
+        print("Model C Factor: {}".format(c))
 
         print(table_string.format(
         "Cutoff",
@@ -56,29 +57,32 @@ def get_daily_results(
             str(c),
             race_key,
             loader)
-        evaluate_model_cutoffs(model, prediction)
+        evaluate_model_cutoffs(model, prediction, testing_arff)
         print("\n")
         c += 0.05
     return daily_results
 
-def evaluate_model_cutoffs(model, prediction):
+def get_win_profitability(cutoff, ):
+    return "W"
+
+def evaluate_model_cutoffs(model, prediction, testing_arff):
     starting_cutoff = 0.7
     ending_cutoff = 1.0
     cutoff_increment = 0.05
-    confidence_cutoff = 0.5
     cutoff = starting_cutoff
     while cutoff <= ending_cutoff:
         cutoff = round(cutoff, 2)
+        prediction_list = get_prediction_list(
+            testing_arff,
+            model,
+            cutoff)
+        # print(prediction_list)
         print(table_string.format(
             cutoff,
-            "W",
+            get_win_profitability(cutoff, ),
             "P",
             "S"
         ))
         cutoff += cutoff_increment
 
-        # prediction_list = get_prediction_list(
-        #     model,
-        #     testing_data,
-        #     confidence_cutoff)
         # self.print_returns(prediction_list, str(c), race_key, loader, prediction)

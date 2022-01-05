@@ -216,34 +216,27 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
         "Dog",
         "Pred.",
         "Conf.",
-        "Win",
-        "Place",
-        "Show"))
+        "0",
+        "1",
+        "2"))
     for index, inst in enumerate(testing_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
-            prediction_list[uuid] = model.classify_instance(inst)
+            prediction = model.classify_instance(inst)
             dist = model.distribution_for_instance(inst)
-            # print(str(dist))
             participant = Participant.objects.get(uuid=uuid)
-            # print(model.classify_instance(inst))
             index = int(model.classify_instance(inst))
-            # print(index)
-            # print("---")
-            # print(dist)
-            # print(dist[:2])
-            # print(dist[:3])
-            print("{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-                participant.race.number,
-                participant.dog.name[:5].replace(" ", "_"),
-                model.classify_instance(inst),
-                round(dist[index],2),
-                round(dist[0], 2),
-                round(sum(dist[:2]), 2),
-                round(sum(dist[:3]), 2)))
-            # print(dist[index])
-            # print("---")
-    # raise SystemExit(0)
+            confidence = dist[index]
+            if confidence >= confidence_cutoff:
+                prediction_list[uuid] = prediction
+                print("{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+                    participant.race.number,
+                    participant.dog.name[:5],
+                    model.classify_instance(inst),
+                    round(confidence, 2),
+                    round(dist[0], 2),
+                    round(sum(dist[:2]), 2),
+                    round(sum(dist[:3]), 2)))
     return prediction_list
 
 def get_prediction(participant):
@@ -259,18 +252,11 @@ def get_prediction(participant):
     return pred
 
 def build_scheduled_data(arff_data):
-    print("Define loader")
-    print(arff_data)
     loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-    print("get loaded data")
     loaded_data = loader.load_file(arff_data)
     anonymous_data = remove_uuid(loaded_data)
-
-    print("nominalize:")
     scheduled_data = nominalize(anonymous_data)
-    print("set class")
     scheduled_data.class_is_last()
-    print("return scheduled_data")
     return scheduled_data
 #
 # def evaluate_single(arff_file):
