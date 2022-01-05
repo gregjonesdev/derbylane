@@ -124,7 +124,7 @@ def print_prediction_table(prediction_list):
 
 def get_average_return(list):
     if len(list):
-        round(sum(list)/len(list), 2)
+        return round(sum(list)/len(list), 2)
     else:
         return "   "
 
@@ -141,7 +141,7 @@ def evaluate_model_cutoffs(model, prediction, testing_arff):
         prediction_list = get_prediction_confidence(
             testing_arff,
             model,
-            0)
+            cutoff)
         # print(prediction_list)
         print_prediction_table(prediction_list)
         print("\n")
