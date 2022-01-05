@@ -1,4 +1,13 @@
-def get_daily_results(target_date, all_metrics, loader):
+from pww.utilities.arff import (
+    create_arff,
+    get_training_arff,
+    get_testing_arff)
+
+from pww.utilities.ultraweka import (
+    create_model,
+    get_uuid_line_index)
+
+def get_daily_results(classifier_name, race_key, target_date, all_metrics, loader):
     daily_results = {} # uuid: pred
 
     training_metrics = all_metrics.filter(
@@ -17,19 +26,33 @@ def get_daily_results(target_date, all_metrics, loader):
     uuid_line_index = get_uuid_line_index(testing_arff)
 
     c = 0.27
-    confidence_cutoff = 0.5
-    model_name = create_model(
-        training_arff,
-        classifier_name,
-        str(c),
-        race_key,
-        loader)
-    model = Classifier(jobject=serialization.read(model_name))
-    prediction_list = get_prediction_list(
-        model,
-        testing_data,
-        uuid_line_index,
-        confidence_cutoff)
-    # self.print_returns(prediction_list, str(c), race_key, loader, prediction)
+    while c < 0.30:
+        model = create_model(
+            training_arff,
+            classifier_name,
+            str(c),
+            race_key,
+            loader)
+        evaluate_model_cutoffs(model)
+        c += 0.01
+
+
 
     return daily_results
+
+def evaluate_model_cutoffs(model):
+
+    starting_cutoff = 0.7
+    ending_cutoff = 1.0
+    cutoff_increment = 0.05
+    confidence_cutoff = 0.5
+    cutoff = starting_cutoff
+    while cutoff <= ending_cutoff:
+        print("Evaluate Bets for Confidence cutoff: {}".format(cutoff))
+        cutoff += cutoff_increment
+
+        # prediction_list = get_prediction_list(
+        #     model,
+        #     testing_data,
+        #     confidence_cutoff)
+        # self.print_returns(prediction_list, str(c), race_key, loader, prediction)

@@ -5,7 +5,7 @@ from time import time
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 from miner.utilities.urls import arff_directory
-from miner.utilities.constants import focused_distances
+from miner.utilities.constants import focused_distances, c_data
 from miner.utilities.common import get_race_key
 from rawdat.models import Participant
 from pww.models import TestPrediction, Metric
@@ -15,6 +15,7 @@ from pww.utilities.ultraweka import (
     build_scheduled_data,
     get_uuid_line_index,
     get_prediction_list)
+from pww.utilities.testing import get_daily_results
 from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
@@ -150,6 +151,7 @@ class Command(BaseCommand):
         grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
+        target_date = "2021-12-29"
         cutoff_date = (today - datetime.timedelta(days=49)).date()
         start_time = time()
         all_metrics = get_metrics(
@@ -160,7 +162,7 @@ class Command(BaseCommand):
         #     participant__race__chart__program__date__lte=cutoff_date)
         # testing_metrics = all_metrics.filter(
         #     participant__race__chart__program__date__gt=cutoff_date)
-        # race_key = get_race_key(venue_code, distance, grade_name)
+        race_key = get_race_key(venue_code, distance, grade_name)
         # is_nominal = False
         # training_arff = get_training_arff(
         #     race_key,
@@ -188,11 +190,6 @@ class Command(BaseCommand):
         # }
         # prediction = sys.argv[7]
 
-        c_start = c_data[classifier_name]["c_start"]
-        c_stop = c_data[classifier_name]["c_stop"]
-        interval = c_data[classifier_name]["interval"]
-
-
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
 
@@ -209,16 +206,14 @@ class Command(BaseCommand):
         #     "Bet Count",
         #     "Potential"))
         # testing_data = build_scheduled_data(testing_arff)
-        c = c_start
-        while c <= c_stop:
-            c = round(c, 2)
-            print("C Factor: {}".format(c))
-            # model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
-            # model = Classifier(jobject=serialization.read(model_name))
-            #
-            # prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
-            # self.print_returns(prediction_list, str(c), race_key, loader, prediction)
-            c = round(c + interval, 2)
+
+        get_daily_results(
+            classifier_name,
+            race_key,
+            target_date,
+            all_metrics,
+            loader)
+
 
         jvm.stop()
         end_time = time()

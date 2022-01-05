@@ -110,12 +110,12 @@ class Command(BaseCommand):
 
 
             loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-            model_name = create_model(training_arff, classifier_name, string_c, race_key, loader)
+            model = create_model(training_arff, classifier_name, string_c, race_key, loader)
             confidence_cutoff = 0.0
-            prediction_list = get_prediction_list(testing_arff, model_name, confidence_cutoff)
-            if 'smo' in model_name:
+            prediction_list = get_prediction_list(testing_arff, model, confidence_cutoff)
+            if 'smo' in classifier_name:
                 self.save_smo_predictions(prediction_list)
-            elif 'j48' in model_name:
+            elif 'j48' in classifier_name:
                 self.save_j48_predictions(prediction_list)
 
 

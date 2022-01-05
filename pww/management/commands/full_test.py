@@ -216,7 +216,7 @@ class Command(BaseCommand):
             model = Classifier(jobject=serialization.read(model_name))
             # print(type(testing_arff))
                 # model.build_classifier(testing_data)
-            prediction_list = get_prediction_list(model, testing_data, uuid_line_index)
+            prediction_list = get_prediction_list(testing_data, confidence_cutoff)
             self.print_returns(prediction_list, str(c), race_key, loader, prediction)
             c = round(c + interval, 2)
 

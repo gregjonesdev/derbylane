@@ -98,7 +98,7 @@ def create_model(training_arff, classifier_name, c, race_key, loader):
         c.replace(".", "")
     )
     serialization.write(filename, classifier)
-    return filename
+    return Classifier(jobject=serialization.read(filename))
      # -U
      #  Use unpruned tree.
      #
@@ -206,8 +206,7 @@ def get_uuid_line_index(filename):
             i += 1
     return uuid_line_index
 
-def get_prediction_list(testing_arff, model_name, confidence_cutoff):
-    model = Classifier(jobject=serialization.read(model_name))
+def get_prediction_list(testing_arff, model, confidence_cutoff):
     uuid_line_index = get_uuid_line_index(testing_arff)
     testing_data = build_scheduled_data(testing_arff)
     prediction_list = {}
