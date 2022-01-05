@@ -270,6 +270,8 @@ def get_prediction_confidence(testing_arff, model, target_prediction, confidence
             print(type(target_prediction))
             print(prediction)
             print(target_prediction)
+            print(int(prediction) == int(target_prediction))
+            print(prediction == float(target_prediction))
             if int(prediction) == int(target_prediction):
                 if confidence >= confidence_cutoff:
                     prediction_confidence[uuid] = (prediction, confidence)
