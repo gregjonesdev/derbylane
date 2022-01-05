@@ -30,7 +30,7 @@ class Command(BaseCommand):
         grade_name = sys.argv[7]
         target_prediction = sys.argv[9]
         distance = focused_distances[venue_code][0]
-        target_date = "2021-12-29"
+        target_date = "2022-01-04"
         all_metrics = get_metrics(
             venue_code,
             distance,
