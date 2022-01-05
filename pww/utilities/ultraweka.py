@@ -211,14 +211,7 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
     testing_data = build_scheduled_data(testing_arff)
     prediction_list = {}
     print("Confidence:")
-    print("{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-        "Race",
-        "Dog",
-        "Pred.",
-        "Conf.",
-        "0",
-        "1",
-        "2"))
+
     for index, inst in enumerate(testing_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
@@ -258,62 +251,22 @@ def build_scheduled_data(arff_data):
     scheduled_data = nominalize(anonymous_data)
     scheduled_data.class_is_last()
     return scheduled_data
-#
-# def evaluate_single(arff_file):
-#     race_key = arff_file.replace("arff/", "").replace(".arff", "")
-#     scheduled_data = build_scheduled_data(arff_file)
-#     # model_names = ["libsvm", "J48_C0_75"]
-#     model_name ='smo'
-#     prediction_object = get_uuid_line_index(arff_file)
-#     prediction_object['predictions'] = {}
-#     filename = "test_models/{}_{}_275.model".format(race_key, model_name)
-#     try:
-#         model = Classifier(jobject=serialization.read(filename))
-#     except:
-#         print("No model found: {}".format(race_key))
-#     if model:
-#         prediction_object['predictions'][model_name] = get_prediction_list(
-#         model,
-#         scheduled_data,
-#         prediction_object["lines"])
-#     save_all_predictions(
-#         prediction_object['uuids'],
-#         prediction_object['predictions'])
-#     # pp = pprint.PrettyPrinter(indent=4)
-#     # pp.pprint(prediction_object)
-#     # print("\n", file=analysis_file)
-#     # print(race_key, file=analysis_file)
-#     # print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------", file=analysis_file)
-#     # do_something(prediction_object, model_names, race_key, analysis_file)
-#
-# def start_jvm():
-#     jvm.start(packages=True, max_heap_size="6048m")
-#     install_missing_packages([
-#         ('LibSVM', LATEST),
-#         ('LibLINEAR', LATEST)])
-#
-# def save_all_predictions(uuids, predictions):
-#     print("save all predictions")
-#     print(len(uuids))
-#     for uuid in uuids:
-#         save_predictions(uuid, predictions, uuids.index(uuid))
-#
-#
-# def save_predictions(participant_id, predictions, index):
-#     print("save predictions")
-#     participant = Participant.objects.get(uuid=participant_id)
-#     pred = get_prediction(participant)
-#
-#     for model_name in predictions.keys():
-#         print(model_name)
-#         if 'J48' in model_name:
-#             print("j48")
-#             print(predictions[model_name][index])
-#             pred.j48 = predictions[model_name][index]
-#         elif 'libsvm' in model_name:
-#             print("libsvm")
-#             print(predictions[model_name][index])
-#             pred.lib_svm = predictions[model_name][index]
-#         elif 'smo' in model_name:
-#             pred.smo = predictions[model_name][index]
-#     pred.save()
+
+
+
+def get_prediction_confidence(testing_arff, model, confidence_cutoff):
+    uuid_line_index = get_uuid_line_index(testing_arff)
+    testing_data = build_scheduled_data(testing_arff)
+    prediction_confidence = {}
+
+    for index, inst in enumerate(testing_data):
+        if index in uuid_line_index.keys():
+            uuid = uuid_line_index[index]
+            prediction = model.classify_instance(inst)
+            dist = model.distribution_for_instance(inst)
+            index = int(prediction) # SMO only 0-7
+            confidence = dist[index]
+            if confidence >= confidence_cutoff:
+                prediction_confidence[uuid] = (prediction, confidence)
+
+    return prediction_confidence

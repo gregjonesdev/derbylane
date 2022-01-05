@@ -45,7 +45,7 @@ class Command(BaseCommand):
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
         print("\n")
-        print("Model: {}\tVenue: {}\tGrade: {}\n".format(
+        print("Model: {}\tVenue: {}\tGrade: {}".format(
             classifier_name,
             venue_code,
             grade_name

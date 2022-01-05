@@ -15,6 +15,10 @@ from pww.utilities.ultraweka import (
     build_scheduled_data,
     get_uuid_line_index,
     get_prediction_list)
+from pww.utilities.testing import (
+    get_win_return,
+    get_place_return,
+    get_show_return)
 from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
@@ -86,26 +90,6 @@ class Command(BaseCommand):
         prediction.smo = smo_prediction
         prediction.save()
 
-
-    def get_win_return(self, participant):
-        try:
-            return float(participant.straight_wager.win)
-        except:
-            return 0
-
-    def get_place_return(self, participant):
-        try:
-            return float(participant.straight_wager.place)
-        except:
-            return 0
-
-    def get_show_return(self, participant):
-        try:
-            return float(participant.straight_wager.show)
-        except:
-            return 0
-
-
     def print_returns(self, prediction_list, c, race_key, loader, prediction):
         # print(model_name)
 
@@ -120,9 +104,9 @@ class Command(BaseCommand):
             if int(prediction_list[uuid]) == int(prediction):
                 bet_count += 1
                 participant = Participant.objects.get(uuid=uuid)
-                win_returns += self.get_win_return(participant)
-                place_returns += self.get_place_return(participant)
-                show_returns += self.get_show_return(participant)
+                win_returns += get_win_return(participant)
+                place_returns += get_place_return(participant)
+                show_returns += get_show_return(participant)
 
         if bet_count > 0:
             average_returns = [
