@@ -7,7 +7,12 @@ from pww.utilities.ultraweka import (
     create_model,
     get_uuid_line_index)
 
-def get_daily_results(classifier_name, race_key, target_date, all_metrics, loader):
+def get_daily_results(
+    classifier_name,
+    race_key,
+    target_date,
+    all_metrics,
+    loader):
     daily_results = {} # uuid: pred
 
     training_metrics = all_metrics.filter(
