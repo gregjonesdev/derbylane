@@ -59,7 +59,7 @@ def get_daily_results(
     print("Profitability of bets (W/P/S) on dogs predicted to finish: {}".format(prediction))
     c = 0.15
     c_min = 0.15
-    c_max = 0.15
+    c_max = 0.5
     c = c_min
     while c <= c_max:
         c = round(c, 2)
