@@ -37,7 +37,7 @@ def get_daily_results(
     race_key,
     target_date,
     all_metrics,
-    prediction,
+    target_prediction,
     loader):
     daily_results = {} # uuid: pred
 
@@ -56,7 +56,7 @@ def get_daily_results(
         is_nominal)
     uuid_line_index = get_uuid_line_index(testing_arff)
 
-    print("Profitability of bets (W/P/S) on dogs predicted to finish: {}".format(prediction))
+    print("Profitability of bets (W/P/S) on dogs predicted to finish: {}".format(target_prediction))
     c = 0.15
     c_min = 0.15
     c_max = 0.5
@@ -70,7 +70,7 @@ def get_daily_results(
             str(c),
             race_key,
             loader)
-        evaluate_model_cutoffs(model, prediction, testing_arff)
+        evaluate_model_cutoffs(model, target_prediction, testing_arff)
         print("\n")
         c += 0.05
     return daily_results
@@ -129,7 +129,7 @@ def get_average_return(list):
         return "   "
 
 
-def evaluate_model_cutoffs(model, prediction, testing_arff):
+def evaluate_model_cutoffs(model, target_prediction, testing_arff):
     starting_cutoff = 0.2
     ending_cutoff = 0.7
     cutoff_increment = 0.05
@@ -141,6 +141,7 @@ def evaluate_model_cutoffs(model, prediction, testing_arff):
         prediction_list = get_prediction_confidence(
             testing_arff,
             model,
+            target_prediction,
             cutoff)
         # print(prediction_list)
         print_prediction_table(prediction_list)

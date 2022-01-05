@@ -28,7 +28,7 @@ class Command(BaseCommand):
         classifier_name = sys.argv[3]
         venue_code = sys.argv[5]
         grade_name = sys.argv[7]
-        prediction = sys.argv[9]
+        target_prediction = sys.argv[9]
         distance = focused_distances[venue_code][0]
         target_date = "2021-12-29"
         all_metrics = get_metrics(
@@ -56,7 +56,7 @@ class Command(BaseCommand):
             race_key,
             target_date,
             all_metrics,
-            prediction,
+            target_prediction,
             loader)
 
 

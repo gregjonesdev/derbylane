@@ -254,7 +254,7 @@ def build_scheduled_data(arff_data):
 
 
 
-def get_prediction_confidence(testing_arff, model, confidence_cutoff):
+def get_prediction_confidence(testing_arff, model, target_prediction, confidence_cutoff):
     uuid_line_index = get_uuid_line_index(testing_arff)
     testing_data = build_scheduled_data(testing_arff)
     prediction_confidence = {}
