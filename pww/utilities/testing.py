@@ -37,14 +37,19 @@ def get_daily_results(
     uuid_line_index = get_uuid_line_index(testing_arff)
 
     print("Profitability of bets (W/P/S) on dogs predicted to finish: {}\n".format(prediction))
+    c = 0.15
+    c_min = 0.15
+    c_max = 0.15
+    c = c_min
+    while c <= c_max:
+        c = round(c, 2)
+        print("Confidence factor: {}".format(c))
 
-    print(table_string.format(
+        print(table_string.format(
         "Cutoff",
         "W",
         "P",
         "S"))
-    c = 0.27
-    while c < 0.30:
         model = create_model(
             training_arff,
             classifier_name,
@@ -52,10 +57,8 @@ def get_daily_results(
             race_key,
             loader)
         evaluate_model_cutoffs(model, prediction)
-        c += 0.01
-
-
-
+        print("\n")
+        c += 0.05
     return daily_results
 
 def evaluate_model_cutoffs(model, prediction):
