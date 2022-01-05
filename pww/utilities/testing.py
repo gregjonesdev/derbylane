@@ -130,8 +130,8 @@ def get_average_return(list):
 
 
 def evaluate_model_cutoffs(model, prediction, testing_arff):
-    starting_cutoff = 0.7
-    ending_cutoff = 1.0
+    starting_cutoff = 0.2
+    ending_cutoff = 0.7
     cutoff_increment = 0.05
     cutoff = starting_cutoff
     while cutoff <= ending_cutoff:
