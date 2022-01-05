@@ -224,7 +224,9 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
                 prediction_list[uuid] = prediction
                 print("{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
                     participant.race.number,
-                    participant.dog.name[:5],
+                    "{}-{}".format(
+                        participant.post,
+                        participant.dog.name[:5]),
                     model.classify_instance(inst),
                     round(confidence, 2),
                     round(dist[0], 2),
