@@ -45,7 +45,8 @@ def get_daily_results(
         participant__race__chart__program__date__range=("2017-01-01", target_date))
     print(len(training_metrics))
     testing_metrics = all_metrics.filter(
-        participant__race__chart__program__date__range=("2021-12-26", "2022-01-04"))
+        participant__race__chart__program__date__range=("2021-12-04", "2022-01-04"))
+    print(len(testing_metrics))
     is_nominal = False
     training_arff = get_training_arff(
         race_key,
