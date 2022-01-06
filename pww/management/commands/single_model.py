@@ -3,7 +3,7 @@ import weka.core.jvm as jvm
 
 from django.core.management.base import BaseCommand
 from pww.models import Metric
-
+from miner.utilities.constants import focused_grades
 from pww.utilities.arff import (
     get_training_arff,
     get_testing_arff,
@@ -20,6 +20,7 @@ class Command(BaseCommand):
         cutoff = 0.85
         model_name = "j48"
         race_key = "universal"
+        venue_codes = ["TS", "WD", "SL"]
         training_metrics = Metric.objects.filter(
             participant__race__chart__program__venue__code="TS",
             participant__race__chart__program__date__range=(
@@ -40,5 +41,10 @@ class Command(BaseCommand):
         loader = conv.Loader(classname=
             "weka.core.converters.ArffLoader")
 
+        for venue_code in venue_codes:
+            print("Venue: {}".format(venue_code))
+            for grade in focused_grades[venue_code]:
+                print("Grade: {}".format(grade))
 
-        jvm.stop()    
+
+        jvm.stop()
