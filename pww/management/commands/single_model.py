@@ -25,7 +25,9 @@ class Command(BaseCommand):
         classifier_name = "j48"
         race_key = "universal"
         venue_codes = ["TS", "WD", "SL"]
+        grade = sys.argv[7]
         training_metrics = Metric.objects.filter(
+            participant__race__grade__name=grade,
             participant__race__chart__program__venue__code="TS",
             participant__race__chart__program__date__range=(
                 "2017-01-01",
@@ -37,7 +39,6 @@ class Command(BaseCommand):
             is_nominal)
         target_prediction = sys.argv[3]
         venue_code = sys.argv[5]
-        grade = sys.argv[7]
         jvm.start(
             packages=True,
             max_heap_size="5028m"
