@@ -11,6 +11,10 @@ from pww.utilities.ultraweka import (
 from miner.utilities.common import two_digitizer
 
 from rawdat.models import Participant
+from pww.models import Metric
+
+from pww.utilities.ultraweka import get_metrics
+
 
 table_string = "{}\t\t{}\t\t{}\t\t{}"
 
@@ -41,8 +45,16 @@ def get_daily_results(
     loader):
     daily_results = {} # uuid: pred
 
-    training_metrics = all_metrics.filter(
-        participant__race__chart__program__date__range=("2017-01-01", target_date))
+    # training_metrics = all_metrics.filter(
+    #     participant__race__chart__program__date__range=("2017-01-01", target_date))
+    training_metrics = Metric.objects.filter(
+        # participant__race__chart__program__venue__code=venue_code,
+        # participant__race__distance=distance,
+        # participant__race__grade__name=grade_name,
+        participant__race__chart__program__date__gte="2018-01-01")
+
+
+
     print(len(training_metrics))
     testing_metrics = all_metrics.filter(
         participant__race__chart__program__date__range=("2021-12-04", "2022-01-04"))
