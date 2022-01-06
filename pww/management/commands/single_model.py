@@ -28,8 +28,8 @@ class Command(BaseCommand):
         training_metrics = Metric.objects.filter(
             participant__race__chart__program__venue__code="TS",
             participant__race__chart__program__date__range=(
-                "2018-01-01",
-                "2021-11-04"))
+                "2017-01-01",
+                "2021-09-04"))
         is_nominal = False
         training_arff = get_training_arff(
             race_key,
@@ -59,7 +59,7 @@ class Command(BaseCommand):
             participant__race__chart__program__venue__code=venue_code,
             participant__race__grade__name=grade,
             participant__race__chart__program__date__range=(
-                "2021-12-04",
+                "2021-09-05",
                 "2022-01-04"))
         testing_arff = get_testing_arff(
             "{}_{}".format(venue_code, grade),
