@@ -48,7 +48,7 @@ def get_daily_results(
     # training_metrics = all_metrics.filter(
     #     participant__race__chart__program__date__range=("2017-01-01", target_date))
     training_metrics = Metric.objects.filter(
-        # participant__race__chart__program__venue__code=venue_code,
+        participant__race__chart__program__venue__code="TS",
         # participant__race__distance=distance,
         # participant__race__grade__name=grade_name,
         participant__race__chart__program__date__gte="2018-01-01")
