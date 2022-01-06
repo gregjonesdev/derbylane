@@ -12,7 +12,7 @@ from pww.utilities.arff import (
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
-        parser.add_argument('--grade', type=str)
+        # parser.add_argument('--grade', type=str)
         parser.add_argument('--prediction', type=str)
 
     def handle(self, *args, **options):
@@ -45,6 +45,12 @@ class Command(BaseCommand):
             print("Venue: {}".format(venue_code))
             for grade in focused_grades[venue_code]:
                 print("Grade: {}".format(grade))
-
+                testing_metrics = Metric.objects.filter(
+                    participant__race__chart__program__venue__code=venue_code,
+                    participant__race__grade__name=grade,
+                    participant__race__chart__program__date__range=(
+                        "2021-12-04",
+                        "2022-01-04"))
+                print("Testing Metrics: {}".format(len(testing_metrics)))    
 
         jvm.stop()
