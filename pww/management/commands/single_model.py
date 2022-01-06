@@ -24,12 +24,12 @@ class Command(BaseCommand):
         cutoff = 0.85
         classifier_name = "j48"
         race_key = "universal"
-        venue_codes = ["TS", "WD", "SL"]
+        venue_code = sys.argv[5]
         grade = sys.argv[7]
         training_metrics = Metric.objects.filter(
-            participant__race__grade__name="C",
+            # participant__race__grade__name="C",
             participant__race__distance__range=(548, 550),
-            participant__race__chart__program__venue__code="TS",
+            participant__race__chart__program__venue__code=venue_code,
             participant__race__chart__program__date__range=(
                 "2017-01-01",
                 "2021-09-04"))
@@ -39,7 +39,6 @@ class Command(BaseCommand):
             training_metrics,
             is_nominal)
         target_prediction = sys.argv[3]
-        venue_code = sys.argv[5]
         jvm.start(
             packages=True,
             max_heap_size="5028m"
