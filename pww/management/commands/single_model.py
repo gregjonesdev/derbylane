@@ -15,17 +15,18 @@ from pww.utilities.testing import evaluate_model_cutoffs
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
-        parser.add_argument('--prediction', type=str)
         parser.add_argument('--venue', type=str)
         parser.add_argument('--grade', type=str)
+        parser.add_argument('--prediction', type=str)
 
     def handle(self, *args, **options):
         c_factor = 0.4
         cutoff = 0.85
         classifier_name = "j48"
         race_key = "universal"
-        venue_code = sys.argv[5]
-        grade = sys.argv[7]
+        venue_code = sys.argv[3]
+        grade = sys.argv[5]
+        target_prediction = sys.argv[7]
         training_metrics = Metric.objects.filter(
             participant__race__grade__name=grade,
             # participant__race__distance=550,
@@ -38,7 +39,6 @@ class Command(BaseCommand):
             race_key,
             training_metrics,
             is_nominal)
-        target_prediction = sys.argv[3]
         jvm.start(
             packages=True,
             max_heap_size="5028m"
