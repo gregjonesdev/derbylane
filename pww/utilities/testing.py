@@ -1,5 +1,4 @@
 from pww.utilities.arff import (
-    create_arff,
     get_training_arff,
     get_testing_arff)
 
