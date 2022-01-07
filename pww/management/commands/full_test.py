@@ -203,7 +203,7 @@ class Command(BaseCommand):
                 model,
                 target_prediction,
                 confidence_cutoff)
-            self.print_returns(prediction_list, str(c), race_key, loader, prediction)
+            self.print_returns(prediction_list, str(c), race_key, loader, target_prediction)
             c = round(c + interval, 2)
 
         jvm.stop()
