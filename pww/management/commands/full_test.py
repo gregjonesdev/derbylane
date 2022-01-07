@@ -123,7 +123,7 @@ class Command(BaseCommand):
                 self.get_formatting(max_return, average_returns[1]),
                 self.get_formatting(max_return, average_returns[2]),
                 bet_count,
-                "\t{}".format(potential)))
+                "{}".format(potential)))
 
 
 
@@ -145,7 +145,7 @@ class Command(BaseCommand):
             participant__race__distance=distance,
             participant__race__grade__name=grade_name,
             participant__race__chart__program__date__range=("2021-12-04", "2022-01-04"))
-
+        print("Training Metrics: {}".format(training_metrics.count())
         race_key = get_race_key(venue_code, distance, grade_name)
         is_nominal = False
         training_arff = get_training_arff(
