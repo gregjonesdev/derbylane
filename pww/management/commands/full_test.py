@@ -91,10 +91,6 @@ class Command(BaseCommand):
         prediction.save()
 
     def print_returns(self, prediction_list, c, race_key, loader, prediction):
-        # print(model_name)
-
-        # print(uuid_line_index)
-
         win_returns = 0
         place_returns = 0
         show_returns = 0
