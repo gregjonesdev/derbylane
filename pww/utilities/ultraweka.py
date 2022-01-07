@@ -187,7 +187,9 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
             confidence = dist[index]
             if confidence >= confidence_cutoff:
                 prediction_list[uuid] = prediction
-                print("{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+                print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
+                    participant.race.chart.program.date,
+                    participant.race.chart.program.venue.code,
                     participant.race.number,
                     "{}-{}".format(
                         participant.post,
