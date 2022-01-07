@@ -184,7 +184,7 @@ class Command(BaseCommand):
         print("\n\n{} Prediction Accuracy vs Confidence Factor".format(
             classifier_name.upper()))
         print("{} {} {}\n".format(venue_code, grade_name, distance))
-        print("Dogs Predicted to Finish {}".format(pred_format[prediction]))
+        print("Dogs Predicted to Finish {}".format(pred_format[target_prediction]))
         print(table_string.format(
             "C-Factor",
             "W",
