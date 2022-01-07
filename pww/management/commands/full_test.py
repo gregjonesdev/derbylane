@@ -186,12 +186,13 @@ class Command(BaseCommand):
         print("{} {} {}\n".format(venue_code, grade_name, distance))
         print("Dogs Predicted to Finish {}".format(pred_format[prediction]))
         print(table_string.format(
-            "C",
-            "Win",
-            "Place",
-            "Show",
-            "Bet Count",
-            "Potential"))
+            "Race",
+            "Dog",
+            "Pred.",
+            "Conf.",
+            "W",
+            "P",
+            "S"))
         c = c_start
         confidence_cutoff = 1.0
         while c <= c_stop:
