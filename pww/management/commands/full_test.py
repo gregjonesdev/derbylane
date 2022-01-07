@@ -100,10 +100,9 @@ class Command(BaseCommand):
         show_returns = 0
         bet_count = 0
         for pred_uuid in prediction_list.keys():
-
             if int(prediction_list[pred_uuid][0]) == int(prediction):
                 bet_count += 1
-                participant = Participant.objects.get(uuid=uuid)
+                participant = Participant.objects.get(uuid=pred_uuid)
                 win_returns += get_win_return(participant)
                 place_returns += get_place_return(participant)
                 show_returns += get_show_return(participant)
