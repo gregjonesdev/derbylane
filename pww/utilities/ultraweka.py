@@ -187,16 +187,16 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
             confidence = dist[index]
             if confidence >= confidence_cutoff:
                 prediction_list[uuid] = prediction
-                # print("{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
-                #     participant.race.number,
-                #     "{}-{}".format(
-                #         participant.post,
-                #         participant.dog.name[:5]),
-                #     model.classify_instance(inst),
-                #     round(confidence, 2),
-                #     round(dist[0], 2),
-                #     round(sum(dist[:2]), 2),
-                #     round(sum(dist[:3]), 2)))
+                print("{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}".format(
+                    participant.race.number,
+                    "{}-{}".format(
+                        participant.post,
+                        participant.dog.name[:5]),
+                    model.classify_instance(inst),
+                    round(confidence, 2),
+                    round(dist[0], 2),
+                    round(sum(dist[:2]), 2),
+                    round(sum(dist[:3]), 2)))
     return prediction_list
 
 def get_prediction(participant):
