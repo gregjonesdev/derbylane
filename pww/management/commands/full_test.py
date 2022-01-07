@@ -139,7 +139,8 @@ class Command(BaseCommand):
             participant__race__chart__program__venue__code="TS",
             # participant__race__distance=distance,
             # participant__race__grade__name=grade_name,
-            participant__race__chart__program__date__range=("2018-01-01", "2021-12-03"))
+            participant__race__chart__program__date__range=(
+                "2018-06-01", "2021-12-03")).order_by("-participant__race__chart__program__date")
         testing_metrics = Metric.objects.filter(
             participant__race__chart__program__venue__code="TS",
             participant__race__distance=distance,
@@ -215,8 +216,7 @@ class Command(BaseCommand):
         hours, rest = divmod(seconds_elapsed, 3600)
         minutes, seconds = divmod(rest, 60)
 
-        print("\nAll metrics: {}".format(len(all_metrics)))
-        print("Training metrics: {}".format(len(training_metrics)))
+        print("\nTraining metrics: {}".format(len(training_metrics)))
         print("Test metrics: {}".format(len(testing_metrics)))
 
         print("\nCompleted Analysis in {}:{}:{}".format(
