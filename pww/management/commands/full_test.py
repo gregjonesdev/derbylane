@@ -192,15 +192,13 @@ class Command(BaseCommand):
             "Show",
             "Bet Count",
             "Potential"))
-        testing_data = build_scheduled_data(testing_arff)
         c = c_start
+        confidence_cutoff = 1.0
         while c <= c_stop:
             c = round(c, 2)
-            model_name = create_model(training_arff, classifier_name, str(c), race_key, loader)
-            model = Classifier(jobject=serialization.read(model_name))
-            # print(type(testing_arff))
-                # model.build_classifier(testing_data)
-            prediction_list = get_prediction_list(testing_data, confidence_cutoff)
+
+            model = create_model(training_arff, classifier_name, str(c), race_key, loader)
+            prediction_list = get_prediction_list(testing_arff, model, confidence_cutoff)
             self.print_returns(prediction_list, str(c), race_key, loader, prediction)
             c = round(c + interval, 2)
 
