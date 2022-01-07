@@ -176,7 +176,6 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
     uuid_line_index = get_uuid_line_index(testing_arff)
     testing_data = build_scheduled_data(testing_arff)
     prediction_list = {}
-    print("Confidence:")
 
     for index, inst in enumerate(testing_data):
         if index in uuid_line_index.keys():
