@@ -14,7 +14,7 @@ from pww.utilities.ultraweka import (
     get_metrics,
     build_scheduled_data,
     get_uuid_line_index,
-    get_prediction_list)
+    get_prediction_confidence)
 from pww.utilities.testing import (
     get_win_return,
     get_place_return,
@@ -23,7 +23,11 @@ from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
 import weka.core.serialization as serialization
-from pww.utilities.arff import create_arff, get_training_arff, get_testing_arff
+from pww.utilities.arff import (
+    create_arff,
+    get_training_arff,
+    get_testing_arff,
+)
 table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
 
 class bcolors:
@@ -95,9 +99,9 @@ class Command(BaseCommand):
         place_returns = 0
         show_returns = 0
         bet_count = 0
-        for uuid in prediction_list.keys():
+        for uuid in prediction_list[0].keys():
 
-            if int(prediction_list[uuid]) == int(prediction):
+            if int(prediction_list[0][uuid]) == int(prediction):
                 bet_count += 1
                 participant = Participant.objects.get(uuid=uuid)
                 win_returns += get_win_return(participant)
@@ -166,7 +170,7 @@ class Command(BaseCommand):
         "interval": 0.01,
         },
         }
-        prediction = sys.argv[7]
+        target_prediction = sys.argv[7]
 
         c_start = c_data[classifier_name]["c_start"]
         c_stop = c_data[classifier_name]["c_stop"]
@@ -182,20 +186,23 @@ class Command(BaseCommand):
         print("{} {} {}\n".format(venue_code, grade_name, distance))
         print("Dogs Predicted to Finish {}".format(pred_format[prediction]))
         print(table_string.format(
-            "Race",
-            "Dog",
-            "Pred.",
-            "Conf.",
+            "C-Factor",
             "W",
             "P",
-            "S"))
+            "S",
+            "# Bets",
+            "Potential"))
         c = c_start
         confidence_cutoff = 1.0
         while c <= c_stop:
             c = round(c, 2)
 
             model = create_model(training_arff, classifier_name, str(c), race_key, loader)
-            prediction_list = get_prediction_list(testing_arff, model, confidence_cutoff)
+            prediction_list = get_prediction_confidence(
+                testing_arff,
+                model,
+                target_prediction,
+                confidence_cutoff)
             self.print_returns(prediction_list, str(c), race_key, loader, prediction)
             c = round(c + interval, 2)
 
