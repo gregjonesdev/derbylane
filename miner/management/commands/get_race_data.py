@@ -10,13 +10,17 @@ from rawdat.models import Race, CronJob, Chart
 
 from pww.utilities.metrics import build_race_metrics
 
+chart_times = {
+    "TS": ['A', 'E', 'S', 'T'],
+    "WD": ['A', 'E', 'S'],
+}
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
         today = datetime.date.today()
         start = today - datetime.timedelta(days=28)
-        for venue_code in ["TS", "WD"]:
+        for venue_code in ["SL"]:
             times = []
             for chart in Chart.objects.filter(
                 program__date__gt="2016-01-01",
@@ -26,6 +30,7 @@ class Command(BaseCommand):
             print(venue_code)
             print(times)
         raise SystemExit(0)
+
         # for race in Race.objects.filter(
         #     chart__program__date__range=(
         #         yesterday, today)):
