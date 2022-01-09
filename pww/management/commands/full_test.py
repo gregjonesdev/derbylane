@@ -28,7 +28,7 @@ from pww.utilities.arff import (
     get_training_arff,
     get_testing_arff,
 )
-table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
+table_string = "{}\t\t{}\t{}\t{}\t{}\t{}"
 
 class bcolors:
     HEADER = '\033[95m'
