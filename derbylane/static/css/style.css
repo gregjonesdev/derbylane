@@ -1,17 +1,18 @@
 :root {
-  --main-bg-color: coral;
-  --main-txt-color: blue;
-  --main-padding: 15px;
-  --primary: #BB86FC;
-  --seconday: #03DAC5;
+  /* --main-bg-color: coral; */
+  /* --main-txt-color: blue; */
+  /* --main-padding: 15px; */
+  /* --primary: #BB86FC; */
+  /* --secondary: #03DAC5; */
   --bg-primary: #121212;
   --bg-secondary: #212121;
-  --cashdog-blue: #00A8FF;
-  --error: #CF6679;
-  --bg-base: #000000;
+  --primary-border: 1px solid #333333;
+  /* --cashdog-blue: #00A8FF; */
+  /* --error: #CF6679; */
+  /* --bg-base: #000000; */
   --font-primary: #FFFFFF;
   --font-style: Verdana, Geneva, sans-serif;
-  --medium-emphasis: 0.6;
+  /* --medium-emphasis: 0.6; */
 }
 
 body {
@@ -26,7 +27,7 @@ body {
 }
 
 .card {
-  border: 1px solid #333;
+  border: var(--primary-border);
   background-color: var(--bg-secondary);
 }
 
@@ -40,7 +41,7 @@ body {
 }
 
 #main-card-header {
-  border: 1px solid #333;
+  border: var(--primary-border);
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
@@ -87,7 +88,7 @@ body {
   /* background-image: linear-gradient(var(--cashdog-blue), var(--bg-secondary)); */
   background-color: var(--bg-secondary);
   text-align: center;
-  border: 1px solid #333;
+  border: var(--primary-border);
 }
 
 #date_header {
