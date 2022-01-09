@@ -61,6 +61,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--model', type=str)
         parser.add_argument('--grade', type=str)
+        parser.add_argument('--start', type=str)
         parser.add_argument('--prediction', type=str)
 
 
@@ -163,7 +164,7 @@ class Command(BaseCommand):
         classifier_name = sys.argv[3]
         c_data = {
         "j48": {
-        "c_start": 0.26,
+        "c_start": 0.01,
         "c_stop": 0.49,
         "interval": 0.01,
         },
@@ -173,9 +174,10 @@ class Command(BaseCommand):
         "interval": 0.01,
         },
         }
-        target_prediction = sys.argv[7]
+        target_prediction = sys.argv[9]
 
         c_start = c_data[classifier_name]["c_start"]
+        c_start = float(sys.argv[7])
         c_stop = c_data[classifier_name]["c_stop"]
         interval = c_data[classifier_name]["interval"]
 
