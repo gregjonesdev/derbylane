@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from miner.utilities.common import get_node_elements
 from miner.utilities.scrape import single_url_test
 from miner.utilities.urls import build_race_results_url
-from rawdat.models import Race, CronJob
+from rawdat.models import Race, CronJob, Chart
 
 from pww.utilities.metrics import build_race_metrics
 
@@ -25,7 +25,7 @@ class Command(BaseCommand):
                     times.append(chart.time)
             print(venue_code)
             print(times)
-        raise SystemExit(0)            
+        raise SystemExit(0)
         # for race in Race.objects.filter(
         #     chart__program__date__range=(
         #         yesterday, today)):
@@ -34,12 +34,12 @@ class Command(BaseCommand):
         #     program = chart.program
         #     date = program.date
         #     venue = program.venue
-            results_url = build_race_results_url(
-                venue_code,
-                date.year,
-                date.month,
-                date.day,
-                time,
-                race.number)
+        results_url = build_race_results_url(
+            venue_code,
+            date.year,
+            date.month,
+            date.day,
+            time,
+            race.number)
             # tds = get_node_elements(results_url, '//td')
             # single_url_test(results_url, tds, chart)
