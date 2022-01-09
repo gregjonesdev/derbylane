@@ -169,18 +169,7 @@ class Command(BaseCommand):
         c = 0.01
         max_return = 0
         classifier_name = sys.argv[3]
-        c_data = {
-        "j48": {
-        "c_start": 0.01,
-        "c_stop": 0.49,
-        "interval": 0.01,
-        },
-        "smo": {
-        "c_start": 0,
-        "c_stop": 6,
-        "interval": 0.01,
-        },
-        }
+
         target_prediction = sys.argv[9]
 
         c_start = c_data[classifier_name]["c_start"]
@@ -205,7 +194,7 @@ class Command(BaseCommand):
             "# Bets",
             "Potential"))
         c = c_start
-        confidence_cutoff = .9
+        confidence_cutoff = 1.0
         while c <= c_stop:
             c = round(c, 2)
 
@@ -216,7 +205,6 @@ class Command(BaseCommand):
                 target_prediction,
                 confidence_cutoff)
             self.print_returns(prediction_list, str(c), race_key, loader, target_prediction)
-            c = round(c + interval, 2)
 
         jvm.stop()
         end_time = time()
