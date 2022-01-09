@@ -66,11 +66,10 @@ arguments = [
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
-        for argument in arguments:
-            parser.add_argument('--{}'.format(name), type=str)
-        # parser.add_argument('--grade', type=str)
-        # parser.add_argument('--start', type=str)
-        # parser.add_argument('--prediction', type=str)
+        parser.add_argument('--model', type=str)
+        parser.add_argument('--grade', type=str)
+        parser.add_argument('--start', type=str)
+        parser.add_argument('--prediction', type=str)
 
 
     def two_digitizer(self, integer):
