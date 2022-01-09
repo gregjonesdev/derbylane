@@ -163,8 +163,8 @@ class Command(BaseCommand):
         classifier_name = sys.argv[3]
         c_data = {
         "j48": {
-        "c_start": 0.01,
-        "c_stop": 0.25,
+        "c_start": 0.26,
+        "c_stop": 0.49,
         "interval": 0.01,
         },
         "smo": {
