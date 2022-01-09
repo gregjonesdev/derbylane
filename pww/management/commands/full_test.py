@@ -126,7 +126,7 @@ class Command(BaseCommand):
             else:
                 potential = ""
             print(table_string.format(
-                "{}\t".format(c),
+                "{}".format(c),
                 self.get_formatting(max_return, average_returns[0]),
                 self.get_formatting(max_return, average_returns[1]),
                 self.get_formatting(max_return, average_returns[2]),
