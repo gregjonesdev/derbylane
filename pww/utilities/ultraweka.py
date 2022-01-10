@@ -45,7 +45,35 @@ classifiers = {
             #  "-B", # Break ties randomly when several attributes look equally good.
             # "-U" # Allow unclassified instances.
         ],
-    }
+    },
+    "nbu": {
+        "classname": "weka.classifiers.bayes.NaiveBayesUpdateable",
+        "options": [],
+    },
+    "nb": {
+        "classname": "weka.classifiers.bayes.NaiveBayes",
+        "options": [],
+    },
+    "zeror": {
+        "classname": "weka.classifiers.rules.ZeroR",
+        "options": [],
+    },
+    "reptree": {
+        "classname": "weka.classifiers.trees.REPTree",
+        "options": [],
+    },
+    "simplek": {
+        "classname": "weka.clusterers.SimpleKMeans",
+        "options": [],
+    },
+    "ll": {
+        "classname": "weka.classifiers.functions.LibLINEAR",
+        "options": [],
+    },
+    "smoreg": {
+        "classname": "weka.classifiers.functions.SMOreg",
+        "options": [],
+    },
 }
 
 

@@ -171,9 +171,14 @@ class Command(BaseCommand):
         classifier_name = sys.argv[3]
         c_data = {
         "j48": {
-        "c_start": 0.01,
-        "c_stop": 0.49,
-        "interval": 0.01,
+            "c_start": 0.01,
+            "c_stop": 0.49,
+            "interval": 0.01,
+        },
+        "randomforest": {
+            "c_start": 0.01,
+            "c_stop": 0.99,
+            "interval": 0.01,
         },
         "smo": {
         "c_start": 0,
@@ -198,7 +203,7 @@ class Command(BaseCommand):
         print("{} {} {}\n".format(venue_code, grade_name, distance))
         print("Dogs Predicted to Finish {}".format(pred_format[target_prediction]))
         print(table_string.format(
-            "C-Factor",
+            "C-Fact",
             "W",
             "P",
             "S",
