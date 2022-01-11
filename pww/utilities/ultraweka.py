@@ -255,10 +255,12 @@ def get_prediction_confidence(testing_arff, model, target_prediction, confidence
     uuid_line_index = get_uuid_line_index(testing_arff)
     testing_data = build_scheduled_data(testing_arff)
     prediction_confidence = {}
-
     for index, inst in enumerate(testing_data):
+
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
+            print(uuid)
+            print(prediction)
             prediction = model.classify_instance(inst)
             dist = model.distribution_for_instance(inst)
             index = int(prediction) # SMO only 0-7
