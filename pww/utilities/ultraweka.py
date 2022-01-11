@@ -262,6 +262,7 @@ def get_prediction_confidence(testing_arff, model, target_prediction, confidence
             print(uuid)
             prediction = model.classify_instance(inst)
             print(prediction)
+            print(target_prediction)
             dist = model.distribution_for_instance(inst)
             index = int(prediction) # SMO only 0-7
             confidence = dist[index]
