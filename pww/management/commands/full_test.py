@@ -225,22 +225,12 @@ class Command(BaseCommand):
             c = round(c, 2)
 
             model = create_model(training_arff, classifier_name, str(c), race_key, loader)
-
-            end_time = time()
-            seconds_elapsed = end_time - start_time
-
-            hours, rest = divmod(seconds_elapsed, 3600)
-            minutes, seconds = divmod(rest, 60)
-
-            print("\nCreated Model in {}:{}:{}".format(
-                self.two_digitizer(int(hours)),
-                self.two_digitizer(int(minutes)),
-                self.two_digitizer(int(seconds))))
             prediction_list = get_prediction_confidence(
                 testing_arff,
                 model,
                 target_prediction,
                 confidence_cutoff)
+            print(len(prediction_list))
             self.print_returns(prediction_list, str(c), race_key, loader, target_prediction)
             c = round(c + interval, 2)
 
