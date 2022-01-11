@@ -259,15 +259,15 @@ def get_prediction_confidence(testing_arff, model, target_prediction, confidence
 
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
-            print(uuid)
+            # print(uuid)
             prediction = model.classify_instance(inst)
-            print(prediction)
-            print(target_prediction)
-            print(int(prediction) == int(target_prediction))
+            # print(prediction)
+            # print(target_prediction)
+            # print(int(prediction) == int(target_prediction))
             dist = model.distribution_for_instance(inst)
             index = int(prediction) # SMO only 0-7
             confidence = dist[index]
-            print(dist)
+            # print(dist)
             if int(prediction) == int(target_prediction):
                 if confidence >= confidence_cutoff:
                     prediction_confidence[uuid] = (prediction, confidence)
