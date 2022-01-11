@@ -230,7 +230,6 @@ class Command(BaseCommand):
                 model,
                 target_prediction,
                 confidence_cutoff)
-            print(len(prediction_list))
             self.print_returns(prediction_list, str(c), race_key, loader, target_prediction)
             c = round(c + interval, 2)
 
