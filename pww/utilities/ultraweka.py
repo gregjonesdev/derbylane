@@ -62,10 +62,10 @@ classifiers = {
         "classname": "weka.classifiers.trees.REPTree",
         "options": [],
     },
-    "simplek": {
-        "classname": "weka.clusterers.SimpleKMeans",
-        "options": [],
-    },
+    # "simplek": {
+    #     "classname": "weka.clusterers.SimpleKMeans",
+    #     "options": [],
+    # },
     "ll": {
         "classname": "weka.classifiers.functions.LibLINEAR",
         "options": [],

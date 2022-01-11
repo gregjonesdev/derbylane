@@ -180,7 +180,17 @@ class Command(BaseCommand):
             "c_stop": 0.99,
             "interval": 0.01,
         },
+        "ll": {
+        "c_start": 0,
+        "c_stop": 6,
+        "interval": 0.01,
+        },
         "smo": {
+        "c_start": 0,
+        "c_stop": 6,
+        "interval": 0.01,
+        },
+        "smoreg": {
         "c_start": 0,
         "c_stop": 6,
         "interval": 0.01,
@@ -215,6 +225,17 @@ class Command(BaseCommand):
             c = round(c, 2)
 
             model = create_model(training_arff, classifier_name, str(c), race_key, loader)
+            jvm.stop()
+            end_time = time()
+            seconds_elapsed = end_time - start_time
+
+            hours, rest = divmod(seconds_elapsed, 3600)
+            minutes, seconds = divmod(rest, 60)
+
+            print("\nCreated Model in {}:{}:{}".format(
+                self.two_digitizer(int(hours)),
+                self.two_digitizer(int(minutes)),
+                self.two_digitizer(int(seconds))))
             prediction_list = get_prediction_confidence(
                 testing_arff,
                 model,
@@ -223,17 +244,17 @@ class Command(BaseCommand):
             self.print_returns(prediction_list, str(c), race_key, loader, target_prediction)
             c = round(c + interval, 2)
 
-        jvm.stop()
-        end_time = time()
-        seconds_elapsed = end_time - start_time
-
-        hours, rest = divmod(seconds_elapsed, 3600)
-        minutes, seconds = divmod(rest, 60)
-
-        print("\nTraining metrics: {}".format(len(training_metrics)))
-        print("Test metrics: {}".format(len(testing_metrics)))
-
-        print("\nCompleted Analysis in {}:{}:{}".format(
-        self.two_digitizer(int(hours)),
-        self.two_digitizer(int(minutes)),
-        self.two_digitizer(int(seconds))))
+        # jvm.stop()
+        # end_time = time()
+        # seconds_elapsed = end_time - start_time
+        #
+        # hours, rest = divmod(seconds_elapsed, 3600)
+        # minutes, seconds = divmod(rest, 60)
+        #
+        # print("\nTraining metrics: {}".format(len(training_metrics)))
+        # print("Test metrics: {}".format(len(testing_metrics)))
+        #
+        # print("\nCompleted Analysis in {}:{}:{}".format(
+        # self.two_digitizer(int(hours)),
+        # self.two_digitizer(int(minutes)),
+        # self.two_digitizer(int(seconds))))
