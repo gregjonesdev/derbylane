@@ -225,7 +225,7 @@ class Command(BaseCommand):
             c = round(c, 2)
 
             model = create_model(training_arff, classifier_name, str(c), race_key, loader)
-            jvm.stop()
+
             end_time = time()
             seconds_elapsed = end_time - start_time
 
