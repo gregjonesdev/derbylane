@@ -210,6 +210,7 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
             uuid = uuid_line_index[index]
             prediction = model.classify_instance(inst)
             dist = model.distribution_for_instance(inst)
+            print(dist)
             participant = Participant.objects.get(uuid=uuid)
             index = int(model.classify_instance(inst))
             confidence = dist[index]
