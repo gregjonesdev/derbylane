@@ -147,7 +147,7 @@ class Command(BaseCommand):
         training_metrics = Metric.objects.filter(
             participant__race__chart__program__venue__code="WD",
             participant__race__distance=distance,
-            participant__race__grade__name=grade_name,
+            participant__race__grade__name="B",
             participant__race__chart__program__date__range=(
                 "2015-06-01", "2021-12-03")).order_by("-participant__race__chart__program__date")
         testing_metrics = Metric.objects.filter(
@@ -207,10 +207,13 @@ class Command(BaseCommand):
 
         jvm.start(packages=True, max_heap_size="5028m")
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+        confidence_cutoff = float(sys.argv[11])
+        print(confidence_cutoff)
 
 
-        print("\n\n{} Prediction Accuracy vs Confidence Factor".format(
+        print("\n\n{} Average Returns vs Confidence Factor".format(
             classifier_name.upper()))
+        print("Cutoff: {}".format(confidence_cutoff))
         print("{} {} {}\n".format(venue_code, grade_name, distance))
         print("Dogs Predicted to Finish {}".format(pred_format[target_prediction]))
         print(table_string.format(
@@ -221,8 +224,6 @@ class Command(BaseCommand):
             "# Bets",
             "Potential"))
         c = c_start
-        confidence_cutoff = float(sys.argv[11])
-        print(confidence_cutoff)
         while c <= c_stop:
             c = round(c, 2)
 
