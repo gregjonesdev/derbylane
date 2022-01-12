@@ -222,6 +222,7 @@ class Command(BaseCommand):
             "Potential"))
         c = c_start
         confidence_cutoff = float(sys.argv[9])
+        print(confidence_cutoff)
         while c <= c_stop:
             c = round(c, 2)
 

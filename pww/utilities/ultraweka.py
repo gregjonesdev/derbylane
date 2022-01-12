@@ -269,8 +269,13 @@ def get_prediction_confidence(testing_arff, model, target_prediction, confidence
             index = int(prediction) # SMO only 0-7
             confidence = dist[index]
             if int(prediction) == int(target_prediction):
+
                 if confidence >= confidence_cutoff:
+                    print("----")
                     print(dist)
+                    print(confidence)
+                    print("----")
+
                     prediction_confidence[uuid] = (prediction, confidence)
 
     return prediction_confidence
