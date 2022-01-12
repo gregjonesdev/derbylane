@@ -220,7 +220,7 @@ class Command(BaseCommand):
             "# Bets",
             "Potential"))
         c = c_start
-        confidence_cutoff = 0
+        confidence_cutoff = 0.25
         while c <= c_stop:
             c = round(c, 2)
 
