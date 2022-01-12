@@ -271,11 +271,11 @@ def get_prediction_confidence(testing_arff, model, target_prediction, confidence
             if int(prediction) == int(target_prediction):
 
                 if confidence >= confidence_cutoff:
-                    print("----")
-                    print(confidence_cutoff)
-                    print(dist)
-                    print(confidence)
-                    print(confidence >= confidence_cutoff)
+                    # print("----")
+                    # print(confidence_cutoff)
+                    # print(dist)
+                    # print(confidence)
+                    # print(confidence >= confidence_cutoff)
 
                     prediction_confidence[uuid] = (prediction, confidence)
 

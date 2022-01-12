@@ -221,7 +221,7 @@ class Command(BaseCommand):
             "# Bets",
             "Potential"))
         c = c_start
-        confidence_cutoff = float(sys.argv[9])
+        confidence_cutoff = float(sys.argv[11])
         print(confidence_cutoff)
         while c <= c_stop:
             c = round(c, 2)
