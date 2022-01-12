@@ -210,7 +210,7 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
             uuid = uuid_line_index[index]
             prediction = model.classify_instance(inst)
             dist = model.distribution_for_instance(inst)
-            print(dist)
+
             participant = Participant.objects.get(uuid=uuid)
             index = int(model.classify_instance(inst))
             confidence = dist[index]
@@ -268,7 +268,7 @@ def get_prediction_confidence(testing_arff, model, target_prediction, confidence
             dist = model.distribution_for_instance(inst)
             index = int(prediction) # SMO only 0-7
             confidence = dist[index]
-            # print(dist)
+            print(dist)
             if int(prediction) == int(target_prediction):
                 if confidence >= confidence_cutoff:
                     prediction_confidence[uuid] = (prediction, confidence)
