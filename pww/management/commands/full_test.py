@@ -70,6 +70,7 @@ class Command(BaseCommand):
         parser.add_argument('--grade', type=str)
         parser.add_argument('--start', type=str)
         parser.add_argument('--prediction', type=str)
+        parser.add_argument('--confidence', type=str)
 
 
     def two_digitizer(self, integer):
@@ -220,7 +221,7 @@ class Command(BaseCommand):
             "# Bets",
             "Potential"))
         c = c_start
-        confidence_cutoff = 0.25
+        confidence_cutoff = float(sys.argv[9])
         while c <= c_stop:
             c = round(c, 2)
 
