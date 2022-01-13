@@ -40,9 +40,10 @@ prediction = {
 c_options = {
     "smo": {
         "WD_548_B": "0.05",
+        "TS_550_A": "0.03",
         # "WD_548_C": "0.08",
         # "TS_550_B": "0.51",
-        # "TS_550_C": "0.53",
+        "TS_550_C": "0.02",
         # "SL_583_C": "0.25",
     },
     "j48": {
@@ -147,7 +148,7 @@ class Command(BaseCommand):
         participant = Participant.objects.get(uuid=participant_uuid)
         pred = get_prediction(participant)
         pred.smo = int(prediction)
-        pred.save()
+        pred.save()git
 
 
 
