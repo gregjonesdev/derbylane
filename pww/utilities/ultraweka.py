@@ -214,10 +214,10 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
             participant = Participant.objects.get(uuid=uuid)
             index = int(model.classify_instance(inst))
             confidence = dist[index]
-            if participant.straight_wager:
+            try:
                 win = participant.straight_wager.win
                 place = participant.straight_wager.place
-            else:
+            except:
                 win = 0
                 place = 0
             if confidence >= confidence_cutoff:
