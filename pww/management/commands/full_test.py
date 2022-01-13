@@ -148,7 +148,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         venue_code = "TS"
+        classifier_name = sys.argv[3]
         grade_name = sys.argv[5]
+        target_prediction = sys.argv[9]
         distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
         cutoff_date = (today - datetime.timedelta(days=49)).date()
@@ -169,15 +171,14 @@ class Command(BaseCommand):
         training_arff = get_training_arff(
             race_key,
             training_metrics,
-            is_nominal[model_name])
+            is_nominal[classifier_name])
         testing_arff = get_testing_arff(
             race_key,
             testing_metrics,
-            is_nominal[model_name])
+            is_nominal[classifier_name])
         uuid_line_index = get_uuid_line_index(testing_arff)
         c = 0.01
         max_return = 0
-        classifier_name = sys.argv[3]
         c_data = {
         "j48": {
             "c_start": 0.01,
@@ -205,7 +206,6 @@ class Command(BaseCommand):
         "interval": 0.01,
         },
         }
-        target_prediction = sys.argv[9]
 
         c_start = c_data[classifier_name]["c_start"]
         c_start = float(sys.argv[7])
