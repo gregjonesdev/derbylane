@@ -145,13 +145,13 @@ class Command(BaseCommand):
         cutoff_date = (today - datetime.timedelta(days=49)).date()
         start_time = time()
         training_metrics = Metric.objects.filter(
-            participant__race__chart__program__venue__code="WD",
+            participant__race__chart__program__venue__code="TS",
             participant__race__distance=distance,
-            participant__race__grade__name="B",
+            participant__race__grade__name=grade_name,
             participant__race__chart__program__date__range=(
                 "2015-06-01", "2021-12-03")).order_by("-participant__race__chart__program__date")
         testing_metrics = Metric.objects.filter(
-            participant__race__chart__program__venue__code="WD",
+            participant__race__chart__program__venue__code=venue_code,
             participant__race__distance=distance,
             participant__race__grade__name=grade_name,
             participant__race__chart__program__date__range=("2021-12-04", "2022-01-04"))
