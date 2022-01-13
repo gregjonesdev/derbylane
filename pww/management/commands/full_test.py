@@ -19,6 +19,10 @@ from pww.utilities.testing import (
     get_win_return,
     get_place_return,
     get_show_return)
+from pww.utilities.metrics import (
+    get_training_metrics,
+    get_scheduled_metrics,
+)
 from weka.classifiers import Classifier
 import weka.core.converters as conv
 import weka.core.jvm as jvm
@@ -61,6 +65,11 @@ arguments = [
     "start",
     "prediction"
 ]
+
+is_nominal = {
+    "smo": False,
+    "j48": False,
+}
 
 
 class Command(BaseCommand):
@@ -138,34 +147,33 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        venue_code = "SL"
+        venue_code = "TS"
         grade_name = sys.argv[5]
         distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
         cutoff_date = (today - datetime.timedelta(days=49)).date()
         start_time = time()
-        training_metrics = Metric.objects.filter(
-            participant__race__chart__program__venue__code=venue_code,
-            participant__race__distance=distance,
-            participant__race__grade__name=grade_name,
-            participant__race__chart__program__date__range=(
-                "2015-06-01", "2021-12-03")).order_by("-participant__race__chart__program__date")
-        testing_metrics = Metric.objects.filter(
-            participant__race__chart__program__venue__code=venue_code,
-            participant__race__distance=distance,
-            participant__race__grade__name=grade_name,
-            participant__race__chart__program__date__range=("2021-12-04", "2022-01-04"))
+        training_metrics = get_training_metrics(
+            venue_code,
+            grade_name,
+            distance,
+            "2021-12-03")
+        testing_metrics = get_scheduled_metrics(
+            venue_code,
+            grade_name,
+            distance,
+            "2021-12-04",
+            "2022-01-04")
         print("Training Metrics: {}".format(training_metrics.count()))
         race_key = get_race_key(venue_code, distance, grade_name)
-        is_nominal = False
         training_arff = get_training_arff(
             race_key,
             training_metrics,
-            is_nominal)
+            is_nominal[model_name])
         testing_arff = get_testing_arff(
             race_key,
             testing_metrics,
-            is_nominal)
+            is_nominal[model_name])
         uuid_line_index = get_uuid_line_index(testing_arff)
         c = 0.01
         max_return = 0

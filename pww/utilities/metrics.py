@@ -397,12 +397,32 @@ def save_metrics(metrics):
         existing_metric.final = participant.final
     existing_metric.save()
 
-
-
-# START HERE
 def build_race_metrics(race):
     # print("BUILD RACE METRICS ")
     scaled_race_metrics = calculate_scaled_race_metrics(race)
     # print(len(scaled_race_metrics))
     for metrics in scaled_race_metrics:
         save_metrics(metrics)
+
+
+def get_training_metrics(venue_code, grade_name, distance, end_date):
+    start_date = "2015-06-01"
+    return Metric.objects.filter(
+        participant__race__chart__program__venue__code=venue_code,
+        participant__race__grade__name=grade_name,
+        participant__race__distance=distance,
+        participant__race__chart__program__date__range=(
+            start_date, end_date))
+
+def get_scheduled_metrics(
+    venue_code,
+    grade_name,
+    distance,
+    start_date,
+    end_date):
+    return Metric.objects.filter(
+        participant__race__chart__program__venue__code=venue_code,
+        participant__race__grade__name=grade_name,
+        participant__race__distance=distance,
+        participant__race__chart__program__date__range=(
+            start_date, end_date))

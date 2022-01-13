@@ -24,7 +24,7 @@ from miner.utilities.constants import (
     focused_grades)
 from pww.utilities.arff import create_arff
 
-prediction_models = {
+prediction = {
     "WD_548_B": "WD_548_B_smo_104.model",
     "WD_548_C": "WD_548_C_smo_008.model",
     "TS_550_B": "TS_550_B_smo_051.model",
@@ -155,7 +155,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        start_date = "2019-01-01"
+        start_date = "2015-06-01"
         today = datetime.date.today()
         # classifier_name = 'smo'
         classifier_name = 'j48'
