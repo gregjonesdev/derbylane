@@ -214,16 +214,21 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
             participant = Participant.objects.get(uuid=uuid)
             index = int(model.classify_instance(inst))
             confidence = dist[index]
+            total_wins = []
+            total_places = []
             try:
                 win = participant.straight_wager.win
                 place = participant.straight_wager.place
                 if not win:
                     win = 0
                 if not place:
-                    place = 0    
+                    place = 0
             except:
                 win = 0
                 place = 0
+
+            total_wins.append(win)
+            total_places.append(place)
             if confidence >= confidence_cutoff:
                 prediction_list[uuid] = prediction
                 print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
@@ -237,7 +242,8 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
                     model.classify_instance(inst),
                     win,
                     place))
-
+    print(sum(total_wins)/(2*len(total_wins)))
+    print(sum(total_places)/(2*len(total_places)))
     return prediction_list
 
 def get_prediction(participant):
