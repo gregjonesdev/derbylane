@@ -39,11 +39,11 @@ prediction = {
 
 c_options = {
     "smo": {
-        "WD_548_B": "0.05",
-        # "WD_548_C": "0.08",
-        # "TS_550_B": "0.51",
-        # "TS_550_C": "0.53",
-        # "SL_583_C": "0.25",
+        "WD_548_B": "1.04",
+        "WD_548_C": "0.08",
+        "TS_550_B": "0.51",
+        "TS_550_C": "0.53",
+        "SL_583_C": "0.25",
     },
     "j48": {
         "WD_548_B": "0.06",
@@ -86,7 +86,12 @@ class Command(BaseCommand):
         except KeyError:
             pass
         if string_c:
-            model_name = "{}.model".format(race_key)
+            model_name = "{}_{}_{}.model".format(
+                race_key,
+                classifier_name,
+                string_c.replace(".","")
+            )
+            print("For race_key {} use model {}".format(race_key, model_name))
 
             training_arff_filename = "{}/train_{}.arff".format(
                 arff_directory,
@@ -108,11 +113,6 @@ class Command(BaseCommand):
 
 
             loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-
-
-
-
-
             model = create_model(training_arff, classifier_name, string_c, race_key, loader)
             confidence_cutoff = 0.0
             prediction_list = get_prediction_list(testing_arff, model, confidence_cutoff)
@@ -143,11 +143,12 @@ class Command(BaseCommand):
 
 
     def save_smo_prediction(self, participant_uuid, prediction):
-        # print("Save smo")
+        print("Save smo")
         participant = Participant.objects.get(uuid=participant_uuid)
         pred = get_prediction(participant)
         pred.smo = int(prediction)
         pred.save()
+        # print(pred.__dict__)
 
 
 
@@ -158,34 +159,31 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
+        # start_date = "2015-06-01"
         today = datetime.date.today()
-        yesterday = today - datetime.timedelta(days=1)
-        tomorrow = today + datetime.timedelta(days=1)
         classifier_name = 'smo'
+        # classifier_name = 'j48'
         jvm.start(packages=True, max_heap_size="5028m")
         for venue_code in betting_venues:
             distance = betting_distances[venue_code]
+            venue_metrics = Metric.objects.filter(
+                participant__race__distance=distance,
+                participant__race__chart__program__venue__code=venue_code,
+                participant__race__chart__program__date__gte=start_date)
             for grade_name in betting_grades[venue_code]:
-                race_key = self.build_race_key(venue_code, distance, grade_name)
-                print(race_key)
-                training_metrics = get_training_metrics(
-                    venue_code,
-                    grade_name,
-                    distance,
-                    yesterday)
-                print(len(training_metrics))
-                scheduled_metrics = get_scheduled_metrics(
-                    venue_code,
-                    grade_name,
-                    distance,
-                    today,
-                    today)
+                graded_metrics = venue_metrics.filter(
+                    participant__race__grade__name=grade_name)
+                training_metrics = graded_metrics.filter(
+                    participant__race__chart__program__date__lt=today)
+                prediction_metrics = graded_metrics.filter(
+                    participant__race__chart__program__date__gte=today)
 
-                if len(scheduled_metrics) > 0:
+                race_key = self.build_race_key(venue_code, distance, grade_name)
+                if len(prediction_metrics) > 0:
                     self.assign_predictions(
-                        classifier_name,
-                        training_metrics,
-                        scheduled_metrics,
-                        race_key)
+                            classifier_name,
+                            training_metrics,
+                            prediction_metrics,
+                            race_key)
 
         jvm.stop()
