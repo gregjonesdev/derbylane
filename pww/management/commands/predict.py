@@ -23,7 +23,10 @@ from miner.utilities.constants import (
     focused_distances,
     focused_grades)
 from pww.utilities.arff import create_arff
-
+from pww.utilities.metrics import (
+    get_training_metrics,
+    get_scheduled_metrics,
+)
 prediction = {
     "WD_548_B": "WD_548_B_smo_104.model",
     "WD_548_C": "WD_548_C_smo_008.model",
@@ -140,6 +143,7 @@ class Command(BaseCommand):
 
 
     def save_smo_prediction(self, participant_uuid, prediction):
+        print("Save smo")
         participant = Participant.objects.get(uuid=participant_uuid)
         pred = get_prediction(participant)
         pred.smo = int(prediction)
@@ -155,10 +159,10 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        start_date = "2015-06-01"
+        # start_date = "2015-06-01"
         today = datetime.date.today()
-        # classifier_name = 'smo'
-        classifier_name = 'j48'
+        classifier_name = 'smo'
+        # classifier_name = 'j48'
         jvm.start(packages=True, max_heap_size="5028m")
         for venue_code in betting_venues:
             distance = betting_distances[venue_code]

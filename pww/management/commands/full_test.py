@@ -147,13 +147,12 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        venue_code = "TS"
+        venue_code = "WD"
         classifier_name = sys.argv[3]
         grade_name = sys.argv[5]
         target_prediction = sys.argv[9]
         distance = focused_distances[venue_code][0]
         today = datetime.datetime.now()
-        cutoff_date = (today - datetime.timedelta(days=49)).date()
         start_time = time()
         training_metrics = get_training_metrics(
             venue_code,
