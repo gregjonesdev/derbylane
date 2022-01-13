@@ -74,6 +74,9 @@ betting_grades = {
 
 class Command(BaseCommand):
 
+    def add_arguments(self, parser):
+        parser.add_argument('--date', type=str)
+
 
     def assign_predictions(
         self,
@@ -159,9 +162,14 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        today = datetime.date.today()
-        yesterday = today - datetime.timedelta(days=1)
-        tomorrow = today + datetime.timedelta(days=1)
+        try:
+            target_day = datetime.datetime.strptime(
+                sys.argv[3],
+                '%Y-%m-%d')
+        except IndexError:
+            target_day = datetime.date.today()
+        yesterday = target_day - datetime.timedelta(days=1)
+        tomorrow = target_day + datetime.timedelta(days=1)
         classifier_name = 'smo'
         jvm.start(packages=True, max_heap_size="5028m")
         for venue_code in betting_venues:
@@ -179,8 +187,8 @@ class Command(BaseCommand):
                     venue_code,
                     grade_name,
                     distance,
-                    today,
-                    today)
+                    target_day,
+                    target_day)
 
                 if len(scheduled_metrics) > 0:
                     self.assign_predictions(
