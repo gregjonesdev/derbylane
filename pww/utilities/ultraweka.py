@@ -217,6 +217,10 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
             try:
                 win = participant.straight_wager.win
                 place = participant.straight_wager.place
+                if not win:
+                    win = 0
+                if not place:
+                    place = 0    
             except:
                 win = 0
                 place = 0
@@ -226,7 +230,7 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
                     participant.race.chart.program.date,
                     participant.race.chart.program.venue.code,
                     participant.race.number,
-                    participant.race.grade,
+                    participant.race.grade.name,
                     "{}-{}".format(
                         participant.post,
                         participant.dog.name[:5]),
