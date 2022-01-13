@@ -225,8 +225,8 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
                         participant.post,
                         participant.dog.name[:5]),
                     model.classify_instance(inst),
-                    participant.get_win_bet().get_return(),
-                    participant.get_place_bet().get_return()))
+                    participant.straight_wager.win,
+                    participant.straight_wager.place))
 
     return prediction_list
 
