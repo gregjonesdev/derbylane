@@ -148,7 +148,7 @@ class Command(BaseCommand):
         participant = Participant.objects.get(uuid=participant_uuid)
         pred = get_prediction(participant)
         pred.smo = int(prediction)
-        pred.save()git
+        pred.save()
 
 
 
