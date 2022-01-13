@@ -9,6 +9,7 @@ from derbylane.views import (
     FrontPage,
     ProfileView,
     ResultsView,
+    WeatherView,
     PasswordReset,
     load_charts,
     load_bets,
@@ -35,6 +36,10 @@ urlpatterns = [
         r'^results/$',
         ResultsView.as_view(),
         name='results'),
+    url(
+        r'^weather/$',
+        WeatherView.as_view(),
+        name='weather'),
     url(
         r'^profile/$',
         ProfileView.as_view(),

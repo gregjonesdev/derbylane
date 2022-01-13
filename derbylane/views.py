@@ -70,6 +70,15 @@ class ProfileView(OTPRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.context)
 
+class WeatherView(LoginRequiredMixin, View):
+
+    template_name = 'weather.html'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        self.context["venues"] = Venue.objects.filter(is_focused=True)
+        return render(request, self.template_name, self.context)
+
 
 class ResultsView(LoginRequiredMixin, View):
 
