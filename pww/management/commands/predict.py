@@ -176,13 +176,13 @@ class Command(BaseCommand):
             distance = betting_distances[venue_code]
             for grade_name in betting_grades[venue_code]:
                 race_key = self.build_race_key(venue_code, distance, grade_name)
-                print(race_key)
+                # print(race_key)
                 training_metrics = get_training_metrics(
                     venue_code,
                     grade_name,
                     distance,
                     yesterday)
-                print(len(training_metrics))
+                # print(len(training_metrics))
                 scheduled_metrics = get_scheduled_metrics(
                     venue_code,
                     grade_name,

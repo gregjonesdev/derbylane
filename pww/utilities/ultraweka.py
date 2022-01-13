@@ -214,6 +214,12 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
             participant = Participant.objects.get(uuid=uuid)
             index = int(model.classify_instance(inst))
             confidence = dist[index]
+            if participant.straight_wager:
+                win = participant.straight_wager.win
+                place = participant.straight_wager.place
+            else:
+                win = 0
+                place = 0
             if confidence >= confidence_cutoff:
                 prediction_list[uuid] = prediction
                 print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
@@ -225,8 +231,8 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
                         participant.post,
                         participant.dog.name[:5]),
                     model.classify_instance(inst),
-                    participant.straight_wager.win,
-                    participant.straight_wager.place))
+                    win,
+                    place))
 
     return prediction_list
 
