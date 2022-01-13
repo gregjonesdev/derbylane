@@ -216,18 +216,18 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
             confidence = dist[index]
             if confidence >= confidence_cutoff:
                 prediction_list[uuid] = prediction
-                print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
+                print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
                     participant.race.chart.program.date,
                     participant.race.chart.program.venue.code,
                     participant.race.number,
+                    participant.race.grade,
                     "{}-{}".format(
                         participant.post,
                         participant.dog.name[:5]),
                     model.classify_instance(inst),
-                    round(confidence, 2),
-                    round(dist[0], 2),
-                    round(sum(dist[:2]), 2),
-                    round(sum(dist[:3]), 2)))
+                    participant.get_win_bet().get_return(),
+                    participant.get_place_bet().get_return())
+
     return prediction_list
 
 def get_prediction(participant):
