@@ -69,6 +69,7 @@ arguments = [
 is_nominal = {
     "smo": False,
     "j48": False,
+    "randomforest": False,
 }
 
 
@@ -184,11 +185,6 @@ class Command(BaseCommand):
             "c_stop": 0.49,
             "interval": 0.01,
         },
-        "randomforest": {
-            "c_start": 0.01,
-            "c_stop": 0.99,
-            "interval": 0.01,
-        },
         "ll": {
         "c_start": 0,
         "c_stop": 6,
@@ -240,7 +236,7 @@ class Command(BaseCommand):
                 model,
                 target_prediction,
                 confidence_cutoff)
-            self.print_returns(prediction_list, str(c), race_key, loader, target_prediction)
+            # self.print_returns(prediction_list, str(c), race_key, loader, target_prediction)
             c = round(c + interval, 2)
 
         # jvm.stop()

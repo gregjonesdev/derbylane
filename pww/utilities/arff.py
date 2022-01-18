@@ -1,5 +1,6 @@
 from miner.utilities.constants import csv_columns
 from miner.utilities.urls import arff_directory
+
 def write_headers(arff_file, is_nominal):
     for each in csv_columns:
         if is_nominal and each == "Fi":
