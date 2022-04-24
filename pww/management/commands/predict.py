@@ -170,7 +170,7 @@ class Command(BaseCommand):
             target_day = datetime.date.today()
         yesterday = target_day - datetime.timedelta(days=1)
         tomorrow = target_day + datetime.timedelta(days=1)
-        classifier_name = 'smo'
+        classifier_name = 'j48'
         jvm.start(packages=True, max_heap_size="5028m")
         for venue_code in betting_venues:
             distance = betting_distances[venue_code]
