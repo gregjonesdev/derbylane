@@ -52,7 +52,6 @@ class FrontPage(LoginRequiredMixin, View):
         next_day = date_obj + datetime.timedelta(days=1)
         self.context["next"] = next_day.strftime("%Y-%m-%d")
         self.context["next_day_scheduled"] = next_day - datetime.timedelta(days=1) <= today
-
         self.context["date_header"] = date_obj.strftime("%A, %B %-d")
         self.context["is_past"] = localdate() > date_obj
         self.context["datestring"] = datestring

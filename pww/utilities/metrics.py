@@ -406,7 +406,7 @@ def build_race_metrics(race):
 
 
 def get_training_metrics(venue_code, grade_name, distance, end_date):
-    start_date = "2015-06-01"
+    start_date = "2021-09-01"
     return Metric.objects.filter(
         participant__race__chart__program__venue__code=venue_code,
         participant__race__grade__name=grade_name,

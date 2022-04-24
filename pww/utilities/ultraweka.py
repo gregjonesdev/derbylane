@@ -205,6 +205,9 @@ def get_prediction_list(testing_arff, model, confidence_cutoff):
     testing_data = build_scheduled_data(testing_arff)
     prediction_list = {}
 
+    total_wins = []
+    total_places = []
+
     for index, inst in enumerate(testing_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]

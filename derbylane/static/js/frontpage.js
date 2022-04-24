@@ -1,4 +1,4 @@
-const text_content = document.getElementById("json-chart-data").textContent
+cacbb9ad4f6c4b3f569d84517bdd28011446e272const text_content = document.getElementById("json-chart-data").textContent
 const json_data = JSON.parse(text_content)
 
 
