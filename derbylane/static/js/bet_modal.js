@@ -24,7 +24,6 @@ modal.addEventListener("focus", function (e) {
     this_modal.find('#participant_uuid').text(
       participant
    )
-    // $('select option[value=' + bets).prop('selected',true);
   }
 
 })

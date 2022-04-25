@@ -605,6 +605,9 @@ class Straight_Wager(CoreModel):
         default=0.00,
         null=True)
 
+    def get_date(self):
+        return self.participant.race.chart.program.date    
+
 
 
 class Combo(CoreModel):

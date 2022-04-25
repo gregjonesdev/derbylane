@@ -5,6 +5,7 @@
   <div
     id="main-card-header"
     class="card-header">
+    {% if previous %}
     <a
       class="btn btn-small"
       href="{% url 'frontpage' %}?date={{ previous }}">
@@ -14,13 +15,24 @@
         class="float-left date_arrow"
         alt="back-icon">
     </a>
+    {% else %}
+    <a
+      class="btn btn-small disabled"
+      href="{% url 'frontpage' %}?date={{ previous }}">
+      <img
+        src="{% static 'img/back.png' %}"
+        height=20
+        class="float-left date_arrow"
+        alt="back-icon">
+    </a>
+    {% endif %}
     <span
       id="date_header"
       class="text-center"
       style="font-size: 1.6em; margin:auto; font-style: italic; font-weight: bold">
         {{ date_header }}
     </span>
-    {% if next_day_scheduled %}
+    {% if next %}
     <a
       class="btn btn-small"
       href="{% url 'frontpage' %}?date={{ next }}">
