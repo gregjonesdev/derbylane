@@ -65,6 +65,8 @@ class FrontPage(LoginRequiredMixin, View):
             previous_date = (target_day - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
             if target_day - datetime.timedelta(days=1) > today:
                 next_date = today.strftime("%Y-%m-%d")
+                if target_day > today:
+                    next_date = None
             else:
                 next_date = (target_day + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 
@@ -78,7 +80,7 @@ class FrontPage(LoginRequiredMixin, View):
         else:
             date_header = target_day.strftime("%A, %B %-d")
 
-        displayed_charts = []    
+        displayed_charts = []
         for chart in Chart.objects.filter(program__date=target_day):
              if chart.has_bets():
                  displayed_charts.append(chart)
