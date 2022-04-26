@@ -575,6 +575,9 @@ class Bet(CoreModel):
         else:
             return 0
 
+    def get_date(self):
+        return self.participant.race.chart.program.date
+
 
 
 
@@ -604,9 +607,6 @@ class Straight_Wager(CoreModel):
         decimal_places=2,
         default=0.00,
         null=True)
-
-    def get_date(self):
-        return self.participant.race.chart.program.date    
 
 
 

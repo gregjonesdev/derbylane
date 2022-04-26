@@ -44,7 +44,9 @@ class FrontPage(LoginRequiredMixin, View):
 
 
         if target_day + datetime.timedelta(days=1) < today:
-            placed_bets = Straight_Wager.objects.all()
+            previous_date = None
+            next_date = today.strftime("%Y-%m-%d")
+            placed_bets = Bet.objects.all()
             future_bets = placed_bets.filter(
                 participant__race__chart__program__date__gt=target_day).order_by(
                 "participant__race__chart__program__date")
