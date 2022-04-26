@@ -78,6 +78,11 @@ class FrontPage(LoginRequiredMixin, View):
         else:
             date_header = target_day.strftime("%A, %B %-d")
 
+        displayed_charts = []    
+        for chart in Chart.objects.filter(program__date=target_day):
+             if chart.has_bets():
+                 displayed_charts.append(chart)
+
 
         self.context["previous"] = previous_date
         self.context["next"] = next_date
