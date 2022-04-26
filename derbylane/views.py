@@ -74,7 +74,7 @@ class FrontPage(LoginRequiredMixin, View):
             content_type = "Predictions"
 
         if target_day.year < today.year:
-            date_header = target_day.strftime("%A, %B %-d, %Y")
+            date_header = target_day.strftime("%a, %b %-d, %Y")
         else:
             date_header = target_day.strftime("%A, %B %-d")
 
