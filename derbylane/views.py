@@ -68,20 +68,25 @@ class FrontPage(LoginRequiredMixin, View):
             else:
                 next_date = (target_day + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 
+        displayed_charts = []
         if target_day < today:
             content_type = "Bets"
+            for chart in Chart.objects.filter(program__date=target_day):
+                if chart.has_bets():
+                    displayed_charts.append(chart)
         else:
             content_type = "Predictions"
+            for chart in Chart.objects.filter(program__date=target_day):
+                print("a")
+                if chart.has_predictions():
+                    displayed_charts.append(chart)
 
         if target_day.year < today.year:
             date_header = target_day.strftime("%a, %b %-d, %Y")
         else:
             date_header = target_day.strftime("%A, %B %-d")
 
-        displayed_charts = []
-        for chart in Chart.objects.filter(program__date=target_day):
-             if chart.has_bets():
-                 displayed_charts.append(chart)
+
 
 
         self.context["previous"] = previous_date
