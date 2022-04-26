@@ -63,10 +63,8 @@ class FrontPage(LoginRequiredMixin, View):
                 previous_date = None
         else:
             previous_date = (target_day - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-            if target_day - datetime.timedelta(days=1) > today:
-                next_date = today.strftime("%Y-%m-%d")
-                if target_day > today:
-                    next_date = None
+            if target_day > today:
+                next_date = None
             else:
                 next_date = (target_day + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 
