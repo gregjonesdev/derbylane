@@ -36,53 +36,50 @@ class FrontPage(LoginRequiredMixin, View):
         displayed_charts = []
         today = localdate()
         if datestring:
-            date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
+            target_day = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
         else:
-            date_obj = today
-        if date_obj >= today:
-            content_type = "Predictions"
-            for chart in Chart.objects.filter(program__date=date_obj):
-                if chart.has_predictions():
-                    displayed_charts.append(chart)
-            previous_date = (date_obj - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-            next_date = None
-        else:
-            content_type = "Bets"
-        #     all_bets = Straight_Wager.objects.filter(participant__race__chart__program__date__lt=date_obj).order_by("-participant__race__chart__program__date")
-        #     if all_bets.count() > 0:
-        #         target_day = all_bets[0].participant.race.chart.program.date
-            for chart in Chart.objects.filter(program__date=date_obj):
-                if chart.has_bets():
-                    displayed_charts.append(chart)
-        #         previous_date = target_day.strftime("%Y-%m-%d")
-        #     else:
-        #         previous_date = None
+            target_day = today
 
+
+
+
+        if target_day + datetime.timedelta(days=1) < today:
             placed_bets = Straight_Wager.objects.all()
             future_bets = placed_bets.filter(
-                participant__race__chart__program__date__gt=date_obj).order_by(
+                participant__race__chart__program__date__gt=target_day).order_by(
                 "participant__race__chart__program__date")
             past_bets = placed_bets.filter(
-                participant__race__chart__program__date__lt=date_obj).order_by(
+                participant__race__chart__program__date__lt=target_day).order_by(
                 "-participant__race__chart__program__date")
             if future_bets.count() > 0:
                 next_date = future_bets[0].get_date().strftime("%Y-%m-%d")
             else:
-                # next_date could be next preditions
-                next_date = None
+                next_date = today.strftime("%Y-%m-%d")
             if past_bets.count() > 0:
                 previous_date = past_bets[0].get_date().strftime("%Y-%m-%d")
             else:
                 previous_date = None
+        else:
+            previous_date = (target_day - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+            if target_day - datetime.timedelta(days=1) > today:
+                next_date = today.strftime("%Y-%m-%d")
+            else:
+                next_date = (target_day + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 
+        if target_day < today:
+            content_type = "Bets"
+        else:
+            content_type = "Predictions"
 
-
+        if target_day.year < today.year:
+            date_header = target_day.strftime("%A, %B %-d, %Y")
+        else:
+            date_header = target_day.strftime("%A, %B %-d")
 
 
         self.context["previous"] = previous_date
         self.context["next"] = next_date
-        self.context["date_header"] = date_obj.strftime("%A, %B %-d")
-        self.context["is_past"] = localdate() > date_obj
+        self.context["date_header"] = date_header
         self.context["datestring"] = datestring
         self.context["charts"] = displayed_charts
         self.context["content_type"] = content_type
