@@ -91,6 +91,27 @@ def get_daily_results(
 def get_win_profitability(cutoff, ):
     return "W"
 
+def print_line_items(prediction_list):
+    for uuid in prediction_list:
+        participant = Participant.objects.get(uuid=uuid)
+        current_win_return = get_win_return(participant)
+        current_place_return = get_place_return(participant)
+        current_show_return = get_show_return(participant)
+        win_returns.append(current_win_return)
+        place_returns.append(current_place_return)
+        show_returns.append(current_show_return)
+        prediction_tuple = prediction_list[uuid]
+        prediction = prediction_tuple[0]
+        confidence = prediction_tuple[1]
+        print(prediction_table_string.format(
+            participant.race.number,
+            participant.dog.name[:5],
+            prediction,
+            round(confidence, 2),
+            current_win_return,
+            current_place_return,
+            current_show_return))
+
 def print_prediction_table(prediction_list):
     prediction_table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
     if len(prediction_list) > 0:
@@ -105,25 +126,7 @@ def print_prediction_table(prediction_list):
         win_returns = []
         place_returns = []
         show_returns = []
-        for uuid in prediction_list:
-            participant = Participant.objects.get(uuid=uuid)
-            current_win_return = get_win_return(participant)
-            current_place_return = get_place_return(participant)
-            current_show_return = get_show_return(participant)
-            win_returns.append(current_win_return)
-            place_returns.append(current_place_return)
-            show_returns.append(current_show_return)
-            prediction_tuple = prediction_list[uuid]
-            prediction = prediction_tuple[0]
-            confidence = prediction_tuple[1]
-            print(prediction_table_string.format(
-                participant.race.number,
-                participant.dog.name[:5],
-                prediction,
-                round(confidence, 2),
-                current_win_return,
-                current_place_return,
-                current_show_return))
+        # print_line_items(prediction_list)
 
         print(prediction_table_string.format(
             "Average",
