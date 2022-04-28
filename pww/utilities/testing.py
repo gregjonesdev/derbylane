@@ -146,7 +146,7 @@ def get_count(list):
     for item in list:
         if int(item) > 0:
             count += 1
-    return "1:{}".format(round((len(list)/count), 2)
+    return "1:{}".format(round((len(list)/count), 2))
 
 def get_return_and_count(list):
     avg_return = get_average_return(list)
