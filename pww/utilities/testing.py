@@ -95,14 +95,14 @@ def get_win_profitability(cutoff, ):
 def print_prediction_table(prediction_list):
     prediction_table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
     if len(prediction_list) > 0:
-        # print(prediction_table_string.format(
-        #     "Race",
-        #     "Dog",
-        #     "Pred.",
-        #     "Conf.",
-        #     "W",
-        #     "P",
-        #     "S"))
+        print(prediction_table_string.format(
+            "Race",
+            "Dog",
+            "Pred.",
+            "Conf.",
+            "W",
+            "P",
+            "S"))
         win_returns = []
         place_returns = []
         show_returns = []
@@ -117,14 +117,14 @@ def print_prediction_table(prediction_list):
             prediction_tuple = prediction_list[uuid]
             prediction = prediction_tuple[0]
             confidence = prediction_tuple[1]
-            # print(prediction_table_string.format(
-            #     participant.race.number,
-            #     participant.dog.name[:5],
-            #     prediction,
-            #     round(confidence, 2),
-            #     current_win_return,
-            #     current_place_return,
-            #     current_show_return))
+            print(prediction_table_string.format(
+                participant.race.number,
+                participant.dog.name[:5],
+                prediction,
+                round(confidence, 2),
+                current_win_return,
+                current_place_return,
+                current_show_return))
 
         print(prediction_table_string.format(
             "Average",
