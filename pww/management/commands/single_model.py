@@ -20,9 +20,8 @@ class Command(BaseCommand):
         parser.add_argument('--prediction', type=str)
 
     def handle(self, *args, **options):
-        c_factor = 0.4
-        cutoff = 0.85
-        classifier_name = "j48"
+        c_factor = 0.6
+        classifier_name = "smo"
         race_key = "universal"
         venue_code = sys.argv[3]
         grade = sys.argv[5]
