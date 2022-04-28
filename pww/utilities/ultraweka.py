@@ -277,7 +277,7 @@ def get_prediction_confidence(testing_arff, model, target_prediction, confidence
             uuid = uuid_line_index[index]
             # print(uuid)
             prediction = model.classify_instance(inst)
-            print(prediction)
+            # print(prediction)
             # print(target_prediction)
             # print(int(prediction) == int(target_prediction))
             dist = model.distribution_for_instance(inst)
