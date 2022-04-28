@@ -31,7 +31,7 @@ class Command(BaseCommand):
             # participant__race__distance=550,
             participant__race__chart__program__venue__code=venue_code,
             participant__race__chart__program__date__range=(
-                "2019-06-01",
+                "2019-01-01",
                 "2021-12-31"))
         is_nominal = False
         training_arff = get_training_arff(
