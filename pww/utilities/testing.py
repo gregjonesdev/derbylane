@@ -141,6 +141,17 @@ def get_average_return(list):
     else:
         return "   "
 
+def get_count(list):
+    count = 0
+    for item in list:
+        if int(item) > 0:
+            count += 1
+    return "1:{}".format(int(len(list)/count))
+
+def get_return_and_count(list):
+    avg_return = get_average_return(list)
+    count = get_count(list)
+    return "{} ({})".format(avg_return, count)
 
 def evaluate_model_cutoffs(model, target_prediction, testing_arff):
     starting_cutoff = 0.75
