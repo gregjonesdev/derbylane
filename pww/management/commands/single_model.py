@@ -31,8 +31,8 @@ class Command(BaseCommand):
             # participant__race__distance=550,
             participant__race__chart__program__venue__code=venue_code,
             participant__race__chart__program__date__range=(
-                "2020-06-01",
-                "2021-12-31"))
+                "2020-02-01",
+                "2021-08-31"))
         is_nominal = False
         training_arff = get_training_arff(
             race_key,
@@ -59,7 +59,7 @@ class Command(BaseCommand):
             participant__race__chart__program__venue__code=venue_code,
             participant__race__grade__name=grade,
             participant__race__chart__program__date__range=(
-                "2022-01-01",
+                "2021-09-01",
                 "2022-04-20"))
         testing_arff = get_testing_arff(
             "{}_{}".format(venue_code, grade),
