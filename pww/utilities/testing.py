@@ -95,14 +95,14 @@ def get_win_profitability(cutoff, ):
 def print_prediction_table(prediction_list):
     prediction_table_string = "{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}\t\t{}"
     if len(prediction_list) > 0:
-        print(prediction_table_string.format(
-            "Race",
-            "Dog",
-            "Pred.",
-            "Conf.",
-            "W",
-            "P",
-            "S"))
+        # print(prediction_table_string.format(
+        #     "Race",
+        #     "Dog",
+        #     "Pred.",
+        #     "Conf.",
+        #     "W",
+        #     "P",
+        #     "S"))
         win_returns = []
         place_returns = []
         show_returns = []
