@@ -21,17 +21,17 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         c_factor = 0.5
-        classifier_name = "j48"
+        classifier_name = "randomforest"
         race_key = "universal"
         venue_code = sys.argv[3]
         grade = sys.argv[5]
         target_prediction = sys.argv[7]
         training_metrics = Metric.objects.filter(
-            participant__race__grade__name="B",
+            participant__race__grade__name=grade,
             # participant__race__distance=550,
             participant__race__chart__program__venue__code=venue_code,
             participant__race__chart__program__date__range=(
-                "2019-06-01",
+                "2020-06-01",
                 "2021-12-31"))
         is_nominal = False
         training_arff = get_training_arff(
