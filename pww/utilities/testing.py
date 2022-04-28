@@ -130,9 +130,9 @@ def print_prediction_table(prediction_list):
             " ",
             " ",
             " ",
-            get_average_return(win_returns),
-            get_average_return(place_returns),
-            get_average_return(show_returns),
+            get_return_and_count(win_returns),
+            get_return_and_count(place_returns),
+            get_return_and_count(show_returns),
             ))
 
 def get_average_return(list):
