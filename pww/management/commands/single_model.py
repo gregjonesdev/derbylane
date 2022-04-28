@@ -28,7 +28,7 @@ class Command(BaseCommand):
         grade = sys.argv[5]
         target_prediction = sys.argv[7]
         training_metrics = Metric.objects.filter(
-            participant__race__grade__name=grade,
+            # participant__race__grade__name='B',
             # participant__race__distance=550,
             participant__race__chart__program__venue__code='WD',
             participant__race__chart__program__date__range=(
