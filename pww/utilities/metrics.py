@@ -406,10 +406,10 @@ def build_race_metrics(race):
 
 def get_defined_training_metrics(grade, distance, venue, start_date, months):
     days = 30*months
-    end_date = start_date + datetime.timedelta(days=days)
+    end_date = datetime.strptime("2021-12-31", "%Y-%m-%d").date()
     print(end_date)
     return Metric.objects.filter(
-        participant__race__grade__name=grade,
+        participant__race__grade=grade,
         participant__race__distance=distance,
         participant__race__chart__program__venue=venue,
         participant__race__chart__program__date__range=(
