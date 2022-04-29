@@ -409,7 +409,7 @@ def get_defined_training_metrics(grade, distance, venue, start_date, months):
     return Metric.objects.filter(
         participant__race__grade__name=grade,
         participant__race__distance=distance,
-        participant__race__chart__program__venue__code=venue_code,
+        participant__race__chart__program__venue=venue,
         participant__race__chart__program__date__range=(
             start_date,
             end_date))
