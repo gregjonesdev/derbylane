@@ -11,7 +11,7 @@ import datetime
 from django.core.management.base import BaseCommand
 from weka.classifiers import Classifier
 from pww.models import Metric
-from rawdat.models import Participant
+from rawdat.models import Participant, Bet_Recommendation
 from pww.utilities.ultraweka import (
     create_model,
     build_scheduled_data,
@@ -186,7 +186,7 @@ class Command(BaseCommand):
                     prediction=prediction)
 
                 for recommendation in recommendations:
-                    print(recommendation.__dict__)    
+                    print(recommendation.__dict__)
 
 
 
