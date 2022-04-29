@@ -3,6 +3,7 @@ from django.utils.timezone import localdate
 from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
 import datetime
+import time
 from django.shortcuts import redirect
 from django.views.generic import View
 from django.shortcuts import render
@@ -34,7 +35,12 @@ class FrontPage(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         datestring = request.GET.get("date")
         displayed_charts = []
-        today = localdate()
+        today = datetime.datetime.now().date()
+        hour = time.localtime().tm_hour
+
+        chart_sort = "time"
+        if hour >= 17:
+            chart_sort = "-time"
         if datestring:
             target_day = datetime.datetime.strptime(datestring, "%Y-%m-%d").date()
         else:
@@ -76,8 +82,9 @@ class FrontPage(LoginRequiredMixin, View):
                     displayed_charts.append(chart)
         else:
             content_type = "Predictions"
-            for chart in Chart.objects.filter(program__date=target_day).order_by("time"):
-                print("a")
+            for chart in Chart.objects.filter(
+                program__date=target_day).order_by(
+                chart_sort):
                 if chart.has_predictions():
                     displayed_charts.append(chart)
 
