@@ -405,7 +405,9 @@ def build_race_metrics(race):
         save_metrics(metrics)
 
 def get_defined_training_metrics(grade, distance, venue, start_date, months):
-    end_date = start_date + datetime.timedelta(days=30*months)
+    days = 30*months
+    end_date = start_date + datetime.timedelta(days=days)
+    print(end_date)
     return Metric.objects.filter(
         participant__race__grade__name=grade,
         participant__race__distance=distance,
