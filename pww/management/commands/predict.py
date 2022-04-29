@@ -24,7 +24,7 @@ from miner.utilities.constants import (
     focused_grades)
 from pww.utilities.arff import create_arff
 from pww.utilities.metrics import (
-    get_training_metrics,
+    get_defined_training_metrics,
     get_scheduled_metrics,
 )
 prediction = {
@@ -184,17 +184,13 @@ class Command(BaseCommand):
                     distance=distance)
 
                 for recommendation in recommendations:
-                    print(recommendation.__dict__)
-
-
-
-                #
-                # training_metrics = get_training_metrics(
-                #     venue_code,
-                #     grade_name,
-                #     distance,
-                #     yesterday)
-                # # print(len(training_metrics))
+                    training_metrics = get_defined_training_metrics(
+                        grade,
+                        distance,
+                        venue,
+                        start_date,
+                        months)
+                    print(len(training_metrics))
                 # scheduled_metrics = get_scheduled_metrics(
                 #     venue_code,
                 #     grade_name,

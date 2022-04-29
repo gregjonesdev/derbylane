@@ -404,6 +404,16 @@ def build_race_metrics(race):
     for metrics in scaled_race_metrics:
         save_metrics(metrics)
 
+def get_defined_training_metrics(grade, distance, venue, start_date, months):
+    end_date = start_date + datetime.timedelta(days=30*months)
+    return Metric.objects.filter(
+        participant__race__grade__name=grade,
+        participant__race__distance=distance,
+        participant__race__chart__program__venue__code=venue_code,
+        participant__race__chart__program__date__range=(
+            start_date,
+            end_date))
+
 
 def get_training_metrics(venue_code, grade_name, distance, end_date):
     start_date = "2021-09-01"
