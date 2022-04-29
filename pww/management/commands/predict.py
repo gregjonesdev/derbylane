@@ -58,7 +58,7 @@ c_options = {
 
 
 
-betting_venues = ["WD", "TS", "SL"]
+betting_venues = ["WD", "TS"]
 
 betting_distances = {
     "WD": 548,
@@ -170,31 +170,45 @@ class Command(BaseCommand):
             target_day = datetime.date.today()
         yesterday = target_day - datetime.timedelta(days=1)
         tomorrow = target_day + datetime.timedelta(days=1)
-        classifier_name = 'j48'
         jvm.start(packages=True, max_heap_size="5028m")
         for venue_code in betting_venues:
             distance = betting_distances[venue_code]
             for grade_name in betting_grades[venue_code]:
                 race_key = self.build_race_key(venue_code, distance, grade_name)
-                # print(race_key)
-                training_metrics = get_training_metrics(
-                    venue_code,
-                    grade_name,
-                    distance,
-                    yesterday)
-                # print(len(training_metrics))
-                scheduled_metrics = get_scheduled_metrics(
-                    venue_code,
-                    grade_name,
-                    distance,
-                    target_day,
-                    target_day)
+                print(race_key)
 
-                if len(scheduled_metrics) > 0:
-                    self.assign_predictions(
-                        classifier_name,
-                        training_metrics,
-                        scheduled_metrics,
-                        race_key)
+                recommendations = Bet_Recommendation.objects.filter(
+                    venue=venue_code,
+                    grade=grade,
+                    classifier=classifier,
+                    cutoff=cutoff,
+                    distance=distance,
+                    prediction=prediction)
+
+                for recommendation in recommendations:
+                    print(recommendation.__dict__)    
+
+
+
+                #
+                # training_metrics = get_training_metrics(
+                #     venue_code,
+                #     grade_name,
+                #     distance,
+                #     yesterday)
+                # # print(len(training_metrics))
+                # scheduled_metrics = get_scheduled_metrics(
+                #     venue_code,
+                #     grade_name,
+                #     distance,
+                #     target_day,
+                #     target_day)
+                #
+                # if len(scheduled_metrics) > 0:
+                #     self.assign_predictions(
+                #         classifier_name,
+                #         training_metrics,
+                #         scheduled_metrics,
+                #         race_key)
 
         jvm.stop()
