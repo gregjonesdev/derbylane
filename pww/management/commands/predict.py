@@ -112,7 +112,7 @@ class Command(BaseCommand):
         c_factor = str(recommendation.c_factor)
         race_key= "races"
         loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-        model = create_model(training_arff, classifier_name, c_faactor, race_key, loader)
+        model = create_model(training_arff, classifier_name, c_factor, race_key, loader)
 
 
 
@@ -141,7 +141,7 @@ class Command(BaseCommand):
         pred = get_prediction(participant)
         pred.j48 = int(prediction)
         pred.save()
-        # print(pred.__dict__)
+        
 
 
     def save_smo_prediction(self, participant_uuid, prediction):
