@@ -11,7 +11,7 @@ import datetime
 from django.core.management.base import BaseCommand
 from weka.classifiers import Classifier
 from pww.models import Metric
-from rawdat.models import Participant, Bet_Recommendation, Grade
+from rawdat.models import Participant, Bet_Recommendation, Grade, Venue
 from pww.utilities.ultraweka import (
     create_model,
     build_scheduled_data,
@@ -177,8 +177,9 @@ class Command(BaseCommand):
                 race_key = self.build_race_key(venue_code, distance, grade_name)
                 print(race_key)
                 grade = Grade.objects.get(name=grade_name)
+                venue = Venue.objects.get(code=venue_code)
                 recommendations = Bet_Recommendation.objects.filter(
-                    venue=venue_code,
+                    venue=venue,
                     grade=grade,
                     distance=distance)
 
