@@ -179,11 +179,8 @@ class Command(BaseCommand):
 
                 recommendations = Bet_Recommendation.objects.filter(
                     venue=venue_code,
-                    grade=grade,
-                    classifier=classifier,
-                    cutoff=cutoff,
-                    distance=distance,
-                    prediction=prediction)
+                    grade=grade_name,
+                    distance=distance)
 
                 for recommendation in recommendations:
                     print(recommendation.__dict__)
