@@ -141,7 +141,7 @@ class Command(BaseCommand):
         pred = get_prediction(participant)
         pred.j48 = int(prediction)
         pred.save()
-        
+
 
 
     def save_smo_prediction(self, participant_uuid, prediction):
@@ -186,7 +186,7 @@ class Command(BaseCommand):
                     grade_name,
                     distance,
                     target_day,
-                    target_day)
+                    tomorrow)
 
                 if len(scheduled_metrics) > 0:
                     for recommendation in recommendations:
