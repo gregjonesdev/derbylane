@@ -316,6 +316,10 @@ class Bet_Recommendation(CoreModel):
         max_length=16,
         null=True
     )
+    start_date = models.DateField(null=True)
+    months = models.IntegerField(null=True)
+    cutoff = models.DecimalField(max_digits=4, decimal_places=2, null=True)
+    c_factor = models.DecimalField(max_digits=4, decimal_places=2, null=True)
 
 
 class Race(CoreModel):
