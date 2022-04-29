@@ -80,50 +80,48 @@ class Command(BaseCommand):
 
     def assign_predictions(
         self,
-        classifier_name,
+        recommendation,
         training_metrics,
-        prediction_metrics,
-        race_key):
-        string_c = None
-        try:
-            string_c = c_options[classifier_name][race_key]
-        except KeyError:
-            pass
-        if string_c:
-            model_name = "{}.model".format(race_key)
+        scheduled_metrics):
+        # string_c = None
+        # try:
+        #     string_c = c_options[classifier_name][race_key]
+        # except KeyError:
+        #     pass
+        # if string_c:
+        #     model_name = "{}.model".format(race_key)
+        #
+        training_arff_filename = "{}/train.arff".format(arff_directory)
+        testing_arff_filename = "{}/test.arff".format(arff_directory)
+        #     testing_arff_filename = "{}/test_{}.arff".format(
+        #         arff_directory,
+        #         race_key)
+        is_nominal = False
+        training_arff = create_arff(
+            training_arff_filename,
+            training_metrics,
+            is_nominal,
+            True)
+        testing_arff = create_arff(
+            testing_arff_filename,
+            prediction_metrics,
+            is_nominal,
+            False)
 
-            training_arff_filename = "{}/train_{}.arff".format(
-                arff_directory,
-                race_key)
-            testing_arff_filename = "{}/test_{}.arff".format(
-                arff_directory,
-                race_key)
-            is_nominal = False
-            training_arff = create_arff(
-                training_arff_filename,
-                training_metrics,
-                is_nominal,
-                True)
-            testing_arff = create_arff(
-                testing_arff_filename,
-                prediction_metrics,
-                is_nominal,
-                False)
-
-
-            loader = conv.Loader(classname="weka.core.converters.ArffLoader")
-
-
-
+        classifier_name = recommendation.classifier.lower()
+        c_factor = str(recommendation.c_factor)
+        race_key= "races"
+        loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+        model = create_model(training_arff, classifier_name, c_faactor, race_key, loader)
 
 
-            model = create_model(training_arff, classifier_name, string_c, race_key, loader)
-            confidence_cutoff = 0.0
-            prediction_list = get_prediction_list(testing_arff, model, confidence_cutoff)
-            if 'smo' in classifier_name:
-                self.save_smo_predictions(prediction_list)
-            elif 'j48' in classifier_name:
-                self.save_j48_predictions(prediction_list)
+
+        confidence_cutoff = recommendation.cutoff
+        prediction_list = get_prediction_list(testing_arff, model, confidence_cutoff)
+        if 'smo' in classifier_name:
+            self.save_smo_predictions(prediction_list)
+        elif 'j48' in classifier_name:
+            self.save_j48_predictions(prediction_list)
 
 
 
@@ -183,26 +181,25 @@ class Command(BaseCommand):
                     grade=grade,
                     distance=distance)
 
-                for recommendation in recommendations:
-                    training_metrics = get_defined_training_metrics(
-                        grade,
-                        distance,
-                        venue,
-                        recommendation.start_date,
-                        recommendation.months)
-                    print(len(training_metrics))
-                # scheduled_metrics = get_scheduled_metrics(
-                #     venue_code,
-                #     grade_name,
-                #     distance,
-                #     target_day,
-                #     target_day)
-                #
-                # if len(scheduled_metrics) > 0:
-                #     self.assign_predictions(
-                #         classifier_name,
-                #         training_metrics,
-                #         scheduled_metrics,
-                #         race_key)
+                scheduled_metrics = get_scheduled_metrics(
+                    venue_code,
+                    grade_name,
+                    distance,
+                    target_day,
+                    target_day)
+
+                if len(scheduled_metrics) > 0:
+                    for recommendation in recommendations:
+                        training_metrics = get_defined_training_metrics(
+                            grade,
+                            distance,
+                            venue,
+                            recommendation.start_date,
+                            recommendation.months)
+                        print(len(training_metrics))
+                        self.assign_predictions(
+                            recommendation,
+                            training_metrics,
+                            scheduled_metrics)
 
         jvm.stop()
