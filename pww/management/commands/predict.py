@@ -104,7 +104,7 @@ class Command(BaseCommand):
             True)
         testing_arff = create_arff(
             testing_arff_filename,
-            prediction_metrics,
+            scheduled_metrics,
             is_nominal,
             False)
 
