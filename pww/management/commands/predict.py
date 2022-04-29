@@ -188,8 +188,8 @@ class Command(BaseCommand):
                         grade,
                         distance,
                         venue,
-                        start_date,
-                        months)
+                        recommendation.start_date,
+                        recommendation.months)
                     print(len(training_metrics))
                 # scheduled_metrics = get_scheduled_metrics(
                 #     venue_code,
