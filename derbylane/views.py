@@ -76,7 +76,7 @@ class FrontPage(LoginRequiredMixin, View):
                     displayed_charts.append(chart)
         else:
             content_type = "Predictions"
-            for chart in Chart.objects.filter(program__date=target_day):
+            for chart in Chart.objects.filter(program__date=target_day).order_by("time"):
                 print("a")
                 if chart.has_predictions():
                     displayed_charts.append(chart)
