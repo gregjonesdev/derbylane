@@ -118,6 +118,7 @@ class Command(BaseCommand):
                                     except:
                                         pass
                                     if straight_wager:
+                                        print(rec_bet)
                                         if "w" in rec_bet:
                                             graded_results[grade_name]["W"].append(straight_wager.win if straight_wager.win  else 0)
                                         if "p" in rec_bet:
