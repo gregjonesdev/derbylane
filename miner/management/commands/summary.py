@@ -112,7 +112,7 @@ class Command(BaseCommand):
                                     "P": [],
                                     "S": []}
                                 for participant in race.participant_set.all():
-                                    straght_wager = None
+                                    straight_wager = None
                                     try:
                                         rec_bet = participant.get_recommended_bet().lower()
                                         straight_wager = participant.straight_wager
