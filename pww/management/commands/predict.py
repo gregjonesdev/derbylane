@@ -12,7 +12,7 @@ from django.core.management.base import BaseCommand
 from weka.classifiers import Classifier
 from pww.models import Metric
 from rawdat.models import Participant, Bet_Recommendation, Grade, Venue
-from pww.utilities.ultraweka import (
+from pww.utilities.weka import (
     create_model,
     build_scheduled_data,
     get_uuid_line_index,

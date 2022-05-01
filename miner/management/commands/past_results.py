@@ -4,10 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import datetime
 from django.core.management.base import BaseCommand
 
-from rawdat.models import (
-    Venue,
-    VenueScan,
-    )
+from rawdat.models import Venue
 
 from miner.utilities.scrape import scan_history_charts, single_url_test
 
@@ -15,7 +12,6 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--year', type=int)
-        parser.add_argument('--venue', type=str)
 
     def scan_month(self, venue, month, year):
         day = 1
@@ -29,52 +25,21 @@ class Command(BaseCommand):
             except:
                 pass
             day += 1
-        print("done scanning")
-        self.create_venue_scan(venue, year, month)
 
-    def create_venue_scan(self, venue, year, month):
-        try:
-            venue_scan = VenueScan.objects.get(
-                venue=venue,
-                year=year,
-                month=month
-            )
-        except ObjectDoesNotExist:
-            new_scan = VenueScan(
-                venue=venue,
-                year=year,
-                month=month
-            )
-            new_scan.set_fields_to_base()
-            new_scan.save()
 
-    def get_venue_results(self, venue):
-        year = sys.argv[3]
+    def get_venue_results(self, year, venue):
         self.stdout.write("Processing {} {}".format(venue, year))
         month = 1
         while month <= 12:
-            if not self.scan_complete(venue, month, year):
-                self.scan_month(venue, month, year)
+            self.scan_month(venue, month, year)
             month += 1
 
 
-    def scan_complete(self, venue, month, year):
-        return VenueScan.objects.filter(
-                venue=venue,
-                month=month,
-                year=year).exists()
-
-
-    def process_active_venues(self):
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            executor.map(
-                self.get_venue_results,
-                Venue.objects.filter(is_active=True))
-
     def handle(self, *args, **options):
         year = sys.argv[3]
-        try:
+        venue_codes = ['TS', 'WD']
+        for venue_code in venue_codes:
             self.get_venue_results(
-                Venue.objects.get(code=sys.argv[5]))
-        except IndexError:
-            self.process_active_venues()
+                year,
+                Venue.objects.get(code=venue_code)
+            )

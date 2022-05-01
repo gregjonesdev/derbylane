@@ -9,7 +9,7 @@ from pww.utilities.arff import (
     get_training_arff,
     get_testing_arff,
 )
-from pww.utilities.ultraweka import create_model
+from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs
 
 class Command(BaseCommand):
@@ -21,7 +21,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         c_factor = 0.4
-        classifier_name = "j48"
+        classifier_name = "smoreg"
         race_key = "universal"
         venue_code = sys.argv[3]
         grade = sys.argv[5]

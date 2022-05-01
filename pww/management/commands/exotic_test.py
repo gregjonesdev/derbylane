@@ -15,7 +15,7 @@ from rawdat.models import (
     Exacta,
     Trifecta,
     Superfecta)
-from pww.utilities.ultraweka import (
+from pww.utilities.weka import (
     create_model,
     build_scheduled_data,
     get_uuid_line_index,

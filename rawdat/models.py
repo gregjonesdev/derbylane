@@ -765,6 +765,16 @@ class VenueScan(CoreModel):
     month = models.IntegerField()
     year = models.IntegerField()
 
+
+class ScannedUrl(CoreModel):
+
+    class Meta:
+        verbose_name = 'ScannedUrl'
+
+    address = models.CharField(
+        max_length=256)
+
+
 class CronJob(CoreModel):
 
     class Meta:

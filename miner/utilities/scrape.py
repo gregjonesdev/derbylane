@@ -5,7 +5,7 @@ from miner.utilities.urls import (
     build_race_results_url,
     build_dog_results_url,
 )
-from rawdat.models import Weather, Grade, Straight_Wager
+from rawdat.models import Weather, Grade, Straight_Wager, ScannedUrl
 from miner.utilities.constants import (
     distance_converter,
     position_skips,
@@ -478,12 +478,8 @@ def single_url_test(results_url, tds, chart):
                 if len(bet_rows) > 1:
                     single_bets = get_single_bets(bet_rows)
                 exotic_bets = get_exotic_bets(results_url)
-                # print("Exotic bets length: {}".format(len(exotic_bets)))
-                # print("Race rows:")
+
                 race_data = get_race_data(race_rows)
-                # print("Race data: {}".format(race_data))
-                # print(race_data)
-                # print("Chart: {}".format(chart))
                 if chart:
                     # print("has chart")
                     program = chart.program
@@ -513,6 +509,13 @@ def save_race_info(race, race_setting):
         race.distance = race_setting['distance']
         race.save()
 
+def save_scanned_url(results_url):
+
+    new_scanned_url = ScannedUrl(
+        address = results_url
+    )
+    new_scanned_url.set_fields_to_base()
+    new_scanned_url.save()
 
 def scan_history_charts(venue, year, month, day):
     for time in chart_times:
@@ -526,11 +529,15 @@ def scan_history_charts(venue, year, month, day):
                 day,
                 time,
                 number)
-            formatted_date = get_date_from_ymd(year, month, day)
-            program = get_program(venue, formatted_date)
-            tds = get_node_elements(results_url, '//td')
-            if len(tds) > 85:
-                single_url_test(results_url, tds, get_chart(program, time))
-            else:
-                failed_attempts += 1
-            number += 1
+            try:
+                ScannedUrl.objects.get(address=results_url)
+            except ObjectDoesNotExist:
+                formatted_date = get_date_from_ymd(year, month, day)
+                program = get_program(venue, formatted_date)
+                tds = get_node_elements(results_url, '//td')
+                if len(tds) > 85:
+                    single_url_test(results_url, tds, get_chart(program, time))
+                    save_scanned_url(results_url)
+                else:
+                    failed_attempts += 1
+                number += 1

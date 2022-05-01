@@ -2,7 +2,7 @@ from pww.utilities.arff import (
     get_training_arff,
     get_testing_arff)
 
-from pww.utilities.ultraweka import (
+from pww.utilities.weka import (
     create_model,
     get_uuid_line_index,
     get_prediction_confidence)
@@ -12,7 +12,7 @@ from miner.utilities.common import two_digitizer
 from rawdat.models import Participant
 from pww.models import Metric
 
-from pww.utilities.ultraweka import get_metrics
+from pww.utilities.weka import get_metrics
 
 
 table_string = "{}\t\t{}\t\t{}\t\t{}"

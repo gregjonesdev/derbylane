@@ -9,7 +9,7 @@ from miner.utilities.constants import focused_distances
 from miner.utilities.common import get_race_key
 from rawdat.models import Participant
 from pww.models import TestPrediction, Metric
-from pww.utilities.ultraweka import (
+from pww.utilities.weka import (
     create_model,
     get_metrics,
     build_scheduled_data,

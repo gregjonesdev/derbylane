@@ -10,7 +10,7 @@ from django.core.management.base import BaseCommand
 from miner.utilities.constants import focused_distances
 from miner.utilities.common import get_race_key, two_digitizer
 
-from pww.utilities.ultraweka import get_metrics
+from pww.utilities.weka import get_metrics
 from pww.utilities.testing import get_daily_results
 
 
