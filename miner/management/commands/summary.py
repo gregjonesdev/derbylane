@@ -112,20 +112,19 @@ class Command(BaseCommand):
                                     "P": [],
                                     "S": []}
                                 for participant in race.participant_set.all():
-                                    rec_bet = participant.get_recommended_bet().lower()
                                     straght_wager = None
-                                    if rec_bet:
-                                        try:
-                                            straight_wager = participant.straight_wager
-                                        except:
-                                            pass
-                                        if straight_wager:
-                                            if "w" in rec_bet:
-                                                graded_results[grade_name]["W"].append(straight_wager.win if straight_wager.win  else 0)
-                                            if "p" in rec_bet:
-                                                graded_results[grade_name]["P"].append(straight_wager.place if straight_wager.place else 0)
-                                            if "s" in rec_bet:
-                                                graded_results[grade_name]["S"].append(straight_wager.show if straight_wager.show else 0)
+                                    try:
+                                        rec_bet = participant.get_recommended_bet().lower()
+                                        straight_wager = participant.straight_wager
+                                    except:
+                                        pass
+                                    if straight_wager:
+                                        if "w" in rec_bet:
+                                            graded_results[grade_name]["W"].append(straight_wager.win if straight_wager.win  else 0)
+                                        if "p" in rec_bet:
+                                            graded_results[grade_name]["P"].append(straight_wager.place if straight_wager.place else 0)
+                                        if "s" in rec_bet:
+                                            graded_results[grade_name]["S"].append(straight_wager.show if straight_wager.show else 0)
 
         print("{}\t{}\t{}\t{}".format(
             "Grade",
