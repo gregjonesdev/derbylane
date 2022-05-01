@@ -119,8 +119,8 @@ class Command(BaseCommand):
                                         pass
                                     if straight_wager:
                                         print(rec_bet)
-                                        print(participant)
-                                        print(straight_wager)
+                                        print(participant.dog.name)
+                                        print(straight_wager.__dict__)
                                         if "w" in rec_bet:
                                             graded_results[grade_name]["W"].append(straight_wager.win if straight_wager.win  else 0)
                                         if "p" in rec_bet:
