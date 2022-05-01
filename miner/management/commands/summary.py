@@ -140,12 +140,11 @@ class Command(BaseCommand):
             totals["W"].append(graded_wins)
             totals["P"].append(graded_places)
             totals["S"].append(graded_shows)
-            print("Grade: {}".format(grade))
             print("{}\t{}\t{}\t{}".format(
                 grade,
-                graded_wins,
-                graded_places,
-                graded_shows
+                round(graded_wins, 2),
+                round(graded_places, 2),
+                round(graded_shows, 2)
             ))
         print("{}\t{}\t{}\t{}".format(
             "Total:",
