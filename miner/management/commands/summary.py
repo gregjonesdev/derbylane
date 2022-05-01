@@ -85,10 +85,11 @@ class Command(BaseCommand):
                 ))
 
     def get_bet_returns(self, list):
+        print(list)
         if list and len(list) > 0:
             return round((sum(list) - 2*len(list)), 2)
         else:
-            return 0    
+            return 0
 
     def handle(self, *args, **options):
         str_date = sys.argv[3]
