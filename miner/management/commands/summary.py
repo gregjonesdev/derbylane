@@ -112,14 +112,20 @@ class Command(BaseCommand):
                                     "P": [],
                                     "S": []}
                                 for participant in race.participant_set.all():
-                                    if participant.get_recommended_bet():
+                                    rec_bet = participant.get_recommended_bet().lower()
+                                    straght_wager = None
+                                    if rec_bet:
                                         try:
                                             straight_wager = participant.straight_wager
-                                            graded_results[grade_name]["W"].append(straight_wager.win if straight_wager.win  else 0)
-                                            graded_results[grade_name]["P"].append(straight_wager.place if straight_wager.place else 0)
-                                            graded_results[grade_name]["S"].append(straight_wager.show if straight_wager.show else 0)
                                         except:
                                             pass
+                                        if straight_wager:
+                                            if "w" in rec_bet:
+                                                graded_results[grade_name]["W"].append(straight_wager.win if straight_wager.win  else 0)
+                                            if "p" in rec_bet:
+                                                graded_results[grade_name]["P"].append(straight_wager.place if straight_wager.place else 0)
+                                            if "s" in rec_bet:
+                                                graded_results[grade_name]["S"].append(straight_wager.show if straight_wager.show else 0)
 
         print("{}\t{}\t{}\t{}".format(
             "Grade",
