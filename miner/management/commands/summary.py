@@ -113,8 +113,8 @@ class Command(BaseCommand):
                                     "S": []}
                                 for participant in race.participant_set.all():
                                     if participant.get_recommended_bet():
-                                        straight_wager = participant.straight_wager
                                         try:
+                                            straight_wager = participant.straight_wager
                                             graded_results[grade_name]["W"].append(straight_wager.win if straight_wager.win  else 0)
                                             graded_results[grade_name]["P"].append(straight_wager.place if straight_wager.place else 0)
                                             graded_results[grade_name]["S"].append(straight_wager.show if straight_wager.show else 0)
