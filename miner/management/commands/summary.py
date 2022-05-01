@@ -74,15 +74,18 @@ class Command(BaseCommand):
             "Place",
             "Show"
         ))
-        for participant in race.participant_set.filter(final__lte=3).order_by("final"):
-            straight_wager = participant.straight_wager
-            print("{}\t\t{}\t{}\t{}".format(
-                "{} {}".format(participant.post, participant.dog.name[:8]),
-                straight_wager.win,
-                straight_wager.place,
-                straight_wager.show
-            ))
-            print("\n")
+        win_bets = []
+        place_bets = []
+        show_bets = []
+        for participant in race.participant_set.all():
+            if participant.has_prediction():
+                print("{}\t{}".format(
+                "{}-{}".format(participant.post, participant.dog.name),
+
+                ))
+
+    def get_bet_returns(list):
+        return round((sum(list) - 2*len(list)), 2)
 
     def handle(self, *args, **options):
         str_date = sys.argv[3]
@@ -101,23 +104,46 @@ class Command(BaseCommand):
                             grade_name = race.grade.name
                             if not grade_name in graded_results.keys():
                                 graded_results[grade_name] = {
-                                    "W": {"spent": 0, "earned": 0},
-                                    "P": {"spent": 0, "earned": 0},
-                                    "S": {"spent": 0, "earned": 0}}
-                            self.print_straight_wager_table(race)
-                            # for participant in race.participant_set.all():
-                            #     print("{}\t{}\t{}")
-                                # if participant.bet_set.count():
-                                #     for bet in participant.bet_set.all():
-                                #         # print(bet.type.name)
-                                #         # print(bet.amount)
-                                #         # print(bet.get_return())
-                                #         graded_results[grade_name][bet.type.name]["spent"] += bet.amount
-                                #         graded_results[grade_name][bet.type.name]["earned"] += bet.get_return()
+                                    "W": [],
+                                    "P": [],
+                                    "S": []}
+                                for participant in race.participant_set.all():
+                                    if participant.has_prediction():
+                                        graded_results[grade_name]["W"].append(participant.straight_wager.win)
+                                        graded_results[grade_name]["P"].append(participant.straight_wager.place)
+                                        graded_results[grade_name]["S"].append(participant.straight_wager.show)
+        print("{}\t{}\t{}\t{}".format(
+            "Grade",
+            "Win",
+            "Place",
+            "Show"
+        ))
+
+        totals = {
+            "W": [],
+            "P": [],
+            "S": []
+        }
         for grade in graded_results:
-            print(grade)
-            print("Spent: {}".format(graded_results[grade]["P"]["spent"]))
-            print("Earned: {}".format(graded_results[grade]["P"]["earned"]))
+            graded_wins = self.get_bet_returns(graded_results[grade_name]["W"])
+            graded_places = self.get_bet_returns(graded_results[grade_name]["P"])
+            graded_shows = self.get_bet_returns(graded_results[grade_name]["S"])
+            totals["W"].append(graded_wins)
+            totals["P"].append(graded_places)
+            totals["S"].append(graded_shows)
+            print("Grade: {}".format(grade))
+            print("{}\t{}\t{}\t{}".format(
+                grade,
+                graded_wins,
+                graded_places,
+                graded_shows
+            ))
+        print("{}\t{}\t{}\t{}".format(
+            "Total:",
+            sum(totals["W"]),
+            sum(totals["P"]),
+            sum(totals["S"]))
+        )
 
 
 
