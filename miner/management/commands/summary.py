@@ -92,11 +92,11 @@ class Command(BaseCommand):
         graded_predictions = {}
         for program in Program.objects.filter(date=target_date):
             for chart in program.chart_set.all():
-                if chart.has_bets():
+                if chart.has_predictions():
                     print("{}\n".format(
                         chart.get_kiosk_name()))
                     for race in chart.race_set.all():
-                        if race.has_bets():
+                        if race.has_predictions():
                             # print("Race {}:\n".format(race.number))
                             grade_name = race.grade.name
                             if not grade_name in graded_results.keys():
@@ -104,16 +104,16 @@ class Command(BaseCommand):
                                     "W": {"spent": 0, "earned": 0},
                                     "P": {"spent": 0, "earned": 0},
                                     "S": {"spent": 0, "earned": 0}}
-                        # self.print_straight_wager_table(race)
-                            for participant in race.participant_set.all():
-
-                                if participant.bet_set.count():
-                                    for bet in participant.bet_set.all():
-                                        # print(bet.type.name)
-                                        # print(bet.amount)
-                                        # print(bet.get_return())
-                                        graded_results[grade_name][bet.type.name]["spent"] += bet.amount
-                                        graded_results[grade_name][bet.type.name]["earned"] += bet.get_return()
+                            self.print_straight_wager_table(race)
+                            # for participant in race.participant_set.all():
+                            #     print("{}\t{}\t{}")
+                                # if participant.bet_set.count():
+                                #     for bet in participant.bet_set.all():
+                                #         # print(bet.type.name)
+                                #         # print(bet.amount)
+                                #         # print(bet.get_return())
+                                #         graded_results[grade_name][bet.type.name]["spent"] += bet.amount
+                                #         graded_results[grade_name][bet.type.name]["earned"] += bet.get_return()
         for grade in graded_results:
             print(grade)
             print("Spent: {}".format(graded_results[grade]["P"]["spent"]))
