@@ -85,7 +85,6 @@ class Command(BaseCommand):
                 ))
 
     def get_bet_returns(self, list):
-        print(list)
         if list and len(list) > 0:
             return round((sum(list) - 2*len(list)), 2)
         else:
