@@ -84,7 +84,7 @@ class Command(BaseCommand):
 
                 ))
 
-    def get_bet_returns(list):
+    def get_bet_returns(self, list):
         return round((sum(list) - 2*len(list)), 2)
 
     def handle(self, *args, **options):
@@ -114,7 +114,7 @@ class Command(BaseCommand):
                                             graded_results[grade_name]["P"].append(participant.straight_wager.place)
                                             graded_results[grade_name]["S"].append(participant.straight_wager.show)
                                         except:
-                                            pass    
+                                            pass
         print("{}\t{}\t{}\t{}".format(
             "Grade",
             "Win",
