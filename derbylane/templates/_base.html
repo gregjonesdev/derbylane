@@ -21,11 +21,18 @@
   </head>
   <body style="padding: 7px; max-height: 100vh">
     {% include "navbar.html" %}
-    <div id="main-content" >
+    <div id="main-content" data-toggle="collapse">
       {% block content %}
 
 
       {% endblock content %}
+      <script>
+      $(document).ready(function () {
+        $(document).click(function () {
+          $('#navbarToggleExternalContent').collapse('hide')
+        });
+      });
+      </script>
     </div>
   </body>
 </html>
