@@ -404,7 +404,7 @@ class Race(CoreModel):
             return False
 
     def has_predictions(self):
-        return True
+        # return True
         for participant in self.participant_set.all():
             try:
                 if participant.get_recommended_bet():
@@ -430,7 +430,7 @@ class Race(CoreModel):
 
     def get_displayed_participants(self):
         all_participants = self.participant_set.all()
-        return all_participants
+        # return all_participants
         participant_list=[]
         if self.is_complete():
             for participant in all_participants:

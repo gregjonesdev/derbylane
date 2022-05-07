@@ -11,21 +11,22 @@ style="vertical-align: top;">
   data-toggle="modal"
   data-target="#exotic-modal"
   data-race="{{ race.uuid }}"
-  class="btn btn-sm btn-block btn-outline-primary exotic-bet">
+  class="btn btn-sm btn-block btn-outline-primary exotic-bet"
+  disabled>
   <span class="race-number-cell">
     {{ race.number }}
   </span>
   <br/>
   <span>Grade {{ race.grade.name }}</span>
 </button>
-<button
+<!-- <button
   data-toggle="modal"
   data-target="#exotic-modal"
   data-race="{{ race.uuid }}"
   class="btn btn-sm btn-block btn-outline-primary exotic-bet">
   <span>TRI BOX</span><br/>
   <span><small>$2 3/4/5</small></span>
-</button>
+</button> -->
 </td>
 {% endif %}
 <td>
