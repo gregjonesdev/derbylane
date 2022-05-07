@@ -17,7 +17,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
-        for participant in Participant.objects.filter(race__chart__program__date__gte=yesterday):
+        for participant in Participant.objects.filter(race__chart__program__date__gte=today):
             try:
                 pred = Prediction.objects.get(participant=participant)
             except ObjectDoesNotExist:
@@ -26,7 +26,7 @@ class Command(BaseCommand):
                 )
                 new_pred.set_fields_to_base()
                 pred = new_pred
-            pred.j48 = 2
+            pred.j48 = 1
             pred.lib_svm = 3
             pred.smo = 2
             pred.save()

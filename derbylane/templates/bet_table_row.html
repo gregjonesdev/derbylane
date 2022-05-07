@@ -9,8 +9,17 @@ class="race-info-cell">
 <span class="race-number-cell">
   {{ race.number }}
 </span>
-<br>
-Grade {{ race.grade.name }}
+<br/>
+<span>Grade {{ race.grade.name }}</span>
+<br/>
+<br/>
+<button
+  data-toggle="modal"
+  data-target="#exotic-modal"
+  data-race="{{ race.uuid }}"
+  class="btn btn-sm btn-block btn-outline-primary exotic-bet">
+  Exotic
+</button>
 </td>
 {% endif %}
 <td>

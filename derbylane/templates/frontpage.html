@@ -90,9 +90,6 @@
         {% endfor %}
       </select>
     </div>
-    <div id="bet-header-row" style="display:none">
-      {% include 'bet_header_row.html' %}
-    </div>
     <div id="bets">
       <img
         id="loader-gif"
@@ -103,6 +100,7 @@
     </div>
 
     {% include 'betmodal.html' %}
+    {% include 'exoticmodal.html' %}
   {% else %}
     <div
       id="empty-charts-div">

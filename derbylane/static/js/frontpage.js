@@ -7,7 +7,6 @@ window.onload = (event) => {
   dropdowns = document.getElementsByClassName("dropdown-item")
 
   function load_races (e)  {
-    console.log("load races")
     const currentTarget = e.currentTarget
     const label = currentTarget.textContent
     const chart_id = e.currentTarget.getAttribute("data-chart")
@@ -44,7 +43,6 @@ window.onload = (event) => {
   const chart_select = document.getElementById("chart-select")
 
   load_bets = () => {
-    console.log("load bets")
     if (chart_select) {
       chart_id = chart_select.value
       $.ajax({
@@ -55,12 +53,9 @@ window.onload = (event) => {
         },
         success: function(data) {
           $("#bets").html(data)
-          console.log("success")
-          console.log(data)
           const bets_container =   document.getElementById("bets")
           bets_container.style.maxHeight = "75vh";
           bets_container.style.overflowY = "scroll";
-          document.getElementById("bet-header-row").style.display="block"
         }
       })
 
