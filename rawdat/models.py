@@ -423,7 +423,7 @@ class Race(CoreModel):
         return prediction_count
 
     def has_bets(self):
-        return True
+        # return True
         for participant in self.participant_set.all():
             if participant.bet_set.count() > 0:
                 return True
