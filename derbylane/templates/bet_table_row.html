@@ -11,6 +11,7 @@ style="vertical-align: top">
   data-toggle="modal"
   data-target="#exotic-modal"
   data-race="{{ race.uuid }}"
+  data-participants="{{ race.participant_set.all }}"
   data-venue="{{ race.chart.program.venue }}"
   data-time="{{ race.chart.get_time_display }}"
   data-number="{{ race.number }}"

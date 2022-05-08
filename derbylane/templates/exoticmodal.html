@@ -31,8 +31,25 @@
           </button>
         </div>
         <div class="modal-body">
-          <span class="modal-subtitle"></span>
+          <form
+            action="{% url 'make_bet' %}"
+            method="post"
+            id="modal-form">
+            <select
+              name="bet_type"
+              id="exotic_bet_types"
+              class="modal-select modal-bet-selector pull-right">
+              <option value="Q">Quiniela</option>
+              <option value="E">Exacta</option>
+              <option value="T">Trifecta</option>
+              <option value="S">Superfecta</option>
+            </select>
 
+            <h3><span id="select-prompt"></span></h3>
+            <div id="participant-selection" class="btn-group" style="width: 100%" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-outline-primary">1</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

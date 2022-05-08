@@ -1,14 +1,14 @@
 const exotic_modal = document.getElementById("exotic-modal")
+const exotic_bet_types = document.getElementById("exotic_bet_types")
 
 exotic_modal.addEventListener("focus", function (e) {
-  console.log("YO!")
   const button = $(event.relatedTarget) // Button that triggered the modal
   if (button.hasClass("exotic-bet")) {
 
     const venue = button.data('venue')
     const time = button.data('time')
     const number = button.data('number')
-
+    console.log(button.data('participants'))
 
     const this_modal = $(this)
     // this_modal.find('.modal-subtitle').text(
@@ -24,6 +24,13 @@ exotic_modal.addEventListener("focus", function (e) {
   }
 
 })
+
+handle_exotic_change = () => {
+  console.log("Change")
+
+}
+
+exotic_bet_types.addEventListener("change", handle_exotic_change)
 
 //
 //
