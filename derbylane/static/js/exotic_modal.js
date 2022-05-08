@@ -1,7 +1,7 @@
 const exotic_modal = document.getElementById("exotic-modal")
 const exotic_bet_types = document.getElementById("exotic_bet_types")
 const exotic_post_select = document.getElementsByClassName("exotic-post-select")
-
+const finish_order = document.getElementById("finish-order")
 const selected_posts = []
 exotic_modal.addEventListener("focus", function (e) {
   const button = $(event.relatedTarget) // Button that triggered the modal
@@ -48,35 +48,50 @@ handle_exotic_change = (e) => {
 
 }
 
+
+update_finish_order = () => {
+  console.log("hey")
+  let text_content = ""
+  for (let i=0; i<selected_posts.length; i++) {
+    text_content += selected_posts[i]
+    if (i < (selected_posts.length -1)) {
+      text_content += " / "
+    }
+    finish_order.textContent = text_content
+  }
+  finish_order.textContent = text_content
+}
+
 handle_select_post = (e) => {
   console.log("Select Post")
   console.log(e.currentTarget.value)
   const currentTarget = e.currentTarget
   const post = currentTarget.value
   const is_pressed = currentTarget.getAttribute("aria-pressed")
-  console.log("boo")
-  console.log()
   if (selected_posts.includes(post)) {
-    console.log("ture")
-  //   // if true, remove from list
-  const index = selected_posts.indexOf(post);
-  if (index > -1) {
-    selected_posts.splice(index, 1); // 2nd parameter means remove one item only
-  }
-  //
+    const index = selected_posts.indexOf(post);
+    if (index > -1) {
+      selected_posts.splice(index, 1);
+    }
+
   } else {
   //   // if false, add to list
     selected_posts.push(post)
     console.log("not pressed")
+
+
   //   console.log(selected_posts.index(post))
   }
   if (selected_posts.length >= 2) {
     disable_remaining_posts()
   }
+  update_finish_order()
   // if (e.currentTarget.value == "4") {
   //   disable_remaining_posts()
   // }
 }
+
+
 
 
 exotic_bet_types.addEventListener("change", handle_exotic_change)
