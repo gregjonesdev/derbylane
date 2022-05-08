@@ -209,6 +209,10 @@ body {
   min-height: 50vh;
 }
 
+.small-modal-body {
+  height: 30vh;
+}
+
 #modal-form {
   text-align: right;
 

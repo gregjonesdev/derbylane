@@ -3,6 +3,7 @@ const exotic_bet_types = document.getElementById("exotic_bet_types")
 const exotic_post_select = document.getElementsByClassName("exotic-post-select")
 const finish_order = document.getElementById("finish-order")
 const finish_order_div = document.getElementById("finish-order-div")
+const submit_bet_button = document.getElementById("submit_exotic_bet")
 const selected_posts = []
 
 let dogs_required = 2
@@ -42,7 +43,8 @@ clear_selected_posts = () => {
 }
 
 handle_exotic_change = (e) => {
-  finish_order_div.style.display = "None"
+  finish_order_div.style.visibility = "hidden"
+  submit_bet_button.disabled = true;
   select_exotic_bet(e.currentTarget.value)
   selected_posts.splice(0,8)
   update_finish_order()
@@ -99,12 +101,15 @@ handle_select_post = (e) => {
   } else {
     selected_posts.push(post)
     if (finish_order_required) {
-      finish_order_div.style.display = "Block"
+      console.log('here')
+      finish_order_div.style.visibility = "visible"
     }
   }
-  if (selected_posts.length >= dogs_required) {
+  if (selected_posts.length == dogs_required) {
     toggle_posts_disable(true)
+    submit_bet_button.disabled = false;
   } else {
+    submit_bet_button.disabled = true;
     toggle_posts_disable(false)
   }
   if (finish_order_required) {
