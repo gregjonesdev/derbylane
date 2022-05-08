@@ -26,18 +26,13 @@ exotic_modal.addEventListener("focus", function (e) {
 
 })
 
-disable_remaining_posts = () => {
-  console.log("I")
-  console.log(selected_posts)
+
+toggle_posts_disable = (bool) => {
   for (let i=0; i<exotic_post_select.length; i++) {
     const value = exotic_post_select[i].value
     if (!selected_posts.includes(value)) {
-      exotic_post_select[i].disabled = true
+      exotic_post_select[i].disabled = bool
     }
-    // if (exotic_post_select[i].getAttribute("aria-pressed")) {
-    //   console.log(exotic_post_select[i])
-    //   exotic_post_select[i].disabled = true
-    // }
   }
 }
 
@@ -83,7 +78,9 @@ handle_select_post = (e) => {
   //   console.log(selected_posts.index(post))
   }
   if (selected_posts.length >= 2) {
-    disable_remaining_posts()
+    toggle_posts_disable(true)
+  } else {
+    toggle_posts_disable(false)
   }
   update_finish_order()
   // if (e.currentTarget.value == "4") {
