@@ -55,8 +55,6 @@ window.onload = (event) => {
         },
         success: function(data) {
           $("#bets").html(data)
-          console.log("success")
-          console.log(data)
           const bets_container =   document.getElementById("bets")
           bets_container.style.maxHeight = "75vh";
           bets_container.style.overflowY = "scroll";

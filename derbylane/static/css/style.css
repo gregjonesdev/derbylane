@@ -172,7 +172,7 @@ body {
 }
 
 #header-table td {
-  /* width:15vw; */
+  width: 20%;
   padding: 0px 4px;
   margin-left:10px
 

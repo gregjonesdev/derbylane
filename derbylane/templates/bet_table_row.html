@@ -3,31 +3,46 @@
 
 {% block table_data %}
 {% if forloop.first %}
+<tr>
 <td
-rowspan="0"
 class="race-info-cell"
-style="vertical-align: top;">
+style="vertical-align: top">
 <button
   data-toggle="modal"
   data-target="#exotic-modal"
   data-race="{{ race.uuid }}"
-  class="btn btn-sm btn-block btn-outline-primary exotic-bet"
-  disabled>
+  class="btn btn-sm btn-block btn-outline-primary exotic-bet">
   <span class="race-number-cell">
     {{ race.number }}
   </span>
   <br/>
-  <span>{{ race.grade.name }}</span>
+  <span>{{ race.grade.name }} </span>
 </button>
-<!-- <button
-  data-toggle="modal"
-  data-target="#exotic-modal"
-  data-race="{{ race.uuid }}"
-  class="btn btn-sm btn-block btn-outline-primary exotic-bet">
-  <span>TRI BOX</span><br/>
-  <span><small>$2 3/4/5</small></span>
-</button> -->
 </td>
+<td colspan="4">
+  <button
+    data-toggle="modal"
+    data-target="#exotic-modal"
+    data-race="{{ race.uuid }}"
+    class="btn btn-sm btn-block btn-outline-primary exotic-bet">
+    <span>TRI BOX $2 3/4/5</span>
+  </button><br/>
+  <button
+    data-toggle="modal"
+    data-target="#exotic-modal"
+    data-race="{{ race.uuid }}"
+    class="btn btn-sm btn-block btn-outline-primary exotic-bet">
+    <span>TRI BOX $2 3/4/5</span>
+  </button><br/>
+  <button
+    data-toggle="modal"
+    data-target="#exotic-modal"
+    data-race="{{ race.uuid }}"
+    class="btn btn-sm btn-block btn-outline-primary exotic-bet">
+    <span>TRI BOX $2 3/4/5</span>
+  </button><br/>
+</td>
+</tr>
 {% endif %}
 <td>
   {{ participant.post }}

@@ -404,7 +404,7 @@ class Race(CoreModel):
             return False
 
     def has_predictions(self):
-        # return True
+        return True
         for participant in self.participant_set.all():
             try:
                 if participant.get_recommended_bet():
@@ -423,14 +423,14 @@ class Race(CoreModel):
         return prediction_count
 
     def has_bets(self):
-        # return True
+        return True
         for participant in self.participant_set.all():
             if participant.bet_set.count() > 0:
                 return True
 
     def get_displayed_participants(self):
         all_participants = self.participant_set.all()
-        # return all_participants
+        return all_participants
         participant_list=[]
         if self.is_complete():
             for participant in all_participants:
@@ -464,6 +464,7 @@ class StraightBetType(CoreModel):
         max_length=16,
         choices=NAME_CHOICES)
     cutoff = models.IntegerField()
+
 
 
 
@@ -587,7 +588,6 @@ class Bet(CoreModel):
 
 
 
-
 class Straight_Wager(CoreModel):
     class Meta:
         verbose_name = 'Straight'
@@ -647,6 +647,57 @@ class Quiniela(Combo):
             Participant,
             on_delete=models.CASCADE,
             related_name='quiniela_right')
+
+
+class Quiniela_Wager(CoreModel):
+
+    class Meta:
+        verbose_name = 'Quiniela'
+
+    left_post = models.IntegerField()
+    right_post = models.IntegerField()
+    race = models.ForeignKey(
+        Race,
+        on_delete=models.CASCADE,
+        related_name='quiniela_wager')
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=2.00)
+
+class Exacta_Wager(CoreModel):
+
+    class Meta:
+        verbose_name = 'Exacta'
+
+    win_post = models.IntegerField()
+    place_post = models.IntegerField()
+    race = models.ForeignKey(
+        Race,
+        on_delete=models.CASCADE,
+        related_name='exacta_wager')
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=2.00)
+
+class Trifecta_Wager(CoreModel):
+
+    class Meta:
+        verbose_name = 'Trifecta'
+
+    win_post = models.IntegerField()
+    place_post = models.IntegerField()
+    show_post = models.IntegerField()
+    race = models.ForeignKey(
+        Race,
+        on_delete=models.CASCADE,
+        related_name='trifecta_wager')
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=2.00)
+
 
 class Exacta(Combo):
 
