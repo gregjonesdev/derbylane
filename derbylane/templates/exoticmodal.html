@@ -31,9 +31,9 @@
         </div>
         <div class="small-modal-body">
           <form
-            action="{% url 'make_bet' %}"
+            action="{% url 'make_exotic_bet' %}"
             method="post"
-            id="modal-form">
+            id="modal-exotic-form">
             <select
               name="bet_type"
               id="exotic_bet_types"
@@ -60,8 +60,9 @@
             <br/>
 
             <div id="finish-order-div" style="visibility: hidden; margin: 20px">
-              <h5><span class="float-left">Finish Order:</span> <span id="finish-order"></span></h5>
+              <h2><span class="float-left">Finish Order:</span> <span id="finish-order"></span></h2>
             </div>
+            <input type="hidden" id="posts-input" name="posts" value="">
           </form>
         </div>
         <div class="modal-footer">
@@ -69,7 +70,7 @@
             id="clear_bet"
             type="button"
             class="btn btn-outline-danger"
-            onclick="handle_submit('clear')"
+            onclick="handle_submit_exotic('clear')"
             data-dismiss="modal">
             Clear
           </button>
@@ -77,7 +78,7 @@
             id="submit_exotic_bet"
             type="button"
             class="btn btn-outline-success"
-            onclick="handle_submit('make')"
+            onclick="handle_submit_exotic('make')"
             data-dismiss="modal"
             disabled>
             Save
@@ -90,7 +91,7 @@
   id="bet-modal-data"
   type="application/json">
   {
-    "make_bets_url": "{% url 'make_bet' %}"
+    "make_exotic_bet_url": "{% url 'make_exotic_bet' %}"
   }
 </script>
 

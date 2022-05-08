@@ -4,6 +4,7 @@ const exotic_post_select = document.getElementsByClassName("exotic-post-select")
 const finish_order = document.getElementById("finish-order")
 const finish_order_div = document.getElementById("finish-order-div")
 const submit_bet_button = document.getElementById("submit_exotic_bet")
+const selected_posts_input = document.getElementById("posts-input")
 const selected_posts = []
 
 let dogs_required = 2
@@ -24,6 +25,15 @@ exotic_modal.addEventListener("focus", function (e) {
   }
 })
 
+handle_exotic_submit = (action) => {
+  console.log("make exotic bet")
+  if (action == 'clear') {
+    // clear_bet(participant_id)
+  } else if (action == 'make') {
+    make_exotic_bet(participant_id)
+  }
+
+}
 
 toggle_posts_disable = (bool) => {
   for (let i=0; i<exotic_post_select.length; i++) {
@@ -78,14 +88,17 @@ select_exotic_bet = (type) => {
 
 update_finish_order = () => {
   let text_content = ""
+  selected_posts_list = []
   for (let i=0; i<selected_posts.length; i++) {
     text_content += selected_posts[i]
+    selected_posts_list.push(selected_posts[i])
     if (i < (selected_posts.length -1)) {
       text_content += " / "
     }
     finish_order.textContent = text_content
   }
   finish_order.textContent = text_content
+  selected_posts_input.value = selected_posts_list
 }
 
 handle_select_post = (e) => {
@@ -112,9 +125,8 @@ handle_select_post = (e) => {
     submit_bet_button.disabled = true;
     toggle_posts_disable(false)
   }
-  if (finish_order_required) {
-    update_finish_order()
-  }
+
+  update_finish_order()
   // if (e.currentTarget.value == "4") {
   //   disable_remaining_posts()
   // }
@@ -128,18 +140,17 @@ exotic_bet_types.addEventListener("change", handle_exotic_change)
 for (let i=0; i<exotic_post_select.length; i++) {
   exotic_post_select[i].addEventListener("click", handle_select_post)
 }
-//
-//
-//
-// handle_submit = (action) => {
-//   participant_id = document.getElementById("participant_uuid").textContent
-//   if (action == 'clear') {
-//     clear_bet(participant_id)
-//   } else if (action == 'make') {
-//     make_bet(participant_id)
-//   }
-//
-// }
+
+handle_submit_exotic = (action) => {
+  // participant_id = document.getElementById("participant_uuid").textContent
+  if (action == 'clear') {
+    // clear_bet(participant_id)
+  } else if (action == 'make') {
+    console.log("ready to make bet")
+    // make_bet("participant_id")
+  }
+
+}
 //
 // clear_bet = (participant_id) => {
 //   $.ajax({
@@ -156,43 +167,44 @@ for (let i=0; i<exotic_post_select.length; i++) {
 // })
 // }
 //
-// make_bet = (participant_id) => {
-//   $.ajax({
-//     url: json_data["make_bets_url"],
-//     dataType: "json",
-//     data: {
-//       "amount": document.getElementById("amount_input").value,
-//       "participant_id": participant_id,
-//       "bet_types": document.getElementById("bet_types").value
-//     },
-//     success: function(data) {
-//       // console.log("made_bet")
-//
-//       const win_bet = data['bets']['W']
-//       const place_bet = data['bets']['P']
-//       const show_bet = data['bets']['S']
-//
-//       const part_id = data["participant_id"]
-//
-//       if (win_bet) {
-//         const target_td = document.getElementById(part_id + "-win-td")
-//         target_td.innerHTML = "";
-//         target_td.appendChild(create_button(win_bet.toFixed(2)))
-//       }
-//       if (place_bet) {
-//         const target_td = document.getElementById(part_id + "-place-td")
-//         target_td.innerHTML = "";
-//         target_td.appendChild(create_button(place_bet.toFixed(2)))
-//
-//       }
-//       if (show_bet) {
-//         const target_td = document.getElementById(part_id + "-show-td")
-//         target_td.innerHTML = "";
-//         target_td.appendChild(create_button(show_bet.toFixed(2)))
-//       }
-//     }
-//   })
-// }
+make_exotic_bet = () => {
+  console.log("make_exotic_bet 172")
+  // $.ajax({
+  //   url: json_data["make_exotic_bet_url"],
+  //   dataType: "json",
+  //   data: {
+  //     "amount": document.getElementById("amount_input").value,
+  //     "participant_id": participant_id,
+  //     "bet_types": document.getElementById("bet_types").value
+  //   },
+  //   success: function(data) {
+  //     // console.log("made_bet")
+  //
+  //     const win_bet = data['bets']['W']
+  //     const place_bet = data['bets']['P']
+  //     const show_bet = data['bets']['S']
+  //
+  //     const part_id = data["participant_id"]
+  //
+  //     if (win_bet) {
+  //       const target_td = document.getElementById(part_id + "-win-td")
+  //       target_td.innerHTML = "";
+  //       target_td.appendChild(create_button(win_bet.toFixed(2)))
+  //     }
+  //     if (place_bet) {
+  //       const target_td = document.getElementById(part_id + "-place-td")
+  //       target_td.innerHTML = "";
+  //       target_td.appendChild(create_button(place_bet.toFixed(2)))
+  //
+  //     }
+  //     if (show_bet) {
+  //       const target_td = document.getElementById(part_id + "-show-td")
+  //       target_td.innerHTML = "";
+  //       target_td.appendChild(create_button(show_bet.toFixed(2)))
+  //     }
+  //   }
+  // })
+}
 //
 //
 //

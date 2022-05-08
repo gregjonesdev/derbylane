@@ -168,6 +168,10 @@ def load_charts(request):
         request,
         'load_charts.html', {'charts': charts, })
 
+def make_exotic_bet(request):
+    print("arrived")
+    print([char for char in request.GET.get('posts-input')])
+
 def make_bet(request):
     participant_id = request.GET.get('participant_id')
     participant = Participant.objects.get(
