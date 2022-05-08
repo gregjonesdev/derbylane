@@ -1,6 +1,8 @@
 const exotic_modal = document.getElementById("exotic-modal")
 const exotic_bet_types = document.getElementById("exotic_bet_types")
+const exotic_post_select = document.getElementsByClassName("exotic-post-select")
 
+const selected_posts = []
 exotic_modal.addEventListener("focus", function (e) {
   const button = $(event.relatedTarget) // Button that triggered the modal
   if (button.hasClass("exotic-bet")) {
@@ -8,7 +10,6 @@ exotic_modal.addEventListener("focus", function (e) {
     const venue = button.data('venue')
     const time = button.data('time')
     const number = button.data('number')
-    console.log(button.data('participants'))
 
     const this_modal = $(this)
     // this_modal.find('.modal-subtitle').text(
@@ -25,13 +26,64 @@ exotic_modal.addEventListener("focus", function (e) {
 
 })
 
-handle_exotic_change = () => {
+disable_remaining_posts = () => {
+  console.log("I")
+  console.log(selected_posts)
+  for (let i=0; i<exotic_post_select.length; i++) {
+    const value = exotic_post_select[i].value
+    if (!selected_posts.includes(value)) {
+      exotic_post_select[i].disabled = true
+    }
+    // if (exotic_post_select[i].getAttribute("aria-pressed")) {
+    //   console.log(exotic_post_select[i])
+    //   exotic_post_select[i].disabled = true
+    // }
+  }
+}
+
+
+handle_exotic_change = (e) => {
   console.log("Change")
+  console.log(e.currentTarget.value)
 
 }
 
+handle_select_post = (e) => {
+  console.log("Select Post")
+  console.log(e.currentTarget.value)
+  const currentTarget = e.currentTarget
+  const post = currentTarget.value
+  const is_pressed = currentTarget.getAttribute("aria-pressed")
+  console.log("boo")
+  console.log()
+  if (selected_posts.includes(post)) {
+    console.log("ture")
+  //   // if true, remove from list
+  const index = selected_posts.indexOf(post);
+  if (index > -1) {
+    selected_posts.splice(index, 1); // 2nd parameter means remove one item only
+  }
+  //
+  } else {
+  //   // if false, add to list
+    selected_posts.push(post)
+    console.log("not pressed")
+  //   console.log(selected_posts.index(post))
+  }
+  if (selected_posts.length >= 2) {
+    disable_remaining_posts()
+  }
+  // if (e.currentTarget.value == "4") {
+  //   disable_remaining_posts()
+  // }
+}
+
+
 exotic_bet_types.addEventListener("change", handle_exotic_change)
 
+for (let i=0; i<exotic_post_select.length; i++) {
+  exotic_post_select[i].addEventListener("click", handle_select_post)
+}
 //
 //
 //
