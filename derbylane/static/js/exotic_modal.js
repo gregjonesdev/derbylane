@@ -2,7 +2,11 @@ const exotic_modal = document.getElementById("exotic-modal")
 const exotic_bet_types = document.getElementById("exotic_bet_types")
 const exotic_post_select = document.getElementsByClassName("exotic-post-select")
 const finish_order = document.getElementById("finish-order")
+const finish_order_div = document.getElementById("finish-order-div")
 const selected_posts = []
+
+let dogs_required = 2
+let finish_order_required = false
 exotic_modal.addEventListener("focus", function (e) {
   const button = $(event.relatedTarget) // Button that triggered the modal
   if (button.hasClass("exotic-bet")) {
@@ -10,20 +14,13 @@ exotic_modal.addEventListener("focus", function (e) {
     const venue = button.data('venue')
     const time = button.data('time')
     const number = button.data('number')
-
     const this_modal = $(this)
-    // this_modal.find('.modal-subtitle').text(
-    //   post + " | " +
-    //   dog + " "
-    // )
     this_modal.find('.modal-title').text(
       venue + " " +
       time + " Race " +
       number
     )
-
   }
-
 })
 
 
@@ -36,16 +33,48 @@ toggle_posts_disable = (bool) => {
   }
 }
 
+clear_selected_posts = () => {
+  for (let i=0; i<exotic_post_select.length; i++) {
+    exotic_post_select[i].setAttribute("class", "btn btn-outline-primary exotic-post-select")
+    exotic_post_select[i].ariaPressed = false
+  }
+  toggle_posts_disable(false)
+}
 
 handle_exotic_change = (e) => {
-  console.log("Change")
-  console.log(e.currentTarget.value)
+  finish_order_div.style.display = "None"
+  select_exotic_bet(e.currentTarget.value)
+  selected_posts.splice(0,8)
+  update_finish_order()
+  clear_selected_posts()
+}
+
+
+
+select_exotic_bet = (type) => {
+  switch (type) {
+    case 'E':
+      dogs_required = 2
+      finish_order_required = true
+      break;
+    case 'T':
+      dogs_required = 3
+      finish_order_required = true
+      break;
+    case 'S':
+      dogs_required = 4
+      finish_order_required = true
+      break;
+    case 'Q':
+    default:
+      dogs_required = 2
+      finish_order_required = false
+  }
 
 }
 
 
 update_finish_order = () => {
-  console.log("hey")
   let text_content = ""
   for (let i=0; i<selected_posts.length; i++) {
     text_content += selected_posts[i]
@@ -58,8 +87,6 @@ update_finish_order = () => {
 }
 
 handle_select_post = (e) => {
-  console.log("Select Post")
-  console.log(e.currentTarget.value)
   const currentTarget = e.currentTarget
   const post = currentTarget.value
   const is_pressed = currentTarget.getAttribute("aria-pressed")
@@ -70,19 +97,19 @@ handle_select_post = (e) => {
     }
 
   } else {
-  //   // if false, add to list
     selected_posts.push(post)
-    console.log("not pressed")
-
-
-  //   console.log(selected_posts.index(post))
+    if (finish_order_required) {
+      finish_order_div.style.display = "Block"
+    }
   }
-  if (selected_posts.length >= 2) {
+  if (selected_posts.length >= dogs_required) {
     toggle_posts_disable(true)
   } else {
     toggle_posts_disable(false)
   }
-  update_finish_order()
+  if (finish_order_required) {
+    update_finish_order()
+  }
   // if (e.currentTarget.value == "4") {
   //   disable_remaining_posts()
   // }

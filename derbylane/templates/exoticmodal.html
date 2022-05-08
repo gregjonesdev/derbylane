@@ -38,7 +38,7 @@
             <select
               name="bet_type"
               id="exotic_bet_types"
-              class="modal-select modal-bet-selector pull-right">
+              class="modal-select modal-bet-selector pull-right" style="text-align:center">
               <option value="Q">Quiniela</option>
               <option value="E">Exacta</option>
               <option value="T">Trifecta</option>
@@ -56,9 +56,9 @@
               <button type="button" value="8" class="btn btn-outline-primary exotic-post-select" data-toggle="button" aria-pressed="false" autocomplete="off">8</button>
             </div>
             <br/>
-            <h5><span>Finish Order: </span></h5>
-            <br/>
-            <h5><span id="finish-order"></span></h5>
+            <div id="finish-order-div" style="display: None; margin: 20px">
+              <h5><span class="float-left">Finish Order:</span> <span id="finish-order"></span></h5>
+            </div>
           </form>
         </div>
       </div>
