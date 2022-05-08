@@ -1,31 +1,27 @@
 const exotic_modal = document.getElementById("exotic-modal")
 
-modal.addEventListener("focus", function (e) {
+exotic_modal.addEventListener("focus", function (e) {
   console.log("YO!")
-  // const button = $(event.relatedTarget) // Button that triggered the modal
-  // if (button.hasClass("bet-button")) {
-  //   const participant_bets = document.getElementById("participant_bets")
-  //   const dog = button.data('dog')
-  //   const bets = button.data('bets')
-  //   const post = button.data('post')
-  //   const venue = button.data('venue')
-  //   const chart = button.data('chart')
-  //   const number = button.data('number')
-  //   const participant = button.data('participant')
-  //   const this_modal = $(this)
-  //   this_modal.find('.modal-subtitle').text(
-  //     post + " | " +
-  //     dog + " "
-  //   )
-  //   this_modal.find('.modal-title').text(
-  //     venue + " " +
-  //     chart + " Race " +
-  //     number
-  //   )
-  //   this_modal.find('#participant_uuid').text(
-  //     participant
-  //  )
-  // }
+  const button = $(event.relatedTarget) // Button that triggered the modal
+  if (button.hasClass("exotic-bet")) {
+
+    const venue = button.data('venue')
+    const time = button.data('time')
+    const number = button.data('number')
+
+
+    const this_modal = $(this)
+    // this_modal.find('.modal-subtitle').text(
+    //   post + " | " +
+    //   dog + " "
+    // )
+    this_modal.find('.modal-title').text(
+      venue + " " +
+      time + " Race " +
+      number
+    )
+
+  }
 
 })
 

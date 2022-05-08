@@ -9,7 +9,7 @@
     data-dog="{{ participant.dog.name }}"
     data-post="{{ participant.post }}"
     data-venue="{{ participant.race.chart.program.venue.name }}"
-    data-chart="{{ participant.race.chart.time }}"
+    data-chart="{{ participant.race.chart.get_time_display }}"
     data-number="{{ participant.race.number }}"
     data-participant="{{ participant.uuid }}"
     data-bets="{{ participant.prediction.get_bets }}">
