@@ -169,6 +169,8 @@ handle_submit_exotic = (action) => {
 //
 make_exotic_bet = () => {
   console.log("make_exotic_bet 172")
+  console.log(selected_posts)
+  console.log(document.getElementById("amount_input").value)
   $.ajax({
     url: json_data["make_exotic_bet_url"],
     dataType: "json",
