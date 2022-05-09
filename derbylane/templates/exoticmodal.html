@@ -34,6 +34,7 @@
             action="{% url 'make_exotic_bet' %}"
             method="post"
             id="modal-exotic-form">
+            <div style="display: flex; flex-flow: row nowrap; justify-content: space-between">
             <select
               name="bet_type"
               id="exotic_bet_types"
@@ -43,6 +44,18 @@
               <option value="T">Trifecta</option>
               <option value="S">Superfecta</option>
             </select>
+            <div class="modal-select">
+              <span class="bet_amount_dollar">$</span>
+              <span id="participant_uuid"></span>
+              <input
+                id="amount_input"
+                type="number"
+                name="amount"
+                min="1"
+                max="1000"
+                value="2">
+            </div>
+            </div>
 
             <div class="btn-group" style="width: 100%" role="group">
               <button type="button" value="1" style="margin: 5px;" class="btn btn-outline-primary exotic-post-select" data-toggle="button" aria-pressed="false" autocomplete="off">1</button>
