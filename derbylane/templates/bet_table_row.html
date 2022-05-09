@@ -1,13 +1,10 @@
 {% extends 'bet_table.html' %}
 
 
-{% block table_data %}
-
-{% if forloop.first %}
-<tr>
+{% block table_head %}
 <td
 class="race-info-cell"
-style="vertical-align: top">
+style="vertical-align: middle; height: 100%; width: 20%; paddding: 0">
 <button
   data-toggle="modal"
   data-target="#exotic-modal"
@@ -15,7 +12,7 @@ style="vertical-align: top">
   data-venue="{{ race.chart.program.venue }}"
   data-time="{{ race.chart.get_time_display }}"
   data-number="{{ race.number }}"
-  class="btn btn-sm btn-block btn-outline-primary exotic-bet">
+  class="btn btn-sm btn-block btn-outline-primary exotic-bet;">
   <span class="race-number-cell">
     {{ race.number }}
   </span>
@@ -24,32 +21,15 @@ style="vertical-align: top">
 </button>
 </td>
 <td colspan="4">
-  <!-- <button
-    data-toggle="modal"
-    data-target="#exotic-modal"
-    data-race="{{ race.uuid }}"
-    data-exotic-uuid="{{ race.uuid }}"
-    data-exotic-type="T"
-    data-amount="{{ race.uuid }}"
-    data-posts="3,4"
-    class="btn btn-sm btn-block btn-outline-primary exotic-bet">
-    <span>$2 TRIFECTA 3/4/5</span>
-  </button><br/>
-  <button
-    data-toggle="modal"
-    data-target="#exotic-modal"
-    data-race="{{ race.uuid }}"
-    class="btn btn-sm btn-block btn-outline-primary exotic-bet">
-    <span>$2 TRIFECTA 3/4/5</span>
-  </button><br/>
-  <button
-    data-toggle="modal"
-    data-target="#exotic-modal"
-    data-race="{{ race.uuid }}"
-    class="btn btn-sm btn-block btn-outline-primary exotic-bet">
-    <span>$2 TRIFECTA 3/4/5</span>
-  </button><br/> -->
+
 </td>
+{% endblock table_head %}
+<!--
+{% block table_data %}
+
+{% if forloop.first %}
+<tr>
+
 </tr>
 {% endif %}
 <td>
@@ -81,4 +61,4 @@ style="vertical-align: top">
   {% endblock show_button %}
   {% endif %}
 </td>
-{% endblock table_data %}
+{% endblock table_data %} -->
