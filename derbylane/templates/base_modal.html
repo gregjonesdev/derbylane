@@ -1,0 +1,111 @@
+{% load static %}
+
+<div
+  class="modal fade"
+  id="bet-modal"
+  tabindex="-1"
+  role="dialog"">
+    <div
+      class="modal-dialog"
+      role="document">
+      <div
+        class="modal-content"
+        style="background-color: #111">
+        <div class="modal-header">
+          <h5
+            class="modal-title"
+            id="bet-modalLabel"
+            style="color: white">
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            style="color: white">
+            <span aria-hidden="true">
+              &times;
+            </span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% block subtitle %}
+          {% endblock subtitle %}
+          <span class="modal-subtitle"></span>
+
+
+
+
+          <form
+            action="{% url 'make_bet' %}"
+            method="post"
+            id="modal-form">
+
+            {% block select_bet %}
+            {% endblock select_bet %}
+
+
+            {% block post_select %}
+            {% endblock post_select %}
+
+            {% block finish_order %}
+            {% endblock finish_order %}
+
+
+              <select
+                name="bet_type"
+                id="bet_types"
+                class="modal-select modal-bet-selector pull-right">
+                <option value="W">WIN</option>
+                <option value="P">PLC</option>
+                <option value="S">SHW</option>
+                <option value="WP">WP</option>
+                <option value="WPS">WPS</option>
+                <option value="PS">PS</option>
+              </select>
+              <!-- <input type="text" id="bet_types" name="bet_type" disabled> -->
+              <div class="modal-select">
+                <span class="bet_amount_dollar">$</span>
+                <span id="participant_uuid"></span>
+                <input
+                  id="amount_input"
+                  type="number"
+                  name="amount"
+                  min="1"
+                  max="1000"
+                  value="2">
+              </div>
+
+            <div class="modal-footer">
+              <button
+                id="clear_bet"
+                type="button"
+                class="btn btn-outline-danger"
+                onclick="handle_submit('clear')"
+                data-dismiss="modal">
+                Clear
+              </button>
+              <button
+                id="submit_bet"
+                type="button"
+                class="btn btn-outline-success"
+                onclick="handle_submit('make')"
+                data-dismiss="modal">
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script
+  id="bet-modal-data"
+  type="application/json">
+  {
+    "make_bets_url": "{% url 'make_bet' %}"
+  }
+</script>
+
+<script src="{% static 'js/bet_modal.js' %}"></script>

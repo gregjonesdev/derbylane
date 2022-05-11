@@ -1,7 +1,38 @@
+const modal = document.getElementById("bet-modal")
+
+modal.addEventListener("focus", function (e) {
+  const button = $(event.relatedTarget) // Button that triggered the modal
+  if (button.hasClass("bet-button")) {
+    const participant_bets = document.getElementById("participant_bets")
+    const dog = button.data('dog')
+    const bets = button.data('bets')
+    const post = button.data('post')
+    const venue = button.data('venue')
+    const chart = button.data('chart')
+    const number = button.data('number')
+    const participant = button.data('participant')
+    const this_modal = $(this)
+    this_modal.find('.modal-subtitle').text(
+      post + " | " +
+      dog + " "
+    )
+    this_modal.find('.modal-title').text(
+      venue + " " +
+      chart + " Race " +
+      number
+    )
+    this_modal.find('#participant_uuid').text(
+      participant
+   )
+  }
+
+})
+
+
+
+
 handle_submit = (action) => {
   participant_id = document.getElementById("participant_uuid").textContent
-  console.log("ok")
-  console.log(action)
   if (action == 'clear') {
     clear_bet(participant_id)
   } else if (action == 'make') {
@@ -11,7 +42,18 @@ handle_submit = (action) => {
 }
 
 clear_bet = (participant_id) => {
-  console.log("wtf")
+  $.ajax({
+    url: json_data["clear_bets_url"],
+    dataType: "json",
+    data: {
+      "participant_id": participant_id,
+    },
+    success: function(data) {
+      const part_id = data["participant_id"]
+      document.getElementById(part_id + "-win-td").innerHTML = "";
+      document.getElementById(part_id + "-place-td").innerHTML = "";
+      document.getElementById(part_id + "-show-td").innerHTML = "";}
+})
 }
 
 make_bet = (participant_id) => {

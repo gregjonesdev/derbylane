@@ -1,0 +1,19 @@
+{% extends 'base_modal.html' %}
+
+{% block subtitle %}
+<span class="modal-subtitle"></span>
+{% endblock subtitle %}
+
+{% block select_bet %}
+<select
+  name="bet_type"
+  id="bet_types"
+  class="modal-select modal-bet-selector pull-right">
+  <option value="W">WIN</option>
+  <option value="P">PLC</option>
+  <option value="S">SHW</option>
+  <option value="WP">WP</option>
+  <option value="WPS">WPS</option>
+  <option value="PS">PS</option>
+</select>
+{% endblock select_bet %}
