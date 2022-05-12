@@ -19,24 +19,22 @@
           action="{% url 'make_bet' %}"
           method="post"
           id="modal-form">
-          <div style="border: 1px solid red; display: flex; flex-flow: row nowrap; justify content: space-between">
-
-          <select
-            name="bet_type"
-            id="bet_types"
-            class="modal-select modal-bet-selector pull-right">
-            <option value="W">WIN</option>
-            <option value="P">PLC</option>
-            <option value="S">SHW</option>
-            <option value="WP">WP</option>
-            <option value="WPS">WPS</option>
-            <option value="PS">PS</option>
-          </select>
-
-          {% include 'modal_components/bet_amount.html' %}
+          <div class="modal-select-container">
+            <select
+              name="bet_type"
+              id="bet_types"
+              class="modal-select modal-bet-selector pull-right">
+              <option value="W">WIN</option>
+              <option value="P">PLC</option>
+              <option value="S">SHW</option>
+              <option value="WP">WP</option>
+              <option value="WPS">WPS</option>
+              <option value="PS">PS</option>
+            </select>
+            {% include 'modal_components/bet_amount.html' %}
           </div>
-          {% include 'modal_components/footer.html' %}
           </form>
+          {% include 'modal_components/footer.html' %}
       </div>
     </div>
   </div>

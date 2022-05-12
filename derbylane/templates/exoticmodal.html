@@ -12,27 +12,28 @@
         class="modal-content"
         style="background-color: #111">
         {% include 'modal_components/header.html' %}
-        <div class="small-modal-body">
+        <div class="modal-body large-modal-body">
           <form
             action="{% url 'make_exotic_bet' %}"
             method="post"
             id="modal-exotic-form">
-            <div style="display: flex; flex-flow: row nowrap; justify content: space-between">
-            <select
-              name="bet_type"
-              id="exotic_bet_types"
-              class="modal-select modal-bet-selector pull-right">
-              <option value="Q">Quiniela</option>
-              <option value="E">Exacta</option>
-              <option value="T">Trifecta</option>
-              <option value="S">Superfecta</option>
-            </select>
-            {% include 'modal_components/bet_amount.html' %}
+            <div class="modal-select-container">
+              <select
+                name="bet_type"
+                id="exotic_bet_types"
+                class="modal-select modal-bet-selector pull-right">
+                <option value="Q">Quiniela</option>
+                <option value="E">Exacta</option>
+                <option value="T">Trifecta</option>
+                <option value="S">Superfecta</option>
+              </select>
+              {% include 'modal_components/bet_amount.html' %}
             </div>
             {% include "modal_components/post_select.html" %}
             {% include "modal_components/finish_order.html" %}
-            {% include 'modal_components/footer.html' with exotic=True %}
           </form>
+          <br/>
+          {% include 'modal_components/footer.html' with exotic=True %}
         </div>
     </div>
 </div>
