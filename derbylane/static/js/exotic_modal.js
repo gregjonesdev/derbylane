@@ -1,16 +1,35 @@
-console.log("NEW")
 const selected_posts = []
-
+let race_uuid = ""
 let dogs_required = 2
 let finish_order_required = false
-
 const exotic_modal = document.getElementById("exotic-modal")
+
+
 const exotic_bet_types = document.getElementById("exotic_bet_types")
 const exotic_post_select = document.getElementsByClassName("exotic-post-select")
 const finish_order = document.getElementById("finish-order")
 const finish_order_div = document.getElementById("finish-order-div")
 const submit_bet_button = document.getElementById("submit_exotic_bet")
 const selected_posts_input = document.getElementById("posts-input")
+
+exotic_modal.addEventListener("focus", function (e) {
+  const button = $(event.relatedTarget) // Button that triggered the modal
+  if (button.hasClass("bet-button")) {
+    race_uuid = button.data('race')
+    const venue = button.data('venue')
+    const time = button.data('time')
+    const number = button.data('number')
+    const this_modal = $(this)
+    console.log(venue)
+    this_modal.find('.modal-title').text(
+      venue + " " +
+      time + " Race " +
+      number
+    )
+  }
+
+})
+
 
 handle_exotic_change = (e) => {
   finish_order_div.style.visibility = "hidden"
@@ -167,16 +186,17 @@ make_exotic_bet = () => {
   for (let i=0; i<selected_posts.length; i++) {
     concat_posts += selected_posts[i]
   }
-  console.log(document.getElementById("amount_input").value)
+  console.log(document.getElementById("exotic_amount_input").value)
+
   console.log(json_data["make_exotic_bet_url"],)
-  const race_id = "12345"
+  console.log( "ajax time")
   $.ajax({
     url: json_data["make_exotic_bet_url"],
     dataType: "json",
     data: {
       "amount": document.getElementById("exotic_amount_input").value,
-      "race_id": race_id,
-      "bet_type": "Q",
+      "race_uuid": race_uuid,
+      "bet_type": document.getElementById("exotic_bet_types").value,
       "selected_posts": concat_posts
     },
     success: function(data) {

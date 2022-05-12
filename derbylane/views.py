@@ -169,8 +169,17 @@ def load_charts(request):
         'load_charts.html', {'charts': charts, })
 
 def make_exotic_bet(request):
-    print("arrived")
+    race_uuid = request.GET.get('race_uuid')
+    amount = request.GET.get('amount')
+    bet_type = request.GET.get('bet_type')
+    print(bet_type)
+    print(race_uuid)
+    print(amount)
     print([char for char in request.GET.get('selected_posts')])
+
+    return JsonResponse({
+        'bets': 'bets',
+        'participant_id': 'participant_id' })
 
 def make_bet(request):
     participant_id = request.GET.get('participant_id')
