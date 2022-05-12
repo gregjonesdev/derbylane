@@ -1,4 +1,4 @@
-const exotic_modal = document.getElementById("bet-modal")
+const exotic_modal = document.getElementById("exotic-modal")
 const exotic_bet_types = document.getElementById("exotic_bet_types")
 const exotic_post_select = document.getElementsByClassName("exotic-post-select")
 const finish_order = document.getElementById("finish-order")
@@ -10,12 +10,6 @@ const selected_posts = []
 let dogs_required = 2
 let finish_order_required = false
 
-$( document ).ready(function() {
-    console.log( "ready!" );
-    console.log(exotic_modal)
-});
-console.log("apple")
-console.log("banana")
 exotic_modal.addEventListener("focus", function (e) {
   const button = $(event.relatedTarget) // Button that triggered the modal
   if (button.hasClass("exotic-bet")) {

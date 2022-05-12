@@ -1,4 +1,4 @@
-const modal = document.getElementById("bet-modal")
+const modal = document.getElementById("straight-bet-modal")
 
 modal.addEventListener("focus", function (e) {
   const button = $(event.relatedTarget) // Button that triggered the modal

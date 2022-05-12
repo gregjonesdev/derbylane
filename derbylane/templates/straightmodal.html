@@ -18,6 +18,8 @@
           action="{% url 'make_bet' %}"
           method="post"
           id="modal-form">
+          <div style="border: 1px solid red; display: flex; flex-flow: row nowrap; justify content: space-between">
+
           <select
             name="bet_type"
             id="bet_types"
@@ -31,6 +33,7 @@
           </select>
 
           {% include 'modal_components/bet_amount.html' %}
+          </div>
           {% include 'modal_components/footer.html' %}
           </form>
       </div>
@@ -38,7 +41,7 @@
   </div>
 </div>
 
-<!--
+
 
 <span id="participant_uuid"></span>
 
@@ -52,4 +55,4 @@
   }
 </script>
 
-<script src="{% static 'js/modal.js' %}"></script> -->
+<script src="{% static 'js/straight_modal.js' %}"></script>
