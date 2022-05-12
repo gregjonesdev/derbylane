@@ -20,17 +20,49 @@ colspan="5">
 </button>
 
 {% for wager in race.get_exotic_bets %}
+
   <div class="list-group-item " style="display: flex; flex-flow: row nowrap; justify-content: space-between; align-items: middle; background-color: inherit; line-height: 100%;   color: white;">
     <span style="padding: 10px; font-size: 1.25em; ">${{ wager.amount }} {{ wager.get_name }} {{ wager.get_posts }}</span>
-  <button
-    type="button"
-    class="btn btn-sm btn-outline-danger float-right"
-    disabled
-    style="height: 100%; padding: 3px auto;">
-    &#10005;
-  </button>
+    <button
+      type="button"
+      class="btn btn-sm btn-outline-danger float-right"
+      disabled
+      style="height: 100%; padding: 3px auto;">
+      &#10005;
+    </button>
   </div>
 {% endfor %}
-</td>
 
 {% endblock table_head %}
+
+{% block table_data %}
+<td>
+  {{ participant.post }}
+  <span
+  class="dog-name-span">
+  {{ participant.dog.name|truncatechars:13 }}
+</span>
+</td>
+<td>
+  {% block prediction_button %}
+  {% endblock prediction_button %}
+</td>
+<td id="{{ participant.uuid }}-win-td">
+  {% if participant.get_win_bet %}
+  {% block win_button %}
+  {% endblock win_button %}
+  {% endif %}
+</td>
+<td id="{{ participant.uuid }}-place-td">
+  {% if participant.get_place_bet %}
+  {% block place_button %}
+  {% endblock place_button %}
+  {% endif %}
+</td>
+<td id="{{ participant.uuid }}-show-td">
+  {% if participant.get_show_bet %}
+  {% block show_button %}
+  {% endblock show_button %}
+  {% endif %}
+</td>
+{% endblock table_data %}
