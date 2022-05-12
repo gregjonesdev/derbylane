@@ -32,7 +32,9 @@ modal.addEventListener("focus", function (e) {
 
 
 handle_submit = (action) => {
+  console.log("handle submit")
   participant_id = document.getElementById("participant_uuid").textContent
+  console.log(participant_id)
   if (action == 'clear') {
     clear_bet(participant_id)
   } else if (action == 'make') {
