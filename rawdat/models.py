@@ -405,7 +405,7 @@ class Race(CoreModel):
             return False
 
     def has_predictions(self):
-        return True
+        # return True
         for participant in self.participant_set.all():
             try:
                 if participant.get_recommended_bet():
@@ -424,14 +424,14 @@ class Race(CoreModel):
         return prediction_count
 
     def has_bets(self):
-        return True
+        # return True
         for participant in self.participant_set.all():
             if participant.bet_set.count() > 0:
                 return True
 
     def get_displayed_participants(self):
         all_participants = self.participant_set.all()
-        return all_participants
+        # return all_participants
         participant_list=[]
         if self.is_complete():
             for participant in all_participants:
@@ -686,7 +686,7 @@ class Quiniela_Wager(CoreModel):
         return "Quiniela"
 
     def get_posts(self):
-        return "{}-{}".format(self.left.post, self.right.post)
+        return "{},{}".format(self.left.post, self.right.post)
 
 class Exacta_Wager(CoreModel):
 
@@ -714,7 +714,7 @@ class Exacta_Wager(CoreModel):
         return "Exacta"
 
     def get_posts(self):
-        return "{}/{}".format(self.win.post, self.place.post)
+        return "{},{}".format(self.win.post, self.place.post)
 
 class Trifecta_Wager(CoreModel):
 
@@ -746,7 +746,7 @@ class Trifecta_Wager(CoreModel):
         return "Trifecta"
 
     def get_posts(self):
-        return "{}/{}/{}".format(self.win.post, self.place.post, self.show.post)
+        return "{},{},{}".format(self.win.post, self.place.post, self.show.post)
 
 class Superfecta_Wager(CoreModel):
 
@@ -780,6 +780,13 @@ class Superfecta_Wager(CoreModel):
 
     def get_name(self):
         return "Superfecta"
+
+    def get_posts(self):
+        return "{},{},{},{}".format(
+            self.win.post,
+            self.place.post,
+            self.show.post,
+            self.fourth.post)
 
 class Exacta(Combo):
 
