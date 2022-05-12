@@ -218,8 +218,9 @@ def make_exotic_bet(request):
     new_wager.save()
 
     return JsonResponse({
-        'bets': 'bets',
-        'participant_id': 'participant_id' })
+        'type': new_wager.get_name(),
+        'posts': selected_posts,
+        'amount': amount })
 
 def make_bet(request):
     participant_id = request.GET.get('participant_id')

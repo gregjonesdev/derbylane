@@ -147,20 +147,33 @@ select_exotic_bet = (type) => {
 
 
 update_finish_order = () => {
-  let text_content = ""
-  selected_posts_list = []
-  for (let i=0; i<selected_posts.length; i++) {
-    text_content += selected_posts[i]
-    selected_posts_list.push(selected_posts[i])
-    if (i < (selected_posts.length -1)) {
-      text_content += " / "
-    }
-    finish_order.textContent = text_content
-  }
-  finish_order.textContent = text_content
-  selected_posts_input.value = selected_posts_list
+  // let text_content = ""
+  // selected_posts_list = []
+  // for (let i=0; i<selected_posts.length; i++) {
+  //   text_content += selected_posts[i]
+  //   selected_posts_list.push(selected_posts[i])
+  //   if (i < (selected_posts.length -1)) {
+  //     text_content += ","
+  //   }
+  // }
+  // console.log("Huh?")
+  // console.log(selected_posts)
+  // console.log(selected_posts_list)
+  finish_order.textContent = get_selected_posts_display(selected_posts)
+  selected_posts_input.value = selected_posts
 }
 
+get_selected_posts_display = (list) => {
+  let text_content = ""
+  for (let i=0; i<list.length; i++) {
+    text_content += list[i]
+    if (i < (list.length -1)) {
+      text_content += ","
+    }
+  }
+  return text_content
+
+}
 //
 // clear_bet = (participant_id) => {
 //   $.ajax({
@@ -193,6 +206,16 @@ make_exotic_bet = () => {
     },
     success: function(data) {
       console.log("made_ exotic bet")
+      console.log(data)
+      let posts_display = ""
+      for (i=0; i<selected_posts.length; i++) {
+        posts_display += selected_posts[i]
+        if ((i +1) < selected_posts.length) {
+          posts_display += ","
+        }
+      }
+
+      console.log(get_selected_posts_display(data["posts"]))
 
       // const win_bet = data['bets']['W']
       // const place_bet = data['bets']['P']
