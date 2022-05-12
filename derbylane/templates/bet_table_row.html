@@ -18,6 +18,16 @@ colspan="5">
     Race {{ race.number }}  </span>
 
 </button>
+
+{% for wager in race.get_exotic_bets %}
+  <button
+    class="btn btn-sm btn-block btn-outline-primary exotic-bet bet-button"
+    disabled>
+    <span class="race-number-cell">
+      ${{ wager.amount }} {{ wager.get_name }} {{ wager.get_posts }} </span>
+
+  </button>
+{% endfor %}
 </td>
 
 {% endblock table_head %}

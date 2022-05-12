@@ -23,8 +23,12 @@ from rawdat.models import (
     Program,
     Participant,
     Bet,
+    Race,
     StraightBetType,
-    Straight_Wager)
+    Straight_Wager,
+    Quiniela_Wager,
+    Trifecta_Wager,
+    Exacta_Wager)
 
 
 class FrontPage(LoginRequiredMixin, View):
@@ -175,7 +179,43 @@ def make_exotic_bet(request):
     print(bet_type)
     print(race_uuid)
     print(amount)
-    print([char for char in request.GET.get('selected_posts')])
+
+
+    selected_posts = [char for char in request.GET.get('selected_posts')]
+    race = Race.objects.get(uuid=race_uuid)
+    if bet_type == "Q":
+        new_wager = Quiniela_Wager(
+            race=race,
+            amount=amount,
+            left=race.get_participant(int(selected_posts[0])),
+            right=race.get_participant(int(selected_posts[1]))
+        )
+    elif bet_type == "E":
+        new_wager = Exacta_Wager(
+            race=race,
+            amount=amount,
+            win=race.get_participant(int(selected_posts[0])),
+            place=race.get_participant(int(selected_posts[1]))
+        )
+    elif bet_type == "T":
+        new_wager = Trifecta_Wager(
+            race=race,
+            amount=amount,
+            win=race.get_participant(int(selected_posts[0])),
+            place=race.get_participant(int(selected_posts[1])),
+            show=race.get_participant(int(selected_posts[2])),
+        )
+    elif bet_type == "S":
+        new_wager = Superfecta_Wager(
+            race=race,
+            amount=amount,
+            win=race.get_participant(int(selected_posts[0])),
+            place=race.get_participant(int(selected_posts[1])),
+            show=race.get_participant(int(selected_posts[2])),
+            fourth=race.get_participant(int(selected_posts[3])),
+        )
+    new_wager.set_fields_to_base()
+    new_wager.save()
 
     return JsonResponse({
         'bets': 'bets',

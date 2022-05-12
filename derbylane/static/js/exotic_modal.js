@@ -20,7 +20,6 @@ exotic_modal.addEventListener("focus", function (e) {
     const time = button.data('time')
     const number = button.data('number')
     const this_modal = $(this)
-    console.log(venue)
     this_modal.find('.modal-title').text(
       venue + " " +
       time + " Race " +
@@ -53,7 +52,6 @@ handle_select_post = (e) => {
   } else {
     selected_posts.push(post)
     if (finish_order_required) {
-      console.log('here')
       finish_order_div.style.visibility = "visible"
     }
   }
@@ -180,16 +178,10 @@ update_finish_order = () => {
 // }
 //
 make_exotic_bet = () => {
-  console.log("make_exotic_bet 172")
-  console.log(selected_posts)
   let concat_posts = ""
   for (let i=0; i<selected_posts.length; i++) {
     concat_posts += selected_posts[i]
   }
-  console.log(document.getElementById("exotic_amount_input").value)
-
-  console.log(json_data["make_exotic_bet_url"],)
-  console.log( "ajax time")
   $.ajax({
     url: json_data["make_exotic_bet_url"],
     dataType: "json",

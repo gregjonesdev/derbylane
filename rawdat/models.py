@@ -4,6 +4,7 @@ from django.db import models
 
 from derbylane.applib.models import CoreModel
 
+from itertools import chain
 
 class WeatherLookup(CoreModel):
     """ Specific to wunderground. """
@@ -447,6 +448,16 @@ class Race(CoreModel):
             if participant.final:
                 return True
 
+    def get_participant(self, post):
+        return Participant.objects.get(race=self, post=post)
+
+    def get_exotic_bets(self):
+        return list(chain(
+            Quiniela_Wager.objects.filter(race=self),
+            Exacta_Wager.objects.filter(race=self),
+            Trifecta_Wager.objects.filter(race=self)))
+
+
 class StraightBetType(CoreModel):
 
     PLACE = 'P'
@@ -654,8 +665,14 @@ class Quiniela_Wager(CoreModel):
     class Meta:
         verbose_name = 'Quiniela'
 
-    left_post = models.IntegerField()
-    right_post = models.IntegerField()
+    left = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='quiniela_wager_left')
+    right = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='quiniela_wager_right')
     race = models.ForeignKey(
         Race,
         on_delete=models.CASCADE,
@@ -665,13 +682,25 @@ class Quiniela_Wager(CoreModel):
         decimal_places=2,
         default=2.00)
 
+    def get_name(self):
+        return "Quiniela"
+
+    def get_posts(self):
+        return "{}-{}".format(self.left.post, self.right.post)
+
 class Exacta_Wager(CoreModel):
 
     class Meta:
         verbose_name = 'Exacta'
 
-    win_post = models.IntegerField()
-    place_post = models.IntegerField()
+    win = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='exacta_wager_win')
+    place = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='exacta_wager_place')
     race = models.ForeignKey(
         Race,
         on_delete=models.CASCADE,
@@ -681,14 +710,29 @@ class Exacta_Wager(CoreModel):
         decimal_places=2,
         default=2.00)
 
+    def get_name(self):
+        return "Exacta"
+
+    def get_posts(self):
+        return "{}/{}".format(self.win.post, self.place.post)
+
 class Trifecta_Wager(CoreModel):
 
     class Meta:
         verbose_name = 'Trifecta'
 
-    win_post = models.IntegerField()
-    place_post = models.IntegerField()
-    show_post = models.IntegerField()
+    win = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='trifecta_wager_win')
+    place = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='trifecta_wager_place')
+    show = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='trifecta_wager_show')
     race = models.ForeignKey(
         Race,
         on_delete=models.CASCADE,
@@ -698,6 +742,44 @@ class Trifecta_Wager(CoreModel):
         decimal_places=2,
         default=2.00)
 
+    def get_name(self):
+        return "Trifecta"
+
+    def get_posts(self):
+        return "{}/{}/{}".format(self.win.post, self.place.post, self.show.post)
+
+class Superfecta_Wager(CoreModel):
+
+    class Meta:
+        verbose_name = 'Trifecta'
+
+    win = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='superfecta_wager_win')
+    place = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='superfecta_wager_place')
+    show = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='superfecta_wager_show')
+    fourth = models.ForeignKey(
+            Participant,
+            on_delete=models.CASCADE,
+            related_name='superfecta_wager_fourth')
+    race = models.ForeignKey(
+        Race,
+        on_delete=models.CASCADE,
+        related_name='superfecta_wager')
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=2.00)
+
+    def get_name(self):
+        return "Superfecta"
 
 class Exacta(Combo):
 
