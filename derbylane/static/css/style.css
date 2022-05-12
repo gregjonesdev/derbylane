@@ -265,6 +265,26 @@ body {
   display:none;
 }
 
+.exotic-wager-item {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: middle;
+  background-color: inherit;
+  line-height: 100%;
+  color: white;
+}
+
+.exotic-wager-span {
+  padding: 10px;
+  font-size: 1.25em
+}
+
+.exotic-delete-button {
+  height: 100%;
+  padding: 3px auto;
+}
+
 #amount_input, #exotic_amount_input {
   background-color: #222;
   color: inherit;

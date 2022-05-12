@@ -19,20 +19,21 @@ colspan="5">
 
 </button>
 
+<div id="exotic-wagers-{{ race.uuid }}">
 {% for wager in race.get_exotic_bets %}
 
-  <div class="list-group-item " style="display: flex; flex-flow: row nowrap; justify-content: space-between; align-items: middle; background-color: inherit; line-height: 100%;   color: white;">
-    <span style="padding: 10px; font-size: 1.25em; ">${{ wager.amount }} {{ wager.get_name }} {{ wager.get_posts }}</span>
+  <div class="list-group-item exotic-wager-item">
+    <span class="exotic-wager-span">${{ wager.amount }} {{ wager.get_name }} {{ wager.get_posts }}</span>
     <button
       type="button"
-      class="btn btn-sm btn-outline-danger float-right"
+      class="btn btn-sm btn-outline-danger float-right exotic-delete-button"
       data-wagerid="{{ wager.uuid }}"
-      disabled
-      style="height: 100%; padding: 3px auto;">
+      disabled>
       &#10005;
     </button>
   </div>
 {% endfor %}
+</div>
 
 {% endblock table_head %}
 

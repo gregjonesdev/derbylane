@@ -147,18 +147,6 @@ select_exotic_bet = (type) => {
 
 
 update_finish_order = () => {
-  // let text_content = ""
-  // selected_posts_list = []
-  // for (let i=0; i<selected_posts.length; i++) {
-  //   text_content += selected_posts[i]
-  //   selected_posts_list.push(selected_posts[i])
-  //   if (i < (selected_posts.length -1)) {
-  //     text_content += ","
-  //   }
-  // }
-  // console.log("Huh?")
-  // console.log(selected_posts)
-  // console.log(selected_posts_list)
   finish_order.textContent = get_selected_posts_display(selected_posts)
   selected_posts_input.value = selected_posts
 }
@@ -205,42 +193,41 @@ make_exotic_bet = () => {
       "selected_posts": concat_posts
     },
     success: function(data) {
-      console.log("made_ exotic bet")
-      console.log(data)
-      let posts_display = ""
-      for (i=0; i<selected_posts.length; i++) {
-        posts_display += selected_posts[i]
-        if ((i +1) < selected_posts.length) {
-          posts_display += ","
-        }
-      }
-
-      console.log(get_selected_posts_display(data["posts"]))
-
-      // const win_bet = data['bets']['W']
-      // const place_bet = data['bets']['P']
-      // const show_bet = data['bets']['S']
-      //
-      // const part_id = data["participant_id"]
-      //
-      // if (win_bet) {
-      //   const target_td = document.getElementById(part_id + "-win-td")
-      //   target_td.innerHTML = "";
-      //   target_td.appendChild(create_button(win_bet.toFixed(2)))
-      // }
-      // if (place_bet) {
-      //   const target_td = document.getElementById(part_id + "-place-td")
-      //   target_td.innerHTML = "";
-      //   target_td.appendChild(create_button(place_bet.toFixed(2)))
-      //
-      // }
-      // if (show_bet) {
-      //   const target_td = document.getElementById(part_id + "-show-td")
-      //   target_td.innerHTML = "";
-      //   target_td.appendChild(create_button(show_bet.toFixed(2)))
-      // }
+      console.log("made_exotic bet")
+      exotic_race_div = document.getElementById(
+        "exotic-wagers-" + data["race_uuid"])
+      exotic_race_div.appendChild(
+        build_exotic_div(
+            data["amount"],
+            data["type"],
+            get_selected_posts_display(data["posts"]),
+            data["wager_uuid"]))
     }
   })
+}
+
+const build_delete_button = (wager_uuid) => {
+  const button = document.createElement("button");
+  button.setAttribute("type", "button");
+  button.setAttribute("class", "btn btn-sm btn-outline-danger float-right exotic-delete-button");
+  button.setAttribute("data-wagerid", wager_uuid)
+  button.textContent = "✕"
+  return button
+}
+
+const build_exotic_span = (amount, name, posts) => {
+  const span = document.createElement("span");
+  span.setAttribute("class", "exotic-wager-span");
+  span.textContent = "$" + amount + " " + name + " " + posts;
+  return span
+}
+
+const build_exotic_div = (amount, name, posts, wager_uuid) => {
+  const div = document.createElement("div");
+  div.setAttribute("class", "list-group-item exotic-wager-item");
+  div.appendChild(build_exotic_span(amount, name, posts))
+  div.appendChild(build_delete_button(wager_uuid))
+  return div
 }
 //
 //
