@@ -265,7 +265,7 @@ body {
   display:none;
 }
 
-#amount_input {
+#amount_input, #exotic_amount_input {
   background-color: #222;
   color: inherit;
   width: 100px;

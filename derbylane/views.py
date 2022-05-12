@@ -170,7 +170,7 @@ def load_charts(request):
 
 def make_exotic_bet(request):
     print("arrived")
-    print([char for char in request.GET.get('posts-input')])
+    print([char for char in request.GET.get('selected_posts')])
 
 def make_bet(request):
     participant_id = request.GET.get('participant_id')

@@ -27,7 +27,19 @@
                 <option value="T">Trifecta</option>
                 <option value="S">Superfecta</option>
               </select>
-              {% include 'modal_components/bet_amount.html' %}
+              <div
+                class="modal-select">
+                <span class="bet_amount_dollar pull-right">$</span>
+
+                <input
+                  id="exotic_amount_input"
+                  type="number"
+                  name="amount"
+                  min="1"
+                  max="1000"
+                  value="2">
+              </div>
+
             </div>
             {% include "modal_components/post_select.html" %}
             {% include "modal_components/finish_order.html" %}
@@ -37,14 +49,5 @@
         </div>
     </div>
 </div>
-
-<script
-  id="exotic-bet-modal-data"
-  type="application/json">
-  {
-    "make_exotic_bet_url": "{% url 'make_exotic_bet' %}"
-  }
-</script>
-
 
 <script src="{% static 'js/exotic_modal.js' %}"></script>
