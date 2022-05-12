@@ -7,12 +7,25 @@
     data-dismiss="modal">
     Clear
   </button>
-  <button
-    id="submit_bet"
-    type="button"
-    class="btn btn-outline-success"
-    onclick="handle_submit('make')"
-    data-dismiss="modal">
-    Save
-  </button>
+
+  {% if exotic %}
+    <button
+      id="submit_exotic_bet"
+      type="button"
+      class="btn btn-outline-success"
+      onclick="handle_submit('make')"
+      disabled
+      data-dismiss="modal">
+      Save
+    </button>
+  {% else %}
+    <button
+      id="submit_bet"
+      type="button"
+      class="btn btn-outline-success"
+      onclick="handle_submit('make')"
+      data-dismiss="modal">
+      Save
+    </button>
+  {% endif %}
 </div>

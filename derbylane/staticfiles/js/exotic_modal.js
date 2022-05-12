@@ -1,21 +1,9 @@
-const exotic_modal = document.getElementById("bet-modal")
-const exotic_bet_types = document.getElementById("exotic_bet_types")
-const exotic_post_select = document.getElementsByClassName("exotic-post-select")
-const finish_order = document.getElementById("finish-order")
-const finish_order_div = document.getElementById("finish-order-div")
-const submit_bet_button = document.getElementById("submit_exotic_bet")
-const selected_posts_input = document.getElementById("posts-input")
+console.log("NEW")
 const selected_posts = []
 
 let dogs_required = 2
 let finish_order_required = false
 
-$( document ).ready(function() {
-    console.log( "ready!" );
-    console.log(exotic_modal)
-});
-console.log("apple")
-console.log("banana")
 exotic_modal.addEventListener("focus", function (e) {
   const button = $(event.relatedTarget) // Button that triggered the modal
   if (button.hasClass("exotic-bet")) {
@@ -31,6 +19,24 @@ exotic_modal.addEventListener("focus", function (e) {
     )
   }
 })
+
+$( document ).ready(function() {
+  const exotic_modal = document.getElementById("exotic-modal")
+  const exotic_bet_types = document.getElementById("exotic_bet_types")
+  const exotic_post_select = document.getElementsByClassName("exotic-post-select")
+  const finish_order = document.getElementById("finish-order")
+  const finish_order_div = document.getElementById("finish-order-div")
+  const submit_bet_button = document.getElementById("submit_exotic_bet")
+  const selected_posts_input = document.getElementById("posts-input")
+
+  exotic_bet_types.addEventListener("change", handle_exotic_change)
+
+  for (let i=0; i<exotic_post_select.length; i++) {
+    exotic_post_select[i].addEventListener("click", handle_select_post)
+  }
+
+});
+
 
 handle_exotic_submit = (action) => {
   console.log("make exotic bet")
@@ -142,11 +148,6 @@ handle_select_post = (e) => {
 
 
 
-exotic_bet_types.addEventListener("change", handle_exotic_change)
-
-for (let i=0; i<exotic_post_select.length; i++) {
-  exotic_post_select[i].addEventListener("click", handle_select_post)
-}
 
 handle_submit_exotic = (action) => {
   participant_id = document.getElementById("participant_uuid").textContent
