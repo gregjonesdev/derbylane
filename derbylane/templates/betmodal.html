@@ -47,36 +47,9 @@
                 <option value="PS">PS</option>
               </select>
               <!-- <input type="text" id="bet_types" name="bet_type" disabled> -->
-              <div class="modal-select">
-                <span class="bet_amount_dollar">$</span>
-                <span id="participant_uuid"></span>
-                <input
-                  id="amount_input"
-                  type="number"
-                  name="amount"
-                  min="1"
-                  max="1000"
-                  value="2">
-              </div>
-
-            <div class="modal-footer">
-              <button
-                id="clear_bet"
-                type="button"
-                class="btn btn-outline-danger"
-                onclick="handle_submit('clear')"
-                data-dismiss="modal">
-                Clear
-              </button>
-              <button
-                id="submit_bet"
-                type="button"
-                class="btn btn-outline-success"
-                onclick="handle_submit('make')"
-                data-dismiss="modal">
-                Save
-              </button>
-            </div>
+            
+              {% block modal_footer %}
+              {% endblock modal_footer %}
           </form>
         </div>
       </div>

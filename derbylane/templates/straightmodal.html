@@ -1,19 +1,55 @@
-{% extends 'base_modal.html' %}
+{% load static %}
 
-{% block subtitle %}
-<span class="modal-subtitle"></span>
-{% endblock subtitle %}
+<div
+  class="modal fade"
+  id="straight-bet-modal"
+  tabindex="-1"
+  role="dialog"">
+  <div
+    class="modal-dialog"
+    role="document">
+    <div
+      class="modal-content"
+      style="background-color: #111">
+      {% include 'modal_components/header.html' %}
+      <span class="modal-subtitle"></span>
+      <div class="modal-body">
+        <form
+          action="{% url 'make_bet' %}"
+          method="post"
+          id="modal-form">
+          <select
+            name="bet_type"
+            id="bet_types"
+            class="modal-select modal-bet-selector pull-right">
+            <option value="W">WIN</option>
+            <option value="P">PLC</option>
+            <option value="S">SHW</option>
+            <option value="WP">WP</option>
+            <option value="WPS">WPS</option>
+            <option value="PS">PS</option>
+          </select>
 
-{% block select_bet %}
-<select
-  name="bet_type"
-  id="bet_types"
-  class="modal-select modal-bet-selector pull-right">
-  <option value="W">WIN</option>
-  <option value="P">PLC</option>
-  <option value="S">SHW</option>
-  <option value="WP">WP</option>
-  <option value="WPS">WPS</option>
-  <option value="PS">PS</option>
-</select>
-{% endblock select_bet %}
+          {% include 'modal_components/bet_amount.html' %}
+          {% include 'modal_components/footer.html' %}
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+
+<span id="participant_uuid"></span>
+
+
+
+<script
+  id="bet-modal-data"
+  type="application/json">
+  {
+    "make_bets_url": "{% url 'make_bet' %}"
+  }
+</script>
+
+<script src="{% static 'js/modal.js' %}"></script> -->

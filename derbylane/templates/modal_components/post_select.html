@@ -1,22 +1,3 @@
-
-{% block subtitle %}
-  <span class="modal-subtitle">Lorem Ipsum</span>
-{% endblock subtitle %}
-
-{% block select_bet %}
-  <select
-    name="bet_type"
-    id="exotic_bet_types"
-    class="modal-select modal-bet-selector pull-right" style="text-align:center">
-    <option value="Q">Quiniela</option>
-    <option value="E">Exacta</option>
-    <option value="T">Trifecta</option>
-    <option value="S">Superfecta</option>
-  </select>
-{% endblock select_bet %}
-
-
-{% block post_select %}
 <div class="btn-group" style="width: 100%" role="group">
   <button
     type="button"
@@ -61,19 +42,16 @@
 </div>
 
 <div class="btn-group" style="width: 100%" role="group">
-  {% for i in range(4) %}
-    <button
-      type="button"
-      value="5"
-      style="margin: 5px;"
-      class="btn btn-outline-primary exotic-post-select"
-      data-toggle="button"
-      aria-pressed="false"
-      autocomplete="off">
-      5
-    </button>
-  {% endfor %}
-
+  <button
+    type="button"
+    value="5"
+    style="margin: 5px;"
+    class="btn btn-outline-primary exotic-post-select"
+    data-toggle="button"
+    aria-pressed="false"
+    autocomplete="off">
+    5
+  </button>
   <button
     type="button"
     value="6"
@@ -105,11 +83,3 @@
     8
   </button>
 </div>
-{% endblock post_select %}
-
-{% block finish_order %}
-<div id="finish-order-div" style="visibility: hidden; margin: 20px">
-  <h2><span class="float-left">Finish Order:</span> <span id="finish-order"></span></h2>
-  <input type="hidden" id="posts-input" name="posts" value="">
-</div>
-{% endblock finish_order %}
