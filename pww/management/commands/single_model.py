@@ -20,6 +20,7 @@ class Command(BaseCommand):
         parser.add_argument('--prediction', type=str)
 
     def handle(self, *args, **options):
+        print("handle")
         c_factor = 0.4
         classifier_name = "smoreg"
         race_key = "universal"
@@ -34,6 +35,7 @@ class Command(BaseCommand):
                 "2020-01-01",
                 "2021-12-31"))
         is_nominal = False
+        print('37')
         training_arff = get_training_arff(
             race_key,
             training_metrics,
