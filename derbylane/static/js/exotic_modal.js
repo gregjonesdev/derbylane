@@ -29,18 +29,7 @@ exotic_modal.addEventListener("focus", function (e) {
 
 })
 
-handle_exotic_delete = (wager_uuid) => {
-  $.ajax({
-    url: json_data["delete_exotic_bet_url"],
-    dataType: "json",
-    data: {
-      "wager_uuid": wager_uuid,
-    },
-    success: function(data) {
-      document.getElementById(data["deleted_wager"] + "-wager-div").remove()
-    }
-  })
-}
+
 
 
 handle_exotic_change = (e) => {
@@ -204,8 +193,8 @@ const build_delete_button = (wager_uuid) => {
   const button = document.createElement("button");
   button.setAttribute("type", "button");
   button.setAttribute("class", "btn btn-sm btn-outline-danger float-right exotic-delete-button");
-  button.setAttribute("data-wagerid", wager_uuid)
-  button.addEventListener("click", handle_exotic_delete(wager_uuid))
+  button.setAttribute("data-wageruuid", wager_uuid)
+  button.addEventListener("click", handle_exotic_delete)
   button.textContent = "✕"
   return button
 }
@@ -220,6 +209,7 @@ const build_exotic_span = (amount, name, posts) => {
 const build_exotic_div = (amount, name, posts, wager_uuid) => {
   const div = document.createElement("div");
   div.setAttribute("class", "list-group-item exotic-wager-item");
+  div.setAttribute("id", wager_uuid + "-wager-div");
   div.appendChild(build_exotic_span(amount, name, posts))
   div.appendChild(build_delete_button(wager_uuid))
   return div

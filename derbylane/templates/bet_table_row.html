@@ -26,13 +26,21 @@ colspan="5">
     <span class="exotic-wager-span">${{ wager.amount }} {{ wager.get_name }} {{ wager.get_posts }}</span>
     <button
       type="button"
-      class="btn btn-sm btn-outline-danger float-right exotic-delete-button"
-      onclick=handle_exotic_delete("{{ wager.uuid }}")>
+      data-wageruuid="{{ wager.uuid }}"
+      class="btn btn-sm btn-outline-danger float-right exotic-delete-button">
       &#10005;
     </button>
   </div>
 {% endfor %}
 </div>
+
+<script>
+  exotic_delete_buttons = document.getElementsByClassName("exotic-delete-button")
+  for (let i=0; i<exotic_delete_buttons.length; i++) {
+    console.log(i)
+    exotic_delete_buttons[i].addEventListener("click", handle_exotic_delete)
+  }
+</script>
 
 {% endblock table_head %}
 

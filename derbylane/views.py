@@ -191,7 +191,7 @@ def delete_exotic_bet(request):
 
 
     return JsonResponse({
-        "deleted_wager":  wager_uuid})
+        "wager_uuid":  wager_uuid})
 
 def make_exotic_bet(request):
     race_uuid = request.GET.get('race_uuid')
