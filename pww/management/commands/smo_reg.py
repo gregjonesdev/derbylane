@@ -9,6 +9,7 @@ from pww.utilities.arff import (
     get_training_arff,
     get_testing_arff,
 )
+from pwww.utilities.weka import remove_uuid
 from pww.utilities.testing import evaluate_model_cutoffs
 from weka.classifiers import MultiSearch
 import weka.core.packages as packages
@@ -21,7 +22,7 @@ class Command(BaseCommand):
         loader = conv.Loader(classname=
             "weka.core.converters.ArffLoader")
         model_data = loader.load_file(train)
-        # model_data = remove_uuid(model_data)
+        model_data = remove_uuid(model_data)
         model_data.class_is_last()
         # multi = MultiSearch(
         # options=["-sample-size", "100.0", "-initial-folds", "2", "-subsequent-folds", "2",
@@ -62,7 +63,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("handle")
         print(packages.__dict__)
-        test_arff = "arff/numerictest.arff"
+        test_arff = "arff/numerictest2.arff"
         classifier_name = "smoreg"
         jvm.start(
             packages=True,
