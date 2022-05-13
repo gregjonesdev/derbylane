@@ -18,10 +18,10 @@ from weka.core.classes import ListParameter, MathParameter
 class Command(BaseCommand):
 
     def create_model(self, train):
-        multi = MultiSearch(
-        options=["-sample-size", "100.0", "-initial-folds", "2", "-subsequent-folds", "2",
-                 "-num-slots", "1", "-S", "1"])
-        options=["-S", "1"])         
+        # multi = MultiSearch(
+        # options=["-sample-size", "100.0", "-initial-folds", "2", "-subsequent-folds", "2",
+        #          "-num-slots", "1", "-S", "1"])
+        multi = MultiSearch(options=["-S", "1"])
 
         # javabridge.jutil.JavaException: Illegal options:
         # -sample-size 100.0
@@ -58,9 +58,5 @@ class Command(BaseCommand):
             packages=True,
             max_heap_size="5028m"
         )
-
-        items = packages.all_packages()
-        for item in items:
-            print(item.name)
         self.create_model(test_arff)
         jvm.stop()
