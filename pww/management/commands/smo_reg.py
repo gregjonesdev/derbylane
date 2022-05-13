@@ -10,7 +10,7 @@ from pww.utilities.arff import (
     get_testing_arff,
 )
 from pww.utilities.testing import evaluate_model_cutoffs
-import weka.classifiers.meta.MultiSearch as MultiSearch
+import weka.classifiers as whatip
 import weka.core.packages as packages
 
 from weka.core.classes import ListParameter, MathParameter
@@ -43,6 +43,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print("handle")
+        print(whatip.__dict__)
         test_arff = "arff/numerictest.arff"
         classifier_name = "smoreg"
         jvm.start(
