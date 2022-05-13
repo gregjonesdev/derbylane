@@ -66,8 +66,6 @@ make_bet = (participant_id) => {
       "bet_types": document.getElementById("bet_types").value
     },
     success: function(data) {
-      // console.log("made_bet")
-
       const win_bet = data['bets']['W']
       const place_bet = data['bets']['P']
       const show_bet = data['bets']['S']

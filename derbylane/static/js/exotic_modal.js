@@ -188,7 +188,6 @@ make_exotic_bet = () => {
       "selected_posts": concat_posts
     },
     success: function(data) {
-      console.log("made_exotic bet")
       exotic_race_div = document.getElementById(
         "exotic-wagers-" + data["race_uuid"])
       exotic_race_div.appendChild(
@@ -197,6 +196,8 @@ make_exotic_bet = () => {
             data["type"],
             get_selected_posts_display(data["posts"]),
             data["wager_uuid"]))
+      $( "#" + "exotic-wagers-" + data["race_uuid"] ).load(
+        window.location.href + "#" + "exotic-wagers-" + data["race_uuid"] );
     }
   })
 }
