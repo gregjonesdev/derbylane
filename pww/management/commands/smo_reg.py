@@ -42,13 +42,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print("handle")
-        packages.install_package("MultiObjectiveEvolutionarySearch")
-    
         test_arff = "arff/numerictest.arff"
         classifier_name = "smoreg"
         jvm.start(
             packages=True,
             max_heap_size="5028m"
         )
+        packages.install_package("MultiObjectiveEvolutionarySearch")
+        items = packages.all_packages()
+        for item in items:
+            print(item.name)
         self.create_model(test_arff)
         jvm.stop()
