@@ -37,7 +37,7 @@ class Command(BaseCommand):
         multi.classifier = cls
         multi.build_classifier(train)
         print("Model:\n" + str(multi))
-        print("\nBest setup:\n" + multi.best.to_commandline()
+        print("\nBest setup:\n" + multi.best.to_commandline())
 
     def handle(self, *args, **options):
         print("handle")
