@@ -29,6 +29,19 @@ exotic_modal.addEventListener("focus", function (e) {
 
 })
 
+handle_exotic_delete = (wager_uuid) => {
+  $.ajax({
+    url: json_data["delete_exotic_bet_url"],
+    dataType: "json",
+    data: {
+      "wager_uuid": wager_uuid,
+    },
+    success: function(data) {
+      document.getElementById(data["deleted_wager"] + "-wager-div").remove()
+    }
+  })
+}
+
 
 handle_exotic_change = (e) => {
   finish_order_div.style.visibility = "hidden"
@@ -64,9 +77,6 @@ handle_select_post = (e) => {
   }
 
   update_finish_order()
-  // if (e.currentTarget.value == "4") {
-  //   disable_remaining_posts()
-  // }
 }
 
 exotic_bet_types.addEventListener("change", handle_exotic_change)
@@ -162,22 +172,7 @@ get_selected_posts_display = (list) => {
   return text_content
 
 }
-//
-// clear_bet = (participant_id) => {
-//   $.ajax({
-//     url: json_data["clear_bets_url"],
-//     dataType: "json",
-//     data: {
-//       "participant_id": participant_id,
-//     },
-//     success: function(data) {
-//       const part_id = data["participant_id"]
-//       document.getElementById(part_id + "-win-td").innerHTML = "";
-//       document.getElementById(part_id + "-place-td").innerHTML = "";
-//       document.getElementById(part_id + "-show-td").innerHTML = "";}
-// })
-// }
-//
+
 make_exotic_bet = () => {
   let concat_posts = ""
   for (let i=0; i<selected_posts.length; i++) {

@@ -4,6 +4,7 @@ from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
 import datetime
 import time
+
 from django.shortcuts import redirect
 from django.views.generic import View
 from django.shortcuts import render
@@ -173,14 +174,29 @@ def load_charts(request):
         request,
         'load_charts.html', {'charts': charts, })
 
+def delete_exotic_bet(request):
+    wager_uuid = request.GET.get('wager_uuid')
+
+    try:
+        wager = Quiniela_Wager.objects.get(uuid=wager_uuid)
+    except ObjectDoesNotExist:
+        try:
+            wager = Exacta_Wager.objects.get(uuid=wager_uuid)
+        except ObjectDoesNotExist:
+            try:
+                wager = Trifecta_Wager.objects.get(uuid=wager_uuid)
+            except ObjectDoesNotExist:
+                wager = Superfecta_Wager.objects.get(uuid=wager_uuid)
+    wager.delete()
+
+
+    return JsonResponse({
+        "deleted_wager":  wager_uuid})
+
 def make_exotic_bet(request):
     race_uuid = request.GET.get('race_uuid')
     amount = request.GET.get('amount')
     bet_type = request.GET.get('bet_type')
-    print(bet_type)
-    print(race_uuid)
-    print(amount)
-
 
     selected_posts = [char for char in request.GET.get('selected_posts')]
     race = Race.objects.get(uuid=race_uuid)
