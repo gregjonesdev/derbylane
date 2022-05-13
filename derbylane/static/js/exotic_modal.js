@@ -166,7 +166,7 @@ get_selected_posts_display = (list) => {
   for (let i=0; i<list.length; i++) {
     text_content += list[i]
     if (i < (list.length -1)) {
-      text_content += ","
+      text_content += ", "
     }
   }
   return text_content
