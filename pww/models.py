@@ -99,7 +99,7 @@ class Metric(CoreModel):
         rh_factor = self.rh_factor if self.rh_factor else 0.5
         age = self.age if self.age else 990 # 33 months
         sex = self.sex if self.sex else "M"
-        metric_csv_string = "{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
+        metric_csv_string = "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
             # self.participant.uuid,
             self.scaled_fastest_time,
             self.win,
@@ -119,7 +119,7 @@ class Metric(CoreModel):
             post_factor,
             # temp_factor,
             # rh_factor,
-            # final
+            final
             )
         if not "None" in metric_csv_string:
             return metric_csv_string
