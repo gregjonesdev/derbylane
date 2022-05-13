@@ -213,7 +213,6 @@ const build_exotic_span = (amount, name, posts) => {
   const span = document.createElement("span");
   span.setAttribute("class", "exotic-wager-span");
   span.textContent = "$" + parseInt(amount).toFixed(2) + " " + name + " " + posts;
-  span.style.color = "yellow"
   return span
 }
 
