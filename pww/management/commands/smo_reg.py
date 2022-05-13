@@ -45,7 +45,7 @@ class Command(BaseCommand):
         # packages.install_package()
         items = packages.all_packages()
         for item in items:
-            print(item.name + " " + item.url)
+            print(item.name)
         raise SystemExit(0)
         test_arff = "arff/numerictest.arff"
         classifier_name = "smoreg"
