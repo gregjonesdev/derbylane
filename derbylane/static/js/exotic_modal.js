@@ -196,8 +196,6 @@ make_exotic_bet = () => {
             data["type"],
             get_selected_posts_display(data["posts"]),
             data["wager_uuid"]))
-      $( "#" + "exotic-wagers-" + data["race_uuid"] ).load(
-        window.location.href + "#" + "exotic-wagers-" + data["race_uuid"] );
     }
   })
 }
@@ -214,7 +212,8 @@ const build_delete_button = (wager_uuid) => {
 const build_exotic_span = (amount, name, posts) => {
   const span = document.createElement("span");
   span.setAttribute("class", "exotic-wager-span");
-  span.textContent = "$" + amount.toFixed(2) + " " + name + " " + posts;
+  span.textContent = "$" + parseInt(amount).toFixed(2) + " " + name + " " + posts;
+  span.style.color = "yellow"
   return span
 }
 
