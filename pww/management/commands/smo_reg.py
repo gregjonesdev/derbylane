@@ -43,7 +43,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("handle")
         # packages.install_package()
-        # items = packages.all_packages()
+        items = packages.all_packages()
         for item in items:
             print(item.name + " " + item.url)
         raise SystemExit(0)
