@@ -689,7 +689,7 @@ class Quiniela_Wager(CoreModel):
         return "Quinella"
 
     def get_posts(self):
-        return "{},{}".format(self.left.post, self.right.post)
+        return "{}, {}".format(self.left.post, self.right.post)
 
 class Exacta_Wager(CoreModel):
 
@@ -717,7 +717,7 @@ class Exacta_Wager(CoreModel):
         return "Exacta"
 
     def get_posts(self):
-        return "{},{}".format(self.win.post, self.place.post)
+        return "{}, {}".format(self.win.post, self.place.post)
 
 class Trifecta_Wager(CoreModel):
 
@@ -749,7 +749,7 @@ class Trifecta_Wager(CoreModel):
         return "Trifecta"
 
     def get_posts(self):
-        return "{},{},{}".format(self.win.post, self.place.post, self.show.post)
+        return "{}, {}, {}".format(self.win.post, self.place.post, self.show.post)
 
 class Superfecta_Wager(CoreModel):
 
@@ -785,7 +785,7 @@ class Superfecta_Wager(CoreModel):
         return "Superfecta"
 
     def get_posts(self):
-        return "{},{},{},{}".format(
+        return "{}, {}, {}, {}".format(
             self.win.post,
             self.place.post,
             self.show.post,
