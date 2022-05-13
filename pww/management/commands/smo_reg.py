@@ -10,7 +10,7 @@ from pww.utilities.arff import (
     get_testing_arff,
 )
 from pww.utilities.testing import evaluate_model_cutoffs
-# import weka.classifiers.MultiSearch as MultiSearch
+import weka.classifiers import MultiSearch
 import weka.core.packages as packages
 
 from weka.core.classes import ListParameter, MathParameter
@@ -51,7 +51,8 @@ class Command(BaseCommand):
             max_heap_size="5028m"
         )
         packages.install_package("multisearch")
-        packages.package_info("multisearch")
+        packages.packageinfo("multisearch")
+        raise SystemExit(0)
         items = packages.all_packages()
         for item in items:
             print(item.name)
