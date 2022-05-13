@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
     def create_model(self, train):
         multi = MultiSearch(
-        options=["-sample-size", "100.0", "-initial-folds", "2", "-subsequent-folds", "2",
+        options=["-sample-size", "4.0", "-initial-folds", "2", "-subsequent-folds", "2",
                  "-num-slots", "1", "-S", "1"])
 
         # javabridge.jutil.JavaException: Illegal options:
@@ -27,7 +27,7 @@ class Command(BaseCommand):
         # -initial-folds 2
         # -subsequent-folds 2
         # -num-slots 1
-            
+
         multi.evaluation = "CC"
         mparam = MathParameter()
         mparam.prop = "classifier.kernel.gamma"
