@@ -48,7 +48,7 @@ class Command(BaseCommand):
             packages=True,
             max_heap_size="5028m"
         )
-        packages.install_package("MultiObjectiveEvolutionarySearch")
+        packages.install_package("multisearch")
         items = packages.all_packages()
         for item in items:
             print(item.name)
