@@ -10,7 +10,7 @@ from pww.utilities.arff import (
     get_testing_arff,
 )
 from pww.utilities.testing import evaluate_model_cutoffs
-import weka.classifiers.meta.MultiSearch
+import weka.classifiers.meta.MultiSearch as MultiSearch
 import weka.core.packages as packages
 
 from weka.core.classes import ListParameter, MathParameter
