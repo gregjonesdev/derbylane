@@ -9,7 +9,7 @@ from pww.utilities.arff import (
     get_training_arff,
     get_testing_arff,
 )
-from pwww.utilities.weka import remove_uuid
+from pww.utilities.weka import remove_uuid
 from pww.utilities.testing import evaluate_model_cutoffs
 from weka.classifiers import MultiSearch
 import weka.core.packages as packages
