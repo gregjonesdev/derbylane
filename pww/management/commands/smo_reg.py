@@ -50,7 +50,7 @@ class Command(BaseCommand):
             packages=True,
             max_heap_size="5028m"
         )
-        packages.install_package("multisearch")
+        packages.install_package("MultiSearch")
         items = packages.all_packages()
         for item in items:
             print(item.name)
