@@ -44,12 +44,14 @@ class Command(BaseCommand):
         )
         loader = conv.Loader(classname=
             "weka.core.converters.ArffLoader")
+        print("47")
         model = create_model(
             training_arff,
             classifier_name,
             str(c_factor),
             race_key,
             loader)
+        print("48")
         print("\nAvg Returns for dogs predicted to finish: {}".format(
             target_prediction))
         print("Training Metrics: {}\n".format(
