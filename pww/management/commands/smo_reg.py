@@ -21,6 +21,13 @@ class Command(BaseCommand):
         multi = MultiSearch(
         options=["-sample-size", "100.0", "-initial-folds", "2", "-subsequent-folds", "2",
                  "-num-slots", "1", "-S", "1"])
+
+        # javabridge.jutil.JavaException: Illegal options:
+        # -sample-size 100.0
+        # -initial-folds 2
+        # -subsequent-folds 2
+        # -num-slots 1
+            
         multi.evaluation = "CC"
         mparam = MathParameter()
         mparam.prop = "classifier.kernel.gamma"
