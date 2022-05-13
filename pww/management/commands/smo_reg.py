@@ -12,7 +12,7 @@ from pww.utilities.arff import (
 from pww.utilities.testing import evaluate_model_cutoffs
 from weka.classifiers import MultiSearch
 import weka.core.packages as packages
-
+from weka.classifiers import Classifier
 from weka.core.classes import ListParameter, MathParameter
 
 class Command(BaseCommand):
