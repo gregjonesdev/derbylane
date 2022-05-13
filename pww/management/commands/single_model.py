@@ -22,7 +22,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("handle")
         c_factor = 0.4
-        classifier_name = "smoreg"
+        classifier_name = "j48"
         race_key = "universal"
         venue_code = sys.argv[3]
         grade = sys.argv[5]
