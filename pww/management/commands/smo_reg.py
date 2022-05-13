@@ -18,23 +18,13 @@ from weka.core.classes import ListParameter, MathParameter
 
 class Command(BaseCommand):
 
-    def create_model(self, train):
+    def find_best_setup(self, train):
         loader = conv.Loader(classname=
             "weka.core.converters.ArffLoader")
         model_data = loader.load_file(train)
         model_data = remove_uuid(model_data)
         model_data.class_is_last()
-        # multi = MultiSearch(
-        # options=["-sample-size", "100.0", "-initial-folds", "2", "-subsequent-folds", "2",
-        #          "-num-slots", "1", "-S", "1"])
         multi = MultiSearch(options=["-S", "1"])
-
-        # javabridge.jutil.JavaException: Illegal options:
-        # -sample-size 100.0
-        # -initial-folds 2
-        # -subsequent-folds 2
-        # -num-slots 1
-
         multi.evaluation = "CC"
         mparam = MathParameter()
         mparam.prop = "classifier.kernel.gamma"
@@ -51,23 +41,33 @@ class Command(BaseCommand):
             classname="weka.classifiers.functions.SMOreg",
             options=["-K", "weka.classifiers.functions.supportVector.RBFKernel"])
 
-#         File "/home/greg/derbylane/dl_env/lib/python3.8/site-packages/weka/classifiers.py", line 104, in build_classifier
-#     self._header = data.copy_structure()
-# AttributeError: 'str' object has no attribute 'copy_structure'
-        print("51")
         multi.classifier = cls
         multi.build_classifier(model_data)
         print("Model:\n" + str(multi))
         print("\nBest setup:\n" + multi.best.to_commandline())
 
+    def get_training_metrics(self, venue_code, grade):
+
+        return Metric.objects.filter(
+            participant__race__grade__name=grade,
+            participant__race__chart__program__venue__code=venue_code,
+            participant__race__chart__program__date__range=(
+                "2020-01-01",
+                "2021-12-31"))
+
     def handle(self, *args, **options):
-        print("handle")
-        print(packages.__dict__)
-        test_arff = "arff/numerictest2.arff"
         classifier_name = "smoreg"
+        venue_code = "TS"
+        grade = "B"
+        is_nominal = False
+        training_metrics = self.get_training_metrics(venue_code, grade)
+        training_arff = get_training_arff(
+            race_key,
+            training_metrics,
+            is_nominal)
         jvm.start(
             packages=True,
             max_heap_size="5028m"
         )
-        self.create_model(test_arff)
+        self.find_best_setup(training_arff)
         jvm.stop()
