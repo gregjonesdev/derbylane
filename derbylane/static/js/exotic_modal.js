@@ -218,7 +218,7 @@ const build_delete_button = (wager_uuid) => {
 const build_exotic_span = (amount, name, posts) => {
   const span = document.createElement("span");
   span.setAttribute("class", "exotic-wager-span");
-  span.textContent = "$" + amount + " " + name + " " + posts;
+  span.textContent = "$" + amount.toFixed(2) + " " + name + " " + posts;
   return span
 }
 

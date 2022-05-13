@@ -28,6 +28,7 @@ from rawdat.models import (
     Straight_Wager,
     Quiniela_Wager,
     Trifecta_Wager,
+    Superfecta_Wager,
     Exacta_Wager)
 
 
