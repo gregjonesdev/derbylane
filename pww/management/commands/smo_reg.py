@@ -43,7 +43,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print("handle")
-        print(MultiSearch.__dict__)
+        print(packages.__dict__)
         test_arff = "arff/numerictest.arff"
         classifier_name = "smoreg"
         jvm.start(
