@@ -42,11 +42,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print("handle")
-        packages.install_package()
+        # packages.install_package()
         # items = packages.all_packages()
         for item in items:
             print(item.name + " " + item.url)
-        raise SystemExit(0)    
+        raise SystemExit(0)
         test_arff = "arff/numerictest.arff"
         classifier_name = "smoreg"
         jvm.start(
