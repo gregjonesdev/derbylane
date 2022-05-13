@@ -5,10 +5,10 @@ def write_headers(arff_file, is_nominal):
     for each in csv_columns:
         if is_nominal and each == "Fi":
             arff_file.write("@attribute {} nominal\n".format(each))
-        elif each == "PID":
-            arff_file.write("@attribute PID string\n")
-        elif each == "Se":
-            arff_file.write("@attribute Se {M, F}\n")
+        # elif each == "PID":
+        #     arff_file.write("@attribute PID string\n")
+        # elif each == "Se":
+        #     arff_file.write("@attribute Se {M, F}\n")
         else:
             arff_file.write("@attribute {} numeric\n".format(each))
     arff_file.write("@data\n")

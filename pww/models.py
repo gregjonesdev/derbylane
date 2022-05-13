@@ -99,8 +99,8 @@ class Metric(CoreModel):
         rh_factor = self.rh_factor if self.rh_factor else 0.5
         age = self.age if self.age else 990 # 33 months
         sex = self.sex if self.sex else "M"
-        metric_csv_string = "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
-            self.participant.uuid,
+        metric_csv_string = "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
+            # self.participant.uuid,
             self.scaled_fastest_time,
             self.win,
             self.place,
