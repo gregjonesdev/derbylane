@@ -50,9 +50,7 @@ class Command(BaseCommand):
             packages=True,
             max_heap_size="5028m"
         )
-        packages.install_package("multisearch")
-        packages.packageinfo("multisearch")
-        raise SystemExit(0)
+
         items = packages.all_packages()
         for item in items:
             print(item.name)
