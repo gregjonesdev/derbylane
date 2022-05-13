@@ -59,6 +59,7 @@ class Command(BaseCommand):
         classifier_name = "smoreg"
         venue_code = "TS"
         grade = "B"
+        race_key = 'smoreg'
         is_nominal = False
         training_metrics = self.get_training_metrics(venue_code, grade)
         training_arff = get_training_arff(
