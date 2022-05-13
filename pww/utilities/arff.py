@@ -12,6 +12,7 @@ def write_headers(arff_file, is_nominal):
         else:
             arff_file.write("@attribute {} numeric\n".format(each))
     arff_file.write("@data\n")
+    print(arff_file)
     return arff_file
 
 
