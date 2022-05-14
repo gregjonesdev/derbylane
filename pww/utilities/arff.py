@@ -1,7 +1,7 @@
 from miner.utilities.constants import csv_columns
 from miner.utilities.urls import arff_directory
 
-def write_headers(arff_file, is_nominal):
+def write_headers(arff_file):
     for each in csv_columns:
         if is_nominal and each == "Fi":
             arff_file.write("@attribute {} nominal\n".format(each))
@@ -15,11 +15,11 @@ def write_headers(arff_file, is_nominal):
     return arff_file
 
 
-def create_arff(filename, metrics, is_nominal, is_training):
+def create_arff(filename, metrics, is_training):
 
     arff_file = open(filename, "w")
     arff_file.write("@relation Metric\n")
-    arff_file = write_headers(arff_file, is_nominal)
+    arff_file = write_headers(arff_file)
     for metric in metrics:
         csv_metric = metric.build_csv_metric(is_training)
         if csv_metric:
@@ -34,16 +34,14 @@ def get_arff_filename(type, race_key):
         race_key)
 
 
-def get_training_arff(race_key, metrics, is_nominal):
+def get_training_arff(race_key, metrics):
     return create_arff(
         get_arff_filename("train", race_key),
         metrics,
-        is_nominal,
         True)
 
-def get_testing_arff(race_key, metrics, is_nominal):
+def get_testing_arff(race_key, metrics):
      return create_arff(
         get_arff_filename("test", race_key),
         metrics,
-        is_nominal,
         False)

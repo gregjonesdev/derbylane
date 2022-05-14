@@ -42,9 +42,9 @@ def get_loaded_data(training_arff):
     loader = Loader(classname="weka.core.converters.ArffLoader")
     return loader.load_file(training_arff)
 
-def get_classifier(training_arff, classifier_attributes):
+def get_classifier(training_arff, classifier_attributes, loader):
     filename = "test_models/test.model"
-    loaded_data = get_loaded_data(training_arff)
+    loaded_data = get_loaded_data(training_arff, loader)
     filtered_data = get_filtered_data(
         loaded_data,
         classifier_attributes["is_nominal"])
@@ -63,3 +63,27 @@ def remove_uuid(data):
         options=["-R", "first"])
     remove.inputformat(data)
     return remove.filter(data)
+
+def get_uuid_line_index(filename):
+    arff_file = open(filename, "r")
+    uuid_line_index = {}
+    i = 0
+    for line in arff_file:
+        if len(line) > 100:
+            split_line = line.split(",")
+            uuid = line.split(",")[0]
+            uuid_line_index[i] = uuid
+            i += 1
+    return uuid_line_index
+
+def build_scheduled_data(arff_data):
+    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+    loaded_data = loader.load_file(arff_data)
+    anonymous_data = remove_uuid(loaded_data)
+    scheduled_data = nominalize(anonymous_data)
+    scheduled_data.class_is_last()
+    return scheduled_data
+
+def get_predictions(testing_arff, classifier, loader):
+    uuid_line_index = get_uuid_line_index(testing_arff)
+    testing_data = build_scheduled_data(testing_arff, loader)

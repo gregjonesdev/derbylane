@@ -96,16 +96,14 @@ class Command(BaseCommand):
         #     testing_arff_filename = "{}/test_{}.arff".format(
         #         arff_directory,
         #         race_key)
-        is_nominal = False
+
         training_arff = create_arff(
             training_arff_filename,
             training_metrics,
-            is_nominal,
             True)
         testing_arff = create_arff(
             testing_arff_filename,
             scheduled_metrics,
-            is_nominal,
             False)
 
         classifier_name = recommendation.classifier.lower()

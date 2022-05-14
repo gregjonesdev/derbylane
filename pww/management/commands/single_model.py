@@ -1,5 +1,6 @@
 import sys
-import weka.core.converters as conv
+from weka.core.converters import Loader
+
 import weka.core.jvm as jvm
 
 from django.core.management.base import BaseCommand
@@ -37,21 +38,16 @@ class Command(BaseCommand):
         classifier_attributes = classifiers[classifier_name]
         training_arff = get_training_arff(
             classifier_name,
-            training_metrics,
-            False)
+            training_metrics)
         jvm.start(
             packages=True,
             max_heap_size="5028m"
         )
-        from weka.core.converters import Loader
         loader = Loader(classname="weka.core.converters.ArffLoader")
-        print("Old way:")
-        create_model(training_arff, classifier_name, "0.5", "race_key", loader)
-        print("success")
-        print("new way:")
         classifier = get_classifier(
             training_arff,
-            classifier_attributes)
+            classifier_attributes,
+            loader)
 
 
 
@@ -60,7 +56,6 @@ class Command(BaseCommand):
         #     target_prediction))
         print("Training Metrics: {}\n".format(
             len(training_metrics)))
-        raise SystemExit(0)
         testing_metrics = Metric.objects.filter(
             participant__race__chart__program__venue__code=venue_code,
             participant__race__grade__name=grade,
@@ -69,13 +64,8 @@ class Command(BaseCommand):
                 "2022-04-20"))
         testing_arff = get_testing_arff(
             "{}_{}".format(venue_code, grade),
-            testing_metrics,
-            is_nominal)
+            testing_metrics)
         print("Testing Metrics: {}".format(len(testing_metrics)))
 
-
-        evaluate_nominal_model(
-            model,
-            # target_prediction,
-            testing_arff)
+        get_predictions(testing_arff, classifier, loader)
         jvm.stop()
