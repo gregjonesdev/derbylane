@@ -23,7 +23,6 @@ class Command(BaseCommand):
         print("handle")
         c_factor = ""
         classifier_name = "smoreg"
-        race_key = "smoreg"
         venue_code = sys.argv[3]
         grade = sys.argv[5]
         target_prediction = sys.argv[7]
@@ -34,30 +33,26 @@ class Command(BaseCommand):
             participant__race__chart__program__date__range=(
                 "2020-01-01",
                 "2021-12-31"))
-        is_nominal = False
+        classifier_attributes = classifiers[classifier_name]
+        is_nominal =
         training_arff = get_training_arff(
-            race_key,
+            classifier_name,
             training_metrics,
-            is_nominal)
+            classifier_attributes["is_nominal"])
         jvm.start(
             packages=True,
             max_heap_size="5028m"
         )
-        loader = conv.Loader(classname=
-            "weka.core.converters.ArffLoader")
         print("47")
-        model = create_model(
+        classifier = get_classifier(
             training_arff,
-            classifier_name,
-            str(c_factor),
-            race_key,
-            loader)
+            classifier_attributes)
         print("48")
         print("\nAvg Returns for dogs predicted to finish: {}".format(
             target_prediction))
         print("Training Metrics: {}\n".format(
             len(training_metrics)))
-
+        raise SystemExit(0)
         testing_metrics = Metric.objects.filter(
             participant__race__chart__program__venue__code=venue_code,
             participant__race__grade__name=grade,

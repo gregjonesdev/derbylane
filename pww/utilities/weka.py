@@ -21,7 +21,6 @@ from miner.utilities.constants import csv_columns
 import os
 import pprint
 
-
 classifiers = {
     "smo": {
         "classname": "weka.classifiers.functions.SMO",
