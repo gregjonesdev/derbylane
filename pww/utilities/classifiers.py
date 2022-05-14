@@ -48,7 +48,7 @@ classifiers = {
     },
     "simplek": {
         "is_nominal": True,
-        "classname": "weka.clusterers.SimpleKMeans",
+        "path": "weka.clusterers.SimpleKMeans",
         "options": [],
     },
     "ll": {
