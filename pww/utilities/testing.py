@@ -5,7 +5,8 @@ from pww.utilities.arff import (
 from pww.utilities.weka import (
     create_model,
     get_uuid_line_index,
-    get_prediction_confidence)
+    get_prediction_confidence,
+    print_nominal_prediction)
 
 from miner.utilities.common import two_digitizer
 
@@ -181,3 +182,15 @@ def evaluate_model_cutoffs(model, target_prediction, testing_arff):
         cutoff += cutoff_increment
 
         # self.print_returns(prediction_list, str(c), race_key, loader, prediction)
+
+def evaluate_nominal_model(model, target_prediction, testing_arff):
+    starting_cutoff = 0.95
+    ending_cutoff = 1.0
+    cutoff_increment = 0.05
+    cutoff = starting_cutoff
+    while cutoff <= ending_cutoff:
+        cutoff = round(cutoff, 2)
+        print("Cutoff: {}\n".format(cutoff))
+        print_nominal_prediction(testing_arff, model, target_prediction, confidence_cutoff)
+
+        cutoff += cutoff_increment
