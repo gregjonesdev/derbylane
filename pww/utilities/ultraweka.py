@@ -189,8 +189,8 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
     for each in interval_object.keys():
         string_row = "{} - {}\t{} ({}%)\t\t{}\t{}\t{}"
         percent = round((100*len(interval_object[each])/count), 2)
-        if len(interval_object[each]) > 99:
-            string_row = "{} - {}:\t{} ({}%)\t{}\t{}\t{}"
+        # if len(interval_object[each]) > 99:
+        #     string_row = "{} - {}:\t{} ({}%)\t{}\t{}\t{}"
         print(string_row.format(
             round(float(each), 2),
             round(float(each) + interval, 2),
