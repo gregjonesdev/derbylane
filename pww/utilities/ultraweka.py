@@ -4,7 +4,6 @@ from weka.attribute_selection import ASSearch
 from weka.attribute_selection import ASEvaluation
 from weka.attribute_selection import AttributeSelection
 from weka.classifiers import Classifier
-from weka.core.converters import Loader
 from weka.filters import Filter
 
 import weka.core.serialization as serialization
@@ -77,7 +76,7 @@ def get_uuid_line_index(filename):
     return uuid_line_index
 
 def build_scheduled_data(arff_data):
-    loader = conv.Loader(classname="weka.core.converters.ArffLoader")
+
     loaded_data = loader.load_file(arff_data)
     anonymous_data = remove_uuid(loaded_data)
     scheduled_data = nominalize(anonymous_data)
@@ -87,3 +86,8 @@ def build_scheduled_data(arff_data):
 def get_predictions(testing_arff, classifier, loader):
     uuid_line_index = get_uuid_line_index(testing_arff)
     testing_data = build_scheduled_data(testing_arff, loader)
+    for index, inst in enumerate(testing_data):
+        if index in uuid_line_index.keys():
+            uuid = uuid_line_index[index]
+            prediction = classifier.classify_instance(inst)
+            print("{}: {}".format(uuid, prediction))
