@@ -27,6 +27,7 @@ classifiers = {
         ],
     },
     "nbu": {
+        "is_nominal": True,
         "path": "weka.classifiers.bayes.NaiveBayesUpdateable",
         "options": [],
     },
