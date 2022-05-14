@@ -21,9 +21,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print("handle")
-        c_factor = 0.4
-        classifier_name = "j48"
-        race_key = "universal"
+        c_factor = ""
+        classifier_name = "smoreg"
+        race_key = "smoreg"
         venue_code = sys.argv[3]
         grade = sys.argv[5]
         target_prediction = sys.argv[7]
@@ -70,8 +70,10 @@ class Command(BaseCommand):
             testing_metrics,
             is_nominal)
         print("Testing Metrics: {}".format(len(testing_metrics)))
-        evaluate_model_cutoffs(
-            model,
-            target_prediction,
-            testing_arff)
+
+
+        # evaluate_model_cutoffs(
+        #     model,
+        #     target_prediction,
+        #     testing_arff)
         jvm.stop()
