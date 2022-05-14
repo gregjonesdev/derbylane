@@ -15,7 +15,7 @@ classifiers = {
     },
     "j48": {
         "path": "weka.classifiers.trees.J48",
-        "is_nominal": True,
+        "is_nominal": False,
         "options": [],
     },
     "randomforest": {
