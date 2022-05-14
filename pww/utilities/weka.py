@@ -110,15 +110,13 @@ def add_c_to_options(options, c):
     return options
 
 def create_model(training_arff, classifier_name, c, race_key, loader):
+    filename = "test_models/{}.model".format(classifier_name)
     classifier = classifiers[classifier_name]
     options = classifier["options"]
-    # options.append("-C")
-    # options.append(str(c))
-    # print(options)
-    if c:
-        options = add_c_to_options(options, c)
-
     classname = classifier["classname"]
+
+
+
     model_data = loader.load_file(training_arff)
     model_data = remove_uuid(model_data)
     if classifier["is_nominal"]:
@@ -135,56 +133,8 @@ def create_model(training_arff, classifier_name, c, race_key, loader):
 
     classifier.build_classifier(model_data)
 
-    filename = "test_models/{}_{}_{}.model".format(
-        race_key,
-        classifier_name,
-        c.replace(".", "")
-    )
     serialization.write(filename, classifier)
     return Classifier(jobject=serialization.read(filename))
-     # -U
-     #  Use unpruned tree.
-     #
-     # -O
-     #  Do not collapse tree.
-     #
-     # -C <pruning confidence>
-     #  Set confidence threshold for pruning.
-     #  (default 0.25)
-     #
-     # -M <minimum number of instances>
-     #  Set minimum number of instances per leaf.
-     #  (default 2)
-     #
-     # -R
-     #  Use reduced error pruning.
-     #
-     # -N <number of folds>
-     #  Set number of folds for reduced error
-     #  pruning. One fold is used as pruning set.
-     #  (default 3)
-     #
-     # -B
-     #  Use binary splits only.
-     #
-     # -S
-     #  Don't perform subtree raising.
-     #
-     # -L
-     #  Do not clean up after the tree has been built.
-     #
-     # -A
-     #  Laplace smoothing for predicted probabilities.
-     #
-     # -J
-     #  Do not use MDL correction for info gain on numeric attributes.
-     #
-     # -Q <seed>
-     #  Seed for random data shuffling (default 1).
-     #
-     # -doNotMakeSplitPointActualValue
-     #  Do not make split point actual value.
-     #
 
 
 def remove_uuid(data):

@@ -44,12 +44,12 @@ class Command(BaseCommand):
             max_heap_size="5028m"
         )
         print("47")
-        # classifier = get_classifier(
-        #     training_arff,
-        #     classifier_attributes)
+        classifier = get_classifier(
+            training_arff,
+            classifier_attributes)
         from weka.core.converters import Loader
         loader = Loader(classname="weka.core.converters.ArffLoader")
-        create_model(training_arff, classifier_name, "0.5", "race_key", loader)
+        # create_model(training_arff, classifier_name, "0.5", "race_key", loader)
 
 
 
