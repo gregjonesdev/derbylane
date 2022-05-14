@@ -143,7 +143,7 @@ def get_show_return(participant):
 
 
 def evaluate_nominal(classifier, filtered_data, uuid_line_index):
-    interval = .25
+    interval = .125
     count = 0
     interval_object = build_interval_object(2.5, 6, interval)
     for index, inst in enumerate(filtered_data):
