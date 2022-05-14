@@ -23,7 +23,7 @@ import pprint
 
 classifiers = {
     "smo": {
-        "is_nominal": True,
+        "is_nominal": False,
         "classname": "weka.classifiers.functions.SMO",
         "options": [
             "-L", "0.001",
