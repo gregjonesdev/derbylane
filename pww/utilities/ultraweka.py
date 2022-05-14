@@ -118,10 +118,10 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
             round(float(each), 2),
             round(float(each) + interval, 2),
             len(interval_object[each]),
-            int(100*len(interval_object[each])/count)),
+            int(100*len(interval_object[each])/count),
             " - ",
             " - ",
-            " - ")
+            " - "))
 
 
 
