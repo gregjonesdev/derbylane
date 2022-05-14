@@ -111,7 +111,7 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
                         "prediction": prediction
                     })
     for each in interval_object.keys():
-        print("{} - {}: {}".format(round(float(each), 2), round(float(each) + interval, 2), interval_object[each])
+        print("{} - {}: {}".format(round(float(each), 2), round(float(each) + interval, 2), interval_object[each]))
     print("Min: {}".format(min))
     print("Max: {}".format(max))
 
