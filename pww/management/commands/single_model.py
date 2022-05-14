@@ -35,7 +35,6 @@ class Command(BaseCommand):
                 "2020-01-01",
                 "2021-12-31"))
         is_nominal = False
-        print('37')
         training_arff = get_training_arff(
             race_key,
             training_metrics,
