@@ -13,17 +13,19 @@ def nominalize(data):
     nominalize.inputformat(data)
     return nominalize.filter(data)
 
-def get_selected_attributes():
-    attsel = AttributeSelection()
+def get_attr_classifier(base_classifier):
+    attr_classifier = Classifier(
+        classname="weka.classifiers.meta.AttributeSelectedClassifier")
     search = ASSearch(
         classname="weka.attributeSelection.BestFirst",
-        options=["-D", "1", "-N", "5"])
-    evaluation = ASEvaluation(
+        options=["-D", "1", "-N", "3"])
+    evaluator = ASEvaluation(
         classname="weka.attributeSelection.CfsSubsetEval",
         options=["-P", "1", "-E", "1"])
-    attsel.search(search)
-    attsel.evaluator(evaluation)
-    return attsel
+    attr_classifier.set_property("classifier", base_classifier.jobject)
+    attr_classifier.set_property("evaluator", evaluator.jobject)
+    attr_classifier.set_property("search", search.jobject)
+    return attr_classifier
 
 def get_filtered_data(loaded_data, is_nominal):
     filtered_data = remove_uuid(loaded_data)
@@ -38,7 +40,6 @@ def get_loaded_data(training_arff):
 
 def get_classifier(training_arff, classifier_attributes):
     filename = "test_models/test.model"
-
     loaded_data = get_loaded_data(training_arff)
     filtered_data = get_filtered_data(
         loaded_data,
@@ -46,10 +47,9 @@ def get_classifier(training_arff, classifier_attributes):
     base_classifier = Classifier(
         classname=classifier_attributes["path"],
         options=classifier_attributes["options"])
-
-    selected_attributes = get_selected_attributes()
-    selected_attributes.build_classifier(filtered_data)
-    serialization.write(filename, selected_attributes)
+    attr_classifier = get_attr_classifier(base_classifier)
+    attr_classifier.build_classifier(filtered_data)
+    serialization.write(filename, attr_classifier)
     return Classifier(jobject=serialization.read(filename))
 
 def remove_uuid(data):

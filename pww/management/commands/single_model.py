@@ -22,8 +22,6 @@ class Command(BaseCommand):
         parser.add_argument('--prediction', type=str)
 
     def handle(self, *args, **options):
-        print("handle")
-        c_factor = ""
         classifier_name = sys.argv[3]
         venue_code = sys.argv[5]
         grade = sys.argv[7]

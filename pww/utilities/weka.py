@@ -121,12 +121,12 @@ def create_model(training_arff, classifier_name, c, race_key, loader):
     model_data = remove_uuid(model_data)
     if classifier["is_nominal"]:
         model_data = nominalize(model_data)
-    model_data.class_is_last()
-    classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
-    search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
-    evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
     base = Classifier(classname=classname, options=options)
 
+    classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
+    model_data.class_is_last()
+    search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
+    evaluator = ASEvaluation(classname="weka.attributeSelection.CfsSubsetEval", options=["-P", "1", "-E", "1"])
     classifier.set_property("classifier", base.jobject)
     classifier.set_property("evaluator", evaluator.jobject)
     classifier.set_property("search", search.jobject)
