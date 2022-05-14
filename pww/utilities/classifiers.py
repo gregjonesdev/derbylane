@@ -2,6 +2,7 @@
 classifiers = {
     "smo": {
         "path": "weka.classifiers.functions.SMO",
+        "is_nominal": True,
         "options": [
             "-L", "0.001",
             "-P", "1.0E-12",
@@ -14,6 +15,7 @@ classifiers = {
     },
     "j48": {
         "path": "weka.classifiers.trees.J48",
+        "is_nominal": True,
         "options": [],
     },
     "randomforest": {
