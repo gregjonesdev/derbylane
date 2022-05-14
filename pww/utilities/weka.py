@@ -23,6 +23,7 @@ import pprint
 
 classifiers = {
     "smo": {
+        "is_nominal": True,
         "classname": "weka.classifiers.functions.SMO",
         "options": [
             "-L", "0.001",
@@ -35,7 +36,7 @@ classifiers = {
         ],
     },
     "j48": {
-        "is_nominal": False,
+        "is_nominal": True,
         "classname": "weka.classifiers.trees.J48",
         "options": [],
     },
