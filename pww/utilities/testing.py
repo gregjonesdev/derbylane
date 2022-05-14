@@ -183,7 +183,7 @@ def evaluate_model_cutoffs(model, target_prediction, testing_arff):
 
         # self.print_returns(prediction_list, str(c), race_key, loader, prediction)
 
-def evaluate_nominal_model(testing_arff, model, target_prediction, confidence_cutoff):
+def evaluate_nominal_model(model, target_prediction, testing_arff):
     starting_cutoff = 0.95
     ending_cutoff = 1.0
     cutoff_increment = 0.05
@@ -191,6 +191,6 @@ def evaluate_nominal_model(testing_arff, model, target_prediction, confidence_cu
     while cutoff <= ending_cutoff:
         cutoff = round(cutoff, 2)
         print("Cutoff: {}\n".format(cutoff))
-        print_nominal_prediction(testing_arff, model, target_prediction, confidence_cutoff)
+        print_nominal_prediction(testing_arff, model, target_prediction, cutoff)
 
         cutoff += cutoff_increment
