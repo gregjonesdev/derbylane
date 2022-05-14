@@ -77,7 +77,7 @@ def evaluate_confidence(classifier, filtered_data, uuid_line_index):
             uuid = uuid_line_index[index]
             prediction = classifier.classify_instance(inst)
             dist = classifier.distribution_for_instance(inst)
-            print("{}: {} {}".format(uuid, prediction, dist))
+            print("{}: {} {}".format(uuid, prediction, dist.strip()))
 
 def evaluate_prediction(classifier, filtered_data, uuid_line_index):
     for index, inst in enumerate(filtered_data):
