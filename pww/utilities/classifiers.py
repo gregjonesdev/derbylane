@@ -32,14 +32,17 @@ classifiers = {
         "options": [],
     },
     "nb": {
+        "is_nominal": True,
         "path": "weka.classifiers.bayes.NaiveBayes",
         "options": [],
     },
     "zeror": {
+        "is_nominal": True,
         "path": "weka.classifiers.rules.ZeroR",
         "options": [],
     },
     "reptree": {
+        "is_nominal": True,
         "path": "weka.classifiers.trees.REPTree",
         "options": [],
     },
@@ -48,6 +51,7 @@ classifiers = {
     #     "options": [],
     # },
     "ll": {
+        "is_nominal": True,
         "path": "weka.classifiers.functions.LibLINEAR",
         "options": [],
     },
