@@ -112,9 +112,9 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
                         "uuid": uuid,
                         "prediction": prediction
                     })
-    print("{}\t{}\t{}\t{}\t{}".format("Range", "Freq", "Win", "Place", "Show"))
+    print("{}\t\t{}\t\t{}\t{}\t{}".format("Range", "Freq", "Win", "Place", "Show"))
     for each in interval_object.keys():
-        print("{} - {}:\t{} ({}%)\t{}\t{}\t{}".format(
+        print("{} - {}:\t{} ({}%)\t\t{}\t{}\t{}".format(
             round(float(each), 2),
             round(float(each) + interval, 2),
             len(interval_object[each]),
