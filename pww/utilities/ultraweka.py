@@ -163,8 +163,8 @@ def get_profit_potential(percent, payout):
 
 
 def evaluate_nominal(classifier, filtered_data, uuid_line_index):
-    start = 3.5
-    stop = 4
+    start = 3
+    stop = 5
     interval = .0625
     count = 0
     interval_object = build_interval_object(start, stop, interval)
