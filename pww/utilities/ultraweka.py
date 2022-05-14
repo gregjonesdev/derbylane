@@ -71,7 +71,7 @@ def get_uuid_line_index(filename):
     return uuid_line_index
 
 
-def evaluate_confidence(classifier, filtered_data):
+def evaluate_confidence(classifier, filtered_data, uuid_line_index):
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
@@ -79,7 +79,7 @@ def evaluate_confidence(classifier, filtered_data):
             dist = classifier.distribution_for_instance(inst)
             print("{}: {} {}".format(uuid, prediction, dist))
 
-def evaluate_prediction(classifier, filtered_data):
+def evaluate_prediction(classifier, filtered_data, uuid_line_index):
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
@@ -94,4 +94,4 @@ def get_predictions(testing_arff, classifier, loader, is_nominal):
     if is_nominal:
         evaluate_confidence(classifier, filtered_data)
     else:
-        evaluate_prediction(classifier, filtered_data)    
+        evaluate_prediction(classifier, filtered_data)
