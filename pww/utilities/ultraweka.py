@@ -37,13 +37,9 @@ def get_filtered_data(loaded_data, is_nominal):
         return nominalize(filtered_data)
     return filtered_data
 
-def get_loaded_data(training_arff):
-    loader = Loader(classname="weka.core.converters.ArffLoader")
-    return loader.load_file(training_arff)
-
 def get_classifier(training_arff, classifier_attributes, loader):
     filename = "test_models/test.model"
-    loaded_data = get_loaded_data(training_arff, loader)
+    loaded_data = loader.load_file(training_arff)
     filtered_data = get_filtered_data(
         loaded_data,
         classifier_attributes["is_nominal"])
@@ -76,7 +72,6 @@ def get_uuid_line_index(filename):
     return uuid_line_index
 
 def build_scheduled_data(arff_data):
-
     loaded_data = loader.load_file(arff_data)
     anonymous_data = remove_uuid(loaded_data)
     scheduled_data = nominalize(anonymous_data)
