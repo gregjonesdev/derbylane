@@ -70,6 +70,11 @@ def get_uuid_line_index(filename):
             i += 1
     return uuid_line_index
 
+def format_distribution(dist):
+    formatted_dist = []
+    for each in dist:
+        formatted_dist.append(round(each, 1))
+    return formatted_dist
 
 def evaluate_confidence(classifier, filtered_data, uuid_line_index):
     for index, inst in enumerate(filtered_data):
@@ -77,7 +82,10 @@ def evaluate_confidence(classifier, filtered_data, uuid_line_index):
             uuid = uuid_line_index[index]
             prediction = classifier.classify_instance(inst)
             dist = classifier.distribution_for_instance(inst)
-            print("{}: {} {}".format(uuid, prediction, dist.strip()))
+            print("{}: {} {}".format(
+                uuid,
+                prediction,
+                format_distribution(dist)))
 
 def evaluate_prediction(classifier, filtered_data, uuid_line_index):
     for index, inst in enumerate(filtered_data):
