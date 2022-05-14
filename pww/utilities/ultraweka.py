@@ -32,6 +32,7 @@ def get_attr_classifier(base_classifier):
 def get_filtered_data(loaded_data, is_nominal):
     filtered_data = remove_uuid(loaded_data)
     filtered_data.class_is_last()
+    print("is nominal? {}".format(is_nominal))
     if is_nominal:
         return nominalize(filtered_data)
     return filtered_data

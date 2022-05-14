@@ -43,17 +43,19 @@ class Command(BaseCommand):
             packages=True,
             max_heap_size="5028m"
         )
-        print("47")
+        from weka.core.converters import Loader
+        loader = Loader(classname="weka.core.converters.ArffLoader")
+        print("Old way:")
+        create_model(training_arff, classifier_name, "0.5", "race_key", loader)
+        print("success")
+        print("new way:")
         classifier = get_classifier(
             training_arff,
             classifier_attributes)
-        from weka.core.converters import Loader
-        loader = Loader(classname="weka.core.converters.ArffLoader")
-        # create_model(training_arff, classifier_name, "0.5", "race_key", loader)
 
 
 
-        print("48")
+        print("success")
         # print("\nAvg Returns for dogs predicted to finish: {}".format(
         #     target_prediction))
         print("Training Metrics: {}\n".format(
