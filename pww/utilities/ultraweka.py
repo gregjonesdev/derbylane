@@ -6,6 +6,8 @@ from weka.classifiers import Classifier
 from weka.core.converters import Loader
 from weka.filters import Filter
 
+import weka.core.serialization as serialization
+
 def nominalize(data):
     nominalize = Filter(
         classname="weka.filters.unsupervised.attribute.NumericToNominal",
