@@ -1,3 +1,4 @@
+from miner.utilities.constants import csv_columns
 from pww.utilities.classifiers import classifiers
 from weka.attribute_selection import ASSearch
 from weka.attribute_selection import ASEvaluation
