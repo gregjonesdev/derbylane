@@ -191,6 +191,7 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
             round(float(each), 2),
             round(float(each) + interval, 2),
             len(interval_object[each]),
+            percent,
             get_profit_potential(percent, get_average_win(interval_object[each])),
             get_profit_potential(percent, get_average_place(interval_object[each])),
             get_profit_potential(percent, get_average_show(interval_object[each]))))
