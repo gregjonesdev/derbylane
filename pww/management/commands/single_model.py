@@ -26,7 +26,7 @@ class Command(BaseCommand):
         classifier_name = sys.argv[3]
         venue_code = sys.argv[5]
         grade = sys.argv[7]
-        target_prediction = sys.argv[9]
+        # target_prediction = sys.argv[9]
         training_metrics = Metric.objects.filter(
             participant__race__grade__name=grade,
             # participant__race__distance=550,
