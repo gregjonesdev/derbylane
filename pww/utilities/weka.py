@@ -119,7 +119,7 @@ def create_model(training_arff, classifier_name, c, race_key, loader):
 
     model_data = loader.load_file(training_arff)
     model_data = remove_uuid(model_data)
-    print("is nominal? {}".format(is_nominal))
+    print("is nominal? {}".format(classifier["is_nominal"]))
     if classifier["is_nominal"]:
         model_data = nominalize(model_data)
     base = Classifier(classname=classname, options=options)
