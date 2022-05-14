@@ -32,7 +32,6 @@ def get_filtered_data(loaded_data, is_nominal):
         return nominalize(filtered_data)
     return filtered_data
 
-
 def get_loaded_data(training_arff):
     loader = Loader(classname="weka.core.converters.ArffLoader")
     return loader.load_file(training_arff)
@@ -52,7 +51,6 @@ def get_classifier(training_arff, classifier_attributes):
     selected_attributes.build_classifier(filtered_data)
     serialization.write(filename, selected_attributes)
     return Classifier(jobject=serialization.read(filename))
-
 
 def remove_uuid(data):
     remove = Filter(

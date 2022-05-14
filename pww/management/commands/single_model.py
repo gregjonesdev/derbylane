@@ -15,6 +15,7 @@ from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
+        parser.add_argument('--model', type=str)
         parser.add_argument('--venue', type=str)
         parser.add_argument('--grade', type=str)
         parser.add_argument('--prediction', type=str)
@@ -22,10 +23,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("handle")
         c_factor = ""
-        classifier_name = "smoreg"
-        venue_code = sys.argv[3]
-        grade = sys.argv[5]
-        target_prediction = sys.argv[7]
+        classifier_name = sys.argv[3]
+        venue_code = sys.argv[5]
+        grade = sys.argv[7]
+        target_prediction = sys.argv[9]
         training_metrics = Metric.objects.filter(
             participant__race__grade__name=grade,
             # participant__race__distance=550,
@@ -34,7 +35,6 @@ class Command(BaseCommand):
                 "2020-01-01",
                 "2021-12-31"))
         classifier_attributes = classifiers[classifier_name]
-        is_nominal =
         training_arff = get_training_arff(
             classifier_name,
             training_metrics,
@@ -48,8 +48,8 @@ class Command(BaseCommand):
             training_arff,
             classifier_attributes)
         print("48")
-        print("\nAvg Returns for dogs predicted to finish: {}".format(
-            target_prediction))
+        # print("\nAvg Returns for dogs predicted to finish: {}".format(
+        #     target_prediction))
         print("Training Metrics: {}\n".format(
             len(training_metrics)))
         raise SystemExit(0)
@@ -68,6 +68,6 @@ class Command(BaseCommand):
 
         evaluate_nominal_model(
             model,
-            target_prediction,
+            # target_prediction,
             testing_arff)
         jvm.stop()
