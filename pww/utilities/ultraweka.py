@@ -80,6 +80,6 @@ def get_predictions(testing_arff, classifier, loader, is_nominal):
             uuid = uuid_line_index[index]
             prediction = classifier.classify_instance(inst)
             print("{}: {}".format(uuid, prediction))
-            dist = model.distribution_for_instance(inst)
+            dist = classifier.distribution_for_instance(inst)
             print(dist)
             print("----")
