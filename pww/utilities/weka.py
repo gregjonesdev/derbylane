@@ -120,7 +120,8 @@ def create_model(training_arff, classifier_name, c, race_key, loader):
     classname = classifier["classname"]
     model_data = loader.load_file(training_arff)
     model_data = remove_uuid(model_data)
-    model_data = nominalize(model_data)
+    if classifier["is_nominal"]:
+        model_data = nominalize(model_data)
     model_data.class_is_last()
     classifier = Classifier(classname="weka.classifiers.meta.AttributeSelectedClassifier")
     search = ASSearch(classname="weka.attributeSelection.BestFirst", options=["-D", "1", "-N", "3"])
