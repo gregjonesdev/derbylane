@@ -158,9 +158,10 @@ def get_show_return(participant):
         return 0
 
 def get_profit_potential(percent, payout):
-    print(percent)
-    print(payout)
-    return "{} [{}]".format(payout, round(payout*percent,2))
+    try:
+        return "{} [{}]".format(payout, round(payout*percent,2))
+    except TypeError:
+        return ""
 
 
 def evaluate_nominal(classifier, filtered_data, uuid_line_index):
