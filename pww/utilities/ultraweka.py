@@ -143,9 +143,11 @@ def get_show_return(participant):
 
 
 def evaluate_nominal(classifier, filtered_data, uuid_line_index):
-    interval = .125
+    start = 3.5
+    stop = 4
+    interval = .0625
     count = 0
-    interval_object = build_interval_object(2.5, 6, interval)
+    interval_object = build_interval_object(start, stop, interval)
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
