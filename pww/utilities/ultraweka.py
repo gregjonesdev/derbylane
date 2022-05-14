@@ -96,6 +96,13 @@ def build_interval_object(start, stop, interval):
     return interval_object
 
 
+def get_average_win(list):
+    for each in list:
+        participant = Participant.objects.get(uuid=each["uuid"])
+        if participant.final === 1:
+            print("Winner")
+
+
 def evaluate_nominal(classifier, filtered_data, uuid_line_index):
     interval = .25
     count = 0
@@ -112,8 +119,10 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
                         "uuid": uuid,
                         "prediction": prediction
                     })
+
     print("{}\t\t{}\t\t{}\t{}\t{}".format("Range", "Freq", "Win", "Place", "Show"))
     for each in interval_object.keys():
+        get_average_win(interval_object[each])
         string_row = "{} - {}:\t{} ({}%)\t\t{}\t{}\t{}"
         if len(interval_object[each]) > 99:
             string_row = "{} - {}:\t{} ({}%)\t{}\t{}\t{}"
