@@ -185,7 +185,7 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
                         "prediction": prediction
                     })
 
-    print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format("Range", "Freq", "Win", "Place", "Show"))
+    print("{}\t\t{}\t\t\t{}\t\t{}\t\t{}".format("Range", "Freq", "Win", "Place", "Show"))
     for each in interval_object.keys():
         string_row = "{} - {}\t{} ({}%)\t\t{}\t{}\t{}"
         percent = round((100*len(interval_object[each])/count), 2)

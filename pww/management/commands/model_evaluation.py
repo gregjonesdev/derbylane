@@ -21,19 +21,20 @@ class Command(BaseCommand):
         parser.add_argument('--model', type=str)
         parser.add_argument('--venue', type=str)
         parser.add_argument('--grade', type=str)
-        parser.add_argument('--prediction', type=str)
+        parser.add_argument('--start', type=str)
 
     def handle(self, *args, **options):
         classifier_name = sys.argv[3]
         venue_code = sys.argv[5]
         grade = sys.argv[7]
+        start_date = sys.argv[9]
         # target_prediction = sys.argv[9]
         training_metrics = Metric.objects.filter(
             participant__race__grade__name=grade,
             # participant__race__distance=550,
             participant__race__chart__program__venue__code=venue_code,
             participant__race__chart__program__date__range=(
-                "2019-01-01",
+                start_date,
                 "2021-12-31"))
         classifier_attributes = classifiers[classifier_name]
         training_arff = get_training_arff(
@@ -48,6 +49,7 @@ class Command(BaseCommand):
             training_arff,
             classifier_attributes,
             loader)
+        print("{} - {}".format(start_date, "2021-12-31"))    
         print("Training Metrics: {}\n".format(
             len(training_metrics)))
         testing_metrics = Metric.objects.filter(
