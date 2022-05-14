@@ -41,6 +41,7 @@ classifiers = {
         "options": [],
     },
     "randomforest": {
+        "is_nominal": True,
         "classname": "weka.classifiers.trees.RandomForest",
         "options": [
             #  "-B", # Break ties randomly when several attributes look equally good.
