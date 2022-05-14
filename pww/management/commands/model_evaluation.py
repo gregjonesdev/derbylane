@@ -33,7 +33,7 @@ class Command(BaseCommand):
             # participant__race__distance=550,
             participant__race__chart__program__venue__code=venue_code,
             participant__race__chart__program__date__range=(
-                "2020-01-01",
+                "2019-01-01",
                 "2021-12-31"))
         classifier_attributes = classifiers[classifier_name]
         training_arff = get_training_arff(
@@ -48,12 +48,6 @@ class Command(BaseCommand):
             training_arff,
             classifier_attributes,
             loader)
-
-
-
-        print("success")
-        # print("\nAvg Returns for dogs predicted to finish: {}".format(
-        #     target_prediction))
         print("Training Metrics: {}\n".format(
             len(training_metrics)))
         testing_metrics = Metric.objects.filter(
