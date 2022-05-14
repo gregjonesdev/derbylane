@@ -11,7 +11,7 @@ from pww.utilities.arff import (
     get_testing_arff,
 )
 from pww.utilities.classifiers import classifiers
-from pww.utilities.ultraweka import get_classifier
+from pww.utilities.ultraweka import get_classifier, get_predictions
 from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
 
