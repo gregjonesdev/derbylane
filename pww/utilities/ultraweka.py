@@ -87,12 +87,22 @@ def evaluate_confidence(classifier, filtered_data, uuid_line_index):
                 prediction,
                 format_distribution(dist)))
 
-def evaluate_prediction(classifier, filtered_data, uuid_line_index):
+def evaluate_nominal(classifier, filtered_data, uuid_line_index):
+    min = 10
+    max = 0
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
             prediction = classifier.classify_instance(inst)
+            print(type(prediction))
+            if prediction < min:
+                min = prediction
+            if prediction > max:
+                max = prediction
             print("{}: {}".format(uuid, prediction))
+    print("Min: {}".format(min))
+    print("Max: {}".format(max))        
+
 
 
 def get_predictions(testing_arff, classifier, loader, is_nominal):
@@ -102,4 +112,4 @@ def get_predictions(testing_arff, classifier, loader, is_nominal):
     if is_nominal:
         evaluate_confidence(classifier, filtered_data, uuid_line_index)
     else:
-        evaluate_prediction(classifier, filtered_data, uuid_line_index)
+        evaluate_nominal(classifier, filtered_data, uuid_line_index)

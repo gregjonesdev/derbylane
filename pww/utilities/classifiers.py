@@ -46,11 +46,6 @@ classifiers = {
         "path": "weka.classifiers.trees.REPTree",
         "options": [],
     },
-    "simplek": {
-        "is_nominal": True,
-        "path": "weka.clusterers.SimpleKMeans",
-        "options": [],
-    },
     "ll": {
         "is_nominal": True,
         "path": "weka.classifiers.functions.LibLINEAR",
