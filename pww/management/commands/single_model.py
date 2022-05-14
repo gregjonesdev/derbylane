@@ -71,8 +71,8 @@ class Command(BaseCommand):
         print("Testing Metrics: {}".format(len(testing_metrics)))
 
 
-        # evaluate_model_cutoffs(
-        #     model,
-        #     target_prediction,
-        #     testing_arff)
+        evaluate_model_cutoffs(
+            model,
+            target_prediction,
+            testing_arff)
         jvm.stop()
