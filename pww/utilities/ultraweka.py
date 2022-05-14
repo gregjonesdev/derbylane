@@ -32,7 +32,6 @@ def get_attr_classifier(base_classifier):
 def get_filtered_data(loaded_data, is_nominal):
     filtered_data = remove_uuid(loaded_data)
     filtered_data.class_is_last()
-    print("is nominal? {}".format(is_nominal))
     if is_nominal:
         return nominalize(filtered_data)
     return filtered_data
@@ -71,17 +70,12 @@ def get_uuid_line_index(filename):
             i += 1
     return uuid_line_index
 
-def build_scheduled_data(arff_data):
-    loaded_data = loader.load_file(arff_data)
-    anonymous_data = remove_uuid(loaded_data)
-    scheduled_data = nominalize(anonymous_data)
-    scheduled_data.class_is_last()
-    return scheduled_data
 
-def get_predictions(testing_arff, classifier, loader):
+def get_predictions(testing_arff, classifier, loader, is_nominal):
     uuid_line_index = get_uuid_line_index(testing_arff)
-    testing_data = build_scheduled_data(testing_arff, loader)
-    for index, inst in enumerate(testing_data):
+    loaded_data = loader.load_file(testing_arff)
+    filtered_data = get_filtered_data(loaded_data, is_nominal)
+    for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
             prediction = classifier.classify_instance(inst)

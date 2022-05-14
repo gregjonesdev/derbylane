@@ -67,5 +67,9 @@ class Command(BaseCommand):
             testing_metrics)
         print("Testing Metrics: {}".format(len(testing_metrics)))
 
-        get_predictions(testing_arff, classifier, loader)
+        get_predictions(
+            testing_arff,
+            classifier,
+            loader,
+            classifier_attributes["is_nominal"])
         jvm.stop()
