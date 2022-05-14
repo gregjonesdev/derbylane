@@ -5,7 +5,7 @@ from weka.attribute_selection import ASEvaluation
 from weka.attribute_selection import AttributeSelection
 from weka.classifiers import Classifier
 from weka.filters import Filter
-
+from rawdat.models import Participant
 import weka.core.serialization as serialization
 
 def nominalize(data):
