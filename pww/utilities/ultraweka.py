@@ -92,6 +92,6 @@ def get_predictions(testing_arff, classifier, loader, is_nominal):
     loaded_data = loader.load_file(testing_arff)
     filtered_data = get_filtered_data(loaded_data, is_nominal)
     if is_nominal:
-        evaluate_confidence(classifier, filtered_data)
+        evaluate_confidence(classifier, filtered_data, uuid_line_index)
     else:
-        evaluate_prediction(classifier, filtered_data)
+        evaluate_prediction(classifier, filtered_data, uuid_line_index)
