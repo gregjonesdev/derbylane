@@ -97,10 +97,46 @@ def build_interval_object(start, stop, interval):
 
 
 def get_average_win(list):
+    if len(list) < 1:
+        return "-"
+    bet_returns = []
     for each in list:
-        participant = Participant.objects.get(uuid=each["uuid"])
-        if participant.final == 1:
-            print("Winner")
+        bet_returns.append(get_win_return(participant))
+    return round(sum(bet_returns)/len(bet_returns), 2)
+
+def get_average_place(list):
+    if len(list) < 1:
+        return "-"
+    bet_returns = []
+    for each in list:
+        bet_returns.append(get_place_return(participant))
+    return round(sum(bet_returns)/len(bet_returns), 2)
+
+def get_average_show(list):
+    if len(list) < 1:
+        return "-"
+    bet_returns = []
+    for each in list:
+        bet_returns.append(get_show_return(participant))
+    return round(sum(bet_returns)/len(bet_returns), 2)
+
+def get_win_return(participant):
+    try:
+        return float(participant.straight_wager.win)
+    except:
+        return 0
+
+def get_place_return(participant):
+    try:
+        return float(participant.straight_wager.place)
+    except:
+        return 0
+
+def get_show_return(participant):
+    try:
+        return float(participant.straight_wager.show)
+    except:
+        return 0
 
 
 def evaluate_nominal(classifier, filtered_data, uuid_line_index):
