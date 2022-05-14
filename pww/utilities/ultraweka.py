@@ -50,6 +50,7 @@ def get_classifier(training_arff, classifier_attributes):
         classname=classifier_attributes["path"],
         options=classifier_attributes["options"])
     attr_classifier = get_attr_classifier(base_classifier)
+    # ERROR: weka.classifiers.trees.J48: Cannot handle numeric class!
     attr_classifier.build_classifier(filtered_data)
     serialization.write(filename, attr_classifier)
     return Classifier(jobject=serialization.read(filename))

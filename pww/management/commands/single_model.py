@@ -11,6 +11,7 @@ from pww.utilities.arff import (
 )
 from pww.utilities.classifiers import classifiers
 from pww.utilities.ultraweka import get_classifier
+from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
 
 class Command(BaseCommand):
@@ -43,9 +44,15 @@ class Command(BaseCommand):
             max_heap_size="5028m"
         )
         print("47")
-        classifier = get_classifier(
-            training_arff,
-            classifier_attributes)
+        # classifier = get_classifier(
+        #     training_arff,
+        #     classifier_attributes)
+        from weka.core.converters import Loader
+        loader = Loader(classname="weka.core.converters.ArffLoader")
+        create_model(training_arff, classifier_name, "0.5", "race_key", loader)
+
+
+
         print("48")
         # print("\nAvg Returns for dogs predicted to finish: {}".format(
         #     target_prediction))
