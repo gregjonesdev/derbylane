@@ -87,9 +87,20 @@ def evaluate_confidence(classifier, filtered_data, uuid_line_index):
                 prediction,
                 format_distribution(dist)))
 
+def build_interval_object(start, stop, interval):
+    interval_object = {}
+    current_low = start
+    while current_low + interval <= stop:
+        interval_object["{}".format(current_low)] = []
+        current_low += interval
+    return interval_object
+
+
 def evaluate_nominal(classifier, filtered_data, uuid_line_index):
-    min = 10
-    max = 0
+    print(build_interval_object(2.5, 6, .25))
+
+
+    raise SystemExit(0)
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
@@ -101,7 +112,7 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
                 max = prediction
             print("{}: {}".format(uuid, prediction))
     print("Min: {}".format(min))
-    print("Max: {}".format(max))        
+    print("Max: {}".format(max))
 
 
 
