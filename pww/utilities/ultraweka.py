@@ -75,8 +75,11 @@ def get_predictions(testing_arff, classifier, loader, is_nominal):
     uuid_line_index = get_uuid_line_index(testing_arff)
     loaded_data = loader.load_file(testing_arff)
     filtered_data = get_filtered_data(loaded_data, is_nominal)
-    for index, inst in enumerate(filtered_data):
+    for index, inst in enumerate(filtered_data)[:10]:
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
             prediction = classifier.classify_instance(inst)
             print("{}: {}".format(uuid, prediction))
+            dist = model.distribution_for_instance(inst)
+            print(dist)
+            print("----")
