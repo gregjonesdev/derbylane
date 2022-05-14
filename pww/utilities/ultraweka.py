@@ -115,13 +115,12 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
     print("{}\t\t{}\t\t{}\t{}\t{}".format("Range", "Freq", "Win", "Place", "Show"))
     for each in interval_object.keys():
         string_row = "{} - {}:\t{} ({}%)\t\t{}\t{}\t{}"
-        count = len(interval_object[each])
-        if count > 99:
+        if len(interval_object[each]) > 99:
             string_row = "{} - {}:\t{} ({}%)\t{}\t{}\t{}"
         print(string_row.format(
             round(float(each), 2),
             round(float(each) + interval, 2),
-            count,
+            len(interval_object[each]),
             int(100*len(interval_object[each])/count),
             " - ",
             " - ",
