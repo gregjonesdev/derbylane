@@ -172,7 +172,7 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
             int(100*len(interval_object[each])/count),
             get_average_win(interval_object[each]),
             get_average_place(interval_object[each],
-            get_average_show(interval_object[each]))
+            get_average_show(interval_object[each])))
 
 
 
