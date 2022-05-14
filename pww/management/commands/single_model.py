@@ -10,7 +10,7 @@ from pww.utilities.arff import (
     get_testing_arff,
 )
 from pww.utilities.weka import create_model
-from pww.utilities.testing import evaluate_model_cutoffs
+from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
 
 class Command(BaseCommand):
 
