@@ -103,6 +103,8 @@ def get_average_win(list):
     for each in list:
         participant = Participant.objects.get(uuid=each["uuid"])
         bet_returns.append(get_win_return(participant))
+    print("Win:")
+    print(bet_returns)
     return round(sum(bet_returns)/len(bet_returns), 2)
 
 def get_average_place(list):
@@ -163,7 +165,6 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
 
     print("{}\t\t{}\t\t{}\t{}\t{}".format("Range", "Freq", "Win", "Place", "Show"))
     for each in interval_object.keys():
-        get_average_win(interval_object[each])
         string_row = "{} - {}:\t{} ({}%)\t\t{}\t{}\t{}"
         if len(interval_object[each]) > 99:
             string_row = "{} - {}:\t{} ({}%)\t{}\t{}\t{}"
@@ -177,7 +178,7 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
         #     get_average_show(interval_object[each])))
 
         print(round(float(each), 2))
-        print(interval_object[each])
+        get_average_win(interval_object[each])
 
 
 
