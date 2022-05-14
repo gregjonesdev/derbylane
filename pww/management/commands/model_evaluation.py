@@ -49,7 +49,8 @@ class Command(BaseCommand):
             training_arff,
             classifier_attributes,
             loader)
-        print("{} - {}".format(start_date, "2021-12-31"))    
+        print("{} Grade {}".format (venue_code, grade))
+        print("{} - {}".format(start_date, "2021-12-31"))
         print("Training Metrics: {}\n".format(
             len(training_metrics)))
         testing_metrics = Metric.objects.filter(
