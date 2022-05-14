@@ -97,20 +97,21 @@ def build_interval_object(start, stop, interval):
 
 
 def evaluate_nominal(classifier, filtered_data, uuid_line_index):
-    print(build_interval_object(2.5, 6, .25))
-
-
-    raise SystemExit(0)
+    interval = .25
+    interval_object = build_interval_object(2.5, 6, interval)
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
             prediction = classifier.classify_instance(inst)
-            print(type(prediction))
-            if prediction < min:
-                min = prediction
-            if prediction > max:
-                max = prediction
-            print("{}: {}".format(uuid, prediction))
+            for each in interval_object.keys():
+                key_value = float(each)
+                if key_value <= prediction < (key_value + interval):
+                    interval_object[each].append({
+                        "uuid": uuid,
+                        "prediction": prediction
+                    })
+    for each in interval_object.keys():
+        print("{} - {}: {}".format(round(float(each), 2), round(float(each) + interval, 2), interval_object[each])
     print("Min: {}".format(min))
     print("Max: {}".format(max))
 
