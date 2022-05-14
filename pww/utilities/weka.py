@@ -35,6 +35,7 @@ classifiers = {
         ],
     },
     "j48": {
+        "is_nominal": False,
         "classname": "weka.classifiers.trees.J48",
         "options": [],
     },
