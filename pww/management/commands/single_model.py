@@ -38,7 +38,7 @@ class Command(BaseCommand):
         training_arff = get_training_arff(
             classifier_name,
             training_metrics,
-            classifier_attributes["is_nominal"])
+            False)
         jvm.start(
             packages=True,
             max_heap_size="5028m"
