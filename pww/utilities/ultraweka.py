@@ -158,7 +158,8 @@ def get_show_return(participant):
         return 0
 
 def get_profit_potential(percent, payout):
-
+    print(percent)
+    print(payout)
     return "{} [{}]".format(payout, round(payout*percent,2))
 
 
