@@ -109,7 +109,7 @@ def get_average_win(list):
     for each in bet_returns:
         if each > 2:
             winner +=1
-    # print(round(100*winner/len(bet_returns), 2))        
+    # print(round(100*winner/len(bet_returns), 2))
     # print(bet_returns)
     return round(sum(bet_returns)/len(bet_returns), 2)
 
@@ -186,7 +186,7 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
             round(float(each), 2),
             round(float(each) + interval, 2),
             len(interval_object[each]),
-            int(100*len(interval_object[each])/count),
+            round((100*len(interval_object[each])/count), 2),
             get_average_win(interval_object[each]),
             get_average_place(interval_object[each]),
             get_average_show(interval_object[each])))
