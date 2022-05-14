@@ -157,6 +157,10 @@ def get_show_return(participant):
     except:
         return 0
 
+def get_profit_potential(percent, payout):
+
+    return "{} [{}]".format(payout, round(payout*percent,2))
+
 
 def evaluate_nominal(classifier, filtered_data, uuid_line_index):
     start = 3.5
@@ -177,19 +181,20 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
                         "prediction": prediction
                     })
 
-    print("{}\t\t{}\t\t{}\t{}\t{}".format("Range", "Freq", "Win", "Place", "Show"))
+    print("{}\t\t{}\t\t{}\t\t{}\t\t{}".format("Range", "Freq", "Win", "Place", "Show"))
     for each in interval_object.keys():
         string_row = "{} - {}:\t{} ({}%)\t\t{}\t{}\t{}"
+        percent = round((100*len(interval_object[each])/count), 2)
         if len(interval_object[each]) > 99:
             string_row = "{} - {}:\t{} ({}%)\t{}\t{}\t{}"
         print(string_row.format(
             round(float(each), 2),
             round(float(each) + interval, 2),
             len(interval_object[each]),
-            round((100*len(interval_object[each])/count), 2),
-            get_average_win(interval_object[each]),
-            get_average_place(interval_object[each]),
-            get_average_show(interval_object[each])))
+            get_profit_potential(percent, get_average_win(interval_object[each])),
+            get_profit_potential(percent, get_average_place(interval_object[each])),
+            get_profit_potential(percent, get_average_show(interval_object[each]))))
+
 
         # print(round(float(each), 2))
         # get_average_win(interval_object[each])
