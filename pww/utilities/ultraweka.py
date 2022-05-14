@@ -99,7 +99,7 @@ def build_interval_object(start, stop, interval):
 def get_average_win(list):
     for each in list:
         participant = Participant.objects.get(uuid=each["uuid"])
-        if participant.final === 1:
+        if participant.final == 1:
             print("Winner")
 
 
