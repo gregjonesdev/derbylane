@@ -1,8 +1,8 @@
 from pww.utilities.classifiers import classifiers
-
 from weka.attribute_selection import ASSearch
 from weka.attribute_selection import ASEvaluation
 from weka.attribute_selection import AttributeSelection
+from weka.classifiers import Classifier
 from weka.core.converters import Loader
 from weka.filters import Filter
 
