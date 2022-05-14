@@ -103,8 +103,14 @@ def get_average_win(list):
     for each in list:
         participant = Participant.objects.get(uuid=each["uuid"])
         bet_returns.append(get_win_return(participant))
-    # print("Win:")
-    # print(bet_returns)
+    print("Win:")
+
+    winner = 0
+    for each in bet_returns:
+        if each > 2:
+            winner +=1
+    print(round(100*winner/len(bet_returns), 2))        
+    print(bet_returns)
     return round(sum(bet_returns)/len(bet_returns), 2)
 
 def get_average_place(list):
@@ -114,6 +120,14 @@ def get_average_place(list):
     for each in list:
         participant = Participant.objects.get(uuid=each["uuid"])
         bet_returns.append(get_place_return(participant))
+    print("Place:")
+
+    winner = 0
+    for each in bet_returns:
+        if each > 2:
+            winner +=1
+    print(round(100*winner/len(bet_returns), 2))        
+    print(bet_returns)
     return round(sum(bet_returns)/len(bet_returns), 2)
 
 def get_average_show(list):
