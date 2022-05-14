@@ -109,8 +109,8 @@ def get_average_win(list):
     for each in bet_returns:
         if each > 2:
             winner +=1
-    print(round(100*winner/len(bet_returns), 2))        
-    print(bet_returns)
+    # print(round(100*winner/len(bet_returns), 2))        
+    # print(bet_returns)
     return round(sum(bet_returns)/len(bet_returns), 2)
 
 def get_average_place(list):
@@ -126,8 +126,8 @@ def get_average_place(list):
     for each in bet_returns:
         if each > 2:
             winner +=1
-    print(round(100*winner/len(bet_returns), 2))        
-    print(bet_returns)
+    # print(round(100*winner/len(bet_returns), 2))
+    # print(bet_returns)
     return round(sum(bet_returns)/len(bet_returns), 2)
 
 def get_average_show(list):
