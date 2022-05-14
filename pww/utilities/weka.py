@@ -320,8 +320,11 @@ def print_nominal_prediction(testing_arff, model, target_prediction, confidence_
             uuid = uuid_line_index[index]
             # print(uuid)
             prediction = model.classify_instance(inst)
+            print(prediction)
             dist = model.distribution_for_instance(inst)
+            print(dist)
             index = int(prediction) # SMO only 0-7
             confidence = dist[index]
             print("{} {}".format(prediction, confidence))
+            print("-----")
             # if int(prediction) == int(target_prediction):
