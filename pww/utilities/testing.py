@@ -156,7 +156,7 @@ def get_return_and_count(list):
     return "{} ({})".format(avg_return, count)
 
 def evaluate_model_cutoffs(model, target_prediction, testing_arff):
-    starting_cutoff = 0.5
+    starting_cutoff = 0.95
     ending_cutoff = 1.0
     cutoff_increment = 0.05
     cutoff = starting_cutoff
@@ -169,8 +169,8 @@ def evaluate_model_cutoffs(model, target_prediction, testing_arff):
             model,
             target_prediction,
             cutoff)
-        # print(prediction_list)
-        print_prediction_table(prediction_list)
+        print(prediction_list)
+        # print_prediction_table(prediction_list)
         print("\n")
         # print(table_string.format(
         #     cutoff,
