@@ -98,10 +98,12 @@ def build_interval_object(start, stop, interval):
 
 def evaluate_nominal(classifier, filtered_data, uuid_line_index):
     interval = .25
+    count = 0
     interval_object = build_interval_object(2.5, 6, interval)
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
+            count +=1
             prediction = classifier.classify_instance(inst)
             for each in interval_object.keys():
                 key_value = float(each)
@@ -111,7 +113,7 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
                         "prediction": prediction
                     })
     for each in interval_object.keys():
-        print("{} - {}: {}".format(round(float(each), 2), round(float(each) + interval, 2), interval_object[each]))
+        print("{} - {}: {} ({}%)".format(round(float(each), 2), round(float(each) + interval, 2), len(interval_object[each])), int(100*len(interval_object[each])/count))
     print("Min: {}".format(min))
     print("Max: {}".format(max))
 
