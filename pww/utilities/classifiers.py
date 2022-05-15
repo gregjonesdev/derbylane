@@ -181,7 +181,7 @@ model_data = [
         "start_date": "2018-06-01",
         "end_date":	"2021-12-31",
         "venue_code": "WD",
-        "grade_name": "A",
+        "grade_name": "AA",
     },
     {
         "start_date": "2018-01-01",
