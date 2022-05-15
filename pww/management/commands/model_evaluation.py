@@ -37,7 +37,7 @@ class Command(BaseCommand):
         # target_prediction = sys.argv[9]
         training_metrics = Metric.objects.filter(
             participant__race__grade__name=grade,
-            participant__race__distance=betting_distances[venue_code],
+            # participant__race__distance=betting_distances[venue_code],
             participant__race__chart__program__venue__code=venue_code,
             participant__race__chart__program__date__range=(
                 start_date,
