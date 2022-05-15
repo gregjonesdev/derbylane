@@ -237,9 +237,9 @@ class Chart(CoreModel):
             if self.program.venue.code == 'WD':
                 return 'Mat'
             else:
-                return "A"
+                return "Aft"
         elif self.time == 'E':
-            return 'E'
+            return 'Eve'
         elif self.time == 'T':
             return 'Twi'
         else:
