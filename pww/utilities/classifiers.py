@@ -112,12 +112,6 @@ model_data = [
         "grade_name": "B",
     },
     {
-        "start_date": "2018-01-01",
-        "end_date":	"2021-12-31",
-        "venue_code": "WD",
-        "grade_name": "B",
-    },
-    {
         "start_date": "2018-12-01",
         "end_date":	"2021-12-31",
         "venue_code": "TS",
@@ -187,19 +181,13 @@ model_data = [
         "start_date": "2018-01-01",
         "end_date":	"2021-12-31",
         "venue_code": "WD",
-        "grade_name": "A",
+        "grade_name": "AA",
     },
     {
         "start_date": "2017-06-01",
         "end_date":	"2021-12-31",
         "venue_code": "WD",
-        "grade_name": "A",
-    },
-    {
-        "start_date": "2020-06-01",
-        "end_date":	"2021-12-31",
-        "venue_code": "WD",
-        "grade_name": "A",
+        "grade_name": "AA",
     },
     {
         "start_date": "2020-06-01",
