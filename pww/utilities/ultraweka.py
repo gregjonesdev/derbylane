@@ -158,11 +158,9 @@ def get_show_return(participant):
         return 0
 
 def get_profit_potential(percent, payout):
-    print("payout:")
-    print(payout)
-    if payout <= 2.0:
-        return "-----------"
     try:
+        if payout <= 2.0:
+            return "-----------"
         return "{} [{}]".format(payout, round(payout*percent,2))
     except TypeError:
         return ""
