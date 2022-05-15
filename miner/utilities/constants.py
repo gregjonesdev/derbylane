@@ -109,15 +109,15 @@ focused_distances = {
     "CA": [546],
     "TS": [550],
     "WD": [548],
-    "IG": [550, 330]
+    # "IG": [550, 330]
 }
 
 focused_grades = {
-    "SL": ["B", "C", "D"],
+    "SL": ["A", "B", "C", "D"],
     "CA": ["A", "B", "C", "D"],
-    "TS": ["A", "B", "C"],
+    "TS": ["A", "B", "C", "D"],
     "WD": ["AA", "A", "B", "C"],
-    "IG": ["A", "B", "C", "D"]
+    # "IG": ["A", "B", "C", "D"]
 }
 
 venue_distances = {
@@ -127,3 +127,139 @@ venue_distances = {
 "TS": [550, 677, 330],
 "WD": [330, 548, 678],
 }
+
+
+model_data = [
+    {
+        "start_date": "2019-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "SL",
+        "grade_name": "A",
+    },
+    {
+        "start_date": "2018-06-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "SL",
+        "grade_name": "A",
+    },
+    {
+        "start_date": "2018-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "SL",
+        "grade_name": "B",
+    },
+    {
+        "start_date": "2021-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "WD",
+        "grade_name": "C",
+    },
+    {
+        "start_date": "2020-09-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "WD",
+        "grade_name": "C",
+    },
+    {
+        "start_date": "2018-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "WD",
+        "grade_name": "B",
+    },
+    {
+        "start_date": "2018-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "WD",
+        "grade_name": "B",
+    },
+    {
+        "start_date": "2018-12-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "TS",
+        "grade_name": "A",
+    },
+    {
+        "start_date": "2021-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "TS",
+        "grade_name": "B",
+    },
+    {
+        "start_date": "2019-06-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "TS",
+        "grade_name": "C",
+    },
+    {
+        "start_date": "2021-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "TS",
+        "grade_name": "D",
+    },
+    {
+        "start_date": "2020-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "TS",
+        "grade_name": "D",
+    },
+    {
+        "start_date": "2020-09-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "SL",
+        "grade_name": "B",
+    },
+    {
+        "start_date": "2021-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "SL",
+        "grade_name": "C",
+    },
+    {
+        "start_date": "2020-06-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "SL",
+        "grade_name": "C",
+    },
+    {
+        "start_date": "2020-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "SL",
+        "grade_name": "C",
+    },
+    {
+        "start_date": "2019-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "SL",
+        "grade_name": "D",
+    },
+    {
+        "start_date": "2018-06-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "WD",
+        "grade_name": "A",
+    },    A
+    {
+        "start_date": "2018-01-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "WD",
+        "grade_name": "A",
+    },    A
+    {
+        "start_date": "2017-06-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "WD",
+        "grade_name": "A",
+    },    A
+    {
+        "start_date": "2020-06-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "WD",
+        "grade_name": "A",
+    },
+    {
+        "start_date": "2020-06-01",
+        "end_date":	"2021-12-31",
+        "venue_code": "WD",
+        "grade_name": "A",
+    },
+]
