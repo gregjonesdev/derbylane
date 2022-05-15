@@ -58,7 +58,7 @@ c_options = {
 
 
 
-betting_venues = ["WD", "TS"]
+betting_venues = ["WD", "TS", "SL"]
 
 betting_distances = {
     "WD": 548,

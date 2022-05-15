@@ -15,6 +15,12 @@ from pww.utilities.ultraweka import get_classifier, get_predictions
 from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
 
+betting_distances = {
+    "WD": 548,
+    "TS": 550,
+    "SL": 583
+}
+
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
@@ -31,7 +37,7 @@ class Command(BaseCommand):
         # target_prediction = sys.argv[9]
         training_metrics = Metric.objects.filter(
             participant__race__grade__name=grade,
-            # participant__race__distance=550,
+            participant__race__distance=betting_distances[venue_code],
             participant__race__chart__program__venue__code=venue_code,
             participant__race__chart__program__date__range=(
                 start_date,
