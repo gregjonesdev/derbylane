@@ -13,9 +13,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for model in model_data:
-            print(model["start_date"])
-            print(model["end_date"])
-            print(model["venue_code"])
-            print(model["grade_name"])
-            print(self.get_model_name(model["venue_code"], model["grade_name"], model["start_date"]))
+            start_date = model["start_date"]
+            end_date = model["end_date"]
+            venue_code = model["venue_code"]
+            grade_name = model["grade_name"]
+            print(start_date)
+            print(end_date)
+            print(venue_code)
+            print(grade_name)
+            print(self.get_model_name(venue_code, grade_name, start_date))
             print("\n")
