@@ -132,9 +132,17 @@ select_exotic_bet = (type) => {
       dogs_required = 3
       finish_order_required = true
       break;
+    case 'TB':
+      dogs_required = 3
+      finish_order_required = false
+      break;
     case 'S':
       dogs_required = 4
       finish_order_required = true
+      break;
+    case 'SB':
+      dogs_required = 4
+      finish_order_required = false
       break;
     case 'Q':
     default:
@@ -214,15 +222,3 @@ const build_exotic_div = (amount, name, posts, wager_uuid) => {
   div.appendChild(build_delete_button(wager_uuid))
   return div
 }
-//
-//
-//
-//
-// const create_button = (text_content) => {
-//   button = document.createElement("button");
-//   button.setAttribute("type", "button");
-//   button.setAttribute("class", "btn btn-outline-info btn-block btn-sm");
-//   button.disabled = true;
-//   button.textContent = text_content;
-//   return button;
-// }

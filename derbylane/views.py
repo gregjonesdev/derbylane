@@ -222,6 +222,10 @@ def make_exotic_bet(request):
             place=race.get_participant(int(selected_posts[1])),
             show=race.get_participant(int(selected_posts[2])),
         )
+    elif bet_type == "TB":
+        pass
+    elif bet_type == "SB":
+        pass
     elif bet_type == "S":
         new_wager = Superfecta_Wager(
             race=race,
