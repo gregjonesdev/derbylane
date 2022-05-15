@@ -123,6 +123,7 @@ clear_selected_posts = () => {
 
 
 select_exotic_bet = (type) => {
+  console.log(type)
   switch (type) {
     case 'E':
       dogs_required = 2
