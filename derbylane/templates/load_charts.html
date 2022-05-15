@@ -1,5 +1,5 @@
 {% for chart in charts %}
   <option value="{{ chart.uuid }}">
-    {{ chart.get_time_display }}
+    {{ chart.program.venue.code }} {{ chart.get_time_display }}
   </option>
 {% endfor %}

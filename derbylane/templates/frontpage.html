@@ -84,7 +84,7 @@
         {% for chart in charts %}
           <option value="{{ chart.uuid }}">
             <span style="color: red">
-              {{ chart.get_kiosk_name }}
+              {{ chart.program.venue.name }} {{chart.get_time_display }}
             </span>
           </option>
         {% endfor %}
