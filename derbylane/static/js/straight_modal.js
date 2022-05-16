@@ -25,6 +25,7 @@ modal.addEventListener("focus", function (e) {
       participant
    )
    document.getElementById('bet_type_' + bets).selected = true;
+   document.getElementById('straight-select-container').style.show = "block"
   }
 
 })

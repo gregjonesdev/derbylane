@@ -218,6 +218,7 @@ const build_exotic_span = (amount, name, posts) => {
 
 const build_exotic_div = (amount, name, posts, wager_uuid) => {
   const div = document.createElement("div");
+  div.addEventListener("click", toggle_delete_show)
   div.setAttribute("class", "list-group-item exotic-wager-item");
   div.setAttribute("id", wager_uuid + "-wager-div");
   div.appendChild(build_exotic_span(amount, name, posts))
