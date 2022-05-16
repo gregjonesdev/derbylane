@@ -180,6 +180,7 @@ def get_profit_potential(percent, payout):
         return ""
 
 
+
 def evaluate_nominal(classifier, filtered_data, uuid_line_index):
     start = 1
     stop = 8
@@ -221,28 +222,65 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
         # print(round(float(each), 2))
         # get_average_win(interval_object[each])
 
+def get_prediction(participant):
+    try:
+        pred = Prediction.objects.get(participant=participant)
+    except ObjectDoesNotExist:
+        new_pred = Prediction(
+            participant = participant
+        )
+        new_pred.set_fields_to_base()
+        new_pred.save()
+        pred = new_pred
+    return pred
+
+def save_predictions(prediction_object):
+    for uuid in prediction_object.keys():
+        participant = Participant.object.get(uuid=uuid)
+        prediction = get_prediction(participant)
+        prediction_bet = ""
+        if prediction_object[uuid]["W"]:
+            prediction_bet.append("W")
+        if prediction_object[uuid]["P"]:
+            prediction_bet.append("P")
+        if prediction_object[uuid]["S"]:
+            prediction_bet.append("S")
+        prediction.bet = prediction_bet
+        prediction.save()             
+
+
 def make_predictions(model, testing_arff, classifier_name, is_nominal, bet_guides):
     uuid_line_index = get_uuid_line_index(testing_arff)
     loader = Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(testing_arff)
     filtered_data = get_filtered_data(loaded_data, is_nominal)
+    prediction_object = {}
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
             prediction = model.classify_instance(inst)
             for guide in bet_guides:
                 if guide["start"] <=prediction < guide["end"]:
-                    participant = Participant.objects.get(uuid=uuid)
-                    print("{},{},{},{},{}-{},{},{}".format(
-                        participant.race.chart.program.venue.code,
-                        participant.race.chart.time,
-                        participant.race.number,
-                        participant.race.grade.name,
-                        participant.post,
-                        participant.dog.name,
-                        round(prediction, 3),
-                        guide["bet"]
-                    ))
+                    if not uuid in prediction_object.keys():
+                        prediction_object[uuid] = {
+                            "W": False,
+                            "P": False,
+                            "S": False}
+                    for char in guide["bet"]:
+                        prediction_object[uuid][char] = True;
+    save_predictions(prediction_object)
+
+                    # print("{},{},{},{},{}-{},{},{}".format(
+                    #     participant.race.chart.program.venue.code,
+                    #     participant.race.chart.time,
+                    #     participant.race.number,
+                    #     participant.race.grade.name,
+                    #     participant.post,
+                    #     participant.dog.name,
+                    #     round(prediction, 3),
+                    #     guide["bet"]
+                    # ))
+
 
 def evaluate_predictions(testing_arff, model, classifier_name):
 

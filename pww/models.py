@@ -128,33 +128,10 @@ class Metric(CoreModel):
 class Prediction(CoreModel):
 
     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
-    j48 = models.IntegerField(
-            null=True)
-    smo = models.IntegerField(
-            null=True)
-    lib_linear = models.DecimalField(
-            max_digits=16,
-            decimal_places=8,
-            null=True)
-    lib_svm = models.IntegerField(
-            null=True)
-    smo_reg = models.DecimalField(
-            max_digits=16,
-            decimal_places=8,
-            null=True)
-
-# class Distribution(CoreModel):
-#
-#     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
-#     distribution = models.ArrayField(
-#             models.IntegerField(null=True),
-#             size=8),
-#
-#     def get_prediction(self, cutoff):
-#         max_value = max(self.distribution)
-#         if max_value >= cutoff:
-#             return self.distrubtion.index(max_value)
-
+    bet = models.CharField(
+        max_length=16,
+        null=True
+    )
 
 class TestPrediction(CoreModel):
 

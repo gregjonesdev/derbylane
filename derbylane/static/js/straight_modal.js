@@ -24,6 +24,7 @@ modal.addEventListener("focus", function (e) {
     this_modal.find('#participant_uuid').text(
       participant
    )
+   document.getElementById('bet_type_' + bets).selected = true;
   }
 
 })

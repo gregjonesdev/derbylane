@@ -24,6 +24,9 @@ modal.addEventListener("focus", function (e) {
     this_modal.find('#participant_uuid').text(
       participant
    )
+   this_modal.find('#bet_types').value(
+     "PLACE"
+  )
   }
 
 })

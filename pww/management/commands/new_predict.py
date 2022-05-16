@@ -43,5 +43,10 @@ class Command(BaseCommand):
                             new_key,
                             testing_metrics)
                         model = get_model(model_directory, model_name)
-                        make_predictions(model, testing_arff, classifier_name, is_nominal, recommendations[model_name])
+                        make_predictions(
+                            model,
+                            testing_arff,
+                            classifier_name,
+                            is_nominal,
+                            recommendations[model_name])
         jvm.stop()

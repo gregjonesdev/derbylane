@@ -8,6 +8,7 @@
     data-target="#straight-bet-modal"
     data-dog="{{ participant.dog.name }}"
     data-post="{{ participant.post }}"
+    data-bets="{{ participant.get_recommended_bet }}"
     data-venue="{{ participant.race.chart.program.venue.code }}"
     data-chart="{{ participant.race.chart.get_time_display }}"
     data-number="{{ participant.race.number }}"

@@ -532,15 +532,8 @@ class Participant(CoreModel):
 
     def get_recommended_bet(self):
         try:
-            prediction = self.prediction.j48
-            recommended_bet = Bet_Recommendation.objects.get(
-                classifier="j48",
-                venue=self.race.chart.program.venue,
-                grade=self.race.grade,
-                distance=self.race.distance,
-                prediction=prediction
-            )
-            return recommended_bet.bet
+            prediction = self.prediction
+            return prediction.bet
         except:
             return None
 
