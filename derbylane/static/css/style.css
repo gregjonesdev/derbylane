@@ -289,10 +289,10 @@ body {
 #amount_input, #exotic_amount_input {
   background-color: #222;
   color: inherit;
-  width: 80px;
+  width: 60px;
   height: 40px;
   font-size: 2em;
-  text-align:center;
+  text-align:right;
   padding-left: 10px;
 }
 
