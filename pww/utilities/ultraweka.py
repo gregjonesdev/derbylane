@@ -237,7 +237,7 @@ def make_predictions(model, testing_arff, classifier_name, is_nominal, bet_guide
                         participant.race.chart.program.venue.code,
                         participant.race.chart.time,
                         participant.race.number,
-                        participant.race.grade
+                        participant.race.grade,
                         participant.post,
                         participant.dog.name,
                         round(prediction, 3),
