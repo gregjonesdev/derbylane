@@ -204,6 +204,7 @@ const build_delete_button = (wager_uuid) => {
   button.setAttribute("class", "btn btn-sm btn-outline-danger float-right exotic-delete-button");
   button.setAttribute("data-wageruuid", wager_uuid)
   button.addEventListener("click", handle_exotic_delete)
+  button.style.display = "none";
   button.textContent = "✕"
   return button
 }
