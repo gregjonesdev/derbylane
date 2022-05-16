@@ -221,7 +221,7 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
         # print(round(float(each), 2))
         # get_average_win(interval_object[each])
 
-def make_predictions(model, testing_arff, classifier_name, is_nominal):
+def make_predictions(model, testing_arff, classifier_name, is_nominal, bet_guide):
     uuid_line_index = get_uuid_line_index(testing_arff)
     loader = Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(testing_arff)
@@ -230,15 +230,17 @@ def make_predictions(model, testing_arff, classifier_name, is_nominal):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
             prediction = model.classify_instance(inst)
-            participant = Participant.objects.get(uuid=uuid)
-            print("{},{},{},{}-{},{}".format(
-                participant.race.chart.program.venue.code,
-                participant.race.chart.time,
-                participant.race.number,
-                participant.post,
-                participant.dog.name,
-                prediction
-            ))
+            if bet_guide["start"] <=prediction < bet_guide["end"]:
+                participant = Participant.objects.get(uuid=uuid)
+                print("{},{},{},{}-{},{},{}".format(
+                    participant.race.chart.program.venue.code,
+                    participant.race.chart.time,
+                    participant.race.number,
+                    participant.post,
+                    participant.dog.name,
+                    round(prediction, 3),
+                    bet_guide["bet"]
+                ))
 
 def evaluate_predictions(testing_arff, model, classifier_name):
 
