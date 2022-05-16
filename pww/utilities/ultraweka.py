@@ -14,7 +14,6 @@ model_directory = "weka_models"
 def get_filename(model_directory, model_name):
     return "{}/{}.model".format(model_directory, model_name)
 
-
 def nominalize(data):
     nominalize = Filter(
         classname="weka.filters.unsupervised.attribute.NumericToNominal",
@@ -62,6 +61,11 @@ def save_model(training_arff, classifier_name, model_name):
     attr_classifier.build_classifier(filtered_data)
     serialization.write(filename, attr_classifier)
 
+def get_model_name(venue_code, grade_name, start_date):
+    return "{}_{}_{}".format(
+        venue_code,
+        grade_name,
+        start_date.replace("-", "_"))
 
 def remove_uuid(data):
     remove = Filter(
