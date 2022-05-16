@@ -29,4 +29,4 @@ class Command(BaseCommand):
             for race_type in recommendations:
                 if new_key in race_type:
                     print(race_type)
-            print("/n")        
+            print("\n")        
