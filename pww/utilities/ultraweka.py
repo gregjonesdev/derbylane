@@ -221,12 +221,10 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
         # print(round(float(each), 2))
         # get_average_win(interval_object[each])
 
-def make_predictions(model, testing_arff, classifier_name):
+def make_predictions(model, testing_arff, classifier_name, is_nominal):
     uuid_line_index = get_uuid_line_index(testing_arff)
     loader = Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(testing_arff)
-    classifier_attributes = classifiers[classifier_name]
-    is_nominal = classifier_attributes["is_nominal"]
     filtered_data = get_filtered_data(loaded_data, is_nominal)
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():

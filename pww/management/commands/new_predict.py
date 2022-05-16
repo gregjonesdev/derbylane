@@ -25,6 +25,8 @@ class Command(BaseCommand):
         today = datetime.date.today()
         tomorrow = today + datetime.timedelta(days=1)
         classifier_name = "smoreg"
+        classifier_attributes = classifiers[classifier_name]
+        is_nominal = classifier_attributes["is_nominal"]
         for venue_code in betting_venues:
             for grade_name in focused_grades[venue_code]:
                 new_key = "{}_{}".format(
@@ -41,5 +43,5 @@ class Command(BaseCommand):
                             new_key,
                             testing_metrics)
                         model = get_model(model_directory, model_name)
-                        make_predictions(model, testing_arff, classifier_name)
+                        make_predictions(model, testing_arff, classifier_name, is_nominal)
         jvm.stop()
