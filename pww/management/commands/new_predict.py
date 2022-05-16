@@ -1,4 +1,5 @@
 import datetime
+import weka.core.jvm as jvm
 
 from django.core.management.base import BaseCommand
 
@@ -17,6 +18,10 @@ class Command(BaseCommand):
         parser.add_argument('--date', type=str)
 
     def handle(self, *args, **options):
+        jvm.start(
+        packages=True,
+        max_heap_size="5028m"
+        )
         today = datetime.date.today()
         tomorrow = today + datetime.timedelta(days=1)
         classifier_name = "smoreg"
@@ -37,3 +42,4 @@ class Command(BaseCommand):
                             testing_metrics)
                         model = get_model(model_directory, model_name)
                         make_predictions(model, testing_arff, classifier_name)
+        jvm.stop()
