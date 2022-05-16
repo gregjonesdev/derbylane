@@ -233,10 +233,11 @@ def make_predictions(model, testing_arff, classifier_name, is_nominal, bet_guide
             for guide in bet_guides:
                 if guide["start"] <=prediction < guide["end"]:
                     participant = Participant.objects.get(uuid=uuid)
-                    print("{},{},{},{}-{},{},{}".format(
+                    print("{},{},{},{},{}-{},{},{}".format(
                         participant.race.chart.program.venue.code,
                         participant.race.chart.time,
                         participant.race.number,
+                        participant.race.grade
                         participant.post,
                         participant.dog.name,
                         round(prediction, 3),
