@@ -229,7 +229,7 @@ def make_predictions(model, testing_arff, classifier_name, is_nominal):
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
-            prediction = classifier.classify_instance(inst)
+            prediction = model.classify_instance(inst)
             participant = Participant.objects.get(uuid=uuid)
             print("{},{},{},{}-{},{}".format(
                 participant.race.chart.program.venue.code,
