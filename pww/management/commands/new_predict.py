@@ -30,8 +30,8 @@ class Command(BaseCommand):
                         testing_metrics = new_get_training_metrics(
                             grade_name,
                             venue_code,
-                            test_start,
-                            test_stop)
+                            today,
+                            tomorrow)
                         testing_arff = get_testing_arff(
                             "{}_{}".format(venue_code, grade_name),
                             testing_metrics)
