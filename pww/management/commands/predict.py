@@ -1,27 +1,16 @@
-# import csv
 import sys
-import os
-import fnmatch
-from pathlib import Path
 import weka.core.jvm as jvm
 import weka.core.converters as conv
 import weka.core.serialization as serialization
 import datetime
 
 from django.core.management.base import BaseCommand
-from weka.classifiers import Classifier
-from pww.models import Metric
 from rawdat.models import Participant, Bet_Recommendation, Grade, Venue
 from pww.utilities.weka import (
     create_model,
-    build_scheduled_data,
-    get_uuid_line_index,
     get_prediction_list,
     get_prediction)
 from miner.utilities.urls import arff_directory
-from miner.utilities.constants import (
-    focused_distances,
-    focused_grades)
 from pww.utilities.arff import create_arff
 from pww.utilities.metrics import (
     get_defined_training_metrics,

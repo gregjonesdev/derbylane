@@ -9,8 +9,6 @@ from rawdat.models import Participant
 import weka.core.serialization as serialization
 from weka.core.converters import Loader
 
-model_directory = "weka_models"
-
 def get_filename(model_directory, model_name):
     return "{}/{}.model".format(model_directory, model_name)
 
@@ -42,7 +40,7 @@ def get_filtered_data(loaded_data, is_nominal):
         return nominalize(filtered_data)
     return filtered_data
 
-def get_model(venue_code, grade_name, start_date):
+def get_model(venue_code, grade_name, start_date, model_directory):
     model_name = get_model_name(venue_code, grade_name, start_date)
     filename = get_filename(model_directory, model_name)
     return Classifier(jobject=serialization.read(filename))
@@ -226,8 +224,8 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
 
 
 
-def get_predictions(testing_arff, venue_code, grade_name, start_date, classifier_name):
-    model = get_model(venue_code, grade_name, start_date)
+def get_predictions(testing_arff, model, classifier_name):
+
     classifier_attributes = classifiers[classifier_name]
     is_nominal = classifier_attributes["is_nominal"]
     uuid_line_index = get_uuid_line_index(testing_arff)

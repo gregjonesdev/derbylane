@@ -22,6 +22,7 @@ betting_distances = {
     "SL": 583
 }
 
+model_directory = "test_models"
 
 class Command(BaseCommand):
 
@@ -37,6 +38,8 @@ class Command(BaseCommand):
         grade_name = sys.argv[7]
         start_date = sys.argv[9]
         end_date = "2021-12-31"
+        test_start = "2022-01-01"
+        test_stop = "2022-04-20"
         training_metrics = new_get_training_metrics(
             grade_name,
             venue_code,
@@ -52,24 +55,25 @@ class Command(BaseCommand):
 
 
         print("{} Grade {}".format (venue_code, grade_name))
-        print("{} - {}".format(start_date, "2021-12-31"))
+        print("{} - {}".format(start_date, end_date))
         print("Training Metrics: {}\n".format(
             len(training_metrics)))
 
         testing_metrics = new_get_training_metrics(
             grade_name,
             venue_code,
-            "2022-01-01",
-            "2022-04-20")
+            test_start,
+            test_stop)
         testing_arff = get_testing_arff(
             "{}_{}".format(venue_code, grade_name),
             testing_metrics)
         print("Testing Metrics: {}".format(len(testing_metrics)))
 
+        
+        model = get_model(venue_code, grade_name, start_date, model_directory)
+
         get_predictions(
             testing_arff,
-            venue_code,
-            grade_name,
-            start_date,
+            model,
             classifier_name)
         jvm.stop()
