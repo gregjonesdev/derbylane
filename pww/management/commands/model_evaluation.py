@@ -21,7 +21,7 @@ betting_distances = {
     "TS": 550,
     "SL": 583
 }
-model_directory = "test_models"
+
 
 class Command(BaseCommand):
 
