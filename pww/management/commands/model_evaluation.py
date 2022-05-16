@@ -51,7 +51,7 @@ class Command(BaseCommand):
         )
 
 
-        print("{} Grade {}".format (venue_code, grade))
+        print("{} Grade {}".format (venue_code, grade_name))
         print("{} - {}".format(start_date, "2021-12-31"))
         print("Training Metrics: {}\n".format(
             len(training_metrics)))
