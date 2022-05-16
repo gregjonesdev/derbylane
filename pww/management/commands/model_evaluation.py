@@ -62,7 +62,7 @@ class Command(BaseCommand):
             "2022-01-01",
             "2022-04-20")
         testing_arff = get_testing_arff(
-            "{}_{}".format(venue_code, grade),
+            "{}_{}".format(venue_code, grade_name),
             testing_metrics)
         print("Testing Metrics: {}".format(len(testing_metrics)))
 
