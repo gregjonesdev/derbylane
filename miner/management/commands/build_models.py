@@ -21,8 +21,9 @@ class Command(BaseCommand):
         max_heap_size="5028m"
         )
         classifier_name = "smoreg"
-
+        i = 1
         for model in model_data:
+            print("building model {} of {}".format(i, len(model_data)))
             start_date = model["start_date"]
             end_date = model["end_date"]
             venue_code = model["venue_code"]
@@ -40,4 +41,5 @@ class Command(BaseCommand):
                 training_arff,
                 classifier_name,
                 model_name)
+            i += 1
         jvm.stop()
