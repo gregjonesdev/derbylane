@@ -242,11 +242,11 @@ def save_predictions(prediction_object):
         prediction = get_prediction(participant)
         prediction_bet = ""
         if prediction_object[uuid]["W"]:
-            prediction_bet.append("W")
+            prediction_bet += "W"
         if prediction_object[uuid]["P"]:
-            prediction_bet.append("P")
+            prediction_bet += "P"
         if prediction_object[uuid]["S"]:
-            prediction_bet.append("S")
+            prediction_bet += "S"
         prediction.bet = prediction_bet
         prediction.save()
 
