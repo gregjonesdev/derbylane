@@ -68,7 +68,7 @@ class Command(BaseCommand):
 
         get_predictions(
             testing_arff,
-            movenue_code,
+            venue_code,
             grade_name,
             start_date,
             classifier_name)
