@@ -197,7 +197,7 @@ model_data = [
     },
 ]
 
-reccomendations = {
+recomendations = {
 
     "TS_D_2021_01_01": [
         {
