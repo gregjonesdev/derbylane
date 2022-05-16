@@ -60,7 +60,7 @@ class Command(BaseCommand):
             grade_name,
             venue_code,
             "2022-01-01",
-            "2022-04-20")    
+            "2022-04-20")
         testing_arff = get_testing_arff(
             "{}_{}".format(venue_code, grade),
             testing_metrics)
@@ -70,6 +70,6 @@ class Command(BaseCommand):
             testing_arff,
             movenue_code,
             grade_name,
-            start_date
+            start_date,
             classifier_name)
         jvm.stop()
