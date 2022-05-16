@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from pww.models import Metric, Prediction
-from pww.utilities.classifiers import model_data
+from pww.utilities.classifiers import model_data, reccomendations
 
 
 class Command(BaseCommand):
@@ -23,8 +23,8 @@ class Command(BaseCommand):
             end_date = model["end_date"]
             venue_code = model["venue_code"]
             grade_name = model["grade_name"]
-            print(self.get_model_name(venue_code, grade_name, start_date))
-
+            model_name = self.get_model_name(venue_code, grade_name, start_date)
+            print(model_name)
             training_metrics = Metric.objects.filter(
                 participant__race__grade__name=grade_name,
                 participant__race__chart__program__venue__code=venue_code,
@@ -32,5 +32,6 @@ class Command(BaseCommand):
                     start_date,
                     end_date))
 
-            print(len(training_metrics))
-            print("\n")
+
+            bet_recs = reccomendations[model_name]
+            print(bet_recs)
