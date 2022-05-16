@@ -293,7 +293,7 @@ body {
   height: 40px;
   font-size: 2em;
   text-align:right;
-  padding-left: 10px;
+  padding-right: 6px;
 }
 
 #loader-gif {
