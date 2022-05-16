@@ -14,7 +14,7 @@ all_race_results = "{}dog-racelines.jsp?page=1&runnername=".format(trackinfo_des
 all_race_suffix = "&TotalRowCount=20000"
 
 arff_directory = "arff"
-
+model_directory = "weka_models"
 australia_attempt = "https://old.thedogs.com.au/Racing/RacingFormFields.aspx?meetid=260281"
 
 json_suffix = "&language=en-US&units=e&format=json"

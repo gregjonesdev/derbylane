@@ -11,7 +11,7 @@ from pww.utilities.arff import (
     get_testing_arff,
 )
 from pww.utilities.classifiers import classifiers
-from pww.utilities.ultraweka import get_model, get_predictions
+from pww.utilities.ultraweka import get_model, evaluate_predictions
 from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
 from pww.utilities.metrics import new_get_training_metrics
@@ -69,10 +69,10 @@ class Command(BaseCommand):
             testing_metrics)
         print("Testing Metrics: {}".format(len(testing_metrics)))
 
-        
+        # Must build test model
         model = get_model(venue_code, grade_name, start_date, model_directory)
 
-        get_predictions(
+        evaluate_predictions(
             testing_arff,
             model,
             classifier_name)

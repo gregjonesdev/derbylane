@@ -112,9 +112,11 @@ focused_distances = {
     # "IG": [550, 330]
 }
 
+betting_venues = ["WD", "TS", "SL"]
+
 focused_grades = {
     "SL": ["A", "B", "C", "D"],
-    "CA": ["A", "B", "C", "D"],
+    # "CA": ["A", "B", "C", "D"],
     "TS": ["A", "B", "C", "D"],
     "WD": ["AA", "A", "B", "C"],
     # "IG": ["A", "B", "C", "D"]

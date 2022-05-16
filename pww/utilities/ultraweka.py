@@ -40,8 +40,7 @@ def get_filtered_data(loaded_data, is_nominal):
         return nominalize(filtered_data)
     return filtered_data
 
-def get_model(venue_code, grade_name, start_date, model_directory):
-    model_name = get_model_name(venue_code, grade_name, start_date)
+def get_model(venue_code, grade_name, start_date, model_directory, model_name):
     filename = get_filename(model_directory, model_name)
     return Classifier(jobject=serialization.read(filename))
 
@@ -222,9 +221,28 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
         # print(round(float(each), 2))
         # get_average_win(interval_object[each])
 
+def make_predictions(model, testing_arff, classifier_name):
+    uuid_line_index = get_uuid_line_index(testing_arff)
+    loader = Loader(classname="weka.core.converters.ArffLoader")
+    loaded_data = loader.load_file(testing_arff)
+    classifier_attributes = classifiers[classifier_name]
+    is_nominal = classifier_attributes["is_nominal"]
+    filtered_data = get_filtered_data(loaded_data, is_nominal)
+    for index, inst in enumerate(filtered_data):
+        if index in uuid_line_index.keys():
+            uuid = uuid_line_index[index]
+            prediction = classifier.classify_instance(inst)
+            participant = Participant.objects.get(uuid=uuid)
+            print("{},{},{},{}-{},{}".format(
+                participant.race.chart.program.venue.code,
+                participant.race.chart.time,
+                participant.race.number,
+                participant.post,
+                participant.dog.name,
+                prediction
+            ))
 
-
-def get_predictions(testing_arff, model, classifier_name):
+def evaluate_predictions(testing_arff, model, classifier_name):
 
     classifier_attributes = classifiers[classifier_name]
     is_nominal = classifier_attributes["is_nominal"]
