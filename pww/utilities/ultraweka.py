@@ -40,7 +40,7 @@ def get_filtered_data(loaded_data, is_nominal):
         return nominalize(filtered_data)
     return filtered_data
 
-def get_model(venue_code, grade_name, start_date, model_directory, model_name):
+def get_model(model_directory, model_name):
     filename = get_filename(model_directory, model_name)
     return Classifier(jobject=serialization.read(filename))
 

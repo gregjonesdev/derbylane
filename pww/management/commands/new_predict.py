@@ -33,12 +33,7 @@ class Command(BaseCommand):
                             today,
                             tomorrow)
                         testing_arff = get_testing_arff(
-                            "{}_{}".format(venue_code, grade_name),
+                            new_key,
                             testing_metrics)
-                        model = get_model(
-                            venue_code,
-                            grade_name,
-                            model_name["start"].replace("-", "_"),
-                            model_directory,
-                            model_name)
+                        model = get_model(model_directory, model_name)
                         make_predictions(model, testing_arff, classifier_name)
