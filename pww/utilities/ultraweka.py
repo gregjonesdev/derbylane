@@ -236,7 +236,7 @@ def get_prediction(participant):
 
 def save_predictions(prediction_object):
     for uuid in prediction_object.keys():
-        participant = Participant.object.get(uuid=uuid)
+        participant = Participant.objects.get(uuid=uuid)
         prediction = get_prediction(participant)
         prediction_bet = ""
         if prediction_object[uuid]["W"]:
@@ -246,7 +246,7 @@ def save_predictions(prediction_object):
         if prediction_object[uuid]["S"]:
             prediction_bet.append("S")
         prediction.bet = prediction_bet
-        prediction.save()             
+        prediction.save()
 
 
 def make_predictions(model, testing_arff, classifier_name, is_nominal, bet_guides):
