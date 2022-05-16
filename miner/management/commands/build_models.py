@@ -35,10 +35,11 @@ class Command(BaseCommand):
 
             bet_recs = reccomendations[model_name]
             # print(bet_recs)
-            print("{}\t{}\t{}".format(
-                model_name,
-                "{}-{}".format(
-                    bet_recs["start"],
-                    bet_recs["end"]),
-                bet_recs["bet"]
-            ))
+            for each in bet_recs:
+                print("{}\t{}\t{}".format(
+                    model_name,
+                    "{}-{}".format(
+                        each["start"],
+                        each["end"]),
+                    each["bet"]
+                ))
