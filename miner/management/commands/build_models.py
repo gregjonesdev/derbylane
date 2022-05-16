@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 
 from pww.models import Metric, Prediction
 from pww.utilities.classifiers import model_data, reccomendations
+from pww.utilities.arff import get_training_arff
 from pww.utilities.ultraweka import save_model
 from pww.utilities.metrics import new_get_training_metrics
 import weka.core.jvm as jvm
