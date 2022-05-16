@@ -38,7 +38,7 @@ class Command(BaseCommand):
                         model = get_model(
                             venue_code,
                             grade_name,
-                            start_date,
+                            model_name["start"].replace("-", "_"),
                             model_directory,
                             model_name)
                         make_predictions(model, testing_arff, classifier_name)
