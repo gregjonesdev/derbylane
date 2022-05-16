@@ -8,6 +8,7 @@ from pww.utilities.classifiers import model_data, reccomendations
 from pww.utilities.metrics import new_get_training_metrics
 from pww.utilities.ultraweka import save_model, get_model_name
 
+model_directory = "weka_models"
 
 class Command(BaseCommand):
 
@@ -39,4 +40,4 @@ class Command(BaseCommand):
                 training_arff,
                 classifier_name,
                 model_name)
-        jvm.stop()        
+        jvm.stop()

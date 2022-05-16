@@ -11,15 +11,17 @@ from pww.utilities.arff import (
     get_testing_arff,
 )
 from pww.utilities.classifiers import classifiers
-from pww.utilities.ultraweka import get_classifier, get_predictions
+from pww.utilities.ultraweka import get_model, get_predictions
 from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
+from pww.utilities.metrics import new_get_training_metrics
 
 betting_distances = {
     "WD": 548,
     "TS": 550,
     "SL": 583
 }
+model_directory = "test_models"
 
 class Command(BaseCommand):
 
@@ -34,15 +36,12 @@ class Command(BaseCommand):
         venue_code = sys.argv[5]
         grade = sys.argv[7]
         start_date = sys.argv[9]
-        # target_prediction = sys.argv[9]
-        training_metrics = Metric.objects.filter(
-            participant__race__grade__name=grade,
-            # participant__race__distance=betting_distances[venue_code],
-            participant__race__chart__program__venue__code=venue_code,
-            participant__race__chart__program__date__range=(
-                start_date,
-                "2021-12-31"))
-        classifier_attributes = classifiers[classifier_name]
+        end_date = "2021-12-31"
+        training_metrics = new_get_training_metrics(
+            grade_name,
+            venue_code,
+            start_date,
+            end_date)
         training_arff = get_training_arff(
             classifier_name,
             training_metrics)
@@ -50,21 +49,18 @@ class Command(BaseCommand):
             packages=True,
             max_heap_size="5028m"
         )
-        loader = Loader(classname="weka.core.converters.ArffLoader")
-        classifier = get_classifier(
-            training_arff,
-            classifier_attributes,
-            loader)
+
+
         print("{} Grade {}".format (venue_code, grade))
         print("{} - {}".format(start_date, "2021-12-31"))
         print("Training Metrics: {}\n".format(
             len(training_metrics)))
-        testing_metrics = Metric.objects.filter(
-            participant__race__chart__program__venue__code=venue_code,
-            participant__race__grade__name=grade,
-            participant__race__chart__program__date__range=(
-                "2022-01-01",
-                "2022-04-20"))
+
+        testing_metrics = new_get_training_metrics(
+            grade_name,
+            venue_code,
+            "2022-01-01",
+            "2022-04-20")    
         testing_arff = get_testing_arff(
             "{}_{}".format(venue_code, grade),
             testing_metrics)
@@ -72,7 +68,8 @@ class Command(BaseCommand):
 
         get_predictions(
             testing_arff,
-            classifier,
-            loader,
-            classifier_attributes["is_nominal"])
+            movenue_code,
+            grade_name,
+            start_date
+            classifier_name)
         jvm.stop()

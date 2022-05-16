@@ -9,7 +9,7 @@ from rawdat.models import Participant
 import weka.core.serialization as serialization
 from weka.core.converters import Loader
 
-model_directory = "weka_models"
+
 
 def get_filename(model_directory, model_name):
     return "{}/{}.model".format(model_directory, model_name)
@@ -42,11 +42,12 @@ def get_filtered_data(loaded_data, is_nominal):
         return nominalize(filtered_data)
     return filtered_data
 
-def get_model(model_name):
+def get_model(venue_code, grade_name, start_date):
+    model_name = get_model_name(venue_code, grade_name, start_date)
     filename = get_filename(model_directory, model_name)
     return Classifier(jobject=serialization.read(filename))
 
-def save_model(training_arff, classifier_name, model_name):
+def save_model(training_arff, classifier_name, model_directory, model_name):
     classifier_attributes = classifiers[classifier_name]
     filename = get_filename(model_directory, model_name)
     loader = Loader(classname="weka.core.converters.ArffLoader")
@@ -225,11 +226,15 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
 
 
 
-def get_predictions(testing_arff, classifier, loader, is_nominal):
+def get_predictions(testing_arff, venue_code, grade_name, start_date, classifier_name):
+    model = get_model(venue_code, grade_name, start_date)
+    classifier_attributes = classifiers[classifier_name]
+    is_nominal = classifier_attributes["is_nominal"]
     uuid_line_index = get_uuid_line_index(testing_arff)
+    loader = Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(testing_arff)
     filtered_data = get_filtered_data(loaded_data, is_nominal)
     if is_nominal:
-        evaluate_confidence(classifier, filtered_data, uuid_line_index)
+        evaluate_confidence(model, filtered_data, uuid_line_index)
     else:
-        evaluate_nominal(classifier, filtered_data, uuid_line_index)
+        evaluate_nominal(model, filtered_data, uuid_line_index)
