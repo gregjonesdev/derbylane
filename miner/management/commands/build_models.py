@@ -24,7 +24,7 @@ class Command(BaseCommand):
             venue_code = model["venue_code"]
             grade_name = model["grade_name"]
             model_name = self.get_model_name(venue_code, grade_name, start_date)
-            print(model_name)
+            # print(model_name)
             training_metrics = Metric.objects.filter(
                 participant__race__grade__name=grade_name,
                 participant__race__chart__program__venue__code=venue_code,
@@ -34,7 +34,7 @@ class Command(BaseCommand):
 
 
             bet_recs = reccomendations[model_name]
-            print(bet_recs)
+            # print(bet_recs)
             print("{}\t{}\t{}".format(
                 model_name,
                 "{}-{}".format(
