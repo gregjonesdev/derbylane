@@ -34,7 +34,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         classifier_name = sys.argv[3]
         venue_code = sys.argv[5]
-        grade = sys.argv[7]
+        grade_name = sys.argv[7]
         start_date = sys.argv[9]
         end_date = "2021-12-31"
         training_metrics = new_get_training_metrics(
