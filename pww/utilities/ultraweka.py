@@ -8,6 +8,8 @@ from weka.filters import Filter
 from rawdat.models import Participant
 import weka.core.serialization as serialization
 from weka.core.converters import Loader
+from django.core.exceptions import ObjectDoesNotExist
+
 
 def get_filename(model_directory, model_name):
     return "{}/{}.model".format(model_directory, model_name)
