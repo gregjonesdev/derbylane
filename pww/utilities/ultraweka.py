@@ -230,7 +230,6 @@ def make_predictions(model, testing_arff, classifier_name, is_nominal, bet_guide
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
             prediction = model.classify_instance(inst)
-            print(bet_guides)
             for guide in bet_guides:
                 if guide["start"] <=prediction < guide["end"]:
                     participant = Participant.objects.get(uuid=uuid)
