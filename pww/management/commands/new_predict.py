@@ -4,7 +4,7 @@ import weka.core.jvm as jvm
 from django.core.management.base import BaseCommand
 
 from pww.utilities.arff import get_testing_arff
-from pww.utilities.classifiers import recommendations
+from pww.utilities.classifiers import recommendations, classifiers
 from pww.utilities.metrics import new_get_training_metrics
 from rawdat.models import Race, Program
 from miner.utilities.constants import focused_grades, betting_venues
