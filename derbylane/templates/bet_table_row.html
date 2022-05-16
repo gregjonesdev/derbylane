@@ -27,6 +27,7 @@ colspan="5">
     <button
       type="button"
       data-wageruuid="{{ wager.uuid }}"
+      style="display:none"
       class="btn btn-sm btn-outline-danger float-right exotic-delete-button">
       &#10005;
     </button>
@@ -35,9 +36,14 @@ colspan="5">
 </div>
 
 <script>
+
+  exotic_wager_buttons = document.getElementsByClassName("exotic-wager-item")
+  for (let i=0; i<exotic_wager_buttons.length; i++) {
+    exotic_wager_buttons[i].addEventListener("click", toggle_delete_show)
+  }
+
   exotic_delete_buttons = document.getElementsByClassName("exotic-delete-button")
   for (let i=0; i<exotic_delete_buttons.length; i++) {
-    console.log(i)
     exotic_delete_buttons[i].addEventListener("click", handle_exotic_delete)
   }
 </script>

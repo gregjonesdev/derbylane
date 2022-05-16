@@ -16,7 +16,14 @@ function handle_exotic_delete (e) {
   })
 }
 
-
+function toggle_delete_show (e) {
+  const delete_button = e.currentTarget.children.item(1);
+  if (delete_button.style.display === "none") {
+    delete_button.style.display = "block";
+  } else {
+    delete_button.style.display = "none";
+  }
+}
 
 window.onload = (event) => {
   dropdowns = document.getElementsByClassName("dropdown-item")
