@@ -7,6 +7,13 @@ from weka.classifiers import Classifier
 from weka.filters import Filter
 from rawdat.models import Participant
 import weka.core.serialization as serialization
+from weka.core.converters import Loader
+
+model_directory = "weka_models"
+
+def get_filename(model_directory, model_name):
+    return "{}/{}.model".format(model_directory, model_name)
+
 
 def nominalize(data):
     nominalize = Filter(
@@ -36,8 +43,14 @@ def get_filtered_data(loaded_data, is_nominal):
         return nominalize(filtered_data)
     return filtered_data
 
-def get_classifier(training_arff, classifier_attributes, loader):
-    filename = "test_models/test.model"
+def get_model(model_name):
+    filename = get_filename(model_directory, model_name)
+    return Classifier(jobject=serialization.read(filename))
+
+def save_model(training_arff, classifier_name, model_name):
+    classifier_attributes = classifiers[classifier_name]
+    filename = get_filename(model_directory, model_name)
+    loader = Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(training_arff)
     filtered_data = get_filtered_data(
         loaded_data,
@@ -46,10 +59,9 @@ def get_classifier(training_arff, classifier_attributes, loader):
         classname=classifier_attributes["path"],
         options=classifier_attributes["options"])
     attr_classifier = get_attr_classifier(base_classifier)
-    # ERROR: weka.classifiers.trees.J48: Cannot handle numeric class!
     attr_classifier.build_classifier(filtered_data)
     serialization.write(filename, attr_classifier)
-    return Classifier(jobject=serialization.read(filename))
+
 
 def remove_uuid(data):
     remove = Filter(
@@ -191,7 +203,7 @@ def evaluate_nominal(classifier, filtered_data, uuid_line_index):
         if count > 0:
             percent = round((100*len(interval_object[each])/count), 2)
         else:
-            percent = 0    
+            percent = 0
         # if len(interval_object[each]) > 99:
         #     string_row = "{} - {}:\t{} ({}%)\t{}\t{}\t{}"
         print(string_row.format(

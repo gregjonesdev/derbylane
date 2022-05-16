@@ -2,6 +2,9 @@ from django.core.management.base import BaseCommand
 
 from pww.models import Metric, Prediction
 from pww.utilities.classifiers import model_data, reccomendations
+from pww.utilities.ultraweka import save_model
+from pww.utilities.metrics import new_get_training_metrics
+
 
 
 class Command(BaseCommand):
@@ -17,25 +20,32 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
+        jvm.start(
+        packages=True,
+        max_heap_size="5028m"
+        )
         classifier_name = "smoreg"
+
         for model in model_data:
             start_date = model["start_date"]
             end_date = model["end_date"]
             venue_code = model["venue_code"]
             grade_name = model["grade_name"]
             model_name = self.get_model_name(venue_code, grade_name, start_date)
-            # print(model_name)
-            training_metrics = Metric.objects.filter(
-                participant__race__grade__name=grade_name,
-                participant__race__chart__program__venue__code=venue_code,
-                participant__race__chart__program__date__range=(
-                    start_date,
-                    end_date))
-
-
-            bet_recs = reccomendations[model_name]
-            # print(bet_recs)
-            for each in bet_recs:
+            training_metrics = new_get_training_metrics(
+                grade_name,
+                venue_code,
+                start_date,
+                end_date)
+            print(len(training_metrics))
+            training_arff = get_training_arff(
+                classifier_name,
+                training_metrics)
+            # save_model(
+            #     training_arff,
+            #     classifier_name,
+            #     model_name)
+            for each in reccomendations[model_name]:
                 print("{}\t{}\t{}".format(
                     model_name,
                     "{}-{}".format(
