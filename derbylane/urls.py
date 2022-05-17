@@ -8,6 +8,7 @@ from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from derbylane.views import (
     FrontPage,
     ProfileView,
+    AnalysisView,
     ResultsView,
     WeatherView,
     PasswordReset,
@@ -46,6 +47,10 @@ urlpatterns = [
         r'^profile/$',
         ProfileView.as_view(),
         name='profile'),
+    url(
+        r'^analysis/$',
+        AnalysisView.as_view(),
+        name='analysis'),
     path('', include(tf_twilio_urls)),
     # path('accounts/', include('django.contrib.auth.urls')),
     # path('password_reset_form/', auth_views.PasswordChangeView.as_view(), name='password_reset'),
