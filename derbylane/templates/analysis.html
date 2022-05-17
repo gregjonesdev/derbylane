@@ -1,8 +1,74 @@
 {% extends "_base.html" %}
 
 {% block content %}
+<div class="card">
+<div class="card-header">
+Analysis
+</div>
+
+<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+  <label class="btn btn-outline-primary" for="btnradio1">Week</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+  <label class="btn btn-outline-primary" for="btnradio2">Month</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+  <label class="btn btn-outline-primary" for="btnradio3">Year</label>
+</div>
 {{ year_bets }}
 {{ month_bets }}
 {{ week_bets }}
-{{ yesterday_bets }}
+
+
+
+
+
+<canvas id="venueChart" style="width:100%;max-width:600px"></canvas>
+<canvas id="gradeChart" style="width:100%;max-width:600px"></canvas>
+</div>
+<script>
+var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+var yValues = [55, -49, 44, 24, 15];
+
+const venues = ["Southland", "Tri-State", "Wheeling Downs"]
+
+var barColors = ["#d62828", "#f77f00", "#fcbf49", "#eae2b7", "#003049"]
+new Chart("venueChart", {
+  type: "bar",
+  data: {
+    labels: venues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "World Wine Production 2018"
+    }
+  }
+});
+
+new Chart("gradeChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "World Wine Production 2018"
+    }
+  }
+});
+</script>
+
 {% endblock content %}
