@@ -119,6 +119,8 @@ class AnalysisView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         today = datetime.datetime.now().date()
         yesterday = today - datetime.timedelta(days=1)
+
+        # first date of smoreg bets: 2022-05-16
         self.context["yesterday"] = yesterday.strftime("%a %b %-d")
         self.context["yesterday_date"] = yesterday.strftime("%Y-%m-%d")
         # self.context["last_week"] = today - datetime.timedelta(days=7)
