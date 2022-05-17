@@ -6,11 +6,28 @@
 style="font-size: 1.6em; margin:auto; font-style: italic; font-weight: bold">
 Analysis
 </div>
-<div class="card-body"
-<div class="btn-group" role="group" style="text-align:right" aria-label="Basic radio toggle button group">
-  <input type="radio" class="btn-check" name="btnradio" value="{{ yesterday_date }}" id="btnradio1" autocomplete="off" checked>
-  <label class="btn btn-outline-primary btn-sm" for="btnradio1">{{ yesterday }}</label>
-</div>
+<div class="card-body">
+  <div style="display: flex; flex-flow: row nowrap; justify-content: space-between; align-items: middle">
+  <div class="btn-group" role="group">
+     <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" style="margin-bottom: 8px;" data-bs-toggle="dropdown" aria-expanded="false">
+       All Venues
+     </button>
+     <ul class="dropdown-menu" style="background-color: #212121;" aria-labelledby="btnGroupDrop1">
+       <li><a class="dropdown-item" href="#">Southland</a></li>
+       <li><a class="dropdown-item" href="#">Tri-State</a></li>
+       <li><a class="dropdown-item" href="#">Wheeling Downs</a></li>
+     </ul>
+   </div>
+
+  <div class="btn-group" role="group" style="text-align:right" aria-label="Basic radio toggle button group">
+    <input type="radio" class="btn-check" name="btnradio" value="{{ yesterday_date }}" id="btnradio1" autocomplete="off" checked>
+    <label class="btn btn-outline-primary btn-sm" for="btnradio1">{{ yesterday }}</label>
+    <input type="radio" class="btn-check " name="btnradio" value="" id="btnradio1" autocomplete="off" disabled>
+    <label class="btn btn-outline-primary btn-sm" for="btnradio1">Week</label>
+    <input type="radio" class="btn-check " name="btnradio" value="" id="btnradio1" autocomplete="off" disabled>
+    <label class="btn btn-outline-primary btn-sm" for="btnradio1">Month</label>
+  </div>
+  </div>
 
 
 
