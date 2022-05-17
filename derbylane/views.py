@@ -111,7 +111,7 @@ class FrontPage(LoginRequiredMixin, View):
         return render(request, self.template_name, self.context)
 
 
-class AnalysisView(OTPRequiredMixin, View):
+class AnalysisView(LoginRequiredMixin, View):
 
     template_name = 'analysis.html'
     context = {}
@@ -121,7 +121,7 @@ class AnalysisView(OTPRequiredMixin, View):
         yesterday = today - datetime.timedelta(days=1)
         last_week = today - datetime.timedelta(days=7)
         last_month = today - datetime.timedelta(days=30)
-        last_year = today - datetime.timedelta(years=1)
+        last_year = today - datetime.timedelta(days=365)
         year_bets = Bet.objects.filter(
             participant__race__chart__program__date__gte=last_year)
         month_bets = year_bets.filter(
@@ -129,11 +129,11 @@ class AnalysisView(OTPRequiredMixin, View):
         week_bets = year_bets.filter(
             participant__race__chart__program__date__gte=last_week)
         yesterday_bets = year_bets.filter(
-            participant__race__chart__program__date__gte=last_yesterday)
+            participant__race__chart__program__date__gte=yesterday)
         self.context["year_bets"] = year_bets
         self.context["month_bets"] = month_bets
         self.context["week_bets"] = week_bets
-        self.context["yesterday_bets"] = yesterday_bets    
+        self.context["yesterday_bets"] = yesterday_bets
         return render(request, self.template_name, self.context)
 
 
