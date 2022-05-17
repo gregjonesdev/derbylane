@@ -9,13 +9,13 @@ Analysis
 <div class="card-body">
   <div style="display: flex; flex-flow: row nowrap; justify-content: space-between; align-items: middle">
   <div class="btn-group" role="group">
-     <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" style="margin-bottom: 8px;" data-bs-toggle="dropdown" aria-expanded="false">
+     <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" style="margin-bottom: 8px; " data-bs-toggle="dropdown" aria-expanded="false">
        All Venues
      </button>
      <ul class="dropdown-menu" style="background-color: #212121;" aria-labelledby="btnGroupDrop1">
-       <li><a class="dropdown-item" href="#">Southland</a></li>
-       <li><a class="dropdown-item" href="#">Tri-State</a></li>
-       <li><a class="dropdown-item" href="#">Wheeling Downs</a></li>
+       <li><a class="dropdown-item venue-select" href="#" data-value="SL">Southland</a></li>
+       <li><a class="dropdown-item venue-select" href="#" data-value="TS">Tri-State</a></li>
+       <li><a class="dropdown-item venue-select" href="#" data-value="WD">Wheeling Downs</a></li>
      </ul>
    </div>
 
@@ -45,8 +45,30 @@ Analysis
 <script>
   const text_content = document.getElementById("json-chart-data").textContent
   const json_data = JSON.parse(text_content)
+  const venue_select = document.getElementsByClassName("venue-select")
 
   button_checks = document.getElementsByClassName("btn-check")
+
+  function handle_venue_select(e) {
+    const target = e.currentTarget
+    const venue_code = target.getAttribute("data-value");
+    document.getElementById("btnGroupDrop1").textContent = target.textContent;
+
+    $.ajax({
+      url: json_data["get_bets_url"],
+      dataType: "json",
+      data: {"venue_code": venue_code},
+      success: function(data) {
+        console.log("YEAH")
+        const graded_bets = data["graded_bets"]
+        const grades = Object.keys(graded_bets)
+        for (let i=0; i< grades.length; i++) {
+          console.log(graded_bets[grades[i]])
+        }
+      }
+    })
+
+  }
 
   function handle_time_select(e) {
     console.log("triggered")
@@ -59,7 +81,7 @@ Analysis
       data: {"date": "2022-05-15"},
       success: function(data) {
         console.log("YEAH")
-        console.log(data)
+
       }
     })
 
@@ -68,7 +90,9 @@ Analysis
   for (let i=0; i<button_checks.length; i++) {
     button_checks[i].addEventListener("click", handle_time_select)
   }
-
+  for (let i=0; i<venue_select.length; i++) {
+    venue_select[i].addEventListener("click", handle_venue_select)
+  }
 
 
 var xValues = ["AA", "A", "B", "C"];

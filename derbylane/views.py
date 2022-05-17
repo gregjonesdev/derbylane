@@ -346,9 +346,26 @@ def change_password(request):
     })
 
 def get_bets(request):
-
+    request.GET.get('date')
+    bets = Bet.objects.all()
+    if request.GET.get('venue_code'):
+        venue_code = request.GET.get('venue_code')
+        bets = bets.filter(
+            participant__race__chart__program__venue__code=venue_code)
+    graded_bets = {}
+    for bet in bets:
+        grade = bet.participant.race.grade.name
+        if not grade in graded_bets.keys():
+            graded_bets[grade] = []
+        graded_bets[grade].append({
+            "return": bet.get_return(),
+            "amount": bet.amount,
+            "type": bet.type.name,
+        })
+    print(type(graded_bets))
+    print(graded_bets)
     return JsonResponse({
-        'lunch': "hot_dog" })
+        'graded_bets': graded_bets })
 
 
 def logout_view(request):
