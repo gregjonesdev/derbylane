@@ -18,6 +18,7 @@ from derbylane.views import (
     make_exotic_bet,
     delete_exotic_bet,
     clear_bets,
+    get_bets,
     logout_view,
     change_password,
 )
@@ -61,6 +62,7 @@ urlpatterns = [
     url(r'change_password/$', change_password, name='change_password'),
     url(r'load_charts/$', load_charts, name='load_charts'),
     url(r'load_bets/$', load_bets, name='load_bets'),
+    url(r'get_bets/$', get_bets, name='get_bets'),
     url(r'make_bet/$', make_bet, name='make_bet'),
     url(r'make_exotic_bet/$', make_exotic_bet, name='make_exotic_bet'),
     url(r'delete_exotic_bet/$', delete_exotic_bet, name='delete_exotic_bet'),

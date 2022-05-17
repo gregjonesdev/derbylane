@@ -119,21 +119,11 @@ class AnalysisView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         today = datetime.datetime.now().date()
         yesterday = today - datetime.timedelta(days=1)
-        last_week = today - datetime.timedelta(days=7)
-        last_month = today - datetime.timedelta(days=30)
-        last_year = today - datetime.timedelta(days=365)
-        year_bets = Bet.objects.filter(
-            participant__race__chart__program__date__gte=last_year)
-        month_bets = year_bets.filter(
-            participant__race__chart__program__date__gte=last_month)
-        week_bets = year_bets.filter(
-            participant__race__chart__program__date__gte=last_week)
-        yesterday_bets = year_bets.filter(
-            participant__race__chart__program__date__gte=yesterday)
-        self.context["year_bets"] = year_bets
-        self.context["month_bets"] = month_bets
-        self.context["week_bets"] = week_bets
-        self.context["yesterday_bets"] = yesterday_bets
+        self.context["yesterday"] = yesterday.strftime("%a %b %-d")
+        self.context["yesterday_date"] = yesterday.strftime("%Y-%m-%d")
+        # self.context["last_week"] = today - datetime.timedelta(days=7)
+        # self.context["last_month"] = today - datetime.timedelta(days=30)
+        # self.context["last_year"] = today - datetime.timedelta(days=365)
         return render(request, self.template_name, self.context)
 
 
@@ -352,6 +342,11 @@ def change_password(request):
         'form': form,
         'user': request.user
     })
+
+def get_bets(request):
+
+    return JsonResponse({
+        'lunch': "hot_dog" })
 
 
 def logout_view(request):
