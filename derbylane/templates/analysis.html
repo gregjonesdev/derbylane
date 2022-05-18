@@ -1,5 +1,8 @@
 {% extends "_base.html" %}
 
+{% load static %}
+
+
 {% block content %}
 <div class="card">
 <div class="card-header card-header-standout text-center"
@@ -32,14 +35,15 @@ Analysis
 
 
 
-
-<canvas id="venueChart" style="width:100%;max-width:600px">
+<div style="width:100%;max-width:600px; height: 300px; border: 1px solid red; display: flex; flex-flow: row nowrap; justify-content: space-around; align-items: center">
   <img
-    id="loader-gif"
+    id=""
     src="{% static 'img/graph-preloader.gif' %}"
     class="center"
+    height="150px"
     alt="spinner-gif">
-</canvas>
+
+</div>
 <canvas id="gradeChart" style="width:100%;max-width:600px"></canvas>
 </div>
 </div>
@@ -123,23 +127,23 @@ var yValues = [55, -49, 44, 24, 15];
 const venues = ["Southland", "Tri-State", "Wheeling Downs"]
 
 var barColors = ["#d62828", "#f77f00", "#fcbf49", "#eae2b7", "#003049"]
-new Chart("venueChart", {
-  type: "bar",
-  data: {
-    labels: venues,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues
-    }]
-  },
-  options: {
-    legend: {display: false},
-    title: {
-      display: false,
-      text: "Venue Results"
-    }
-  }
-});
+// new Chart("venueChart", {
+//   type: "bar",
+//   data: {
+//     labels: venues,
+//     datasets: [{
+//       backgroundColor: barColors,
+//       data: yValues
+//     }]
+//   },
+//   options: {
+//     legend: {display: false},
+//     title: {
+//       display: false,
+//       text: "Venue Results"
+//     }
+//   }
+// });
 
 new Chart("gradeChart", {
   type: "bar",
