@@ -353,14 +353,24 @@ def get_bets(request):
         bets = bets.filter(
             participant__race__chart__program__venue__code=venue_code)
     graded_bets = {}
+    type_bets = {}
+    post_bets = {}
     for bet in bets:
+        post = bet.participant.post
+        type = bet.type.name
         grade = bet.participant.race.grade.name
+        bet_ret = bet.get_return()
+        if not type in type_bets.keys():
+            type_bets[type] = []
+        type_bets.append({
+            "profit": bet_ret - bet.amount,
+            "grade": grade,
+        })
         if not grade in graded_bets.keys():
             graded_bets[grade] = []
         graded_bets[grade].append({
-            "return": bet.get_return(),
-            "amount": bet.amount,
-            "type": bet.type.name,
+            "profit": bet_ret - bet.amount,
+            "type": type,
         })
     print(type(graded_bets))
     print(graded_bets)

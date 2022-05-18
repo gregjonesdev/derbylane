@@ -33,7 +33,13 @@ Analysis
 
 
 
-<canvas id="venueChart" style="width:100%;max-width:600px"></canvas>
+<canvas id="venueChart" style="width:100%;max-width:600px">
+  <img
+    id="loader-gif"
+    src="{% static 'img/graph-preloader.gif' %}"
+    class="center"
+    alt="spinner-gif">
+</canvas>
 <canvas id="gradeChart" style="width:100%;max-width:600px"></canvas>
 </div>
 </div>
@@ -43,11 +49,31 @@ Analysis
   }
 </script>
 <script>
+  colors = ["#00876c",
+  "#42986f",
+  "#68a973",
+  "#8cb978",
+  "#b0c880",
+  "#d3d78c",
+  "#f7e59b",
+  "#f4cc80",
+  "#f1b26b",
+  "#ed975c",
+  "#e77b53",
+  "#df5e50",
+  "#d43d51",]
   const text_content = document.getElementById("json-chart-data").textContent
   const json_data = JSON.parse(text_content)
   const venue_select = document.getElementsByClassName("venue-select")
 
   button_checks = document.getElementsByClassName("btn-check")
+
+  function build_graded_graph(graded_bets) {
+    const grades = Object.keys(graded_bets)
+    for (let i=0; i< grades.length; i++) {
+      console.log(graded_bets[grades[i]])
+    }
+  }
 
   function handle_venue_select(e) {
     const target = e.currentTarget
@@ -59,12 +85,8 @@ Analysis
       dataType: "json",
       data: {"venue_code": venue_code},
       success: function(data) {
-        console.log("YEAH")
-        const graded_bets = data["graded_bets"]
-        const grades = Object.keys(graded_bets)
-        for (let i=0; i< grades.length; i++) {
-          console.log(graded_bets[grades[i]])
-        }
+        build_graded_graph(data["graded_bets"])
+
       }
     })
 

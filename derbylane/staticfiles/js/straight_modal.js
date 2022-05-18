@@ -2,16 +2,17 @@ const modal = document.getElementById("straight-bet-modal")
 
 modal.addEventListener("focus", function (e) {
   const button = $(event.relatedTarget) // Button that triggered the modal
+  const bets = button.data('bets')
   if (button.hasClass("bet-button")) {
-    const participant_bets = document.getElementById("participant_bets")
     const dog = button.data('dog')
-    const bets = button.data('bets')
     const post = button.data('post')
     const venue = button.data('venue')
     const chart = button.data('chart')
     const number = button.data('number')
     const participant = button.data('participant')
     const this_modal = $(this)
+    const participant_bets = document.getElementById("participant_bets")
+    document.getElementById('bet_type_' + bets).selected = true;
     this_modal.find('.modal-subtitle').text(
       post + " | " +
       dog + " "
@@ -24,9 +25,6 @@ modal.addEventListener("focus", function (e) {
     this_modal.find('#participant_uuid').text(
       participant
    )
-   this_modal.find('#bet_types').value(
-     "PLACE"
-  )
   }
 
 })

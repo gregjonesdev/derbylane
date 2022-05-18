@@ -19,7 +19,7 @@ colspan="5">
 
 </button>
 
-<div id="exotic-wagers-{{ race.uuid }}">
+<div id="exotic-wagers-{{ race.uuid }}" style="margin-top: 10px; border: 1px solid orange; border-radius: .2rem; ">
 {% for wager in race.get_exotic_bets %}
 
   <div id="{{ wager.uuid }}-wager-div" class="list-group-item exotic-wager-item">
@@ -55,7 +55,7 @@ colspan="5">
   {{ participant.post }}
   <span
   class="dog-name-span">
-  {{ participant.dog.name|truncatechars:13 }}
+  {{ participant.dog.name|truncatechars:9 }}
 </span>
 </td>
 <td>

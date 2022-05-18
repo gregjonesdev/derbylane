@@ -12,6 +12,12 @@ const finish_order_div = document.getElementById("finish-order-div")
 const submit_bet_button = document.getElementById("submit_exotic_bet")
 const selected_posts_input = document.getElementById("posts-input")
 
+for (let i=0; i<selected_posts_input.length; i++) {
+  console.log("ji")
+  console.log(selected_posts_input[i].getAttribute("aria-pressed"))
+  selected_posts_input[i].setAttribute("aria-pressed", false);
+}
+
 exotic_modal.addEventListener("focus", function (e) {
   const button = $(event.relatedTarget) // Button that triggered the modal
   if (button.hasClass("bet-button")) {
@@ -204,6 +210,7 @@ const build_delete_button = (wager_uuid) => {
   button.setAttribute("class", "btn btn-sm btn-outline-danger float-right exotic-delete-button");
   button.setAttribute("data-wageruuid", wager_uuid)
   button.addEventListener("click", handle_exotic_delete)
+  button.style.display = "none";
   button.textContent = "✕"
   return button
 }
@@ -217,6 +224,7 @@ const build_exotic_span = (amount, name, posts) => {
 
 const build_exotic_div = (amount, name, posts, wager_uuid) => {
   const div = document.createElement("div");
+  div.addEventListener("click", toggle_delete_show)
   div.setAttribute("class", "list-group-item exotic-wager-item");
   div.setAttribute("id", wager_uuid + "-wager-div");
   div.appendChild(build_exotic_span(amount, name, posts))
