@@ -19,6 +19,7 @@ colspan="5">
 
 </button>
 
+{% if race.get_exotic_bets %}
 <div id="exotic-wagers-{{ race.uuid }}" style="margin-top: 10px; border: 1px solid orange; border-radius: .2rem; ">
 {% for wager in race.get_exotic_bets %}
 
@@ -34,6 +35,7 @@ colspan="5">
   </div>
 {% endfor %}
 </div>
+{% endif %}
 
 <script>
 
