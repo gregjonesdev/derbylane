@@ -239,6 +239,13 @@ def get_prediction(participant):
 def save_predictions(prediction_object):
     for uuid in prediction_object.keys():
         participant = Participant.objects.get(uuid=uuid)
+        print("{} {} Race {} {}-{} ({})".format(
+            participant.race.chart.program.date,
+            participant.race.chart.program.venue,
+            participant.race.number,
+            participant.post,
+            participant.dog.name,
+            participant.uuid))
         prediction = get_prediction(participant)
         prediction_bet = ""
         if prediction_object[uuid]["W"]:
@@ -247,6 +254,7 @@ def save_predictions(prediction_object):
             prediction_bet += "P"
         if prediction_object[uuid]["S"]:
             prediction_bet += "S"
+        print(prediction_bet)
         prediction.bet = prediction_bet
         prediction.save()
 
@@ -261,6 +269,8 @@ def make_predictions(model, testing_arff, classifier_name, is_nominal, bet_guide
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
             prediction = model.classify_instance(inst)
+            print(uuid)
+            print(prediction)
             for guide in bet_guides:
                 if guide["start"] <=prediction < guide["end"]:
                     if not uuid in prediction_object.keys():
