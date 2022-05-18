@@ -346,36 +346,72 @@ def change_password(request):
     })
 
 def get_bets(request):
-    request.GET.get('date')
+    today = datetime.datetime.now().date()
+    date = request.GET.get('date')
+    # bets = Bet.objects.filter(
+    #     participant__race__chart__program__date__gte=date,
+    #     participant__race__chart__program__date__lt=today)
     bets = Bet.objects.all()
-    if request.GET.get('venue_code'):
-        venue_code = request.GET.get('venue_code')
-        bets = bets.filter(
-            participant__race__chart__program__venue__code=venue_code)
-    graded_bets = {}
-    type_bets = {}
-    post_bets = {}
+    # if request.GET.get('venue_code'):
+    #     venue_code = request.GET.get('venue_code')
+    #     bets = bets.filter(
+    #         participant__race__chart__program__venue__code=venue_code)
+    # venue_bets = {}
+    # graded_bets = {}
+    # type_bets = {}
+    # post_bets = {}
+    bets_object = {}
+    venues = []
     for bet in bets:
-        post = bet.participant.post
-        type = bet.type.name
-        grade = bet.participant.race.grade.name
-        bet_ret = bet.get_return()
-        if not type in type_bets.keys():
-            type_bets[type] = []
-        type_bets.append({
-            "profit": bet_ret - bet.amount,
-            "grade": grade,
-        })
-        if not grade in graded_bets.keys():
-            graded_bets[grade] = []
-        graded_bets[grade].append({
-            "profit": bet_ret - bet.amount,
-            "type": type,
-        })
-    print(type(graded_bets))
-    print(graded_bets)
+        venue_code = bet.participant.race.chart.program.venue.code
+        if not venue_code in venues:
+            venues.append(venue_code)
+        if not venue_code in bets_object.keys():
+            bets_object[venue_code] = []
+        bets_object[venue_code].append(bet.get_return() - bet.amount)
+
+    print(bets_object)
+    profits = []
+    averages = []
+
+    for venue_code in venues:
+        print(venue_code)
+        venue_bets = bets_object[venue_code]
+        venue_profits = sum(venue_bets)
+        profits.append(venue_profits)
+        averages.append(venue_profits/len(venue_bets))
+    print(profits)
+    print(averages)
+        # venue_code = bet.participant.race.chart.program.venue.code
+        # post = bet.participant.post
+        # bet_type = bet.type.name
+        # grade = bet.participant.race.grade.name
+        # bet_ret = bet.get_return()
+        # if not venue_code in venue_bets.keys():
+        #     venue_bets[venue_code] = []
+        # venue_bets[venue_code].append({
+        #     "profit": bet_ret - bet.amount,
+        #     "grade": grade,
+        # })
+        # if not bet_type in type_bets.keys():
+        #     type_bets[bet_type] = []
+        # type_bets[bet_type].append({
+        #     "profit": bet_ret - bet.amount,
+        #     "grade": grade,
+        # })
+        # if not grade in graded_bets.keys():
+        #     graded_bets[grade] = []
+        # graded_bets[grade].append({
+        #     "profit": bet_ret - bet.amount,
+        #     "type": type,
+        # })
+
+
+
+
     return JsonResponse({
-        'graded_bets': graded_bets })
+        'graded_bets': "list(graded_bets)",
+        'venue_bets': "list(venue_bets) "})
 
 
 def logout_view(request):
