@@ -39,10 +39,12 @@ Analysis
 
 <div id="chart-1" style="width:100%;max-width:600px; height: 300px; display: flex; flex-flow: row nowrap; justify-content: space-around; align-items: center">
   <img
+    id="graph-preloader"
     src="{% static 'img/graph-preloader.gif' %}"
     class="center"
     height="150px"
     alt="spinner-gif">
+    <canvas id="myChart" width="400px" height="200px" style="display:none"></canvas>
 
 </div>
 </div>
@@ -53,94 +55,16 @@ Analysis
     "get_venue_bets_url": "{% url 'get_venue_bets' %}"
   }
 </script>
+
 <script>
-  colors = ["#00876c",
-  "#42986f",
-  "#68a973",
-  "#8cb978",
-  "#b0c880",
-  "#d3d78c",
-  "#f7e59b",
-  "#f4cc80",
-  "#f1b26b",
-  "#ed975c",
-  "#e77b53",
-  "#df5e50",
-  "#d43d51",]
-  const text_content = document.getElementById("json-chart-data").textContent
-  const json_data = JSON.parse(text_content)
-  const venue_select = document.getElementsByClassName("venue-select")
+  assign_event_listeners()
+  build_chart("myChart")
 
-  button_checks = document.getElementsByClassName("btn-check")
-
-
-
-  function get_bets(date) {
-    $.ajax({
-      url: json_data["get_bets_url"],
-      dataType: "json",
-      data: {"date": date},
-      success: function(data) {
-        console.log(data["venues"])
-
-
-        build_chart("Profits", data["venues"], data["profits"], "chart-1")
-      }
-    })
-  }
-
-
-  function build_new_canvas(canvas_id) {
-    new_canvas = document.createElement('canvas')
-    new_canvas.setAttribute("id", canvas_id)
-    new_canvas.setAttribute("style", "width:100%;max-width:600px;")
-    return new_canvas
-  }
-
-  get_bets(document.getElementById("btnradio1").value)
-
-  function build_chart(name, x_values, y_values, div_id) {
-    console.log(y_values)
-    target_div = document.getElementById(div_id)
-    target_div.firstElementChild.remove()
-    canvas_id="chart-primo"
-    new_canvas = build_new_canvas(canvas_id)
-    target_div.appendChild(new_canvas)
-    var barColors = ["#d62828", "#f77f00", "#fcbf49", "#eae2b7", "#003049"]
-    new Chart(canvas_id, {
-      type: "bar",
-      data: {
-        labels: x_values,
-        datasets: [{
-          backgroundColor: barColors,
-          data: y_values
-        }]
-      },
-      options: {
-        scales: {
-            // xAxes: [{
-            //         display: true,
-            //         scaleLabel: {
-            //             display: true,
-            //             labelString: 'Month'
-            //         }
-            //     }],
-            yAxes: [{
-                    display: true,
-                    ticks: {
-                        beginAtZero: true,
-                        steps: 10,
-                        stepValue: 5,
-                        max: 20
-                    }
-                }]},
-        legend: {display: false},
-        title: {
-          display: true,
-          text: name
-        }
-      }
-    });
+  function assign_event_listeners() {
+    const venue_select = document.getElementsByClassName("venue-select")
+    for (let i=0; i<venue_select.length; i++) {
+      venue_select[i].addEventListener("click", handle_venue_select)
+    }
   }
 
   function get_selected_date() {
@@ -156,10 +80,10 @@ Analysis
     const target = e.currentTarget
     const venue_code = target.getAttribute("data-value");
     document.getElementById("btnGroupDrop1").textContent = target.textContent;
-
-    console.log("here o")
-    console.log()
-
+    //
+    // console.log("here o")
+    // console.log()
+    //
     $.ajax({
       url: json_data["get_venue_bets_url"],
       dataType: "json",
@@ -175,72 +99,57 @@ Analysis
 
   }
 
-  function handle_time_select(e) {
-    console.log("triggered")
-    console.log(e)
+  function build_chart(chart_id) {
+    let chartStatus = Chart.getChart(chart_id);
+    console.log("ok")
+    console.log(chartStatus)
+    if (chartStatus != undefined) {
+      chartStatus.destroy();
+    }
 
-
-    $.ajax({
-      url: json_data["get_bets_url"],
-      dataType: "json",
-      data: {"date": "2022-05-15"},
-      success: function(data) {
-        console.log("YEAH")
-
-      }
-    })
-
+    document.getElementById("graph-preloader").remove()
+    document.getElementById(chart_id).style.display = "";
+    const ctx = document.getElementById(chart_id);
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
   }
 
-  for (let i=0; i<button_checks.length; i++) {
-    button_checks[i].addEventListener("click", handle_time_select)
-  }
-  for (let i=0; i<venue_select.length; i++) {
-    venue_select[i].addEventListener("click", handle_venue_select)
-  }
 
 
-var xValues = ["AA", "A", "B", "C"];
-var yValues = [55, -49, 44, 24, 15];
 
-const venues = ["Southland", "Tri-State", "Wheeling Downs"]
 
-var barColors = ["#d62828", "#f77f00", "#fcbf49", "#eae2b7", "#003049"]
-// new Chart("venueChart", {
-//   type: "bar",
-//   data: {
-//     labels: venues,
-//     datasets: [{
-//       backgroundColor: barColors,
-//       data: yValues
-//     }]
-//   },
-//   options: {
-//     legend: {display: false},
-//     title: {
-//       display: false,
-//       text: "Venue Results"
-//     }
-//   }
-// });
-
-// new Chart("gradeChart", {
-//   type: "bar",
-//   data: {
-//     labels: xValues,
-//     datasets: [{
-//       backgroundColor: barColors,
-//       data: yValues
-//     }]
-//   },
-//   options: {
-//     legend: {display: false},
-//     title: {
-//       display: true,
-//       text: "World Wine Production 2018"
-//     }
-//   }
-// });
 </script>
 
 {% endblock content %}
