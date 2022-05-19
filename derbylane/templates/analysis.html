@@ -35,7 +35,7 @@ Analysis
 
 
 
-<div id="chart-1" style="width:100%;max-width:600px; height: 300px; border: 1px solid red; display: flex; flex-flow: row nowrap; justify-content: space-around; align-items: center">
+<div id="chart-1" style="width:100%;max-width:600px; height: 300px; display: flex; flex-flow: row nowrap; justify-content: space-around; align-items: center">
   <img
     src="{% static 'img/graph-preloader.gif' %}"
     class="center"
@@ -47,7 +47,8 @@ Analysis
 </div>
 <script id="json-chart-data" type="application/json">
   {
-    "get_bets_url": "{% url 'get_bets' %}"
+    "get_bets_url": "{% url 'get_bets' %}",
+    "get_venue_bets_url": "{% url 'get_venue_bets' %}"
   }
 </script>
 <script>
@@ -72,7 +73,7 @@ Analysis
 
 
 
-  function get_venue_bets(date) {
+  function get_bets(date) {
     $.ajax({
       url: json_data["get_bets_url"],
       dataType: "json",
@@ -85,14 +86,7 @@ Analysis
   }
 
 
-  get_venue_bets(document.getElementById("btnradio1").value)
-
-  function build_graded_graph(graded_bets) {
-    const grades = Object.keys(graded_bets)
-    for (let i=0; i< grades.length; i++) {
-      console.log(graded_bets[grades[i]])
-    }
-  }
+  get_bets(document.getElementById("btnradio1").value)
 
   function build_chart(name, x_values, y_values, div_id) {
     console.log(y_values)
@@ -142,11 +136,11 @@ Analysis
     document.getElementById("btnGroupDrop1").textContent = target.textContent;
 
     $.ajax({
-      url: json_data["get_bets_url"],
+      url: json_data["get_venue_bets_url"],
       dataType: "json",
       data: {"venue_code": venue_code},
       success: function(data) {
-        build_graded_graph(data["bets"])
+        build_chart("Profit by Bet Type", data["types"], data["profits"], "chart-1")
 
       }
     })

@@ -345,6 +345,19 @@ def change_password(request):
         'user': request.user
     })
 
+def get_venue_bets(request):
+    today = datetime.datetime.now().date()
+    date = request.GET.get('date')
+    # bets = Bet.objects.filter(
+    #     participant__race__chart__program__date__gte=date,
+    #     participant__race__chart__program__date__lt=today)
+    bets = Bet.objects.all()
+
+    return JsonResponse({
+        'types': ["Win", "Place", "Show"],
+        'profits': [10, 5, 1],
+        'averages': [2, 3, 1]})
+
 def get_bets(request):
     today = datetime.datetime.now().date()
     date = request.GET.get('date')
