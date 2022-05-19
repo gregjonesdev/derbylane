@@ -410,8 +410,9 @@ def get_bets(request):
 
 
     return JsonResponse({
-        'graded_bets': "list(graded_bets)",
-        'venue_bets': "list(venue_bets) "})
+        'venues': venues,
+        'profits': profits,
+        'averages': averages})
 
 
 def logout_view(request):
