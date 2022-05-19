@@ -18,16 +18,18 @@ Analysis
      <ul class="dropdown-menu" style="background-color: #212121;" aria-labelledby="btnGroupDrop1">
        <li><a class="dropdown-item venue-select" href="#" data-value="SL">Southland</a></li>
        <li><a class="dropdown-item venue-select" href="#" data-value="TS">Tri-State</a></li>
-       <li><a class="dropdown-item venue-select" href="#" data-value="WD">Wheeling Downs</a></li>
+       <li><a class="dropdown-item venue-select" href="#" data-value="WD" selected>Wheeling Downs</a></li>
+       <!-- <div class="dropdown-divider"></div>
+       <li><a class="dropdown-item venue-select" href="#" data-value="All">All Venues</a></li> -->
      </ul>
    </div>
 
   <div class="btn-group" role="group" style="text-align:right" aria-label="Basic radio toggle button group">
-    <input type="radio" class="btn-check" name="btnradio" value="{{ yesterday_date }}" id="btnradio1" autocomplete="off" checked>
+    <input type="radio" class="btn-check date_select_input" name="btnradio" value="{{ yesterday_date }}" id="btnradio1" autocomplete="off" checked>
     <label class="btn btn-outline-primary btn-sm" for="btnradio1">{{ yesterday }}</label>
-    <input type="radio" class="btn-check " name="btnradio" value="" id="btnradio2" autocomplete="off" disabled>
+    <input type="radio" class="btn-check date_select_input" name="btnradio" value="" id="btnradio2" autocomplete="off" disabled>
     <label class="btn btn-outline-primary btn-sm" for="btnradio2">Week</label>
-    <input type="radio" class="btn-check " name="btnradio" value="" id="btnradio3" autocomplete="off" disabled>
+    <input type="radio" class="btn-check date_select_input" name="btnradio" value="" id="btnradio3" autocomplete="off" disabled>
     <label class="btn btn-outline-primary btn-sm" for="btnradio3">Month</label>
   </div>
   </div>
@@ -41,7 +43,7 @@ Analysis
     class="center"
     height="150px"
     alt="spinner-gif">
-    <canvas id="gradeChart" style="width:100%;max-width:600px; display: none"></canvas>
+
 </div>
 </div>
 </div>
@@ -80,21 +82,32 @@ Analysis
       data: {"date": date},
       success: function(data) {
         console.log(data["venues"])
+
+
         build_chart("Profits", data["venues"], data["profits"], "chart-1")
       }
     })
   }
 
 
+  function build_new_canvas(canvas_id) {
+    new_canvas = document.createElement('canvas')
+    new_canvas.setAttribute("id", canvas_id)
+    new_canvas.setAttribute("style", "width:100%;max-width:600px;")
+    return new_canvas
+  }
+
   get_bets(document.getElementById("btnradio1").value)
 
   function build_chart(name, x_values, y_values, div_id) {
     console.log(y_values)
     target_div = document.getElementById(div_id)
-    target_div.firstElementChild.style.display = "none";
+    target_div.firstElementChild.remove()
+    canvas_id="chart-primo"
+    new_canvas = build_new_canvas(canvas_id)
+    target_div.appendChild(new_canvas)
     var barColors = ["#d62828", "#f77f00", "#fcbf49", "#eae2b7", "#003049"]
-    document.getElementById("gradeChart").style.display = ""
-    new Chart("gradeChart", {
+    new Chart(canvas_id, {
       type: "bar",
       data: {
         labels: x_values,
@@ -130,15 +143,30 @@ Analysis
     });
   }
 
+  function get_selected_date() {
+      const date_select_inputs = document.getElementsByClassName("date_select_input")
+      for (let i=0; i< date_select_inputs.length; i++) {
+        if (date_select_inputs[i].checked) {
+          return date_select_inputs[i].value
+        }
+      }
+  }
+
   function handle_venue_select(e) {
     const target = e.currentTarget
     const venue_code = target.getAttribute("data-value");
     document.getElementById("btnGroupDrop1").textContent = target.textContent;
 
+    console.log("here o")
+    console.log()
+
     $.ajax({
       url: json_data["get_venue_bets_url"],
       dataType: "json",
-      data: {"venue_code": venue_code},
+      data: {
+        "venue_code": venue_code,
+        "date": get_selected_date(),
+      },
       success: function(data) {
         build_chart("Profit by Bet Type", data["types"], data["profits"], "chart-1")
 

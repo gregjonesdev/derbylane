@@ -348,11 +348,13 @@ def change_password(request):
 def get_venue_bets(request):
     today = datetime.datetime.now().date()
     date = request.GET.get('date')
-    # bets = Bet.objects.filter(
-    #     participant__race__chart__program__date__gte=date,
-    #     participant__race__chart__program__date__lt=today)
+    venue_code = request.GET.get('venue_code')
+    bets = Bet.objects.filter(
+        participant__race__chart__program__date__gte=date,
+        participant__race__chart__program__date__lt=today,
+        participant__race__chart__program__venue__code=venue_code)
     bets = Bet.objects.all()
-
+    print(bets)
     return JsonResponse({
         'types': ["Win", "Place", "Show"],
         'profits': [10, 5, 1],
