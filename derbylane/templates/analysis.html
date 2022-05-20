@@ -33,8 +33,11 @@
       <label class="btn btn-outline-primary btn-sm" for="btnradio3">Month</label>
     </div>
     </div>
+    <div id="canvas-container" style="display: flex; justify-content: space-around">
+      <canvas id="chart-1" style="max-width:48%; display:inline; border: 1px solid red;"></canvas>
+      <canvas id="chart-2" style="max-width:48%; display:inline; border: 1px solid red;"></canvas>
+    </div>
 
-  <canvas id="chart-1" width="200" height="200"></canvas>
 
   </div>
 </div>
@@ -51,6 +54,8 @@
   const venues = ["Southland", "Tri-State", "Wheeling Downs"]
 
   build_chart("chart-1")
+  build_chart("chart-2")
+
 
   function build_chart(chart_id) {
     let chartStatus = Chart.getChart(chart_id);
