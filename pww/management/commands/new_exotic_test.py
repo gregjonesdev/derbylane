@@ -69,11 +69,11 @@ class Command(BaseCommand):
         print("Testing Metrics: {}".format(len(testing_metrics)))
 
         # Must build test model
-        model = get_model(venue_code, grade_name, start_date, model_directory)
+        model = get_model(model_directory, "exotic_test")
         evaluate_exotics(
             testing_arff,
-                model,
-                classifier_name)
+            model,
+            classifier_name)
         jvm.stop()
 
     # def get_race_predictions(self, race):
