@@ -5,18 +5,31 @@
 
 {% block content %}
 <div class="card">
-  <div class="card-header card-header-standout text-center"
-  style="font-size: 1.6em; margin:auto; font-style: italic; font-weight: bold">
-  Analysis
+  <div
+    class="card-header card-header-standout text-center"
+    style="font-size: 1.6em; margin:auto; font-style: italic; font-weight: bold">
+    Analysis
   </div>
   <div class="card-body">
-    <div style="display: flex; flex-flow: row nowrap; justify-content: space-between; align-items: middle">
-
-      <div class="btn-group" role="group">
-
-         <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary btn-sm" style="margin-bottom: 8px; " data-bs-toggle="dropdown" aria-expanded="false" disabled>
+    <div
+      style="display: flex; flex-flow: row nowrap; justify-content: space-between; align-items: middle">
+      <div id="select-container" class="btn-group" role="group">
+         <button
+          id="btnGroupDrop1"
+          type="button"
+          class="btn btn-outline-primary btn-sm"
+          style="margin-bottom: 8px;"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          disabled>
            All Venues
          </button>
+         <ul
+          id="dropdown-container"
+          class="dropdown-menu"
+          style="background-color: #212121;"
+          aria-labelledby="btnGroupDrop1">
+         </ul>
         </div>
 
 
@@ -33,13 +46,50 @@
          -->
 
 
-     <div class="btn-group" role="group" style="text-align:right" aria-label="Basic radio toggle button group">
-       <input type="radio" class="btn-check date_select_input" name="btnradio" value="{{ yesterday_date }}" id="btnradio1" autocomplete="off" checked>
-       <label class="btn btn-outline-primary btn-sm" for="btnradio1">{{ yesterday }}</label>
-       <input type="radio" class="btn-check date_select_input" name="btnradio" value="" id="btnradio2" autocomplete="off" disabled>
-       <label class="btn btn-outline-primary btn-sm" for="btnradio2">Week</label>
-       <input type="radio" class="btn-check date_select_input" name="btnradio" value="" id="btnradio3" autocomplete="off" disabled>
-       <label class="btn btn-outline-primary btn-sm" for="btnradio3">Month</label>
+     <div
+      class="btn-group"
+      role="group"
+      style="text-align:right"
+      aria-label="Basic radio toggle button group">
+      <input
+        type="radio"
+        class="btn-check date_select_input"
+        name="btnradio"
+        value="{{ yesterday_date }}"
+        id="btnradio1"
+        autocomplete="off"
+        checked>
+      <label
+        class="btn btn-outline-primary btn-sm"
+        for="btnradio1">
+        {{ yesterday }}
+      </label>
+      <input
+        type="radio"
+        class="btn-check date_select_input"
+        name="btnradio"
+        value=""
+        id="btnradio2"
+        autocomplete="off"
+        disabled>
+      <label
+        class="btn btn-outline-primary btn-sm"
+        for="btnradio2">
+        Week
+      </label>
+      <input
+        type="radio"
+        class="btn-check date_select_input"
+        name="btnradio"
+        value=""
+        id="btnradio3"
+        autocomplete="off"
+        disabled>
+      <label
+        class="btn btn-outline-primary btn-sm"
+        for="btnradio3">
+        Month
+      </label>
      </div>
 
 
@@ -50,7 +100,10 @@
       <canvas id="chart-2" style="max-width:48%; display:inline;"></canvas>
     </div> -->
 
-    <div id="empty-content" style="margin: 50px auto; text-align:center; width: 100%">
+    <div
+      id="empty-content"
+      class="empty-content"
+      style="margin: 50px auto; text-align:center; width: 100%">
       No Bets Today
     </div>
 
@@ -70,6 +123,10 @@
   const venues = ["SL", "TS", "WD"]
   const venue_select = document.getElementsByClassName("venue-select")
   const button_checks = document.getElementsByClassName("btn-check")
+
+  function get_anchor_element() {
+    // <li><a class="dropdown-item venue-select" href="#" data-value="{{ venue.code }}">{{ venue.name }}</a></li>
+  }
 
   function get_selected_date() {
       const date_select_inputs = document.getElementsByClassName("date_select_input")
@@ -105,6 +162,9 @@
 
   function populate_menu_dropdown(venues) {
     document.getElementById("btnGroupDrop1").disabled = false;
+    for (let i=0; i<venues.length; i++) {
+
+    }
   }
 
 
