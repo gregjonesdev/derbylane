@@ -137,7 +137,6 @@
     anchor_element.setAttribute("data-value", venue_name);
     anchor_element.innerText = venue_name;
     return anchor_element;
-    // <a class="dropdown-item venue-select" href="#" data-value="{{ venue.code }}">{{ venue.name }}</a></li>
   }
 
   function get_selected_date() {
@@ -174,10 +173,12 @@
 
   function populate_menu_dropdown(venues) {
     dropdown_container = document.getElementById("dropdown-container")
+    dropdown_container.innerHTML = "";
     document.getElementById("btnGroupDrop1").disabled = false;
     for (let i=0; i<venues.length; i++) {
       const new_li = document.createElement("li");
       new_li.appendChild(get_anchor_element(venue_names[venues[i]]));
+      new_li.addEventListener("click", handle_venue_select)
       dropdown_container.appendChild(new_li);
     }
   }
@@ -228,14 +229,34 @@
 
 
   function addEventListeners() {
-    // for (let i=0; i<button_checks.length; i++) {
-    //   button_checks[i].addEventListener("click", handle_time_select)
-    // }
-    for (let i=0; i<venue_select.length; i++) {
-      venue_select[i].addEventListener("click", handle_venue_select)
+    for (let i=0; i<button_checks.length; i++) {
+      button_checks[i].addEventListener("click", handle_time_select)
     }
   }
 
+  function handle_time_select(e) {
+    console.log("triggered")
+    console.log(e)
+
+    const selected_venue = document.getElementById("btnGroupDrop1").innerText
+    console.log(selected_venue)
+    console.log("---")
+    if (selected_venue == "All Venues ") {
+      get_bets(e.target.value)
+    } else {
+      console.log("get venue bets")
+    }
+    // $.ajax({
+    //   url: json_data["get_bets_url"],
+    //   dataType: "json",
+    //   data: {"date": "2022-05-15"},
+    //   success: function(data) {
+    //     console.log("YEAH")
+    //
+    //   }
+    // })
+
+  }
 
   function build_chart(chart_id, xValues, yValues) {
     let chartStatus = Chart.getChart(chart_id);
