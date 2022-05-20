@@ -67,7 +67,7 @@ class Command(BaseCommand):
             "{}_{}".format(venue_code, grade_name),
             testing_metrics)
         print("Testing Metrics: {}".format(len(testing_metrics)))
-
+        save_model(training_arff, classifier_name, model_directory, "exotic_test")
         # Must build test model
         model = get_model(model_directory, "exotic_test")
         evaluate_exotics(
