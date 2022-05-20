@@ -253,25 +253,12 @@
   }
 
   function handle_time_select(e) {
-    console.log("handle time select")
-    console.log(e.currentTarget.value)
-
-    const selected_venue = get_selected_venue()
-    if (selected_venue) {
-      console.log('257')
-      console.log("get venue bets")
+    const venue_code = get_selected_venue()
+    if (venue_code) {
+      get_venue_bets(venue_code)
     } else {
       get_bets(e.currentTarget.value)
     }
-    // $.ajax({
-    //   url: json_data["get_bets_url"],
-    //   dataType: "json",
-    //   data: {"date": "2022-05-15"},
-    //   success: function(data) {
-    //     console.log("YEAH")
-    //
-    //   }
-    // })
 
   }
 
