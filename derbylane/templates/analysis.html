@@ -17,11 +17,11 @@
          <button
           id="btnGroupDrop1"
           type="button"
-          class="btn btn-outline-primary btn-sm"
+          class="btn btn-outline-primary btn-sm dropdown-toggle"
           style="margin-bottom: 8px;"
           data-bs-toggle="dropdown"
           aria-expanded="false"
-          disabled>
+          >
            All Venues
          </button>
          <ul
@@ -95,10 +95,10 @@
 
     </div>
 
-  <!--   <div id="canvas-container" style="display: flex; justify-content: space-around">
+    <div id="canvas-container" style="display: flex; justify-content: space-around">
       <canvas id="chart-1" style="max-width:48%; display:inline;"></canvas>
       <canvas id="chart-2" style="max-width:48%; display:inline;"></canvas>
-    </div> -->
+    </div>
 
     <div
       id="empty-content"
@@ -118,14 +118,26 @@
 </script>
 
 <script>
+
+  const venue_names = {
+    "SL": "Southland",
+    "WD": "Wheeling Downs",
+    "TS": "Tri-state"
+  }
   const text_content = document.getElementById("json-chart-data").textContent
   const json_data = JSON.parse(text_content)
   const venues = ["SL", "TS", "WD"]
   const venue_select = document.getElementsByClassName("venue-select")
   const button_checks = document.getElementsByClassName("btn-check")
 
-  function get_anchor_element() {
-    // <li><a class="dropdown-item venue-select" href="#" data-value="{{ venue.code }}">{{ venue.name }}</a></li>
+  function get_anchor_element(venue_name) {
+    const anchor_element = document.createElement('a');
+    anchor_element.setAttribute("class", "dropdown-item venue-select");
+    anchor_element.setAttribute("href", "#");
+    anchor_element.setAttribute("data-value", venue_name);
+    anchor_element.innerText = venue_name;
+    return anchor_element;
+    // <a class="dropdown-item venue-select" href="#" data-value="{{ venue.code }}">{{ venue.name }}</a></li>
   }
 
   function get_selected_date() {
@@ -161,9 +173,14 @@
   addEventListeners()
 
   function populate_menu_dropdown(venues) {
+    console.log("populate")
+    console.log(venues)
+    dropdown_container = document.getElementById("dropdown-container")
     document.getElementById("btnGroupDrop1").disabled = false;
     for (let i=0; i<venues.length; i++) {
-
+      const new_li = document.createElement("li");
+      new_li.appendChild(get_anchor_element(venue_names[venues[i]]));
+      dropdown_container.appendChild(new_li);
     }
   }
 
@@ -232,7 +249,7 @@
         data: {
             labels: xValues,
             datasets: [{
-                label: '# of Votes',
+                label: 'Profit',
                 data: yValues,
                 backgroundColor: getBackgroundColors(yValues),
                 borderColor: getBorderColors(yValues),
