@@ -169,6 +169,7 @@
         "date": get_selected_date(),
       },
       success: function(data) {
+        console.log(data["raw_win"])
         build_chart("chart-1", data["types"], data["profits"], "Total Profits")
         build_chart("chart-2", data["types"], data["averages"], "Profit Per Bet")
       }
@@ -201,7 +202,6 @@
       dataType: "json",
       data: {"date": date},
       success: function(data) {
-        console.log(data["raw_win"])
         if (data["venues"].length > 0) {
           document.getElementById("empty-content").style.display = "none";
           document.getElementById("canvas-container").style.display = "";
