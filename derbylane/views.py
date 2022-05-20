@@ -362,6 +362,7 @@ def get_venue_bets(request):
     venue_code = request.GET.get('venue_code')
     bets = Bet.objects.filter(
         participant__race__chart__program__date=date,
+        participant__final__is_null=False,
         participant__race__chart__program__venue__code=venue_code)
     # bets = Bet.objects.all()
     bets_object = {}
@@ -402,7 +403,7 @@ def get_bets(request):
 
     bets = Bet.objects.filter(
         participant__race__chart__program__date__gte=date,
-        participant__race__chart__program__date__lt=today)
+        participant__final__is_null=False)
     # bets = Bet.objects.all()
     # if request.GET.get('venue_code'):
     #     venue_code = request.GET.get('venue_code')
