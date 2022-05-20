@@ -197,6 +197,7 @@ make_exotic_bet = () => {
     success: function(data) {
       exotic_race_div = document.getElementById(
         "exotic-wagers-" + data["race_uuid"])
+        exotic_race_div.style.border = "1px solid orange"
       exotic_race_div.appendChild(
         build_exotic_div(
             data["amount"],

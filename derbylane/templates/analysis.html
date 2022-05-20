@@ -37,14 +37,44 @@ Analysis
 
 
 
-<div id="chart-1" style="width:100%;max-width:600px; height: 300px; display: flex; flex-flow: row nowrap; justify-content: space-around; align-items: center">
+<div id="chart-1-container" style="width:100%;max-width:600px; height: 300px; display: flex; flex-flow: row nowrap; justify-content: space-around; align-items: center">
   <img
     id="graph-preloader"
     src="{% static 'img/graph-preloader.gif' %}"
     class="center"
     height="150px"
     alt="spinner-gif">
-    <canvas id="myChart" width="400px" height="200px" style="display:none"></canvas>
+    <canvas id="chart-1" width="400px" height="200px" style="display:none"></canvas>
+
+</div>
+<div id="chart-2-container" style="width:100%;max-width:600px; height: 300px; display: flex; flex-flow: row nowrap; justify-content: space-around; align-items: center; display:none">
+  <img
+    id="graph-preloader"
+    src="{% static 'img/graph-preloader.gif' %}"
+    class="center"
+    height="150px"
+    alt="spinner-gif">
+    <canvas id="chart-2" width="400px" height="200px" style="display:none"></canvas>
+
+</div>
+<div id="chart-3-container" style="width:100%;max-width:600px; height: 300px; display: flex; flex-flow: row nowrap; justify-content: space-around; align-items: center; display:none">
+  <img
+    id="graph-preloader"
+    src="{% static 'img/graph-preloader.gif' %}"
+    class="center"
+    height="150px"
+    alt="spinner-gif">
+    <canvas id="chart-3" width="400px" height="200px" style="display:none"></canvas>
+
+</div>
+<div id="chart-4-container" style="width:100%;max-width:600px; height: 300px; display: flex; flex-flow: row nowrap; justify-content: space-around; align-items: center; display:none">
+  <img
+    id="graph-preloader"
+    src="{% static 'img/graph-preloader.gif' %}"
+    class="center"
+    height="150px"
+    alt="spinner-gif">
+    <canvas id="chart-4" width="400px" height="200px" style="display:none"></canvas>
 
 </div>
 </div>
@@ -57,8 +87,11 @@ Analysis
 </script>
 
 <script>
+  const venues = ["Southland", "Tri-State", "Wheeling Downs"]
+
   assign_event_listeners()
-  build_chart("myChart")
+  build_chart("chart-1", venues, [12, 19, 3])
+  build_chart("chart-1", venues, [5, 4, 13])
 
   function assign_event_listeners() {
     const venue_select = document.getElementsByClassName("venue-select")
@@ -80,26 +113,7 @@ Analysis
     const target = e.currentTarget
     const venue_code = target.getAttribute("data-value");
     document.getElementById("btnGroupDrop1").textContent = target.textContent;
-    //
-    // console.log("here o")
-    // console.log()
-    //
-    $.ajax({
-      url: json_data["get_venue_bets_url"],
-      dataType: "json",
-      data: {
-        "venue_code": venue_code,
-        "date": get_selected_date(),
-      },
-      success: function(data) {
-        build_chart("Profit by Bet Type", data["types"], data["profits"], "chart-1")
-
-      }
-    })
-
-  }
-
-  function build_chart(chart_id) {
+    chart_id = "chart-1"
     let chartStatus = Chart.getChart(chart_id);
     console.log("ok")
     console.log(chartStatus)
@@ -107,16 +121,43 @@ Analysis
       chartStatus.destroy();
     }
 
-    document.getElementById("graph-preloader").remove()
-    document.getElementById(chart_id).style.display = "";
-    const ctx = document.getElementById(chart_id);
-    const myChart = new Chart(ctx, {
+
+    // $.ajax({
+    //   url: json_data["get_venue_bets_url"],
+    //   dataType: "json",
+    //   data: {
+    //     "venue_code": venue_code,
+    //     "date": get_selected_date(),
+    //   },
+    //   success: function(data) {
+    //     build_chart("Profit by Bet Type", data["types"], data["profits"], "chart-1")
+    //
+    //   }
+    // })
+
+  }
+
+  function build_chart(chart_id, xValues, yValues) {
+    let chartStatus = Chart.getChart(chart_id);
+    console.log("ok")
+    console.log(chartStatus)
+    document.getElementById(chart_id + "-container").style.display = "";
+    if (chartStatus != undefined) {
+      chartStatus.destroy();
+    }
+
+    if (document.getElementById("graph-preloader")) {
+      document.getElementById("graph-preloader").remove()
+    }
+    document.getElementById(chart_id).style.display = "block";
+    console.log(chart_id)
+    const myChart = new Chart(chart_id, {
         type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: ['Red', 'Blue', 'Yellow'],
             datasets: [{
                 label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                data: yValues,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
