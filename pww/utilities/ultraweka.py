@@ -199,7 +199,7 @@ def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
     interval = .0625
     count = 0
     while numbers[0] < stop:
-        print("Evaluating {}-{}-{}".format(
+        print("Evaluating {}, {}, {}".format(
             "{}-{}".format(numbers[0], numbers[0]+interval),
             "{}-{}".format(numbers[1], numbers[1]+interval),
             "{}-{}".format(numbers[2], numbers[2]+interval)))
