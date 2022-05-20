@@ -74,7 +74,7 @@ class Command(BaseCommand):
             testing_arff,
                 model,
                 classifier_name)
-            jvm.stop()
+        jvm.stop()
 
     # def get_race_predictions(self, race):
     #     pass
