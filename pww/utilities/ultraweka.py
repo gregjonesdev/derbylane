@@ -183,7 +183,7 @@ def get_profit_potential(percent, payout):
 
 
 def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
-    prediction_numbers = [0, 0, 0]
+    numbers = [0, 0, 0]
     optimal_trifecta = {
         "scenario": "",
         "average_return": 0,
@@ -198,12 +198,12 @@ def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
     stop = 8
     interval = .0625
     count = 0
-    while prediction_numbers[0] < stop:
+    while numbers[0] < stop:
         print("Evaluating {}-{}-{}".format(
             "{}-{}".format(numbers[0], numbers[0]+interval),
             "{}-{}".format(numbers[1], numbers[1]+interval),
             "{}-{}".format(numbers[2], numbers[2]+interval)))
-        prediction_numbers[0] += interval
+        numbers[0] += interval
     # interval_object = build_interval_object(start, stop, interval)
     # for index, inst in enumerate(filtered_data):
     #     if index in uuid_line_index.keys():
