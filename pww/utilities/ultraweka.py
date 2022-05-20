@@ -200,9 +200,9 @@ def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
     count = 0
     while prediction_numbers[0] < stop:
         print("Evaluating {}-{}-{}".format(
-            "{}-{}".format(number[0], number[0]+interval),
-            "{}-{}".format(number[1], number[1]+interval),
-            "{}-{}".format(number[2], number[2]+interval)))
+            "{}-{}".format(numbers[0], numbers[0]+interval),
+            "{}-{}".format(numbers[1], numbers[1]+interval),
+            "{}-{}".format(numbers[2], numbers[2]+interval)))
         prediction_numbers[0] += interval
     # interval_object = build_interval_object(start, stop, interval)
     # for index, inst in enumerate(filtered_data):
