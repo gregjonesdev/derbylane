@@ -361,8 +361,7 @@ def get_venue_bets(request):
     date = request.GET.get('date')
     venue_code = request.GET.get('venue_code')
     bets = Bet.objects.filter(
-        participant__race__chart__program__date__gte=date,
-        participant__race__chart__program__date__lt=today,
+        participant__race__chart__program__date=date,
         participant__race__chart__program__venue__code=venue_code)
     # bets = Bet.objects.all()
     bets_object = {}
@@ -394,11 +393,13 @@ def get_venue_bets(request):
     return JsonResponse({
         'types': bet_types,
         'profits': profits,
-        'averages': averages})
+        'averages': averages,
+        'raw_win': bets_object["W"]})
 
 def get_bets(request):
     today = datetime.datetime.now().date()
     date = request.GET.get('date')
+
     bets = Bet.objects.filter(
         participant__race__chart__program__date__gte=date,
         participant__race__chart__program__date__lt=today)

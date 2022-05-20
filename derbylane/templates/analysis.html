@@ -201,6 +201,7 @@
       dataType: "json",
       data: {"date": date},
       success: function(data) {
+        console.log(data["raw_win"])
         if (data["venues"].length > 0) {
           document.getElementById("empty-content").style.display = "none";
           document.getElementById("canvas-container").style.display = "";
