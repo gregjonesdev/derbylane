@@ -68,7 +68,7 @@
         type="radio"
         class="btn-check date_select_input"
         name="btnradio"
-        value=""
+        value="{{ last_week }}"
         id="btnradio2"
         autocomplete="off">
       <label
@@ -248,13 +248,14 @@
 
   function handle_time_select(e) {
     console.log("triggered")
-    console.log(e)
+    console.log(e.currentTarget)
 
     const selected_venue = document.getElementById("btnGroupDrop1").innerText
     console.log(selected_venue)
     console.log("---")
     if (selected_venue == "All Venues ") {
-      get_bets(e.target.value)
+      console.log('257')
+      get_bets(e.currentTarget.value)
     } else {
       console.log("get venue bets")
     }

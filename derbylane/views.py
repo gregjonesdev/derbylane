@@ -132,7 +132,9 @@ class AnalysisView(LoginRequiredMixin, View):
                 venues.append({"code": venue.code, "name": venue.name})
                 yesterday_venue_codes.append(venue.code)
         self.context["venues"] = venues
-        print(venues)
+        last_week = today - datetime.timedelta(days=7)
+        self.context["last_week"] = last_week.strftime("%Y-%m-%d")
+
         # self.context["last_month"] = today - datetime.timedelta(days=30)
         # self.context["last_year"] = today - datetime.timedelta(days=365)
         return render(request, self.template_name, self.context)
@@ -362,7 +364,7 @@ def get_venue_bets(request):
         participant__race__chart__program__date__gte=date,
         participant__race__chart__program__date__lt=today,
         participant__race__chart__program__venue__code=venue_code)
-    # bets = Bet.objects.all()
+    bets = Bet.objects.all()
     bets_object = {}
     for bet in bets:
         type = bet.type.name
@@ -386,6 +388,9 @@ def get_venue_bets(request):
     print(averages)
 
 
+    #TODO: get graded averages
+
+
 
     return JsonResponse({
         'types': bet_types,
@@ -398,7 +403,7 @@ def get_bets(request):
     bets = Bet.objects.filter(
         participant__race__chart__program__date__gte=date,
         participant__race__chart__program__date__lt=today)
-    # bets = Bet.objects.all()
+    bets = Bet.objects.all()
     # if request.GET.get('venue_code'):
     #     venue_code = request.GET.get('venue_code')
     #     bets = bets.filter(
