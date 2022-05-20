@@ -11,31 +11,47 @@
   </div>
   <div class="card-body">
     <div style="display: flex; flex-flow: row nowrap; justify-content: space-between; align-items: middle">
-    <div class="btn-group" role="group">
-       <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" style="margin-bottom: 8px; " data-bs-toggle="dropdown" aria-expanded="false">
-         All Venues
-       </button>
-       <ul class="dropdown-menu" style="background-color: #212121;" aria-labelledby="btnGroupDrop1">
-         <li><a class="dropdown-item venue-select" href="#" data-value="SL">Southland</a></li>
-         <li><a class="dropdown-item venue-select" href="#" data-value="TS">Tri-State</a></li>
-         <li><a class="dropdown-item venue-select" href="#" data-value="WD" selected>Wheeling Downs</a></li>
-         <!-- <div class="dropdown-divider"></div>
-         <li><a class="dropdown-item venue-select" href="#" data-value="All">All Venues</a></li> -->
-       </ul>
+
+      <div class="btn-group" role="group">
+
+         <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary btn-sm" style="margin-bottom: 8px; " data-bs-toggle="dropdown" aria-expanded="false" disabled>
+           All Venues
+         </button>
+        </div>
+
+
+        <!--
+         <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" style="margin-bottom: 8px; " data-bs-toggle="dropdown" aria-expanded="false">
+           All Venues
+         </button>
+         <ul class="dropdown-menu" style="background-color: #212121;" aria-labelledby="btnGroupDrop1">
+           {% for venue in venues %}
+           <li><a class="dropdown-item venue-select" href="#" data-value="{{ venue.code }}">{{ venue.name }}</a></li>
+           {% endfor %}
+
+         </ul>
+         -->
+
+
+     <div class="btn-group" role="group" style="text-align:right" aria-label="Basic radio toggle button group">
+       <input type="radio" class="btn-check date_select_input" name="btnradio" value="{{ yesterday_date }}" id="btnradio1" autocomplete="off" checked>
+       <label class="btn btn-outline-primary btn-sm" for="btnradio1">{{ yesterday }}</label>
+       <input type="radio" class="btn-check date_select_input" name="btnradio" value="" id="btnradio2" autocomplete="off" disabled>
+       <label class="btn btn-outline-primary btn-sm" for="btnradio2">Week</label>
+       <input type="radio" class="btn-check date_select_input" name="btnradio" value="" id="btnradio3" autocomplete="off" disabled>
+       <label class="btn btn-outline-primary btn-sm" for="btnradio3">Month</label>
      </div>
 
-    <div class="btn-group" role="group" style="text-align:right" aria-label="Basic radio toggle button group">
-      <input type="radio" class="btn-check date_select_input" name="btnradio" value="{{ yesterday_date }}" id="btnradio1" autocomplete="off" checked>
-      <label class="btn btn-outline-primary btn-sm" for="btnradio1">{{ yesterday }}</label>
-      <input type="radio" class="btn-check date_select_input" name="btnradio" value="" id="btnradio2" autocomplete="off" disabled>
-      <label class="btn btn-outline-primary btn-sm" for="btnradio2">Week</label>
-      <input type="radio" class="btn-check date_select_input" name="btnradio" value="" id="btnradio3" autocomplete="off" disabled>
-      <label class="btn btn-outline-primary btn-sm" for="btnradio3">Month</label>
+
     </div>
-    </div>
-    <div id="canvas-container" style="display: flex; justify-content: space-around">
+
+  <!--   <div id="canvas-container" style="display: flex; justify-content: space-around">
       <canvas id="chart-1" style="max-width:48%; display:inline;"></canvas>
       <canvas id="chart-2" style="max-width:48%; display:inline;"></canvas>
+    </div> -->
+
+    <div id="empty-content" style="margin: 50px auto; text-align:center; width: 100%">
+      No Bets Today
     </div>
 
 
@@ -65,29 +81,31 @@
   }
 
   function handle_venue_select(e) {
-    // const target = e.currentTarget
-    // const venue_code = target.getAttribute("data-value");
-    // document.getElementById("btnGroupDrop1").textContent = target.textContent;
-    //
-    // console.log("here o")
-    //
-    // $.ajax({
-    //   url: json_data["get_venue_bets_url"],
-    //   dataType: "json",
-    //   data: {
-    //     "venue_code": venue_code,
-    //     "date": get_selected_date(),
-    //   },
-    //   success: function(data) {
-    //     build_chart("chart-1", data["types"], data["profits"])
-    //
-    //   }
-    // })
+    const target = e.currentTarget
+    const venue_code = target.getAttribute("data-value");
+    document.getElementById("btnGroupDrop1").textContent = target.textContent;
+    $.ajax({
+      url: json_data["get_venue_bets_url"],
+      dataType: "json",
+      data: {
+        "venue_code": venue_code,
+        "date": get_selected_date(),
+      },
+      success: function(data) {
+        console.log("ok")
+        build_chart("chart-1", data["types"], data["profits"])
+
+      }
+    })
 
   }
 
   get_bets(get_selected_date())
+  addEventListeners()
 
+  function populate_menu_dropdown(venues) {
+    document.getElementById("btnGroupDrop1").disabled = false;
+  }
 
 
   function get_bets(date) {
@@ -96,7 +114,10 @@
       dataType: "json",
       data: {"date": date},
       success: function(data) {
-        build_chart("chart-1", data["venues"], data["profits"])
+        if (data["venues"].length > 0) {
+          populate_menu_dropdown(data["venues"])
+          build_chart("chart-1", data["venues"], data["profits"])
+        }
       }
     })
   }
@@ -130,9 +151,9 @@
 
 
   function addEventListeners() {
-    for (let i=0; i<button_checks.length; i++) {
-      button_checks[i].addEventListener("click", handle_time_select)
-    }
+    // for (let i=0; i<button_checks.length; i++) {
+    //   button_checks[i].addEventListener("click", handle_time_select)
+    // }
     for (let i=0; i<venue_select.length; i++) {
       venue_select[i].addEventListener("click", handle_venue_select)
     }

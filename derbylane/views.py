@@ -123,7 +123,16 @@ class AnalysisView(LoginRequiredMixin, View):
         # first date of smoreg bets: 2022-05-16
         self.context["yesterday"] = yesterday.strftime("%a %b %-d")
         self.context["yesterday_date"] = yesterday.strftime("%Y-%m-%d")
-        # self.context["last_week"] = today - datetime.timedelta(days=7)
+        yesterday_bets = Bet.objects.filter(participant__race__chart__program__date__lt=yesterday)
+        yesterday_venue_codes = []
+        venues = []
+        for bet in yesterday_bets:
+            venue = bet.participant.race.chart.program.venue
+            if not venue.code in yesterday_venue_codes:
+                venues.append({"code": venue.code, "name": venue.name})
+                yesterday_venue_codes.append(venue.code)
+        self.context["venues"] = venues
+        print(venues)
         # self.context["last_month"] = today - datetime.timedelta(days=30)
         # self.context["last_year"] = today - datetime.timedelta(days=365)
         return render(request, self.template_name, self.context)
