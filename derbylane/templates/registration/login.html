@@ -6,7 +6,7 @@
             <form id="login-form" method="post"
                   action="{% url 'login' %}">
                 {% csrf_token %}
-                <table class="table">
+                <table class="table table-borderless">
                     <tr>
                         <td><label for="id_username" style="color:#666">Username</label></td>
                         <td><input id="id_username" name="username"
@@ -26,7 +26,7 @@
                 {% endif %}
 
                 <input type="submit" value="Login"
-                       class="btn btn-primary pull-right" />
+                       class="btn btn-outline-primary pull-right" />
                 <input type="hidden" name="next" value="{{ next }}" />
             </form>
         </div>
