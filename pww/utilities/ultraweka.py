@@ -182,8 +182,60 @@ def get_profit_potential(percent, payout):
         return ""
 
 
+def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
+    prediction_numbers = [0, 0, 0]
+    optimal_trifecta = {
+        "scenario": "",
+        "average_return": 0,
+        "potential": 0,
+        "success_rate": 0,
+    }
 
-def evaluate_nominal(classifier, filtered_data, uuid_line_index):
+
+
+
+    start = 1
+    stop = 8
+    interval = .0625
+    count = 0
+    while prediction_numbers[0] < stop:
+        print("Evaluating {}-{}-{}".format(
+            "{}-{}".format(number[0], number[0]+interval),
+            "{}-{}".format(number[1], number[1]+interval),
+            "{}-{}".format(number[2], number[2]+interval)))
+        prediction_numbers[0] += interval
+    # interval_object = build_interval_object(start, stop, interval)
+    # for index, inst in enumerate(filtered_data):
+    #     if index in uuid_line_index.keys():
+    #         uuid = uuid_line_index[index]
+    #         count +=1
+    #         prediction = classifier.classify_instance(inst)
+    #         for each in interval_object.keys():
+    #             key_value = float(each)
+    #             if key_value <= prediction < (key_value + interval):
+    #                 interval_object[each].append({
+    #                     "uuid": uuid,
+    #                     "prediction": prediction
+    #                 })
+    #
+    # print("{}\t\t{}\t\t\t{}\t\t{}\t\t{}".format("Range", "Freq", "Win", "Place", "Show"))
+    # for each in interval_object.keys():
+    #     string_row = "{} - {}\t{} ({}%)\t\t{}\t{}\t{}"
+    #     if count > 0:
+    #         percent = round((100*len(interval_object[each])/count), 2)
+    #     else:
+    #         percent = 0
+    #     print(string_row.format(
+    #         round(float(each), 2),
+    #         round(float(each) + interval, 2),
+    #         len(interval_object[each]),
+    #         percent,
+    #         get_profit_potential(percent, get_average_win(interval_object[each])),
+    #         get_profit_potential(percent, get_average_place(interval_object[each])),
+    #         get_profit_potential(percent, get_average_show(interval_object[each]))))
+
+
+def evaluate_numeric(classifier, filtered_data, uuid_line_index):
     start = 1
     stop = 8
     interval = .0625
@@ -284,4 +336,18 @@ def evaluate_predictions(testing_arff, model, classifier_name):
     if is_nominal:
         evaluate_confidence(model, filtered_data, uuid_line_index)
     else:
-        evaluate_nominal(model, filtered_data, uuid_line_index)
+        evaluate_numeric(model, filtered_data, uuid_line_index)
+
+
+def evaluate_exotics(testing_arff, model, classifier_name):
+
+    classifier_attributes = classifiers[classifier_name]
+    is_nominal = classifier_attributes["is_nominal"]
+    uuid_line_index = get_uuid_line_index(testing_arff)
+    loader = Loader(classname="weka.core.converters.ArffLoader")
+    loaded_data = loader.load_file(testing_arff)
+    filtered_data = get_filtered_data(loaded_data, is_nominal)
+    if is_nominal:
+        print("uh...should there be something here?")
+    else:
+        evaluate_numeric_exotic(model, filtered_data, uuid_line_index)

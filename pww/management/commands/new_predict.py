@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 
 from pww.utilities.arff import get_testing_arff
 from pww.utilities.classifiers import recommendations, classifiers
-from pww.utilities.metrics import new_get_training_metrics
+from pww.utilities.metrics import new_get_metrics
 from rawdat.models import Race, Program
 from miner.utilities.constants import focused_grades, betting_venues
 from miner.utilities.urls import model_directory
@@ -34,7 +34,7 @@ class Command(BaseCommand):
                     grade_name)
                 for model_name in recommendations:
                     if new_key in model_name:
-                        testing_metrics = new_get_training_metrics(
+                        testing_metrics = new_get_metrics(
                             grade_name,
                             venue_code,
                             today,

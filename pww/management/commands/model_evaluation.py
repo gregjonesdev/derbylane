@@ -14,7 +14,7 @@ from pww.utilities.classifiers import classifiers
 from pww.utilities.ultraweka import get_model, evaluate_predictions
 from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
-from pww.utilities.metrics import new_get_training_metrics
+from pww.utilities.metrics import new_get_metrics
 
 betting_distances = {
     "WD": 548,
@@ -40,7 +40,7 @@ class Command(BaseCommand):
         end_date = "2021-12-31"
         test_start = "2022-01-01"
         test_stop = "2022-04-20"
-        training_metrics = new_get_training_metrics(
+        training_metrics = new_get_metrics(
             grade_name,
             venue_code,
             start_date,
@@ -59,7 +59,7 @@ class Command(BaseCommand):
         print("Training Metrics: {}\n".format(
             len(training_metrics)))
 
-        testing_metrics = new_get_training_metrics(
+        testing_metrics = new_get_metrics(
             grade_name,
             venue_code,
             test_start,
