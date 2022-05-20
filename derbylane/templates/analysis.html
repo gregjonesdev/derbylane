@@ -21,6 +21,7 @@
           style="margin-bottom: 8px;"
           data-bs-toggle="dropdown"
           aria-expanded="false"
+          data-value=""
           >
            All Venues
          </button>
@@ -130,8 +131,6 @@
   const button_checks = document.getElementsByClassName("btn-check")
 
   function get_anchor_element(venue_code, venue_name) {
-    console.log('Need ths')
-    console.log(venue_name)
     const anchor_element = document.createElement('a');
     anchor_element.setAttribute("class", "dropdown-item venue-select");
     anchor_element.setAttribute("href", "#");
@@ -149,10 +148,16 @@
       }
   }
 
+  function get_selected_venue() {
+    return document.getElementById("btnGroupDrop1").getAttribute("data-value")
+  }
+
   function handle_venue_select(e) {
     const target = e.target
     const venue_code = target.getAttribute("data-value");
-    document.getElementById("btnGroupDrop1").textContent = target.textContent;
+    const container = document.getElementById("btnGroupDrop1")
+    container.textContent = target.textContent;
+    container.setAttribute("data-value", venue_code)
     if (venue_code) {
       get_venue_bets(venue_code)
     } else {
@@ -248,17 +253,15 @@
   }
 
   function handle_time_select(e) {
-    console.log("triggered")
-    console.log(e.currentTarget)
+    console.log("handle time select")
+    console.log(e.currentTarget.value)
 
-    const selected_venue = document.getElementById("btnGroupDrop1").innerText
-    console.log(selected_venue)
-    console.log("---")
-    if (selected_venue == "All Venues ") {
+    const selected_venue = get_selected_venue()
+    if (selected_venue) {
       console.log('257')
-      get_bets(e.currentTarget.value)
-    } else {
       console.log("get venue bets")
+    } else {
+      get_bets(e.currentTarget.value)
     }
     // $.ajax({
     //   url: json_data["get_bets_url"],
