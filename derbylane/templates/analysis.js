@@ -41,7 +41,6 @@ function build_new_canvas(canvas_id) {
   return new_canvas
 }
 
-get_bets(document.getElementById("btnradio1").value)
 
 function build_chart(name, x_values, y_values, div_id) {
   console.log(y_values)
