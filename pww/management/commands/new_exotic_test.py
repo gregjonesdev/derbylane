@@ -14,7 +14,7 @@ from pww.utilities.classifiers import classifiers
 from pww.utilities.ultraweka import get_model, save_model, evaluate_exotics
 from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
-from pww.utilities.metrics import new_get_metrics
+from pww.utilities.metrics import get_race_metrics
 
 from rawdat.models import Race
 
@@ -50,12 +50,14 @@ class Command(BaseCommand):
         print("{} Grade {} Exotic Analysis".format(venue_code, grade_name))
         print("{} - {}".format(test_start, test_stop))
         print("{} Races Tested".format(test_races.count()))
+        for race in test_races:
+            print(len(get_race_metrics(race)))
         raise SystemExit(0)
-        training_metrics = new_get_metrics(
-            grade_name,
-            venue_code,
-            start_date,
-            end_date)
+        # training_metrics = new_get_metrics(
+        #     grade_name,
+        #     venue_code,
+        #     start_date,
+        #     end_date)
         training_arff = get_training_arff(
             classifier_name,
             training_metrics)
