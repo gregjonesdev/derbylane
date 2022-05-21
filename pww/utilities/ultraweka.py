@@ -214,6 +214,8 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
         except ObjectDoesNotExist:
             bet_returns.append(0)
     print(bet_returns)
+    if len(bet_returns> 0):
+        raise SystemExit(0)
 
 def get_unique_trifectas(matches_first, matches_second, matches_third):
     unique_trifectas = []
