@@ -199,8 +199,8 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
             prediction_object,
             numbers[2],
             numbers[2]+interval)
-        print("Matches {}-{}:".format(numbers[0], numbers[0]+interval))
-        print(len(matches_first))
+        # print("Matches {}-{}:".format(numbers[0], numbers[0]+interval))
+        # print(len(matches_first))
 
     bet_returns = []
 
@@ -213,8 +213,8 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
             bet_returns.append(tri.amount)
         except ObjectDoesNotExist:
             bet_returns.append(0)
-    print(bet_returns)
     if len(bet_returns) >0 and max(bet_returns)> 0:
+        print(bet_returns)
         raise SystemExit(0)
 
 def get_unique_trifectas(matches_first, matches_second, matches_third):
@@ -261,12 +261,12 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
         print("{}\t{}".format(each, prediction_object[each]))
 
     for race in races:
-        print("Race {} {}".format(race.number, race.chart.program.date))
+        # print("Race {} {}".format(race.number, race.chart.program.date))
         for participant in race.participant_set.all():
-            print("{}-{}\t{}".format(
-                participant.post,
-                participant.dog.name,
-                prediction_object[str(participant.uuid)]))
+            # print("{}-{}\t{}".format(
+            #     participant.post,
+            #     participant.dog.name,
+            #     prediction_object[str(participant.uuid)]))
 
     start = 2
     stop = 6
