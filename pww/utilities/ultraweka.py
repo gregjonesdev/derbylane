@@ -280,8 +280,9 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index, w
 
 
     for each in prediction_object.keys():
-        print("{}\t{}".format(each, prediction_object[each]))
-
+        # print("{}\t{}".format(each, prediction_object[each]))
+        print(min(prediction_object.values()))
+        print(max(prediction_object.values()))
     # for race in races:
         # print("Race {} {}".format(race.number, race.chart.program.date))
         # for participant in race.participant_set.all():
