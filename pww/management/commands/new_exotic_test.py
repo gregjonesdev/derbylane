@@ -48,8 +48,12 @@ class Command(BaseCommand):
             participant__race__chart__program__date__range=(test_start, test_stop),
             participant__race__grade__name=grade_name,
             participant__race__chart__program__venue__code=venue_code)
-        for race in test_races:
-            build_race_metrics(race)    
+        training_races = Race.objects.filter(
+            participant__race__chart__program__date__range=(start_date, end_date),
+            participant__race__grade__name=grade_name,
+            participant__race__chart__program__venue__code=venue_code)
+        for race in training_races:
+            build_race_metrics(race)
         print("{} Grade {} Exotic Analysis".format(venue_code, grade_name))
         print("{} - {}".format(test_start, test_stop))
         print("{} Races Tested".format(test_races.count()))
