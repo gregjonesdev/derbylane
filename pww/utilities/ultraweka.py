@@ -203,7 +203,7 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
         print("Matches {}-{}:".format(numbers[0], numbers[0]+interval))
         print(len(matches_first))
 
-def get_unique_trifecta(matches_first, matches_second, matches_third):
+def get_unique_trifectas(matches_first, matches_second, matches_third):
     unique_trifectas = []
     i=0
     while i<len(matches_first):
