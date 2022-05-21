@@ -51,8 +51,6 @@ class Command(BaseCommand):
         print("{} - {}".format(test_start, test_stop))
         print("{} Races Tested".format(test_races.count()))
 
-        i = 0
-        for race in test_races:
 
 
         training_metrics = new_get_metrics(
