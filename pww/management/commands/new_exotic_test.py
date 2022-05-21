@@ -14,7 +14,7 @@ from pww.utilities.classifiers import classifiers
 from pww.utilities.ultraweka import get_model, save_model, evaluate_exotics
 from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
-from pww.utilities.metrics import get_race_metrics
+from pww.utilities.metrics import new_get_metrics
 
 from rawdat.models import Race
 
