@@ -199,11 +199,12 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
     }
 
     # interval_object = build_interval_object(start, stop, interval)
+    prediction_object = {}
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
             uuid = uuid_line_index[index]
-            count +=1
             prediction = classifier.classify_instance(inst)
+            prediction_object[uuid] = prediction
             # for each in interval_object.keys():
             #     key_value = float(each)
             #     if key_value <= prediction < (key_value + interval):
@@ -212,7 +213,7 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
             #             "prediction": prediction
             #         })
     print("A")
-    print(interval_object)
+    print(prediction_object)
 
     for race in races:
         print("Race {} {}".format(race.number, race.chart.program.date))
