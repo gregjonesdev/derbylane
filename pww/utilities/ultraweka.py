@@ -217,7 +217,6 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
             except ObjectDoesNotExist:
                 bet_returns.append(0)
     if len(bet_returns) >0 and max(bet_returns)> 0:
-        print(bet_returns)
         print("{}-{},{}-{},{}-{},{},{},{}".format(
             numbers[0],
             numbers[0] + interval,
@@ -289,7 +288,7 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
     start = 2
     stop = 6
     numbers = [start, start, start]
-    interval = .0625
+    # interval = .0625
     interval = 0.5
     count = 0
     while numbers[0] < stop:
