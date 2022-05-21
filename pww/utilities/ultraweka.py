@@ -247,8 +247,11 @@ def get_unique_trifectas(matches_first, matches_second, matches_third):
 def get_matching_participants(race, prediction_object, min, max):
     matches = []
     for participant in race.participant_set.all():
-        if min <= prediction_object[str(participant.uuid)] < max:
-            matches.append(participant)
+        try:
+            if min <= prediction_object[str(participant.uuid)] < max:
+                matches.append(participant)
+        except KeyError:
+            pass        
     return matches
 
 
