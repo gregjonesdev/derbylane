@@ -199,7 +199,7 @@ def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
     interval = .0625
     count = 0
     while numbers[2] < stop:
-        while numbers[1] < stop
+        while numbers[1] < stop:
             while numbers[0] < stop:
                 print("Evaluating {}, {}, {}".format(
                     "{}-{}".format(numbers[0], numbers[0]+interval),
@@ -209,7 +209,7 @@ def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
             numbers[0] = start
             numbers[1] = start + interval
         numbers[1] = start
-        numbers[2] = start + interval    
+        numbers[2] = start + interval
 
     # interval_object = build_interval_object(start, stop, interval)
     # for index, inst in enumerate(filtered_data):
