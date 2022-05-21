@@ -183,6 +183,7 @@ def get_profit_potential(percent, payout):
         return ""
 
 def get_trifecta_returns(numbers, interval, races, prediction_object):
+    bet_returns = []
     for race in races:
         matches_first = get_matching_participants(
             race,
@@ -202,7 +203,6 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
         # print("Matches {}-{}:".format(numbers[0], numbers[0]+interval))
         # print(len(matches_first))
 
-    bet_returns = []
 
         for trifecta in get_unique_trifectas(matches_first, matches_second, matches_third):
             try:
