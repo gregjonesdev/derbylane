@@ -10,7 +10,7 @@ import weka.core.serialization as serialization
 from weka.core.converters import Loader
 from django.core.exceptions import ObjectDoesNotExist
 from pww.models import Prediction
-from rawdat.models import Trifecta_Wager
+from rawdat.models import Trifecta
 
 def get_filename(model_directory, model_name):
     return "{}/{}.model".format(model_directory, model_name)
@@ -206,11 +206,11 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
 
     for trifecta in get_unique_trifectas(matches_first, matches_second, matches_third):
         try:
-            tri = Trifecta_Wager.objects.get(
+            tri = Trifecta.objects.get(
                 win = trifecta[0],
                 place = trifecta[1],
                 show = trifecta[2])
-            bet_returns.append(tri.amount)
+            bet_returns.append(tri.payout)
         except ObjectDoesNotExist:
             bet_returns.append(0)
     if len(bet_returns) >0 and max(bet_returns)> 0:
