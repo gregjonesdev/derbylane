@@ -250,7 +250,7 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
     }
 
     # USE THIS
-    writer.writerow(row)
+    # writer.writerow(row)
 
 
 
