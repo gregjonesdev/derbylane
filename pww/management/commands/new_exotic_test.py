@@ -50,14 +50,12 @@ class Command(BaseCommand):
         print("{} Grade {} Exotic Analysis".format(venue_code, grade_name))
         print("{} - {}".format(test_start, test_stop))
         print("{} Races Tested".format(test_races.count()))
-        for race in test_races:
-            print(len(get_race_metrics(race)))
-        raise SystemExit(0)
-        # training_metrics = new_get_metrics(
-        #     grade_name,
-        #     venue_code,
-        #     start_date,
-        #     end_date)
+
+        training_metrics = new_get_metrics(
+            grade_name,
+            venue_code,
+            start_date,
+            end_date)
         training_arff = get_training_arff(
             classifier_name,
             training_metrics)
@@ -69,6 +67,8 @@ class Command(BaseCommand):
         print("{} - {}".format(start_date, end_date))
         print("Training Metrics: {}\n".format(
             len(training_metrics)))
+        save_model(training_arff, classifier_name, model_directory, "exotic_test")
+        model = get_model(model_directory, "exotic_test")
 
         testing_metrics = new_get_metrics(
             grade_name,
@@ -79,13 +79,13 @@ class Command(BaseCommand):
             "{}_{}".format(venue_code, grade_name),
             testing_metrics)
         print("Testing Metrics: {}".format(len(testing_metrics)))
-        save_model(training_arff, classifier_name, model_directory, "exotic_test")
+        raise SystemExit(0)
         # Must build test model
-        model = get_model(model_directory, "exotic_test")
         evaluate_exotics(
             testing_arff,
             model,
-            classifier_name), races
+            classifier_name,
+            races)
         jvm.stop()
 
     # def get_race_predictions(self, race):
