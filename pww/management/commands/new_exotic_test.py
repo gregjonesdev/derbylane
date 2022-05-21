@@ -97,6 +97,7 @@ class Command(BaseCommand):
             testing_arff,
             model,
             classifier_name,
-            test_races)
+            test_races,
+            writer)
         jvm.stop()
         f.close()

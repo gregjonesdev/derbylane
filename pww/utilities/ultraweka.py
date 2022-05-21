@@ -182,7 +182,7 @@ def get_profit_potential(percent, payout):
     except TypeError:
         return ""
 
-def get_trifecta_returns(numbers, interval, races, prediction_object):
+def get_trifecta_returns(numbers, interval, races, prediction_object, writer):
     bet_returns = []
     nonzero = 0
     for race in races:
@@ -217,7 +217,7 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
             except ObjectDoesNotExist:
                 bet_returns.append(0)
     if len(bet_returns) >0 and max(bet_returns)> 0:
-        print("{}-{},{}-{},{}-{},{},{},{}".format(
+        writer.writerow("{}-{},{}-{},{}-{},{},{},{}".format(
             numbers[0],
             numbers[0] + interval,
             numbers[1],
@@ -251,11 +251,11 @@ def get_matching_participants(race, prediction_object, min, max):
             if min <= prediction_object[str(participant.uuid)] < max:
                 matches.append(participant)
         except KeyError:
-            pass        
+            pass
     return matches
 
 
-def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
+def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index, writer):
     optimal_trifecta = {
         "scenario": "",
         "average_return": 0,
@@ -291,13 +291,13 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
     start = 2
     stop = 6
     numbers = [start, start, start]
-    # interval = .0625
-    interval = 0.5
+    interval = .0625
+    # interval = 0.5
     count = 0
     while numbers[0] < stop:
         while numbers[1] < stop:
             while numbers[2] < stop:
-                get_trifecta_returns(numbers, interval, races, prediction_object)
+                get_trifecta_returns(numbers, interval, races, prediction_object, writer)
                 numbers[2] += interval
             numbers[2] = start
             numbers[1] += interval
@@ -428,7 +428,7 @@ def evaluate_predictions(testing_arff, model, classifier_name):
         evaluate_numeric(model, filtered_data, uuid_line_index)
 
 
-def evaluate_exotics(testing_arff, model, classifier_name, races):
+def evaluate_exotics(testing_arff, model, classifier_name, races, writer):
 
     classifier_attributes = classifiers[classifier_name]
     is_nominal = classifier_attributes["is_nominal"]
@@ -439,4 +439,4 @@ def evaluate_exotics(testing_arff, model, classifier_name, races):
     if is_nominal:
         print("uh...should there be something here?")
     else:
-        evaluate_numeric_exotic(model, races, filtered_data, uuid_line_index)
+        evaluate_numeric_exotic(model, races, filtered_data, uuid_line_index, writer)
