@@ -181,13 +181,20 @@ def get_profit_potential(percent, payout):
     except TypeError:
         return ""
 
-def evaluate_trifectas(numbers, interval, races):
-    print("Evaluating {}, {}, {}".format(
-        "{}-{}".format(numbers[0], numbers[0]+interval),
-        "{}-{}".format(numbers[1], numbers[1]+interval),
-        "{}-{}".format(numbers[2], numbers[2]+interval)))
+def get_trifecta_returns(numbers, interval, races, prediction_object):
+
+    for race in races:
+        matches_first = get_matching_participants(race, prediction_object, numbers[0], numbers[0]+interval)
+        print("Matches {}-{}:".format(numbers[0], numbers[0]+interval))
+        print(matches_first)
     raise SystemExit(0)
 
+def get_matching_participants(race, prediction_object, min, max):
+    matches = []
+    for participant in race.participant_set.all():
+        if min <= prediction_object[str(participant.uuid)] < max:
+            matches.append(participant)
+    return matches
 
 
 def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
@@ -228,8 +235,7 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
     while numbers[0] < stop:
         while numbers[1] < stop:
             while numbers[2] < stop:
-                # evaluate_trifectas(numbers, interval, races)
-                print("{} {} {}".format(numbers[0], numbers[1], numbers[2]))
+                get_trifecta_returns(numbers, interval, races, prediction_object)
                 numbers[2] += interval
             numbers[2] = start
             numbers[1] += interval
