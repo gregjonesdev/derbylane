@@ -213,6 +213,7 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
             #             "prediction": prediction
             #         })
     print("A")
+    print(prediction_object)
     for each in prediction_object.keys():
         print("{}\t{}".format(each, prediction_object[each]))
 
