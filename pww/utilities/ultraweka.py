@@ -218,7 +218,7 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
     for race in races:
         print("Race {} {}".format(race.number, race.chart.program.date))
         for participant in race.participant_set.all():
-            print("{}-{}:\t{}".format(
+            print("{}-{}".format(
                 participant.post,
                 participant.dog.name))
 
