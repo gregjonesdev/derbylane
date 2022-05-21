@@ -217,8 +217,11 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
 
     for race in races:
         print("Race {} {}".format(race.number, race.chart.program.date))
-        for particiant in race.participant_set.all():
-            print("{}-{}".format(pariticpant.post, pariticpant.dog.name))
+        for participant in race.participant_set.all():
+            print("{}-{}:\t{}".format(
+                pariticpant.post,
+                pariticpant.dog.name,
+                prediction_object[participant.uuid]))
 
     raise SystemExit(0)
     start = 2
