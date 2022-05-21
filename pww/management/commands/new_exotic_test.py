@@ -88,7 +88,7 @@ class Command(BaseCommand):
             testing_arff,
             model,
             classifier_name,
-            races)
+            test_races)
         jvm.stop()
 
     # def get_race_predictions(self, race):
