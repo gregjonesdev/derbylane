@@ -49,7 +49,6 @@ class Command(BaseCommand):
             participant__race__grade__name=grade_name,
             participant__race__chart__program__venue__code=venue_code)
 
-        print("{} Training races".format(len(training_races)))
         print("{} Grade {} Exotic Analysis".format(venue_code, grade_name))
         print("{} - {}".format(test_start, test_stop))
         print("{} Races Tested".format(test_races.count()))
