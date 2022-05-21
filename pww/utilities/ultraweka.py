@@ -228,7 +228,7 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
             len(bet_returns),
             nonzero,
             round(sum(bet_returns)/len(bet_returns), 2)
-        )))
+        ))
 
 def get_unique_trifectas(matches_first, matches_second, matches_third):
     unique_trifectas = []
