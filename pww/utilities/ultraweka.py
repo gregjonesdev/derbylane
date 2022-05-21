@@ -182,12 +182,41 @@ def get_profit_potential(percent, payout):
         return ""
 
 def get_trifecta_returns(numbers, interval, races, prediction_object):
-
-    for race in races:
-        matches_first = get_matching_participants(race, prediction_object, numbers[0], numbers[0]+interval)
-        print("Matches {}-{}:".format(numbers[0], numbers[0]+interval))
-        print(matches_first)
+    get_unique_trifectas([1,2,3], [4,5,6], [7])
     raise SystemExit(0)
+    for race in races:
+        matches_first = get_matching_participants(
+            race,
+            prediction_object,
+            numbers[0],
+            numbers[0]+interval)
+        matches_second = get_matching_participants(
+            race,
+            prediction_object,
+            numbers[1],
+            numbers[1]+interval)
+        matches_third = get_matching_participants(
+            race,
+            prediction_object,
+            numbers[2],
+            numbers[2]+interval)
+        print("Matches {}-{}:".format(numbers[0], numbers[0]+interval))
+        print(len(matches_first))
+
+def get_unique_trifecta(matches_first, matches_second, matches_third):
+    unique_trifectas = []
+    i=0
+    while i<len(matches_first):
+        j=0
+        while j < len(matches_second):
+            k=0
+            while k< len(matches_third):
+                if not (matches_first[i], matches_second[j], matches_third[k]) in unique_trifectas:
+                    unique_trifectas.append((matches_first[i], matches_second[j], matches_third[k]))
+                k +=1
+            j += 1
+        i += 1
+    return unique_trifectas
 
 def get_matching_participants(race, prediction_object, min, max):
     matches = []
