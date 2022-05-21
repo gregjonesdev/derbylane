@@ -42,7 +42,7 @@ class Command(BaseCommand):
         venue_code = sys.argv[5]
         grade_name = sys.argv[7]
         start_date = sys.argv[9]
-        f = open('test_data/{}_{}'.format(venue_code, grade_name), 'w')
+        f = open('test_data.csv'.format(venue_code, grade_name), 'w')
         writer = csv.writer(f)
         end_date = "2021-12-31"
         test_start = "2022-01-01"
