@@ -268,9 +268,8 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
                 participant.dog.name,
                 prediction_object[str(participant.uuid)]))
 
-    start = 4
+    start = 2
     stop = 6
-    stop = 8
     numbers = [start, start, start]
     interval = .0625
     interval = 0.5
