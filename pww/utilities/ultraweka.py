@@ -209,7 +209,7 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
             tri = Trifecta_Wager.objects.get(
                 win = trifecta[0],
                 place = trifecta[1],
-                show = trifecta[3])
+                show = trifecta[2])
             bet_returns.append(tri.amount)
         except ObjectDoesNotExist:
             bet_returns.append(0)
