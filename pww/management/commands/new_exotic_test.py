@@ -16,6 +16,8 @@ from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
 from pww.utilities.metrics import new_get_metrics
 
+from rawdat.models import Race
+
 betting_distances = {
     "WD": 548,
     "TS": 550,
