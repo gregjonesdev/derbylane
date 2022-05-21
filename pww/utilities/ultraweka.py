@@ -181,7 +181,13 @@ def get_profit_potential(percent, payout):
     except TypeError:
         return ""
 
-def evaluate_trifectas(numbers, interval, )
+def evaluate_trifectas(numbers, interval, races):
+    print("Evaluating {}, {}, {}".format(
+        "{}-{}".format(numbers[0], numbers[0]+interval),
+        "{}-{}".format(numbers[1], numbers[1]+interval),
+        "{}-{}".format(numbers[2], numbers[2]+interval)))
+    raise SystemExit(0)
+
 
 
 def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
@@ -194,19 +200,16 @@ def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
 
 
 
-
     start = 2
-    stop = 2.1
+    stop = 3
     numbers = [start, start, start]
     interval = .0625
     count = 0
     while numbers[2] < stop:
         while numbers[1] < stop:
             while numbers[0] < stop:
-                print("Evaluating {}, {}, {}".format(
-                    "{}-{}".format(numbers[0], numbers[0]+interval),
-                    "{}-{}".format(numbers[1], numbers[1]+interval),
-                    "{}-{}".format(numbers[2], numbers[2]+interval)))
+                evaluate_trifectas(numbers, interval, races)
+
                 numbers[0] += interval
             numbers[0] = start
             numbers[1] = start + interval
