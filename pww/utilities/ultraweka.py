@@ -194,7 +194,7 @@ def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
 
 
     start = 2
-    stop = 6
+    stop = 2.1
     numbers = [start, start, start]
     interval = .0625
     count = 0
@@ -208,6 +208,7 @@ def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
                 numbers[0] += interval
             numbers[0] = start
             numbers[1] = start + interval
+        numbers[0] = start
         numbers[1] = start
         numbers[2] = start + interval
 
