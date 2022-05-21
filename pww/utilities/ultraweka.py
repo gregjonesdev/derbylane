@@ -225,17 +225,17 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
     interval = .0625
     interval = 0.5
     count = 0
-    while numbers[2] < stop:
+    while numbers[0] < stop:
         while numbers[1] < stop:
-            while numbers[0] < stop:
+            while numbers[2] < stop:
                 # evaluate_trifectas(numbers, interval, races)
                 print("{} {} {}".format(numbers[0], numbers[1], numbers[2]))
-                numbers[0] += interval
-            numbers[0] = start
-            numbers[1] = start + interval
-        numbers[0] = start
+                numbers[2] += interval
+            numbers[2] = start
+            numbers[1] += interval
+        numbers[2] = start
         numbers[1] = start
-        numbers[2] = start + interval
+        numbers[2] += interval
 
 
     #
