@@ -51,14 +51,29 @@ class Command(BaseCommand):
         print("{} - {}".format(test_start, test_stop))
         print("{} Races Tested".format(test_races.count()))
 
+        i = 0
+        for race in test_races:
+
+
         training_metrics = new_get_metrics(
             grade_name,
             venue_code,
             start_date,
             end_date)
+        testing_metrics = new_get_metrics(
+            grade_name,
+            venue_code,
+            test_start,
+            test_stop)
+        print("Training Metrics: {}".format(len(training_metrics)))
+        print("Testing Metrics: {}".format(len(testing_metrics)))
+        raise SystemExit(0)
         training_arff = get_training_arff(
             classifier_name,
             training_metrics)
+        testing_arff = get_testing_arff(
+            "{}_{}".format(venue_code, grade_name),
+            testing_metrics)
         jvm.start(
             packages=True,
             max_heap_size="5028m"
@@ -70,16 +85,6 @@ class Command(BaseCommand):
         save_model(training_arff, classifier_name, model_directory, "exotic_test")
         model = get_model(model_directory, "exotic_test")
 
-        testing_metrics = new_get_metrics(
-            grade_name,
-            venue_code,
-            test_start,
-            test_stop)
-        testing_arff = get_testing_arff(
-            "{}_{}".format(venue_code, grade_name),
-            testing_metrics)
-        print("Testing Metrics: {}".format(len(testing_metrics)))
-        raise SystemExit(0)
         # Must build test model
         evaluate_exotics(
             testing_arff,
