@@ -220,7 +220,7 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
 
     start = 4
     stop = 4.0625
-    stop = 4.5
+    stop = 8
     numbers = [start, start, start]
     interval = .0625
     interval = 0.5
