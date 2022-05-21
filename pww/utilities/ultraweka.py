@@ -205,15 +205,8 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
             uuid = uuid_line_index[index]
             prediction = classifier.classify_instance(inst)
             prediction_object[uuid] = prediction
-            # for each in interval_object.keys():
-            #     key_value = float(each)
-            #     if key_value <= prediction < (key_value + interval):
-            #         interval_object[each].append({
-            #             "uuid": uuid,
-            #             "prediction": prediction
-            #         })
-    print("A")
-    print(prediction_object)
+
+
     for each in prediction_object.keys():
         print("{}\t{}".format(each, prediction_object[each]))
 
@@ -225,9 +218,8 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
                 participant.dog.name,
                 prediction_object[str(participant.uuid)]))
 
-    raise SystemExit(0)
-    start = 2
-    stop = 3
+    start = 4
+    stop = 4.0625
     numbers = [start, start, start]
     interval = .0625
     count = 0
