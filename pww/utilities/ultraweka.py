@@ -182,7 +182,7 @@ def get_profit_potential(percent, payout):
         return ""
 
 def get_trifecta_returns(numbers, interval, races, prediction_object):
-    get_unique_trifectas([1,2,3], [4,5,6], [7])
+    print(get_unique_trifectas([1,2,3], [4,5,6], [7]))
     raise SystemExit(0)
     for race in races:
         matches_first = get_matching_participants(
