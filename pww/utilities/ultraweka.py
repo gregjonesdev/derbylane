@@ -235,7 +235,7 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
             numbers[1] += interval
         numbers[2] = start
         numbers[1] = start
-        numbers[2] += interval
+        numbers[0] += interval
 
 
     #
