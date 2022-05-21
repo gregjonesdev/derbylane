@@ -10,6 +10,7 @@ import weka.core.serialization as serialization
 from weka.core.converters import Loader
 from django.core.exceptions import ObjectDoesNotExist
 from pww.models import Prediction
+from rawdat.models import Trifecta_Wager
 
 def get_filename(model_directory, model_name):
     return "{}/{}.model".format(model_directory, model_name)
@@ -183,7 +184,6 @@ def get_profit_potential(percent, payout):
 
 def get_trifecta_returns(numbers, interval, races, prediction_object):
     print(get_unique_trifectas([1,2,3], [4,5,6], [7]))
-    raise SystemExit(0)
     for race in races:
         matches_first = get_matching_participants(
             race,
@@ -202,6 +202,19 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
             numbers[2]+interval)
         print("Matches {}-{}:".format(numbers[0], numbers[0]+interval))
         print(len(matches_first))
+
+    bet_returns = []
+
+    for trifecta in unique_trifectas:
+        try:
+            tri = Trifecta_Wager.objects.get(
+                win = trifecta[0],
+                place = trifecta[1],
+                show = trifecta[3])
+            bet_returns.append(tri.amount)
+        except ObjectDoesNotExist:
+            bet_returns.append(0)
+    print(bet_returns)
 
 def get_unique_trifectas(matches_first, matches_second, matches_third):
     unique_trifectas = []
