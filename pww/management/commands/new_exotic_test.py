@@ -14,7 +14,7 @@ from pww.utilities.classifiers import classifiers
 from pww.utilities.ultraweka import get_model, save_model, evaluate_exotics
 from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
-from pww.utilities.metrics import new_get_metrics, build_race_metrics
+from pww.utilities.metrics import new_get_metrics, get_race_metrics
 
 
 from rawdat.models import Race
@@ -44,27 +44,36 @@ class Command(BaseCommand):
         end_date = "2021-12-31"
         test_start = "2022-01-01"
         test_stop = "2022-04-20"
-        test_races = Race.objects.filter(
-            participant__race__chart__program__date__range=(test_start, test_stop),
-            participant__race__grade__name=grade_name,
-            participant__race__chart__program__venue__code=venue_code)
 
         print("{} Grade {} Exotic Analysis".format(venue_code, grade_name))
         print("{} - {}".format(test_start, test_stop))
         print("{} Races Tested".format(test_races.count()))
 
+        participants = []
+        test_races = Race.objects.filter(
+            participant__race__chart__program__date__range=(test_start, test_stop),
+            participant__race__grade__name=grade_name,
+            participant__race__chart__program__venue__code=venue_code)
 
+        for race in test_races:
+            for participant in race.participant_set.all():
+                participants.append(participant)
 
         training_metrics = new_get_metrics(
             grade_name,
             venue_code,
             start_date,
             end_date)
-        testing_metrics = new_get_metrics(
-            grade_name,
-            venue_code,
-            test_start,
-            test_stop)
+        testing_metrics = []
+        for race in test_races:
+            metrics = get_race_metrics(race)
+            for metric in metrics:
+                testing_metrics.append(metric)
+        # testing_metrics = new_get_metrics(
+        #     grade_name,
+        #     venue_code,
+        #     test_start,
+        #     test_stop)
         print("Testing Metrics: {}".format(len(testing_metrics)))
         training_arff = get_training_arff(
             classifier_name,
