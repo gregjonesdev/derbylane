@@ -47,7 +47,6 @@ class Command(BaseCommand):
 
         print("{} Grade {} Exotic Analysis".format(venue_code, grade_name))
         print("{} - {}".format(test_start, test_stop))
-        print("{} Races Tested".format(test_races.count()))
 
         participants = []
         test_races = Race.objects.filter(
@@ -55,6 +54,7 @@ class Command(BaseCommand):
             participant__race__grade__name=grade_name,
             participant__race__chart__program__venue__code=venue_code)
 
+        print("{} Races Tested".format(test_races.count()))
         for race in test_races:
             for participant in race.participant_set.all():
                 participants.append(participant)
