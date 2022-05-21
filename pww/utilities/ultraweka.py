@@ -204,17 +204,18 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
 
     bet_returns = []
 
-    for trifecta in get_unique_trifectas(matches_first, matches_second, matches_third):
-        try:
-            tri = Trifecta.objects.get(
-                win = trifecta[0],
-                place = trifecta[1],
-                show = trifecta[2])
-            bet_returns.append(tri.payout)
-        except ObjectDoesNotExist:
-            bet_returns.append(0)
+        for trifecta in get_unique_trifectas(matches_first, matches_second, matches_third):
+            try:
+                tri = Trifecta.objects.get(
+                    win = trifecta[0],
+                    place = trifecta[1],
+                    show = trifecta[2])
+                bet_returns.append(float(tri.payout))
+            except ObjectDoesNotExist:
+                bet_returns.append(0)
     if len(bet_returns) >0 and max(bet_returns)> 0:
         print(bet_returns)
+        print(sum(bet_returns)/len(bet_returns))
         raise SystemExit(0)
 
 def get_unique_trifectas(matches_first, matches_second, matches_third):
@@ -247,6 +248,11 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
         "potential": 0,
         "success_rate": 0,
     }
+
+    # USE THIS
+    writer.writerow(row)
+
+
 
     # interval_object = build_interval_object(start, stop, interval)
     prediction_object = {}
