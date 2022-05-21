@@ -44,8 +44,12 @@ class Command(BaseCommand):
         test_start = "2022-01-01"
         test_stop = "2022-04-20"
         test_races = Race.objects.filter(
-            participant__race__chart__program__date__range=(test_start, test_stop))
-        print(test_races.count())
+            participant__race__chart__program__date__range=(test_start, test_stop),
+            participant__race__grade__name=grade_name,
+            participant__race__chart__program__venue__code=venue_code)
+        print("{} Grade {} Exotic Analysis")
+        print("{} - {}".format(test_start, test_stop))
+        print("{} Races Tested".format(test_races.count()))
         raise SystemExit(0)
         training_metrics = new_get_metrics(
             grade_name,
