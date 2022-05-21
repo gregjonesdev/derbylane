@@ -216,19 +216,20 @@ def get_trifecta_returns(numbers, interval, races, prediction_object, writer):
                     nonzero += 1
             except ObjectDoesNotExist:
                 bet_returns.append(0)
-    result = "{}-{},{}-{},{}-{},{},{},{}".format(
-        numbers[0],
-        numbers[0] + interval,
-        numbers[1],
-        numbers[1] + interval,
-        numbers[2],
-        numbers[2] + interval,
-        len(bet_returns),
-        nonzero,
-        round(sum(bet_returns)/len(bet_returns), 2)
-    )
-    print(result)
-    writer.writerow(result)
+    if (len(bet_returns)) > 0:
+        result = "{}-{},{}-{},{}-{},{},{},{}".format(
+            numbers[0],
+            numbers[0] + interval,
+            numbers[1],
+            numbers[1] + interval,
+            numbers[2],
+            numbers[2] + interval,
+            len(bet_returns),
+            nonzero,
+            round(sum(bet_returns)/len(bet_returns), 2)
+        )
+        print(result)
+        writer.writerow(result)
 
 def get_unique_trifectas(matches_first, matches_second, matches_third):
     unique_trifectas = []
