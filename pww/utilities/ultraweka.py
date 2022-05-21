@@ -181,6 +181,8 @@ def get_profit_potential(percent, payout):
     except TypeError:
         return ""
 
+def evaluate_trifectas(numbers, interval, )
+
 
 def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
     optimal_trifecta = {

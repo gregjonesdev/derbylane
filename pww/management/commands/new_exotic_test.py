@@ -41,6 +41,9 @@ class Command(BaseCommand):
         end_date = "2021-12-31"
         test_start = "2022-01-01"
         test_stop = "2022-04-20"
+        test_races = Race.objects.filter(
+            participant__race__chart__program__date__range=(test_start, test_stop))
+        print(test_races)    
         training_metrics = new_get_metrics(
             grade_name,
             venue_code,
