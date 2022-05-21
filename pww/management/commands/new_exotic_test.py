@@ -52,6 +52,7 @@ class Command(BaseCommand):
             participant__race__chart__program__date__range=(start_date, end_date),
             participant__race__grade__name=grade_name,
             participant__race__chart__program__venue__code=venue_code)
+        print("{} Training races".format(len(training_races)))    
         for race in training_races:
             build_race_metrics(race)
         print("{} Grade {} Exotic Analysis".format(venue_code, grade_name))
