@@ -223,7 +223,7 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
             print("{}-{}\{}".format(
                 participant.post,
                 participant.dog.name,
-                prediction_object[participant.uuid]))
+                prediction_object[str(participant.uuid)]))
 
     raise SystemExit(0)
     start = 2
