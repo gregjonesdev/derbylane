@@ -66,7 +66,6 @@ class Command(BaseCommand):
             venue_code,
             test_start,
             test_stop)
-        print("Training Metrics: {}".format(len(training_metrics)))
         print("Testing Metrics: {}".format(len(testing_metrics)))
         training_arff = get_training_arff(
             classifier_name,
