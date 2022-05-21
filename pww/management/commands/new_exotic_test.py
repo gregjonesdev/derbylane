@@ -44,6 +44,8 @@ class Command(BaseCommand):
         end_date = "2021-12-31"
         test_start = "2022-01-01"
         test_stop = "2022-04-20"
+        test_start = "2022-05-19"
+        test_stop = "2022-05-19"
 
         print("{} Grade {} Exotic Analysis".format(venue_code, grade_name))
         print("{} - {}".format(test_start, test_stop))
