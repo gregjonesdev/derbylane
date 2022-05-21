@@ -184,6 +184,7 @@ def get_profit_potential(percent, payout):
 
 def get_trifecta_returns(numbers, interval, races, prediction_object):
     bet_returns = []
+    nonzero = 0
     for race in races:
         matches_first = get_matching_participants(
             race,
@@ -211,12 +212,23 @@ def get_trifecta_returns(numbers, interval, races, prediction_object):
                     place = trifecta[1],
                     show = trifecta[2])
                 bet_returns.append(float(tri.payout))
+                if float(tri.payout) > 0:
+                    nonzero += 1
             except ObjectDoesNotExist:
                 bet_returns.append(0)
     if len(bet_returns) >0 and max(bet_returns)> 0:
         print(bet_returns)
-        print(sum(bet_returns)/len(bet_returns))
-        raise SystemExit(0)
+        print("{}-{},{}-{},{}-{},{},{},{}".format(
+            numbers[0],
+            numbers[0] + interval,
+            numbers[1],
+            numbers[1] + interval,
+            numbers[2],
+            numbers[2] + interval,
+            len(bet_returns),
+            nonzero,
+            round(sum(bet_returns)/len(bet_returns, 2)
+        ))
 
 def get_unique_trifectas(matches_first, matches_second, matches_third):
     unique_trifectas = []
