@@ -190,7 +190,7 @@ def evaluate_trifectas(numbers, interval, races):
 
 
 
-def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
+def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index):
     optimal_trifecta = {
         "scenario": "",
         "average_return": 0,
@@ -198,8 +198,28 @@ def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
         "success_rate": 0,
     }
 
+    interval_object = build_interval_object(start, stop, interval)
+    for index, inst in enumerate(filtered_data):
+        if index in uuid_line_index.keys():
+            uuid = uuid_line_index[index]
+            count +=1
+            prediction = classifier.classify_instance(inst)
+            for each in interval_object.keys():
+                key_value = float(each)
+                if key_value <= prediction < (key_value + interval):
+                    interval_object[each].append({
+                        "uuid": uuid,
+                        "prediction": prediction
+                    })
+    print("A")
+    print(interval_object)
 
+    for race in races:
+        print("Race {} {}".format(race.number, race.chart.program.date))
+        for particiant in race.participant_set.all():
+            print("{}-{}".format(pariticpant.post, pariticpant.dog.name))
 
+    raise SystemExit(0)
     start = 2
     stop = 3
     numbers = [start, start, start]
@@ -217,19 +237,7 @@ def evaluate_numeric_exotic(classifier, filtered_data, uuid_line_index):
         numbers[1] = start
         numbers[2] = start + interval
 
-    # interval_object = build_interval_object(start, stop, interval)
-    # for index, inst in enumerate(filtered_data):
-    #     if index in uuid_line_index.keys():
-    #         uuid = uuid_line_index[index]
-    #         count +=1
-    #         prediction = classifier.classify_instance(inst)
-    #         for each in interval_object.keys():
-    #             key_value = float(each)
-    #             if key_value <= prediction < (key_value + interval):
-    #                 interval_object[each].append({
-    #                     "uuid": uuid,
-    #                     "prediction": prediction
-    #                 })
+
     #
     # print("{}\t\t{}\t\t\t{}\t\t{}\t\t{}".format("Range", "Freq", "Win", "Place", "Show"))
     # for each in interval_object.keys():
@@ -352,7 +360,7 @@ def evaluate_predictions(testing_arff, model, classifier_name):
         evaluate_numeric(model, filtered_data, uuid_line_index)
 
 
-def evaluate_exotics(testing_arff, model, classifier_name):
+def evaluate_exotics(testing_arff, model, classifier_name, races):
 
     classifier_attributes = classifiers[classifier_name]
     is_nominal = classifier_attributes["is_nominal"]
@@ -363,4 +371,4 @@ def evaluate_exotics(testing_arff, model, classifier_name):
     if is_nominal:
         print("uh...should there be something here?")
     else:
-        evaluate_numeric_exotic(model, filtered_data, uuid_line_index)
+        evaluate_numeric_exotic(model, races, filtered_data, uuid_line_index)
