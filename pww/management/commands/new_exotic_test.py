@@ -52,9 +52,9 @@ class Command(BaseCommand):
 
         participants = []
         test_races = Race.objects.filter(
-            participant__race__chart__program__date__range=(test_start, test_stop),
-            participant__race__grade__name=grade_name,
-            participant__race__chart__program__venue__code=venue_code)
+            chart__program__date__range=(test_start, test_stop),
+            grade__name=grade_name,
+            chart__program__venue__code=venue_code)
 
         print("{} Races Tested".format(test_races.count()))
         for race in test_races:
