@@ -183,6 +183,7 @@ def get_profit_potential(percent, payout):
         return ""
 
 def get_trifecta_returns(numbers, interval, races, prediction_object, writer):
+    print(numbers)
     bet_returns = []
     nonzero = 0
     for race in races:
@@ -279,10 +280,10 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index, w
             prediction_object[uuid] = prediction
 
 
-    for each in prediction_object.keys():
-        # print("{}\t{}".format(each, prediction_object[each]))
-        print(min(prediction_object.values()))
-        print(max(prediction_object.values()))
+    # for each in prediction_object.keys():
+    #     # print("{}\t{}".format(each, prediction_object[each]))
+    #     print(min(prediction_object.values()))
+    #     print(max(prediction_object.values()))
     # for race in races:
         # print("Race {} {}".format(race.number, race.chart.program.date))
         # for participant in race.participant_set.all():
@@ -290,9 +291,10 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index, w
             #     participant.post,
             #     participant.dog.name,
             #     prediction_object[str(participant.uuid)]))
-
-    start = 2
-    stop = 6
+            # 3.4604289656721536
+            # 5.4400614002719
+    start = 3.45
+    stop = 5.5
     numbers = [start, start, start]
     interval = .0625
     # interval = 0.5
