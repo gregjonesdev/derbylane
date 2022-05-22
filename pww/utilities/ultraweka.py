@@ -288,8 +288,8 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index, w
             prediction = classifier.classify_instance(inst)
             prediction_object[uuid] = prediction
 
-    interval = .0625
-    interval = .125
+    interval = .03125
+    # interval = .125
     start = min(prediction_object.values())
     stop = max(prediction_object.values()) + interval
     numbers = [start, start, start]
