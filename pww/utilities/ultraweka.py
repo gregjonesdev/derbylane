@@ -10,7 +10,7 @@ import weka.core.serialization as serialization
 from weka.core.converters import Loader
 from django.core.exceptions import ObjectDoesNotExist
 from pww.models import Prediction
-from rawdat.models import Trifecta
+from rawdat.models import Trifecta, Exotic_Scan, Venue
 
 def get_filename(model_directory, model_name):
     return "{}/{}.model".format(model_directory, model_name)
@@ -217,7 +217,7 @@ def get_trifecta_returns(numbers, interval, races, prediction_object, writer):
                     nonzero += 1
             except ObjectDoesNotExist:
                 bet_returns.append(0)
-    if (len(bet_returns)) > 0:
+    if len(bet_returns) > 0:
         result = "{}-{},{}-{},{}-{},{},{},{}".format(
             numbers[0],
             numbers[0] + interval,
@@ -230,7 +230,8 @@ def get_trifecta_returns(numbers, interval, races, prediction_object, writer):
             round(sum(bet_returns)/len(bet_returns), 2)
         )
         print(result)
-        writer.writerow(result)
+        if nonzero > 0:
+            writer.writerow(result)
 
 def get_unique_trifectas(matches_first, matches_second, matches_third):
     unique_trifectas = []
@@ -279,25 +280,10 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index, w
             prediction = classifier.classify_instance(inst)
             prediction_object[uuid] = prediction
 
-
-    # for each in prediction_object.keys():
-    #     # print("{}\t{}".format(each, prediction_object[each]))
-    #     print(min(prediction_object.values()))
-    #     print(max(prediction_object.values()))
-    # for race in races:
-        # print("Race {} {}".format(race.number, race.chart.program.date))
-        # for participant in race.participant_set.all():
-            # print("{}-{}\t{}".format(
-            #     participant.post,
-            #     participant.dog.name,
-            #     prediction_object[str(participant.uuid)]))
-            # 3.4604289656721536
-            # 5.4400614002719
-    start = 3.45
-    stop = 5.5
+    start = min(prediction_object.values())
+    stop = max(prediction_object.values()) + interval
     numbers = [start, start, start]
     interval = .0625
-    # interval = 0.5
     count = 0
     while numbers[0] < stop:
         while numbers[1] < stop:
@@ -309,24 +295,6 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index, w
         numbers[2] = start
         numbers[1] = start
         numbers[0] += interval
-
-
-    #
-    # print("{}\t\t{}\t\t\t{}\t\t{}\t\t{}".format("Range", "Freq", "Win", "Place", "Show"))
-    # for each in interval_object.keys():
-    #     string_row = "{} - {}\t{} ({}%)\t\t{}\t{}\t{}"
-    #     if count > 0:
-    #         percent = round((100*len(interval_object[each])/count), 2)
-    #     else:
-    #         percent = 0
-    #     print(string_row.format(
-    #         round(float(each), 2),
-    #         round(float(each) + interval, 2),
-    #         len(interval_object[each]),
-    #         percent,
-    #         get_profit_potential(percent, get_average_win(interval_object[each])),
-    #         get_profit_potential(percent, get_average_place(interval_object[each])),
-    #         get_profit_potential(percent, get_average_show(interval_object[each]))))
 
 
 def evaluate_numeric(classifier, filtered_data, uuid_line_index):

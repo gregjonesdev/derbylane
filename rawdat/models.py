@@ -923,3 +923,19 @@ class CronJob(CoreModel):
     type = models.CharField(
         null=True,
         max_length=256)
+
+class Exotic_Scan(CoreModel):
+
+    start = models.DecimalField(
+        max_digits=8,
+        decimal_places=6,
+        null=True
+    )
+    grade = models.ForeignKey(
+        Grade,
+        null=True,
+        on_delete=models.CASCADE)
+    venue = models.ForeignKey(
+        Venue,
+        null=True,
+        on_delete=models.CASCADE)
