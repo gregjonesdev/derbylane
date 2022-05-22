@@ -231,7 +231,15 @@ def get_trifecta_returns(numbers, interval, races, prediction_object, writer):
         )
         print(result)
         if nonzero > 0:
-            writer.writerow(result)
+            writer.writerow([numbers[0],
+            numbers[0] + interval,
+            numbers[1],
+            numbers[1] + interval,
+            numbers[2],
+            numbers[2] + interval,
+            len(bet_returns),
+            nonzero,
+            round(sum(bet_returns)/len(bet_returns), 2)])
 
 def get_unique_trifectas(matches_first, matches_second, matches_third):
     unique_trifectas = []
