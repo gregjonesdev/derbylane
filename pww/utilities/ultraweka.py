@@ -295,6 +295,7 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index, w
     stop = max(prediction_object.values()) + interval
     numbers = [start, start, start]
     count = 0
+    writer.writerow(["Range 1 Start", "Range 1 Stop", "Range 2 Start", "Range 2 Stop", "Range 3 Start", "Range 3 Stop", "Bets", "Wins", "Avg Return"])
     while numbers[0] < stop:
         while numbers[1] < stop:
             while numbers[2] < stop:
@@ -306,6 +307,24 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index, w
         numbers[1] = start
         numbers[0] += interval
 
+def analyze_numeric_exotic(classifier, numbers, races, filtered_data, uuid_line_index, writer):
+    prediction_object = get_prediction_object(filtered_data, uuid_line_index, classifier)
+
+    interval = .0625
+    # interval = .125
+
+    get_trifecta_returns(numbers, interval, races, prediction_object, writer)
+
+def get_prediction_object(filtered_data, uuid_line_index, classifier):
+    prediction_object = {}
+    for index, inst in enumerate(filtered_data):
+        if index in uuid_line_index.keys():
+            uuid = uuid_line_index[index]
+            prediction = classifier.classify_instance(inst)
+            prediction_object[uuid] = prediction
+    return prediction_object
+
+
 
 def evaluate_numeric(classifier, filtered_data, uuid_line_index):
     start = 1
@@ -313,18 +332,16 @@ def evaluate_numeric(classifier, filtered_data, uuid_line_index):
     interval = .0625
     count = 0
     interval_object = build_interval_object(start, stop, interval)
-    for index, inst in enumerate(filtered_data):
-        if index in uuid_line_index.keys():
-            uuid = uuid_line_index[index]
-            count +=1
-            prediction = classifier.classify_instance(inst)
-            for each in interval_object.keys():
-                key_value = float(each)
-                if key_value <= prediction < (key_value + interval):
-                    interval_object[each].append({
-                        "uuid": uuid,
-                        "prediction": prediction
-                    })
+    prediction_object = get_prediction_object(filtered_data, uuid_line_index, classifier)
+    for uuid in prediction_object.keys():
+        predcition = prediction_object[uuid]
+        for each in interval_object.keys():
+            key_value = float(each)
+            if key_value <= prediction < (key_value + interval):
+                interval_object[each].append({
+                    "uuid": uuid,
+                    "prediction": prediction
+                })
 
     print("{}\t\t{}\t\t\t{}\t\t{}\t\t{}".format("Range", "Freq", "Win", "Place", "Show"))
     for each in interval_object.keys():
@@ -380,21 +397,24 @@ def make_predictions(model, testing_arff, classifier_name, is_nominal, bet_guide
     loader = Loader(classname="weka.core.converters.ArffLoader")
     loaded_data = loader.load_file(testing_arff)
     filtered_data = get_filtered_data(loaded_data, is_nominal)
-    prediction_object = {}
-    for index, inst in enumerate(filtered_data):
-        if index in uuid_line_index.keys():
-            uuid = uuid_line_index[index]
-            prediction = model.classify_instance(inst)
-            for guide in bet_guides:
-                if guide["start"] <=prediction < guide["end"]:
-                    if not uuid in prediction_object.keys():
-                        prediction_object[uuid] = {
-                            "W": False,
-                            "P": False,
-                            "S": False}
-                    for char in guide["bet"]:
-                        prediction_object[uuid][char] = True;
-    save_predictions(prediction_object)
+    prediction_object = get_prediction_object(filtered_data, uuid_line_index, model)
+    bet_object = {}
+
+
+
+    for uuid in prediction_object.keys():
+        predcition = prediction_object[uuid]
+        for guide in bet_guides:
+            if guide["start"] <=prediction < guide["end"]:
+                if not uuid in prediction_object.keys():
+                    bet_object[uuid] = {
+                        "W": False,
+                        "P": False,
+                        "S": False}
+                for char in guide["bet"]:
+                    bet_object[uuid][char] = True;
+    print(bet_object)
+    save_predictions(bet_object)
 
 
 def evaluate_predictions(testing_arff, model, classifier_name):
@@ -423,3 +443,16 @@ def evaluate_exotics(testing_arff, model, classifier_name, races, writer):
         print("uh...should there be something here?")
     else:
         evaluate_numeric_exotic(model, races, filtered_data, uuid_line_index, writer)
+
+def evaluate_exotics(testing_arff, model, classifier_name, races, writer):
+
+    classifier_attributes = classifiers[classifier_name]
+    is_nominal = classifier_attributes["is_nominal"]
+    uuid_line_index = get_uuid_line_index(testing_arff)
+    loader = Loader(classname="weka.core.converters.ArffLoader")
+    loaded_data = loader.load_file(testing_arff)
+    filtered_data = get_filtered_data(loaded_data, is_nominal)
+    if is_nominal:
+        print("uh...should there be something here?")
+    else:
+        analyze_numeric_exotic(model, races, filtered_data, uuid_line_index, writer)
