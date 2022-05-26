@@ -28,7 +28,7 @@ from rawdat.models import (
     StraightBetType,
     Straight_Wager,
     Quiniela_Wager,
-    Trifecta_Wager,
+    Predicted_Trifecta,
     Superfecta_Wager,
     Exacta_Wager)
 
@@ -212,7 +212,7 @@ def delete_exotic_bet(request):
             wager = Exacta_Wager.objects.get(uuid=wager_uuid)
         except ObjectDoesNotExist:
             try:
-                wager = Trifecta_Wager.objects.get(uuid=wager_uuid)
+                wager = Predicted_Trifecta.objects.get(uuid=wager_uuid)
             except ObjectDoesNotExist:
                 wager = Superfecta_Wager.objects.get(uuid=wager_uuid)
     wager.delete()
@@ -243,7 +243,7 @@ def make_exotic_bet(request):
             place=race.get_participant(int(selected_posts[1]))
         )
     elif bet_type == "T":
-        new_wager = Trifecta_Wager(
+        new_wager = Predicted_Trifecta(
             race=race,
             amount=amount,
             win=race.get_participant(int(selected_posts[0])),
@@ -382,7 +382,7 @@ def get_venue_bets(request):
         if len(bets_object[each]) > 0:
             average = profit/len(bets_object[each])
         else:
-            average = 0    
+            average = 0
         profits.append(profit)
         averages.append(average)
 

@@ -445,7 +445,7 @@ class Race(CoreModel):
         return list(chain(
             Quiniela_Wager.objects.filter(race=self),
             Exacta_Wager.objects.filter(race=self),
-            Trifecta_Wager.objects.filter(race=self)))
+            Predicted_Trifecta.objects.filter(race=self)))
 
 
 class StraightBetType(CoreModel):
@@ -721,7 +721,7 @@ class Exacta_Wager(CoreModel):
     def get_posts(self):
         return "{}, {}".format(self.win.post, self.place.post)
 
-class Trifecta_Wager(CoreModel):
+class Predicted_Trifecta(CoreModel):
 
     class Meta:
         verbose_name = 'Trifecta'

@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 from miner.utilities.common import get_node_elements
 from miner.utilities.scrape import single_url_test
 from miner.utilities.urls import build_race_results_url
-from rawdat.models import Winning_Trifecta, Predicted_Trifecta, Trifecta_Wager, OldTrifecta
+from rawdat.models import Winning_Trifecta, Predicted_Trifecta, OldTrifecta
 from pww.models import Prediction
 
 from pww.utilities.metrics import build_race_metrics
