@@ -8,7 +8,7 @@ from pww.utilities.arff import get_testing_arff
 from pww.utilities.classifiers import recommendations, classifiers
 from pww.utilities.metrics import new_get_metrics
 from rawdat.models import Race
-from pww.models import BettingGrade
+from pww.models import BettingGrade, WekaModel
 from miner.utilities.constants import focused_grades, betting_venues
 from miner.utilities.urls import model_directory
 from pww.utilities.ultraweka import make_predictions, get_model
@@ -61,8 +61,8 @@ class Command(BaseCommand):
                 betting_grade = BettingGrade.objects.get(
                     venue=race.chart.program.venue,
                     grade=race.grade)
-                print(betting_grade)    
-
+                race_models = WekaModel.objects.filter(betting_grade=betting_grade)
+                print(race_models)
                 # self.make_straight_predictions(betting_grade)
                 # self.make_
             except ObjectDoesNotExist:
