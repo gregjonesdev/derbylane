@@ -51,20 +51,22 @@ class Command(BaseCommand):
         # )
         today = datetime.date.today()
         tomorrow = today + datetime.timedelta(days=1)
-        classifier_name = "smoreg"
-        is_nominal = False
         # for venue_code in betting_venues:
             # for grade_name in focused_grades[venue_code]:
                 # race_key = self.get_race_key(venue_code, grade_name)
 
         for race in Race.objects.filter(chart__program__date__gte=today):
+            print("{} {}".format(race.chart.program.venue.code, race.grade.name))
             try:
                 betting_grade = BettingGrade.objects.get(
                     venue=race.chart.program.venue,
-                    grade=race.grade):
+                    grade=race.grade)
+                print(betting_grade)    
+
                 # self.make_straight_predictions(betting_grade)
                 # self.make_
             except ObjectDoesNotExist:
+                print("No betting grade")
                 pass
                 # for race in targeted_races:
                 #     print("{} {} Race {} Grade {}".format(
