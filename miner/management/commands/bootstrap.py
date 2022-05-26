@@ -22,8 +22,8 @@ class Command(BaseCommand):
         # self.seed_venues(jsonData["venues"])
         # self.seed_grades(jsonData["race_grades"])
         # self.seed_bettypes(jsonData["straight_bet_types"])
-        #self.seed_betting_grades(wekaData["betting_grades"])
-        #self.seed_classifiers(wekaData["classifers"])
+        self.seed_betting_grades(wekaData["betting_grades"])
+        self.seed_classifiers(wekaData["classifiers"])
         self.seed_models(wekaData["models"])
         self.stdout.write("Complete.")
 
@@ -56,7 +56,7 @@ class Command(BaseCommand):
 
         for classifier in classifiers:
             try:
-                classifier = WekaClassifier.objects.get(
+                weka_classifier = WekaClassifier.objects.get(
                     name = classifier["name"]
                 )
             except ObjectDoesNotExist:
@@ -64,9 +64,9 @@ class Command(BaseCommand):
                     name= classifier["name"],
                 )
                 new_classifier.set_fields_to_base()
-            classifier = new_classifier
-            classifier.is_nominal = classifier["is_nominal"]
-            classifier.save()
+            weka_classifier = new_classifier
+            weka_classifier.is_nominal = classifier["is_nominal"]
+            weka_classifier.save()
 
     def seed_betting_grades(self, betting_grades):
         for betting_grade in betting_grades:
