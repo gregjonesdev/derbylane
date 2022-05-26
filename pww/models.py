@@ -125,25 +125,6 @@ class Metric(CoreModel):
             return metric_csv_string
 
 
-class Prediction(CoreModel):
-
-    participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
-    # smoreg = models.DecimalField(
-    #     max_digits=16,
-    #     decimal_places=8,
-    #     null=True)
-    recommendation = models.ForeignKey(
-        Bet_Recommendation,
-        on_delete=models.CASCADE)
-    )
-    bet = models.CharField(
-        max_length=16,
-        null=True
-    )
-
-    def get_bet(self):
-        pass
-
 
 class WekaClassifier(CoreModel):
 
@@ -186,18 +167,31 @@ class Bet_Recommendation(CoreModel):
     model = models.ForeignKey(
         WekaModel,
         on_delete=models.CASCADE)
-    range_start = models.DecimalField()
-    range_end = models.DecimalField()
+    range_start = models.DecimalField(
+        decimal_places=4,
+        max_digits=8)
+    range_end = models.DecimalField(
+        decimal_places=4,
+        max_digits=8)
     bet = models.CharField(max_length=64)
 
 
 
-class TestPrediction(CoreModel):
+class Prediction(CoreModel):
 
-    c = models.DecimalField(
-        max_digits=16,
-        decimal_places=8)
-    participant = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE)
-    smo = models.IntegerField()
+    participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
+    # smoreg = models.DecimalField(
+    #     max_digits=16,
+    #     decimal_places=8,
+    #     null=True)
+    recommendation = models.ForeignKey(
+        Bet_Recommendation,
+        on_delete=models.CASCADE,
+        null=True)
+    bet = models.CharField(
+        max_length=16,
+        null=True
+    )
+
+    def get_bet(self):
+        pass

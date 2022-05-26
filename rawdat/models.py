@@ -785,7 +785,7 @@ class Exacta(Combo):
             on_delete=models.CASCADE,
             related_name='exacta_place')
 
-class Trifecta(Combo):
+class OldTrifecta(Combo):
 
     class Meta:
         verbose_name = 'Trifecta'

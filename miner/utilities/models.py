@@ -7,7 +7,7 @@ from rawdat.models import (
     Participant,
     Quiniela,
     Exacta,
-    Trifecta,
+    OldTrifecta,
     Superfecta,
     # BetType,
     Grade,
@@ -110,14 +110,14 @@ def create_trifecta(race, posts, cost, payout):
         place = get_participant_from_post(race, int(posts[1]))
         show = get_participant_from_post(race, int(posts[2]))
         try:
-            bet = Trifecta.objects.get(
+            bet = OldTrifecta.objects.get(
                 race=race,
                 win=win,
                 place=place,
                 show=show
             )
         except ObjectDoesNotExist:
-            new_bet = Trifecta(
+            new_bet = OldTrifecta(
                 race=race,
                 win=win,
                 place=place,
