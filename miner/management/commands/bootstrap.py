@@ -27,20 +27,49 @@ class Command(BaseCommand):
         self.seed_models(wekaData["models"])
         self.stdout.write("Complete.")
 
+    def build_model(
+        self,
+        classifier,
+        betting_grade,
+        training_start,
+        training_end):
+        try:
+            weka_model = WekaModel.objects.get(
+                classifier=classifier,
+                betting_grade=betting_grade,
+                training_start=training_start,
+                training_end=training_end
+            )
+        except ObjectDoesNotExist:
+            new_weka_model = WekaModel(
+                classifier=classifier,
+                betting_grade=betting_grade,
+                training_start=training_start,
+                training_end=training_end
+            )
+            new_weka_model.set_fields_to_base()
+            new_weka_model.save()
+
+
     def seed_models(self, models):
         for model in models:
-            # classifier = WekaClassifier.objects.get(name=model["classifier"])
-            # print(classifier.name)
+            classifier = WekaClassifier.objects.get(name=model["classifier"])
+            print("Building {} Models".format(classifier.name))
             for model_venue in model["venues"]:
                 venue = Venue.objects.get(code=model_venue["code"])
                 for venue_grade in model_venue["grades"]:
                     grade = Grade.objects.get(name=venue_grade["name"])
+                    betting_grade = BettingGrade.objects.get(
+                        venue=venue,
+                        grade=grade
+                    )
                     for date_range in venue_grade["date_ranges"]:
-                        print("start_date: {}".format(date_range["start_date"]))
-                        print("end_date: {}".format(date_range["end_date"]))
-                        print("venue_code: {}".format(venue.code))
-                        print("grade_name: {}".format(grade.name))
-                        print("----------------")
+                        self.build_model(
+                            classifier,
+                            betting_grade,
+                            date_range["start_date"],
+                            date_range["end_date"])
+
 
                 # betting_grade = BettingGrade.objects.get(
                 #
@@ -53,7 +82,7 @@ class Command(BaseCommand):
 
 
     def seed_classifiers(self, classifiers):
-
+        print("Building Classifiers")
         for classifier in classifiers:
             try:
                 weka_classifier = WekaClassifier.objects.get(
@@ -64,11 +93,12 @@ class Command(BaseCommand):
                     name= classifier["name"],
                 )
                 new_classifier.set_fields_to_base()
-            weka_classifier = new_classifier
+                weka_classifier = new_classifier
             weka_classifier.is_nominal = classifier["is_nominal"]
             weka_classifier.save()
 
     def seed_betting_grades(self, betting_grades):
+        print("Building Betting Grades")
         for betting_grade in betting_grades:
             grade = Grade.objects.get(name=betting_grade["grade_name"])
             venue = Venue.objects.get(code=betting_grade["venue_code"])
