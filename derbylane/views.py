@@ -364,28 +364,27 @@ def get_venue_bets(request):
         participant__race__chart__program__date__gte=date,
         participant__final__isnull=False,
         participant__race__chart__program__venue__code=venue_code)
-    # bets = Bet.objects.all()
-    bets_object = {}
+    bets_object = {
+        "W": [],
+        "P": [],
+        "S": []
+    }
     for bet in bets:
         type = bet.type.name
-        if not type in bets_object.keys():
-            bets_object[type] = []
         bets_object[type].append(bet.get_return() - bet.amount)
 
-    print("oh blah di")
-    print(bets_object)
     bet_types = []
     averages = []
     profits = []
     for each in bets_object.keys():
         bet_types.append(each)
         profit = sum(bets_object[each])
-        average = profit/len(bets_object[each])
+        if len(bets_object[each]) > 0:
+            average = profit/len(bets_object[each])
+        else:
+            average = 0    
         profits.append(profit)
         averages.append(average)
-    print(bet_types)
-    print(profits)
-    print(averages)
 
     #TODO: get graded averages
 

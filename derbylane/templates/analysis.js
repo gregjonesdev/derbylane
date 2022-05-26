@@ -15,7 +15,7 @@ const text_content = document.getElementById("json-chart-data").textContent
 const json_data = JSON.parse(text_content)
 const venue_select = document.getElementsByClassName("venue-select")
 
-button_checks = document.getElementsByClassName("btn-check")
+const date_select_buttons = document.getElementsByClassName("date_select_input")
 
 
 
@@ -25,9 +25,6 @@ function get_bets(date) {
     dataType: "json",
     data: {"date": date},
     success: function(data) {
-      console.log(data["venues"])
-
-
       build_chart("Profits", data["venues"], data["profits"], "chart-1")
     }
   })
@@ -43,7 +40,6 @@ function build_new_canvas(canvas_id) {
 
 
 function build_chart(name, x_values, y_values, div_id) {
-  console.log(y_values)
   target_div = document.getElementById(div_id)
   target_div.firstElementChild.remove()
   canvas_id="chart-primo"
@@ -100,9 +96,6 @@ function handle_venue_select(e) {
   const venue_code = target.getAttribute("data-value");
   document.getElementById("btnGroupDrop1").textContent = target.textContent;
 
-  console.log("here o")
-  console.log()
-
   $.ajax({
     url: json_data["get_venue_bets_url"],
     dataType: "json",
@@ -119,24 +112,19 @@ function handle_venue_select(e) {
 }
 
 function handle_time_select(e) {
-  console.log("triggered")
-  console.log(e)
-
-
   $.ajax({
     url: json_data["get_bets_url"],
     dataType: "json",
     data: {"date": "2022-05-15"},
     success: function(data) {
-      console.log("YEAH")
 
     }
   })
 
 }
 
-for (let i=0; i<button_checks.length; i++) {
-  button_checks[i].addEventListener("click", handle_time_select)
+for (let i=0; i<date_select_buttons.length; i++) {
+  date_select_buttons[i].addEventListener("click", handle_time_select)
 }
 for (let i=0; i<venue_select.length; i++) {
   venue_select[i].addEventListener("click", handle_venue_select)

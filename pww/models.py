@@ -128,10 +128,14 @@ class Metric(CoreModel):
 class Prediction(CoreModel):
 
     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
-    smoreg = models.DecimalField(
-        max_digits=16,
-        decimal_places=8,
-        null=True)
+    # smoreg = models.DecimalField(
+    #     max_digits=16,
+    #     decimal_places=8,
+    #     null=True)
+    recommendation = models.ForeignKey(
+        Bet_Recommendation,
+        on_delete=models.CASCADE)
+    )
     bet = models.CharField(
         max_length=16,
         null=True
@@ -174,6 +178,17 @@ class WekaModel(CoreModel):
             betting_grade.venue.code,
             betting_grade.grade.name,
             str(self.training_start).replace("-", "_"))
+
+
+
+class Bet_Recommendation(CoreModel):
+
+    model = models.ForeignKey(
+        WekaModel,
+        on_delete=models.CASCADE)
+    range_start = models.DecimalField()
+    range_end = models.DecimalField()
+    bet = models.CharField(max_length=64)
 
 
 
