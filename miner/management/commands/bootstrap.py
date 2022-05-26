@@ -15,17 +15,17 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        self.stdout.write("Starting Bootstrap script..")
+        self.stdout.write("Starting Bootstrap script..\n")
         jsonData = json.loads(open('./rawdat/json/data.json').read())
         wekaData = json.loads(open('./rawdat/json/weka.json').read())
-        # self.seed_users(jsonData["users"])
-        # self.seed_venues(jsonData["venues"])
-        # self.seed_grades(jsonData["race_grades"])
-        # self.seed_bettypes(jsonData["straight_bet_types"])
+        self.seed_users(jsonData["users"])
+        self.seed_venues(jsonData["venues"])
+        self.seed_grades(jsonData["race_grades"])
+        self.seed_bettypes(jsonData["straight_bet_types"])
         self.seed_betting_grades(wekaData["betting_grades"])
         self.seed_classifiers(wekaData["classifiers"])
         self.seed_models(wekaData["models"])
-        self.stdout.write("Complete.")
+        self.stdout.write("\nComplete.")
 
     def build_model(
         self,
@@ -54,7 +54,7 @@ class Command(BaseCommand):
     def seed_models(self, models):
         for model in models:
             classifier = WekaClassifier.objects.get(name=model["classifier"])
-            print("Building {} Models".format(classifier.name))
+            print("Building '{}' Models".format(classifier.name))
             for model_venue in model["venues"]:
                 venue = Venue.objects.get(code=model_venue["code"])
                 for venue_grade in model_venue["grades"]:
@@ -69,16 +69,6 @@ class Command(BaseCommand):
                             betting_grade,
                             date_range["start_date"],
                             date_range["end_date"])
-
-
-                # betting_grade = BettingGrade.objects.get(
-                #
-                # )
-                # try:
-                #     model = WekaModel.objects.get(
-                #         classifier=classifier
-                #     )
-                # except ObjectDoesNotExist:
 
 
     def seed_classifiers(self, classifiers):
@@ -117,6 +107,7 @@ class Command(BaseCommand):
                 new_betting_grade.save()
 
     def seed_bettypes(self, bettypes):
+        print("Building Bet Types")
         for type in bettypes:
             self.create_bet_type(type["name"], type["cutoff"])
 
