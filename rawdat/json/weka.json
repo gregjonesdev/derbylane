@@ -1,0 +1,224 @@
+{
+  "classifiers" : [
+    {
+      "name": "smoreg",
+      "is_nominal": false
+    }
+  ],
+  "models": [
+    {
+      "classifier": "smoreg",
+      "venues" : [
+        {
+            "code": "SL",
+            "grades": [
+              {
+                "name": "A",
+                "date_ranges": [
+                  {
+                    "start_date": "2019-01-01",
+                    "end_date":	"2021-12-31"
+                  },
+                  {
+                    "start_date": "2018-06-01",
+                    "end_date":	"2021-12-31"
+                  }
+                ]
+              },
+                {
+                "name": "B",
+                "date_ranges": [
+                  {
+                    "start_date": "2018-01-01",
+                    "end_date":	"2021-12-31"
+                  },
+                  {
+                    "start_date": "2020-09-01",
+                    "end_date":	"2021-12-31"
+                  }
+                ]
+              },
+              {
+                "name": "C",
+                "date_ranges": [
+                  {
+                    "start_date": "2021-01-01",
+                    "end_date":	"2021-12-31"
+                  },
+                  {
+                    "start_date": "2020-06-01",
+                    "end_date":	"2021-12-31"
+                  },
+                  {
+                    "start_date": "2020-01-01",
+                    "end_date":	"2021-12-31"
+                  }
+                ]
+              },
+              {
+                "name": "D",
+                "date_ranges": [
+                  {
+                    "start_date": "2019-01-01",
+                    "end_date":	"2021-12-31"
+                  }
+                ]
+              }
+              ]
+
+        },
+        {
+          "code": "TS",
+          "grades": [
+            {
+              "name": "A",
+              "date_ranges": [
+                {
+                  "start_date": "2018-12-01",
+                  "end_date":	"2021-12-31"
+                }
+              ]
+            },
+            {
+              "name": "B",
+              "date_ranges": [
+                {
+                  "start_date": "2021-01-01",
+                  "end_date":	"2021-12-31"
+                }
+              ]
+            },
+            {
+              "name": "C",
+              "date_ranges": [
+                {
+                  "start_date": "2019-06-01",
+                  "end_date":	"2021-12-31"
+                }
+              ]
+            },
+            {
+              "name": "D",
+              "date_ranges": [
+                {
+                  "start_date": "2021-01-01",
+                  "end_date":	"2021-12-31"
+                },
+                {
+                  "start_date": "2020-01-01",
+                  "end_date":	"2021-12-31"
+                }
+              ]
+            }
+          ]
+        },
+
+           { "code": "WD",
+            "grades": [
+              {
+                "name": "AA",
+                "date_ranges": [
+                  {
+                    "start_date": "2018-06-01",
+                    "end_date":	"2021-12-31"
+                  },
+                  {
+                    "start_date": "2018-01-01",
+                    "end_date":	"2021-12-31"
+                  },
+                  {
+                    "start_date": "2017-06-01",
+                    "end_date":	"2021-12-31"
+                  }
+                ]
+              },
+              {
+                "name": "A",
+                "date_ranges": [
+                  {
+                    "start_date": "2020-06-01",
+                    "end_date":	"2021-12-31"
+                  }
+                ]
+              },
+              {
+                "name": "B",
+                "date_ranges": [
+                  {
+                    "start_date": "2018-01-01",
+                    "end_date":	"2021-12-31"
+                  }
+                ]
+              },
+              {
+                "name": "C",
+                "date_ranges": [
+                  {
+                    "start_date": "2021-01-01",
+                    "end_date":	"2021-12-31"
+                  },
+                  {
+                    "start_date": "2020-09-01",
+                    "end_date":	"2021-12-31"
+                  }
+                ]
+              }
+            ]
+          }
+
+
+        ]
+    }
+  ],
+  "betting_grades": [
+      {
+
+          "venue_code": "SL",
+          "grade_name": "A"
+      },
+      {
+          "venue_code": "SL",
+          "grade_name": "B"
+      },
+      {
+          "venue_code": "SL",
+          "grade_name": "C"
+      },
+      {
+          "venue_code": "SL",
+          "grade_name": "D"
+      },
+      {
+          "venue_code": "TS",
+          "grade_name": "A"
+      },
+      {
+          "venue_code": "TS",
+          "grade_name": "B"
+      },
+      {
+          "venue_code": "TS",
+          "grade_name": "C"
+      },
+      {
+          "venue_code": "TS",
+          "grade_name": "D"
+      },
+      {
+          "venue_code": "WD",
+          "grade_name": "AA"
+      },
+      {
+          "venue_code": "WD",
+          "grade_name": "A"
+      },
+      {
+          "venue_code": "WD",
+          "grade_name": "B"
+      },
+      {
+          "venue_code": "WD",
+          "grade_name": "C"
+      }
+  ]
+}

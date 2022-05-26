@@ -128,10 +128,47 @@ class Metric(CoreModel):
 class Prediction(CoreModel):
 
     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
+    smoreg = models.DecimalField(
+        max_digits=16,
+        decimal_places=8,
+        null=True)
     bet = models.CharField(
         max_length=16,
         null=True
     )
+
+    def get_bet(self):
+        pass
+
+
+class WekaClassifier(CoreModel):
+
+    name = models.CharField(
+        max_length=128)
+    is_nominal = models.BooleanField(default=False)
+
+class BettingGrade(CoreModel):
+
+    venue = models.ForeignKey(
+        Venue,
+        on_delete=models.CASCADE)
+    grade = models.ForeignKey(
+        Grade,
+        on_delete=models.CASCADE)    
+
+
+class WekaModel(CoreModel):
+
+    classifier = models.ForeignKey(
+        WekaClassifier,
+        on_delete=models.CASCADE)
+    betting_grade = models.ForeignKey(
+        BettingGrade,
+        on_delete=models.CASCADE)
+    training_start = models.DateField()
+    training_end = models.DateField()
+
+
 
 class TestPrediction(CoreModel):
 

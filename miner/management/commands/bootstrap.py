@@ -6,22 +6,85 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from rawdat.models import (
     Venue,
-    WeatherLookup,
     Grade,
     StraightBetType)
+
+from pww.models import BettingGrade, WekaClassifier, WekaModel
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
         self.stdout.write("Starting Bootstrap script..")
-        data = open('./rawdat/json/data.json').read()
-        jsonData = json.loads(data)
-        self.seed_users(jsonData["users"])
-        self.seed_venues(jsonData["venues"])
-        self.seed_grades(jsonData["race_grades"])
-        self.seed_bettypes(jsonData["straight_bet_types"])
+        jsonData = json.loads(open('./rawdat/json/data.json').read())
+        wekaData = json.loads(open('./rawdat/json/weka.json').read())
+        # self.seed_users(jsonData["users"])
+        # self.seed_venues(jsonData["venues"])
+        # self.seed_grades(jsonData["race_grades"])
+        # self.seed_bettypes(jsonData["straight_bet_types"])
+        #self.seed_betting_grades(wekaData["betting_grades"])
+        #self.seed_classifiers(wekaData["classifers"])
+        self.seed_models(wekaData["models"])
         self.stdout.write("Complete.")
+
+    def seed_models(self, models):
+        for model in models:
+            # classifier = WekaClassifier.objects.get(name=model["classifier"])
+            # print(classifier.name)
+            for model_venue in model["venues"]:
+                venue = Venue.objects.get(code=model_venue["code"])
+                for venue_grade in model_venue["grades"]:
+                    grade = Grade.objects.get(name=venue_grade["name"])
+                    for date_range in venue_grade["date_ranges"]:
+                        print("start_date: {}".format(date_range["start_date"]))
+                        print("end_date: {}".format(date_range["end_date"]))
+                        print("venue_code: {}".format(venue.code))
+                        print("grade_name: {}".format(grade.name))
+                        print("----------------")
+
+                # betting_grade = BettingGrade.objects.get(
+                #
+                # )
+                # try:
+                #     model = WekaModel.objects.get(
+                #         classifier=classifier
+                #     )
+                # except ObjectDoesNotExist:
+
+
+    def seed_classifiers(self, classifiers):
+
+        for classifier in classifiers:
+            try:
+                classifier = WekaClassifier.objects.get(
+                    name = classifier["name"]
+                )
+            except ObjectDoesNotExist:
+                new_classifier = WekaClassifier(
+                    name= classifier["name"],
+                )
+                new_classifier.set_fields_to_base()
+            classifier = new_classifier
+            classifier.is_nominal = classifier["is_nominal"]
+            classifier.save()
+
+    def seed_betting_grades(self, betting_grades):
+        for betting_grade in betting_grades:
+            grade = Grade.objects.get(name=betting_grade["grade_name"])
+            venue = Venue.objects.get(code=betting_grade["venue_code"])
+
+            try:
+                type = BettingGrade.objects.get(
+                    grade = grade,
+                    venue = venue
+                )
+            except ObjectDoesNotExist:
+                new_betting_grade = BettingGrade(
+                    grade = grade,
+                    venue = venue
+                )
+                new_betting_grade.set_fields_to_base()
+                new_betting_grade.save()
 
     def seed_bettypes(self, bettypes):
         for type in bettypes:
@@ -67,30 +130,9 @@ class Command(BaseCommand):
 
     def seed_venues(self, venues):
         for venue in venues:
-            weather_lookup = self.get_weatherlookup(venue["weather"])
-            venue = self.get_venue(venue, weather_lookup)
+            venue = self.get_venue(venue)
 
-
-    def get_weatherlookup(self, weather):
-        try:
-            weather_lookup = WeatherLookup.objects.get(
-                code=weather['code'],
-                )
-        except ObjectDoesNotExist:
-            weather_lookup = WeatherLookup(
-                code=weather['code'],
-                place=weather['place'],
-                wunderground=weather['wunderground']
-            )
-        try:
-            weather_lookup.geocode = weather['geocode']
-        except KeyError:
-            pass
-        weather_lookup.set_fields_to_base()
-        weather_lookup.save()
-        return weather_lookup
-
-    def get_venue(self, venue, weather):
+    def get_venue(self, venue):
         try:
             venue = Venue.objects.get(code=venue['code'])
         except ObjectDoesNotExist:
@@ -102,7 +144,6 @@ class Command(BaseCommand):
                 state=venue['state'],
                 zip_code=venue['zip_code'],
                 country=venue['country'],
-                weatherlookup=weather
             )
 
             new_venue.set_fields_to_base()

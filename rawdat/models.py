@@ -78,19 +78,6 @@ class Venue(CoreModel):
         return self.name
 
 
-class SocialMedia(CoreModel):
-    venue = models.OneToOneField(
-        Venue,
-        on_delete=models.CASCADE
-    )
-    twitter = models.CharField(
-        null=True,
-        max_length=128)
-    facebook = models.CharField(
-        null=True,
-        max_length=128)
-
-
 class Color(CoreModel):
 
     class Meta:
