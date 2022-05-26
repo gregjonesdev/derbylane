@@ -54,7 +54,7 @@ class Command(BaseCommand):
     def seed_models(self, models):
         for model in models:
             classifier = WekaClassifier.objects.get(name=model["classifier"])
-            print("Building '{}' Models".format(classifier.name))
+            self.stdout.write("Building '{}' Models".format(classifier.name))
             for model_venue in model["venues"]:
                 venue = Venue.objects.get(code=model_venue["code"])
                 for venue_grade in model_venue["grades"]:
@@ -72,7 +72,7 @@ class Command(BaseCommand):
 
 
     def seed_classifiers(self, classifiers):
-        print("Building Classifiers")
+        self.stdout.write("Building Classifiers")
         for classifier in classifiers:
             try:
                 weka_classifier = WekaClassifier.objects.get(
@@ -88,7 +88,7 @@ class Command(BaseCommand):
             weka_classifier.save()
 
     def seed_betting_grades(self, betting_grades):
-        print("Building Betting Grades")
+        self.stdout.write("Building Betting Grades")
         for betting_grade in betting_grades:
             grade = Grade.objects.get(name=betting_grade["grade_name"])
             venue = Venue.objects.get(code=betting_grade["venue_code"])
@@ -107,7 +107,7 @@ class Command(BaseCommand):
                 new_betting_grade.save()
 
     def seed_bettypes(self, bettypes):
-        print("Building Bet Types")
+        self.stdout.write("Building Bet Types")
         for type in bettypes:
             self.create_bet_type(type["name"], type["cutoff"])
 
@@ -136,7 +136,7 @@ class Command(BaseCommand):
                 new_grade.save()
 
     def seed_users(self, users):
-        print("Seeding Users")
+        self.stdout.write("Seeding Users")
         for user in users:
             try:
                 user = User.objects.get(username=user["username"])
