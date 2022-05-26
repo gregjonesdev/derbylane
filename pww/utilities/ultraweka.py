@@ -10,7 +10,7 @@ import weka.core.serialization as serialization
 from weka.core.converters import Loader
 from django.core.exceptions import ObjectDoesNotExist
 from pww.models import Prediction
-from rawdat.models import OldTrifecta, Exotic_Scan, Venue
+from rawdat.models import Winning_Trifecta, Exotic_Scan, Venue
 import weka.core.jvm as jvm
 
 def get_filename(model_directory, model_name):
@@ -209,7 +209,7 @@ def get_trifecta_returns(numbers, interval, races, prediction_object, writer):
 
         for trifecta in get_unique_trifectas(matches_first, matches_second, matches_third):
             try:
-                tri = OldTrifecta.objects.get(
+                tri = Winning_Trifecta.objects.get(
                     win = trifecta[0],
                     place = trifecta[1],
                     show = trifecta[2])
