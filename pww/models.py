@@ -154,7 +154,7 @@ class BettingGrade(CoreModel):
         on_delete=models.CASCADE)
     grade = models.ForeignKey(
         Grade,
-        on_delete=models.CASCADE)    
+        on_delete=models.CASCADE)
 
 
 class WekaModel(CoreModel):
@@ -167,6 +167,13 @@ class WekaModel(CoreModel):
         on_delete=models.CASCADE)
     training_start = models.DateField()
     training_end = models.DateField()
+
+    def get_name(self):
+        betting_grade = self.betting_grade
+        return "{}_{}_{}".format(
+            betting_grade.venue.code,
+            betting_grade.grade.name,
+            str(self.training_start).replace("-", "_"))
 
 
 
