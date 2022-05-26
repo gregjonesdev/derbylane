@@ -136,6 +136,7 @@ class Command(BaseCommand):
                 new_grade.save()
 
     def seed_users(self, users):
+        print("Seeding Users")
         for user in users:
             try:
                 user = User.objects.get(username=user["username"])
