@@ -13,7 +13,7 @@ from rawdat.models import (
     Race,
     Quiniela,
     Exacta,
-    Trifecta,
+    OldTrifecta,
     Superfecta)
 from pww.utilities.weka import (
     create_model,
@@ -181,7 +181,7 @@ class Command(BaseCommand):
     def get_trifecta_winnings(self, participant_1, participant_2, participant_3):
         trifecta = None
         try:
-            trifecta = Trifecta.objects.get(
+            trifecta = OldTrifecta.objects.get(
                 win=participant_1,
                 place=participant_2,
                 show=participant_3

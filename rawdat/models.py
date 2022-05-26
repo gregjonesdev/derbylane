@@ -610,6 +610,28 @@ class Straight_Wager(CoreModel):
         null=True)
 
 
+class Winning_Trifecta(CoreModel):
+
+    race = models.ForeignKey(
+        Race,
+        on_delete=models.CASCADE)
+    payout = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True)
+    win = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='new_trifecta_wager_win')
+    place = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='new_trifecta_wager_place')
+    show = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='new_trifecta_wager_show')
+
 
 class Combo(CoreModel):
 
@@ -705,25 +727,25 @@ class Trifecta_Wager(CoreModel):
         verbose_name = 'Trifecta'
 
     win = models.ForeignKey(
-            Participant,
-            on_delete=models.CASCADE,
-            related_name='trifecta_wager_win')
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='trifecta_wager_win')
     place = models.ForeignKey(
-            Participant,
-            on_delete=models.CASCADE,
-            related_name='trifecta_wager_place')
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='trifecta_wager_place')
     show = models.ForeignKey(
-            Participant,
-            on_delete=models.CASCADE,
-            related_name='trifecta_wager_show')
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='trifecta_wager_show')
     race = models.ForeignKey(
         Race,
         on_delete=models.CASCADE,
         related_name='trifecta_wager')
-    amount = models.DecimalField(
+    wager_amount = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        default=2.00)
+        null=True)
 
     def get_name(self):
         return "Trifecta"
