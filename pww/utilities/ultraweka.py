@@ -11,6 +11,7 @@ from weka.core.converters import Loader
 from django.core.exceptions import ObjectDoesNotExist
 from pww.models import Prediction
 from rawdat.models import Trifecta, Exotic_Scan, Venue
+import weka.core.jvm as jvm
 
 def get_filename(model_directory, model_name):
     return "{}/{}.model".format(model_directory, model_name)
@@ -416,6 +417,14 @@ def make_predictions(model, testing_arff, classifier_name, is_nominal, bet_guide
     print(bet_object)
     save_predictions(bet_object)
 
+def start_jvm():
+    jvm.start(
+    packages=True,
+    max_heap_size="5028m"
+    )
+    
+def stop_jvm():
+    jvm.stop()
 
 def evaluate_predictions(testing_arff, model, classifier_name):
 

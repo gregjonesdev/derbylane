@@ -13,8 +13,11 @@ def write_headers(arff_file):
     return arff_file
 
 
-def create_arff(filename, metrics, is_training):
-
+def create_arff(metrics, is_training):
+    if is_training:
+        filename = get_arff_filename("train")
+    else:
+        filename = get_arff_filename("test")
     arff_file = open(filename, "w")
     arff_file.write("@relation Metric\n")
     arff_file = write_headers(arff_file)
@@ -25,21 +28,16 @@ def create_arff(filename, metrics, is_training):
     return filename
 
 
-def get_arff_filename(type, race_key):
-    return "{}/{}_{}.arff".format(
+def get_arff_filename(type):
+    return "{}/{}.arff".format(
         arff_directory,
-        type,
-        race_key)
+        type)
 
 
-def get_training_arff(race_key, metrics):
-    return create_arff(
-        get_arff_filename("train", race_key),
-        metrics,
-        True)
+def get_training_arff(metrics):
+    is_training = True
+    return create_arff(metrics, is_training)
 
-def get_testing_arff(race_key, metrics):
-     return create_arff(
-        get_arff_filename("test", race_key),
-        metrics,
-        False)
+def get_prediction_arff(metrics):
+    is_training = False
+    return create_arff(metrics, is_training)

@@ -1,17 +1,21 @@
 import datetime
-import weka.core.jvm as jvm
+
 
 from django.core.management.base import BaseCommand
 from django.core.exceptions import ObjectDoesNotExist
 
-from pww.utilities.arff import get_testing_arff
+from pww.utilities.arff import get_prediction_arff
 from pww.utilities.classifiers import recommendations, classifiers
-from pww.utilities.metrics import get_graded_metrics
+from pww.utilities.metrics import get_scheduled_metrics
 from rawdat.models import Race
 from pww.models import BettingGrade, WekaModel
 from miner.utilities.constants import focused_grades, betting_venues
 from miner.utilities.urls import model_directory
-from pww.utilities.ultraweka import make_predictions, get_model, get_model_name
+from pww.utilities.ultraweka import (
+    make_predictions,
+    get_model,
+    start_jvm,
+    stop_jvm)
 
 
 class Command(BaseCommand):
@@ -31,33 +35,23 @@ class Command(BaseCommand):
         # print(weka_model.training_end)
         # print(weka_model.classifier.name)
         # print(weka_model.classifier.is_nominal)
-        print(weka_model.get_name())
-        # for model_name in recommendations:
-        #
-        #     if race_key in model_name:
-        #         testing_metrics = new_get_metrics(
-        #             grade_name,
-        #             venue_code,
-        #             today,
-        #             tomorrow)
-        #         testing_arff = get_testing_arff(
-        #             new_key,
-        #             testing_metrics)
-        #         model = get_model(model_directory, model_name)
-#                 make_predictions(
-#                     model,
-#                     testing_arff,
-#                     classifier_name,
-#                     is_nominal,
-#                     recommendations[model_name])
+        is_training = False
+        prediction_arff = get_prediction_arff(graded_metrics)
+        print(prediction_arff)
+        # model = get_model(model_directory, weka_model.get_name())
+        # make_predictions(
+        #     model,
+        #     testing_arff,
+        #     classifier_name,
+        #     is_nominal,
+        #     recommendations[model_name])
+
+
 
     def handle(self, *args, **options):
-        # jvm.start(
-        # packages=True,
-        # max_heap_size="5028m"
-        # )
+        # start_jvm()
         today = datetime.date.today()
-
+        scheduled_metrics = get_scheduled_metrics(today)
         for race in Race.objects.filter(chart__program__date__gte=today):
             # print("{} {}".format(race.chart.program.venue.code, race.grade.name))
             grade = race.grade
@@ -66,7 +60,9 @@ class Command(BaseCommand):
                 betting_grade = BettingGrade.objects.get(
                     venue=venue,
                     grade=grade)
-                graded_metrics = get_graded_metrics(grade, venue)
+                graded_metrics = scheduled_metrics.filter(
+                    participant__race__chart__program__venue=venue,
+                    participant__race__grade=grade)
                 for weka_model in WekaModel.objects.filter(
                     betting_grade=betting_grade):
                     self.make_straight_predictions(
@@ -75,5 +71,4 @@ class Command(BaseCommand):
                         graded_metrics)
             except ObjectDoesNotExist:
                 pass
-
-        # jvm.stop()
+        # stop_jvm()
