@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from pww.utilities.arff import get_testing_arff
 from pww.utilities.classifiers import recommendations, classifiers
-from pww.utilities.metrics import new_get_metrics
+from pww.utilities.metrics import get_graded_metrics
 from rawdat.models import Race
 from pww.models import BettingGrade, WekaModel
 from miner.utilities.constants import focused_grades, betting_venues
@@ -24,19 +24,25 @@ class Command(BaseCommand):
             venue_code,
             grade_name)
 
-    def make_straight_predictions(self, venue_code, grade_name, today, tomorrow):
-        for model_name in recommendations:
-
-            if race_key in model_name:
-                testing_metrics = new_get_metrics(
-                    grade_name,
-                    venue_code,
-                    today,
-                    tomorrow)
-                testing_arff = get_testing_arff(
-                    new_key,
-                    testing_metrics)
-                model = get_model(model_directory, model_name)
+    def make_straight_predictions(self, race, weka_model, graded_metrics):
+        print("Straight predcition")
+        print(weka_model.__dict__)
+        print(weka_model.training_start)
+        print(weka_model.training_end)
+        print(weka_model.classifier.name)
+        print(weka_model.classifier.is_nominal)
+        # for model_name in recommendations:
+        #
+        #     if race_key in model_name:
+        #         testing_metrics = new_get_metrics(
+        #             grade_name,
+        #             venue_code,
+        #             today,
+        #             tomorrow)
+        #         testing_arff = get_testing_arff(
+        #             new_key,
+        #             testing_metrics)
+        #         model = get_model(model_directory, model_name)
 #                 make_predictions(
 #                     model,
 #                     testing_arff,
@@ -50,30 +56,23 @@ class Command(BaseCommand):
         # max_heap_size="5028m"
         # )
         today = datetime.date.today()
-        tomorrow = today + datetime.timedelta(days=1)
-        # for venue_code in betting_venues:
-            # for grade_name in focused_grades[venue_code]:
-                # race_key = self.get_race_key(venue_code, grade_name)
 
         for race in Race.objects.filter(chart__program__date__gte=today):
             print("{} {}".format(race.chart.program.venue.code, race.grade.name))
+            grade = race.grade
+            venue = race.chart.program.venue
             try:
                 betting_grade = BettingGrade.objects.get(
-                    venue=race.chart.program.venue,
-                    grade=race.grade)
-                race_models = WekaModel.objects.filter(betting_grade=betting_grade)
-                print(race_models)
-                # self.make_straight_predictions(betting_grade)
-                # self.make_
+                    venue=venue,
+                    grade=grade)
+                graded_metrics = get_graded_metrics(grade, venue)
+                for weka_model in WekaModel.objects.filter(
+                    betting_grade=betting_grade):
+                    self.make_straight_predictions(
+                        race,
+                        weka_model,
+                        graded_metrics)
             except ObjectDoesNotExist:
-                print("No betting grade")
                 pass
-                # for race in targeted_races:
-                #     print("{} {} Race {} Grade {}".format(
-                #         venue_code,
-                #         race.chart.get_time_display(),
-                #         race.number,
-                #         race.grade.name
-                #     ))
 
         # jvm.stop()

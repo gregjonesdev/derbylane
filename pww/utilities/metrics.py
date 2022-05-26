@@ -437,6 +437,11 @@ def new_get_metrics(grade_name, venue_code, start_date, end_date):
         participant__race__chart__program__date__range=(
             start_date, end_date))
 
+def get_graded_metrics(grade, venue):
+    return Metric.objects.filter(
+        participant__race__chart__program__venue=venue,
+        participant__race__grade=grade)         
+
 def get_scheduled_metrics(
     venue_code,
     grade_name,
