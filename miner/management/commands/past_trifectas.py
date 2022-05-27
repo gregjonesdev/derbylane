@@ -10,6 +10,8 @@ from miner.utilities.scrape import scan_history_charts, single_url_test
 from miner.utilities.urls import build_race_results_url
 from miner.utilities.common import get_node_elements, two_digitizer
 
+from miner.utilities.new_scrape import process_race
+
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
@@ -29,39 +31,41 @@ class Command(BaseCommand):
     def process_url(self, url, race):
         tds = get_node_elements(url, '//td')
         if len(tds) > 85:
-            for td in tds:
-                if len(td) > 0:
-                    for child in td:
-                        if child.text and "$2.00" in child.text:
-                            split_text = child.text.split()
-                            for entry in split_text:
-                                if "/" in entry:
-                                    posts_index =  split_text.index(entry)
-                                    posts = entry
-                            payout = split_text[-1]
-                            float_payout = float(payout.replace(
-                                "$", "").replace(
-                                ",", ""))
-                            type = split_text[1:posts_index]
-                            if len(type) > 1:
-                                new_type = ""
-                                for each in type:
-                                    new_type += "{} ".format(each)
-                                type = new_type.strip()
-                            else:
-                                type = type[0]
-                            # print(type)
-                            if type.lower() == "trifecta":
-                                post_list = posts.split("/")
-                                for post in post_list:
-                                    try:
-                                        int(post)
-                                    except:
-                                        print(post_list)
-                                        print(url)
-                            # print(payout)
-
-                                create_trifecta(race, posts, None, float_payout)
+            process_race(tds)
+            # for td in tds:
+            #     if len(td) > 0:
+            #         for child in td:
+            #             if child.text and "$2.00" in child.text:
+            #                 split_text = child.text.split()
+            #                 for entry in split_text:
+            #                     if "/" in entry:
+            #                         posts_index =  split_text.index(entry)
+            #                         posts = entry
+            #                 payout = split_text[-1]
+            #                 float_payout = float(payout.replace(
+            #                     "$", "").replace(
+            #                     ",", ""))
+            #                 type = split_text[1:posts_index]
+            #                 if len(type) > 1:
+            #                     new_type = ""
+            #                     for each in type:
+            #                         new_type += "{} ".format(each)
+            #                     type = new_type.strip()
+            #                 else:
+            #                     type = type[0]
+            #                 # print(type)
+            #                 if type.lower() == "trifecta":
+            #                     post_list = posts.split("/")
+            #                     for post in post_list:
+            #                         try:
+            #                             int(post)
+            #                         except:
+            #                             # find posts in table
+            #                             print(post_list)
+            #                             print(url)
+            #                 # print(payout)
+            #
+            #                     create_trifecta(race, posts, None, float_payout)
 
         #         print("{}: {}".format(tds.index(td), td.text))
         #         if td.text and td.text.lower() == "exotics":
@@ -100,6 +104,22 @@ class Command(BaseCommand):
 
         with ThreadPoolExecutor() as executor:
             executor.map(self.get_venue_results, venue_codes)
+
+            #10:40a start
+            # SL 2022 races: 1164
+            # TS 2022 races: 1656
+            # SL 1/2022 races: 258
+            # TS 1/2022 races: 336
+            # WD 2022 races: 1794
+            # WD 1/2022 races: 374
+            # SL 3/2021 races: 0
+            # SL 4/2021 races: 0
+            # SL 5/2021 races: 134
+            # WD 2/2021 races: 424
+            # SL 6/2021 races: 336
+            # TS 3/2021 races: 0
+            # TS 4/2021 races: 0
+            # TS 5/2021 races: 112
 
 
 
