@@ -2,6 +2,7 @@ from miner.utilities.common import get_attribute_elements, get_node_elements
 from rawdat.models import Grade, Condition
 from miner.utilities.comments import no_elements
 from miner.utilities.models import get_race
+from django.core.exceptions import ObjectDoesNotExist
 
 def remove_line_breaks(text):
     return text.replace("\n", "")
@@ -48,33 +49,28 @@ def parse_race_setting(td):
 
 def save_race_settings(race, td):
     parsed_setting = parse_race_setting(td)
-    race.number = get_race_number(parsed_setting[1])
-    race.grade = get_race_grade(parsed_setting[2])
-    race.distance = get_race_distance(parsed_setting[3])
-    race.condition = get_race_condition(parsed_setting[4])
+    try:
+        race.grade = get_race_grade(parsed_setting[2])
+        race.distance = get_race_distance(parsed_setting[3])
+        race.condition = get_race_condition(parsed_setting[4])
+    except IndexError:
+        print("Index Error:")
+        print(parsed_setting)
     race.save()
 
 
 def save_race_results(race, tds):
     save_race_settings(race, tds[4])
-    raise SystemExit(0)
-    for td in tds:
-        print("{}: {}".format(tds.index(td), td.text))
-
-    if len(tds) >= 116:
+    # print(len(tds))
+    if len(tds) >= 105:
+        for td in tds:
+            # print("{}: {}".format(tds.index(td), td.text))
+            if len(td) > 0:
+                print(tds.index(td))
+                print(td[0].text)
+        raise SystemExit(0)
         # process exotics
         pass
     else:
-        print(url)
         print(len(tds))
         raise SystemExit(0)
-    # middle_aligned_tds = get_attribute_elements(
-    #     url,
-    #     "td",
-    #     "style",
-    #     "vertical-align: middle;")
-    # race_setting = parse_race_setting(middle_aligned_tds[1])
-    # race_number = get_race_number(race_setting[1])
-    # race_grade = get_race_grade(race_setting[1])
-    # race_distance = get_race_distance(race_setting[1])
-    # race_condition = get_race_condition(race_setting[1])

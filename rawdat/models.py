@@ -363,7 +363,7 @@ class Race(CoreModel):
     number = models.IntegerField(
         null=True
     )
-    condition = models.CharField(
+    legacy_condition = models.CharField(
         max_length=1,
         choices=CONDITION_CHOICES,
         null=True
@@ -373,7 +373,7 @@ class Race(CoreModel):
         max_length=3,
         choices=GRADE_CHOICES
     )
-    new_condition = models.ForeignKey(
+    condition = models.ForeignKey(
         Condition,
         null=True,
         on_delete=models.CASCADE)
