@@ -8,26 +8,22 @@ from rawdat.models import Venue, Race, Exotic_Bet_Type, Winning_Trifecta
 
 from miner.utilities.scrape import scan_history_charts, single_url_test
 from miner.utilities.urls import build_race_results_url
-from miner.utilities.common import get_node_elements
+from miner.utilities.common import get_node_elements, two_digitizer
 
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--year', type=int)
 
-    def scan_month(self, venue, month, year):
-        for race in Race.objects.filter(
-            chart__program__venue=venue,
-            chart__program__date__year=year,
-            chart__program__date__month=month
-        ):
+    def scan_month(self, month_races):
+        for race in month_races:
             url = build_race_results_url(
-                venue.code,
-                year,
-                month,
-                race.chart.program.date.day,
+                race.chart.program.venue.code,
+                race.chart.program.date.year,
+                two_digitizer(race.chart.program.date.month),
+                two_digitizer(race.chart.program.date.day),
                 race.chart.time,
-                race.number)
+                two_digitizer(race.number))
             self.process_url(url, race)
 
     def process_url(self, url, race):
@@ -66,6 +62,8 @@ class Command(BaseCommand):
                             # print(payout)
 
                                 create_trifecta(race, posts, None, float_payout)
+                        else:
+                            print(child.text)
 
         #         print("{}: {}".format(tds.index(td), td.text))
         #         if td.text and td.text.lower() == "exotics":
@@ -84,8 +82,14 @@ class Command(BaseCommand):
         venue = Venue.objects.get(code=venue_code)
         year = sys.argv[3]
         month = 1
+        races = Race.objects.filter(
+            chart__program__venue=venue,
+            chart__program__date__year=year
+        )
+        print("races: {}".format(len(races)))
         while month <= 12:
-            self.scan_month(venue, month, year)
+            month_races = races.filter(chart__program__date__month=month)
+            self.scan_month(month_races)
             month += 1
 
 
