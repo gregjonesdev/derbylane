@@ -53,15 +53,16 @@ class Command(BaseCommand):
                             else:
                                 type = type[0]
                             print(type)
-                            post_list = posts.split("/")
-                            for post in post_list:
-                                try:
-                                    int(post)
-                                except:
-                                    print(post_list)
-                                    print(url)
+                            if type.lower() == "trifecta":
+                                post_list = posts.split("/")
+                                for post in post_list:
+                                    try:
+                                        int(post)
+                                    except:
+                                        print(post_list)
+                                        print(url)
                             # print(payout)
-                            # if type.lower() == "trifecta":
+
                             #     try:
                             #         winning_trifecta = Winning_Trifecta.objects.get(
                             #             race=race,
