@@ -1,5 +1,6 @@
-from miner.utilities.common import get_attribute_elements
+from miner.utilities.common import get_attribute_elements, get_node_elements
 from rawdat.models import Grade, Condition
+from miner.utilities.comments import no_elements
 
 def remove_line_breaks(text):
     return text.replace("\n", "")
@@ -46,18 +47,21 @@ def parse_race_setting(td):
     print(race_setting_list)
 
 def process_url(url):
-    print("process_race")
-    # print(len(tds))
-    # for td in tds:
-    #     print(td)
-
-    middle_aligned_tds = get_attribute_elements(
-        url,
-        "td",
-        "style",
-        "vertical-align: middle;")
-    race_setting = parse_race_setting(middle_aligned_tds[1])
-    race_number = get_race_number(race_setting[1])
-    race_grade = get_race_grade(race_setting[1])
-    race_distance = get_race_distance(race_setting[1])
-    race_condition = get_race_condition(race_setting[1])
+    tds = get_node_elements(url, "//td")
+    if len(tds) > 15:
+        print(url)
+        print(len(tds))
+        # for td in tds:
+        #     print("{}: {}".format(tds.index(td), td.text))
+    else:
+        return no_elements
+    # middle_aligned_tds = get_attribute_elements(
+    #     url,
+    #     "td",
+    #     "style",
+    #     "vertical-align: middle;")
+    # race_setting = parse_race_setting(middle_aligned_tds[1])
+    # race_number = get_race_number(race_setting[1])
+    # race_grade = get_race_grade(race_setting[1])
+    # race_distance = get_race_distance(race_setting[1])
+    # race_condition = get_race_condition(race_setting[1])

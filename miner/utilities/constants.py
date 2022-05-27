@@ -39,6 +39,9 @@ race_conditions = [
  "W"
 ]
 
+
+
+
 dogname_corrections = {
     "CET EASI ELI": "CET EASY ELI"
 }
@@ -56,10 +59,10 @@ chart_times = [
  "L",
  "T",
  "S",
- "M",
- "N",
- "X",
- "Z"
+ # "M",
+ # "N",
+ # "X",
+ # "Z"
 ]
 
 models_directory = "../../../allmodels"

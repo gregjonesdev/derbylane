@@ -16,23 +16,26 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--year', type=int)
 
-    def get_scan(url):
+    def get_scan(self, url):
         try:
-            return ScannedUrl.objects.get(
-                address = url
-            )
+            scan = ScannedUrl.objects.get(address=url)
         except ObjectDoesNotExist:
-            new_scan = ScannedUrl.objects.get(
-                address = url
-            )
+            new_scan = ScannedUrl(address=url)
             new_scan.set_fields_to_base()
             new_scan.save()
-            return new_scan
+            scan = new_scan
+        return scan
+
+    def update_scan(self, scan, comment):
+        scan.comment = comment
+        if comment in ["No <td> Elements"]:
+            scan.completed = True
+        scan.save()
 
     def scan_day(self, venue_code, month, year, day):
         for chart_time in chart_times:
-            number = 0
-            while number < 30:
+            number = 1
+            while number <= 30:
                 url = build_race_results_url(
                     venue_code,
                     year,
@@ -41,11 +44,11 @@ class Command(BaseCommand):
                     chart_time,
                     two_digitizer(number))
                 scan = self.get_scan(url)
-
-                # scan if not completed 
-
-
-
+                if not scan.completed:
+                    print(url)
+                    comment = process_url(url)
+                    self.update_scan(scan, comment)
+                number += 1
 
     def scan_month(self, venue_code, month, year):
         day = 1
@@ -124,19 +127,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         venue_codes = ['TS', 'WD', 'SL']
-        with ThreadPoolExecutor() as executor:
-            executor.map(self.get_venue_results, venue_codes)
+        # with ThreadPoolExecutor() as executor:
+        #     executor.map(self.get_venue_results, venue_codes)
 
+        self.get_venue_results('TS')
 
-
-
-
-def download_images(url):
-    img_name = img_url.split('/')[3]
-    img_bytes = requests.get(img_url).content
-    with open(img_name, 'wb') as img_file:
-         img_file.write(img_bytes)
-         print(f"{img_name} was downloaded")
 
 
  #this is Similar to map(func, *iterables)
