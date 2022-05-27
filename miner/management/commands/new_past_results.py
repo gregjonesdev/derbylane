@@ -2,14 +2,14 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
-from miner.utilities.models import create_trifecta
-from rawdat.models import ScannedUrl
+from miner.utilities.models import get_program, get_chart, get_race
+from rawdat.models import ScannedUrl, Venue
 
 from miner.utilities.urls import build_race_results_url
-from miner.utilities.common import two_digitizer
+from miner.utilities.common import get_node_elements
 from miner.utilities.constants import chart_times
 
-from miner.utilities.new_scrape import process_url
+from miner.utilities.new_scrape import save_race_results, parse_race_setting
 
 class Command(BaseCommand):
 
@@ -33,20 +33,43 @@ class Command(BaseCommand):
         scan.save()
 
     def scan_day(self, venue_code, month, year, day):
-        for chart_time in chart_times:
+        venue = Venue.objects.get(code=venue_code)
+        program = get_program(
+            venue,
+            "{}-{}-{}".format(
+                year,
+                str(month).zfill(2),
+                str(day).zfill(2)
+            )
+        )
+        for time in chart_times:
+            chart = get_chart(program, time)
             number = 1
             while number <= 30:
+                comment = None
                 url = build_race_results_url(
                     venue_code,
                     year,
-                    two_digitizer(month),
-                    two_digitizer(day),
-                    chart_time,
-                    two_digitizer(number))
+                    str(month).zfill(2),
+                    str(day).zfill(2),
+                    time,
+                    str(number).zfill(2))
                 scan = self.get_scan(url)
                 if not scan.completed:
-                    print(url)
-                    comment = process_url(url)
+                    tds = get_node_elements(url, "//td")
+                    if len(tds) > 15:
+                        race = get_race(chart, number)
+                        comment = save_race_results(race, tds)
+
+                    else:
+                        comment = no_elements
+
+
+
+
+
+
+
                     self.update_scan(scan, comment)
                 number += 1
 
@@ -66,7 +89,7 @@ class Command(BaseCommand):
         #     tds = get_node_elements(url, '//td')
         #     if len(tds) > 85:
         #
-        #         process_url(url)
+        #         build_race_from_url(url)
 
 
             # for td in tds:
