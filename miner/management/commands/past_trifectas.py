@@ -62,8 +62,6 @@ class Command(BaseCommand):
                             # print(payout)
 
                                 create_trifecta(race, posts, None, float_payout)
-                        else:
-                            print(child.text)
 
         #         print("{}: {}".format(tds.index(td), td.text))
         #         if td.text and td.text.lower() == "exotics":
@@ -86,9 +84,10 @@ class Command(BaseCommand):
             chart__program__venue=venue,
             chart__program__date__year=year
         )
-        print("races: {}".format(len(races)))
+        print("{} {} races: {}".format(venue_code, year, len(races)))
         while month <= 12:
             month_races = races.filter(chart__program__date__month=month)
+            print("{} {}/{} races: {}".format(venue_code, month, year, len(month_races)))
             self.scan_month(month_races)
             month += 1
 
