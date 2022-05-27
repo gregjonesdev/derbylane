@@ -10,7 +10,7 @@ from miner.utilities.scrape import scan_history_charts, single_url_test
 from miner.utilities.urls import build_race_results_url
 from miner.utilities.common import get_node_elements, two_digitizer
 
-from miner.utilities.new_scrape import process_race
+from miner.utilities.new_scrape import process_url
 
 class Command(BaseCommand):
 
@@ -26,12 +26,11 @@ class Command(BaseCommand):
                 two_digitizer(race.chart.program.date.day),
                 race.chart.time,
                 two_digitizer(race.number))
-            self.process_url(url, race)
+            tds = get_node_elements(url, '//td')
+            if len(tds) > 85:
+                process_url(url)
 
-    def process_url(self, url, race):
-        tds = get_node_elements(url, '//td')
-        if len(tds) > 85:
-            process_race(tds)
+
             # for td in tds:
             #     if len(td) > 0:
             #         for child in td:
@@ -88,10 +87,10 @@ class Command(BaseCommand):
             chart__program__venue=venue,
             chart__program__date__year=year
         )
-        print("{} {} races: {}".format(venue_code, year, len(races)))
+        # print("{} {} races: {}".format(venue_code, year, len(races)))
         while month <= 12:
             month_races = races.filter(chart__program__date__month=month)
-            print("{} {}/{} races: {}".format(venue_code, month, year, len(month_races)))
+            # print("{} {}/{} races: {}".format(venue_code, month, year, len(month_races)))
             self.scan_month(month_races)
             month += 1
 
