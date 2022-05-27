@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
 from django.core.management.base import BaseCommand
-
+from miner.utilities.models import create_trifecta
 from rawdat.models import Venue, Race, Exotic_Bet_Type, Winning_Trifecta
 
 from miner.utilities.scrape import scan_history_charts, single_url_test
@@ -43,7 +43,9 @@ class Command(BaseCommand):
                                     posts_index =  split_text.index(entry)
                                     posts = entry
                             payout = split_text[-1]
-
+                            float_payout = float(payout.replace(
+                                "$", "").replace(
+                                ",", "")))
                             type = split_text[1:posts_index]
                             if len(type) > 1:
                                 new_type = ""
@@ -63,22 +65,7 @@ class Command(BaseCommand):
                                         print(url)
                             # print(payout)
 
-                            #     try:
-                            #         winning_trifecta = Winning_Trifecta.objects.get(
-                            #             race=race,
-                            #
-                            #         )
-
-                            try:
-                                exotic_bet_type = Exotic_Bet_Type.objects.get(
-                                    name=type
-                                )
-                            except ObjectDoesNotExist:
-                                exotic_bet_type = Exotic_Bet_Type(
-                                    name=type
-                                )
-                                exotic_bet_type.set_fields_to_base()
-                                exotic_bet_type.save()
+                                create_trifecta(race, posts, None, float_payout)
 
         #         print("{}: {}".format(tds.index(td), td.text))
         #         if td.text and td.text.lower() == "exotics":
