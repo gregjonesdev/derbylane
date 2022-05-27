@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import datetime
 from django.core.management.base import BaseCommand
 
-from rawdat.models import Venue, Race, Exotic_Bet_Type
+from rawdat.models import Venue, Race, Exotic_Bet_Type, Winning_Trifecta
 
 from miner.utilities.scrape import scan_history_charts, single_url_test
 from miner.utilities.urls import build_race_results_url
@@ -28,9 +28,9 @@ class Command(BaseCommand):
                 race.chart.program.date.day,
                 race.chart.time,
                 race.number)
-            self.process_url(url)
+            self.process_url(url, race)
 
-    def process_url(self, url):
+    def process_url(self, url, race):
         tds = get_node_elements(url, '//td')
         if len(tds) > 85:
             for td in tds:
@@ -41,7 +41,9 @@ class Command(BaseCommand):
                             for entry in split_text:
                                 if "/" in entry:
                                     posts_index =  split_text.index(entry)
-                            payout_index = split_text[-1]
+                                    posts = entry
+                            payout = split_text[-1]
+
                             type = split_text[1:posts_index]
                             if len(type) > 1:
                                 new_type = ""
@@ -51,6 +53,21 @@ class Command(BaseCommand):
                             else:
                                 type = type[0]
                             print(type)
+                            post_list = posts.split("/")
+                            for post in post_list:
+                                try:
+                                    int(post)
+                                except:
+                                    print(post_list)
+                                    print(url)
+                            # print(payout)
+                            # if type.lower() == "trifecta":
+                            #     try:
+                            #         winning_trifecta = Winning_Trifecta.objects.get(
+                            #             race=race,
+                            #
+                            #         )
+
                             try:
                                 exotic_bet_type = Exotic_Bet_Type.objects.get(
                                     name=type
