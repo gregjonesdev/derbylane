@@ -1,5 +1,5 @@
 import sys
-import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
 from django.core.management.base import BaseCommand
@@ -14,6 +14,7 @@ class Command(BaseCommand):
         parser.add_argument('--year', type=int)
 
     def scan_month(self, venue, month, year):
+        self.stdout.write("Processing {} {}/{}".format(venue, month, year))
         day = 1
         while day <= 31:
             try:
@@ -27,8 +28,9 @@ class Command(BaseCommand):
             day += 1
 
 
-    def get_venue_results(self, year, venue):
-        self.stdout.write("Processing {} {}".format(venue, year))
+    def get_venue_results(self, venue_code):
+        venue = Venue.objects.get(code=venue_code)
+        year = sys.argv[3]
         month = 1
         while month <= 12:
             self.scan_month(venue, month, year)
@@ -36,10 +38,24 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        year = sys.argv[3]
-        venue_codes = ['TS', 'WD']
-        for venue_code in venue_codes:
-            self.get_venue_results(
-                year,
-                Venue.objects.get(code=venue_code)
-            )
+
+        venue_codes = ['TS', 'WD', 'SL']
+
+        self.get_venue_results('TS')
+
+        # with ThreadPoolExecutor() as executor:
+        #     executor.map(self.get_venue_results, venue_codes)
+
+
+
+
+
+def download_images(url):
+    img_name = img_url.split('/')[3]
+    img_bytes = requests.get(img_url).content
+    with open(img_name, 'wb') as img_file:
+         img_file.write(img_bytes)
+         print(f"{img_name} was downloaded")
+
+
+ #this is Similar to map(func, *iterables)

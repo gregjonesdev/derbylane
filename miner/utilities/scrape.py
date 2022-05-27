@@ -251,6 +251,7 @@ def get_entries_dognames(url):
 
 
 def get_exotic_bets(results_url):
+    print("get_exotics")
     exotic_bets = []
     exotic_ps = get_node_elements(results_url, '//p')
     for each in exotic_ps:
@@ -263,6 +264,8 @@ def get_exotic_bets(results_url):
                     "posts": split_data[-3].split("/"),
                     "payout": float(split_data[-1].replace("$", "").replace(",", ""))
                 })
+            else:
+                print(exotic_name)
     return exotic_bets
 
 
@@ -306,7 +309,6 @@ def print_exotic_bets(exotic_bets):
         #     exotic_bet["posts"],
         #     exotic_bet["payout"]
         # ))
-    print("\n")
 
 def print_race_setting(raw_setting, race_number, race_setting):
     print("Race {}".format(race_number))
@@ -451,7 +453,7 @@ def save_exotic_bets(race, exotic_bets):
             create_superfecta(race, bet["posts"], cost, bet["payout"])
 
 def handle_race(race, race_setting, race_data, single_bets, exotic_bets):
-    build_weather_from_almanac(race.chart.program)
+    # build_weather_from_almanac(race.chart.program)
     if race_setting:
         save_race_info(race, race_setting)
     process_race_data(race, race_data)
@@ -462,7 +464,7 @@ def handle_race(race, race_setting, race_data, single_bets, exotic_bets):
 
 def single_url_test(results_url, tds, chart):
     # print("\n{}\n".format(results_url))
-    print(results_url)
+    # print(results_url)
     if not "GWD$20180915S05" in results_url:
         raw_setting = get_raw_setting(tds)
         # print("Raw Setting: {}\n".format(raw_setting))
@@ -494,7 +496,6 @@ def single_url_test(results_url, tds, chart):
                     print_race_setting(raw_setting, race_number, race_setting)
                     print_single_bets(single_bets)
                     print_exotic_bets(exotic_bets)
-                    print(len(race_data))
                     if len(race_data) > 0:
                         print_race_data(race_data)
         else:
@@ -518,6 +519,7 @@ def save_scanned_url(results_url):
     new_scanned_url.save()
 
 def scan_history_charts(venue, year, month, day):
+    print("SHC")
     for time in chart_times:
         number = 1
         failed_attempts = 0
@@ -532,6 +534,7 @@ def scan_history_charts(venue, year, month, day):
             try:
                 ScannedUrl.objects.get(address=results_url)
             except ObjectDoesNotExist:
+                print("DNE")
                 formatted_date = get_date_from_ymd(year, month, day)
                 program = get_program(venue, formatted_date)
                 tds = get_node_elements(results_url, '//td')
