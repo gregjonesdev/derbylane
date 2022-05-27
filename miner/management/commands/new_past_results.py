@@ -1,14 +1,13 @@
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from django.core.exceptions import ObjectDoesNotExist
-import datetime
 from django.core.management.base import BaseCommand
 from miner.utilities.models import create_trifecta
-from rawdat.models import Venue, Race, Exotic_Bet_Type, Winning_Trifecta
+from rawdat.models import ScannedUrl
 
-from miner.utilities.scrape import scan_history_charts, single_url_test
 from miner.utilities.urls import build_race_results_url
-from miner.utilities.common import get_node_elements, two_digitizer
+from miner.utilities.common import two_digitizer
+from miner.utilities.constants import chart_times
 
 from miner.utilities.new_scrape import process_url
 
@@ -17,18 +16,54 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--year', type=int)
 
-    def scan_month(self, month_races):
-        for race in month_races:
-            url = build_race_results_url(
-                race.chart.program.venue.code,
-                race.chart.program.date.year,
-                two_digitizer(race.chart.program.date.month),
-                two_digitizer(race.chart.program.date.day),
-                race.chart.time,
-                two_digitizer(race.number))
-            tds = get_node_elements(url, '//td')
-            if len(tds) > 85:
-                process_url(url)
+    def get_scan(url):
+        try:
+            return ScannedUrl.objects.get(
+                address = url
+            )
+        except ObjectDoesNotExist:
+            new_scan = ScannedUrl.objects.get(
+                address = url
+            )
+            new_scan.set_fields_to_base()
+            new_scan.save()
+            return new_scan
+
+    def scan_day(self, venue_code, month, year, day):
+        for chart_time in chart_times:
+            number = 0
+            while number < 30:
+                url = build_race_results_url(
+                    venue_code,
+                    year,
+                    two_digitizer(month),
+                    two_digitizer(day),
+                    chart_time,
+                    two_digitizer(number))
+                scan = self.get_scan(url)
+
+                # scan if not completed 
+
+
+
+
+    def scan_month(self, venue_code, month, year):
+        day = 1
+        while day <= 31:
+            self.scan_day(venue_code, month, year, day)
+            day += 1
+        # for race in month_races:
+        #     url = build_race_results_url(
+        #         race.chart.program.venue.code,
+        #         year,
+        #         two_digitizer(month),
+        #         two_digitizer(race.chart.program.date.day),
+        #         race.chart.time,
+        #         two_digitizer(race.number))
+        #     tds = get_node_elements(url, '//td')
+        #     if len(tds) > 85:
+        #
+        #         process_url(url)
 
 
             # for td in tds:
@@ -80,45 +115,17 @@ class Command(BaseCommand):
         #     raise SystemExit(0)
 
     def get_venue_results(self, venue_code):
-        venue = Venue.objects.get(code=venue_code)
         year = sys.argv[3]
         month = 1
-        races = Race.objects.filter(
-            chart__program__venue=venue,
-            chart__program__date__year=year
-        )
-        # print("{} {} races: {}".format(venue_code, year, len(races)))
         while month <= 12:
-            month_races = races.filter(chart__program__date__month=month)
-            # print("{} {}/{} races: {}".format(venue_code, month, year, len(month_races)))
-            self.scan_month(month_races)
+            self.scan_month(venue_code, month, year)
             month += 1
 
 
     def handle(self, *args, **options):
-
         venue_codes = ['TS', 'WD', 'SL']
-
-        # self.get_venue_results('TS')
-
         with ThreadPoolExecutor() as executor:
             executor.map(self.get_venue_results, venue_codes)
-
-            #10:40a start
-            # SL 2022 races: 1164
-            # TS 2022 races: 1656
-            # SL 1/2022 races: 258
-            # TS 1/2022 races: 336
-            # WD 2022 races: 1794
-            # WD 1/2022 races: 374
-            # SL 3/2021 races: 0
-            # SL 4/2021 races: 0
-            # SL 5/2021 races: 134
-            # WD 2/2021 races: 424
-            # SL 6/2021 races: 336
-            # TS 3/2021 races: 0
-            # TS 4/2021 races: 0
-            # TS 5/2021 races: 112
 
 
 

@@ -287,6 +287,13 @@ class Grade(CoreModel):
         null=True
     )
 
+class Condition(CoreModel):
+
+    name = models.CharField(
+        null=True,
+        max_length=8
+    )
+
 class Bet_Recommendation(CoreModel):
     venue =  models.ForeignKey(
         Venue,
@@ -366,6 +373,10 @@ class Race(CoreModel):
         max_length=3,
         choices=GRADE_CHOICES
     )
+    new_condition = models.ForeignKey(
+        Condition,
+        null=True,
+        on_delete=models.CASCADE)
     grade = models.ForeignKey(
         Grade,
         null=True,
@@ -921,6 +932,10 @@ class ScannedUrl(CoreModel):
 
     address = models.CharField(
         max_length=256)
+    completed = models.BooleanField(default=False)
+    comment = models.CharField(
+        max_length=256,
+        null=True)
 
 
 class CronJob(CoreModel):
