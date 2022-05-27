@@ -45,7 +45,7 @@ class Command(BaseCommand):
                             payout = split_text[-1]
                             float_payout = float(payout.replace(
                                 "$", "").replace(
-                                ",", "")))
+                                ",", ""))
                             type = split_text[1:posts_index]
                             if len(type) > 1:
                                 new_type = ""
