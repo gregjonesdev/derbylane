@@ -13,7 +13,8 @@ def parse_race_setting(td):
     single_line_text = remove_line_breaks(td.text)
     untabbed_text = remove_tabs(single_line_text)
     unspaced_text = remove_extra_spaces(untabbed_text)
-    print(unspaced_text)
+    race_setting_list = unspaced_text.split()
+    print(race_setting_list)
 
 
 def process_url(url):
