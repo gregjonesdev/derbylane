@@ -96,10 +96,10 @@ class Command(BaseCommand):
 
         venue_codes = ['TS', 'WD', 'SL']
 
-        self.get_venue_results('TS')
+        # self.get_venue_results('TS')
 
-        # with ThreadPoolExecutor() as executor:
-        #     executor.map(self.get_venue_results, venue_codes)
+        with ThreadPoolExecutor() as executor:
+            executor.map(self.get_venue_results, venue_codes)
 
 
 
