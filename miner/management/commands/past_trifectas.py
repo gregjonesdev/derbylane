@@ -52,7 +52,7 @@ class Command(BaseCommand):
                                 type = new_type.strip()
                             else:
                                 type = type[0]
-                            print(type)
+                            # print(type)
                             if type.lower() == "trifecta":
                                 post_list = posts.split("/")
                                 for post in post_list:
