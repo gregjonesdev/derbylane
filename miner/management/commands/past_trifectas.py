@@ -37,7 +37,13 @@ class Command(BaseCommand):
                 if len(td) > 0:
                     for child in td:
                         if child.text and "$2.00" in child.text:
-                            print(child.text)
+                            split_text = child.text.split()
+                            for entry in split_text:
+                                if "/" in entry:
+                                    posts_index =  split_text.index(entry)
+                            payout_index = split_text[-1]
+                            print(split_text[1:posts_index])    
+
         #         print("{}: {}".format(tds.index(td), td.text))
         #         if td.text and td.text.lower() == "exotics":
         #             exotics_cell_index = tds.index(td)
