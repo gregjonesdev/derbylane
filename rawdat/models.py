@@ -948,3 +948,11 @@ class Exotic_Scan(CoreModel):
         Venue,
         null=True,
         on_delete=models.CASCADE)
+
+
+class Exotic_Bet_Type(CoreModel):
+
+    name = models.CharField(
+        null=True,
+        max_length=128
+    )
