@@ -57,8 +57,8 @@ class Command(BaseCommand):
                     str(number).zfill(2))
                 scan = self.get_scan(url)
                 if not scan.completed:
-                    url = "http://m.trackinfo.com/index.jsp?next=resultsrace&p=r&raceid=GTS$20220112E14"
                     tds = get_node_elements(url, "//td")
+                    print(len(tds))
                     if len(tds) > 15:
                         print(url)
                         race = get_race(chart, number)

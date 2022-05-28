@@ -48,8 +48,6 @@ window.onload = (event) => {
       success: function(data) {
         $("#bets").html(data)
         const bets_container =   document.getElementById("bets")
-        bets_container.style.maxHeight = "75vh";
-        bets_container.style.overflowY = "scroll";
         document.getElementById("chart-label").textContent = label
       }
     })

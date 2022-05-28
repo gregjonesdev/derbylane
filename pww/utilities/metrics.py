@@ -266,7 +266,7 @@ def get_prior_participations(dog, target_date, distance, race_count):
     return dog.participant_set.filter(
         race__chart__program__date__lt=target_date,
         race__distance=distance,
-        race__condition="F",
+        race__condition__name="F",
         final__isnull=False).order_by(
             '-race__chart__program__date')[:race_count]
 

@@ -21,6 +21,8 @@ from miner.utilities.constants import (
     focused_bets
     )
 
+from miner.utilities.new_scrape import save_race_settings
+
 from rawdat.utilities.methods import get_date_from_ymd
 
 from pww.utilities.metrics import build_race_metrics
@@ -33,6 +35,7 @@ from miner.utilities.models import (
     get_race,
     get_straightwager,
     get_grade,
+    get_condition,
     get_chart,
     get_program,
     create_exacta,
@@ -218,11 +221,9 @@ def scan_scheduled_charts(venue, program):
             if len(page_data) > 20:
                 chart = get_chart(program, time)
                 race = get_race(chart, number)
-                raw_setting = get_raw_setting(page_data)
-                if raw_setting:
-                    save_race_info(
-                        race,
-                        get_race_setting(raw_setting))
+                # for each in page_data:
+                #     print("{}: {}".format(page_data.index(each), each.text))
+                save_race_settings(race, page_data)
 
                 populate_race(
                     get_entries_dognames(entries_url),
@@ -505,8 +506,8 @@ def single_url_test(results_url, tds, chart):
 
 def save_race_info(race, race_setting):
     if race_setting:
-        race.condition = race_setting['condition']
-        race.grade = race_setting['grade']
+        race.condition = get_condition(race_setting['condition'])
+        race.grade = get_grade(race_setting['grade'])
         race.distance = race_setting['distance']
         race.save()
 

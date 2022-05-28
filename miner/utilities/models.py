@@ -13,7 +13,8 @@ from rawdat.models import (
     Grade,
     Straight_Wager,
     Dog,
-    Litter
+    Litter,
+    Condition
 )
 
 from miner.utilities.constants import (
@@ -457,6 +458,18 @@ def save_sex_and_color(dog, elements):
         save_color(dog, sex_and_color[1])
     except:
         pass
+
+def get_condition(race_condition):
+    print("get condition")
+    try:
+        condition = Condition.objects.get(name=race_condition)
+    except ObjectDoesNotExist:
+        condition = Condition(
+            name=race_condition
+        )
+        condition.set_fields_to_base()
+        condition.save()
+    return condition
 
 
 def get_color(name):
