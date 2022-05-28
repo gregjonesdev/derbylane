@@ -6,9 +6,10 @@ from miner.utilities.constants import (
     art_skips,
     post_weight,
     zero_lengths,
+    position_skips,
     length_converter,
     max_lengths)
-from miner.utilities.urls import build_dog_results_url
+from miner.utilities.urls import build_dog_results_url, build_race_results_url
 from miner.utilities.models import (
     get_race,
     get_grade,
@@ -121,19 +122,21 @@ def remove_bad_characters(string):
 def parse_position(raw_position):
     clean_position = remove_bad_characters(raw_position)
     if clean_position:
-        return int(clean_position[0])
+        if not clean_position in position_skips:
+            return int(clean_position[0])
 
 def get_final_and_lengths(text):
     split_text = text.split("-")
     final = None
     lengths_behind = None
     final = split_text[0]
-    if int(final) == 1:
-        lengths_behind = 0
-    elif len(split_text) > 1:
-        lengths_behind = split_text[1]
-        if lengths_behind in length_converter.keys():
-            lengths_behind = length_converter[lengths_behind]
+    if not final in position_skips:
+        if int(final) == 1:
+            lengths_behind = 0
+        elif len(split_text) > 1:
+            lengths_behind = split_text[1]
+            if lengths_behind in length_converter.keys():
+                lengths_behind = length_converter[lengths_behind]
     return [final, lengths_behind]
 
 def get_running_time(raw_time):
@@ -238,7 +241,7 @@ def update_race_condition(race, tds):
     try:
         race.condition = get_condition(parsed_setting[4])
     except IndexError:
-        print("215 Index Error:")
+        print("244 Index Error:")
         print(parsed_setting)
     race.save()
 
@@ -274,6 +277,26 @@ def save_straight_bets(race, trs):
             participant,
             "S",
             parsed_row[3])
+
+# ready for page refresh code
+# def process_race(race):
+#     chart = race.chart
+#     program = chart.program
+#     date = program.date
+#     url = build_race_results_url(
+#         program.venue.code,
+#         date.year,
+#         date.month,
+#         date.day,
+#         chart.time,
+#         race.number)
+
+def process_url(url, race, tds):
+    if len(tds) > 33:
+        save_race_settings(race, tds)
+        trs = get_node_elements(url, "//tr")
+        if len(tds) < 200:
+            return save_race_results(race, tds, trs)
 
 def save_race_results(race, tds, trs):
     parse_race_results(race, trs)

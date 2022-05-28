@@ -34,7 +34,7 @@ csv_columns = [
     # "RHF",
     "Fi",
 ]
-# focused_bets = ["EXACTA", "QUINELLA", "TRIFECTA", "SUPERFECTA"]
+focused_bets = ["EXACTA", "QUINELLA", "TRIFECTA", "SUPERFECTA"]
 race_conditions = [
  "F",
  "G",
@@ -70,7 +70,7 @@ length_converter = {
     "hd": 0.2,
     "ns": 0,
 }
-position_skips = ['.', '-', 'S', 'f', 'X', 'x', '0', 'O', 'N', '0', '+', 'D']
+position_skips = ['.', '-', 'S', 'f', 'X', 'x', '0', 'O', 'N', '0', '+', 'D', '\xa0X']
 art_skips = ['.', '-', 'F', 'X', '0', '+', 'D', 'OOP', 'DNF', '\xa0DNF']
 no_greyhound_names = ["NO+GREYHOUND", "NO GREYHOUND", "*", "[EMAIL PROTECTED]", "Cet Easi Eli"]
 user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"

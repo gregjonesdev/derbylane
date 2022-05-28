@@ -1,11 +1,12 @@
 import datetime
 
 from django.core.management.base import BaseCommand
-from miner.utilities.models import get_program
-from miner.utilities.scrape import scan_scheduled_charts
-from miner.utilities.weather import build_weather_from_forecast
+from miner.utilities.common import get_node_elements
+from miner.utilities.constants import chart_times
+from miner.utilities.models import get_program, get_race, get_chart
+from miner.utilities.new_scrape import process_url
 from rawdat.models import Program, Venue, CronJob
-
+from miner.utilities.urls import build_entries_url
 from rawdat.utilities.methods import get_date_from_ymd
 
 class Command(BaseCommand):
@@ -22,12 +23,11 @@ class Command(BaseCommand):
                 program = get_program(
                     venue,
                     formatted_date)
-                build_weather_from_forecast(program)
                 print("Scanning {} {}/{} Charts".format(
                     venue.name,
                     date.month,
                     date.day))
-                scan_scheduled_charts(venue, program)
+                self.scan_scheduled_charts(venue, program, date)
         new_job = CronJob(
             type="Scheduled"
         )
@@ -42,3 +42,21 @@ class Command(BaseCommand):
             dates.append(datetime.datetime.now() + offset)
             i += 1
         return dates
+
+    def scan_scheduled_charts(self, venue, program, program_date):
+        for time in chart_times:
+            number = 1
+            while number <= 30:
+                entries_url = build_entries_url(
+                    venue.code,
+                    program_date.year,
+                    program_date.month,
+                    program_date.day,
+                    time,
+                    number)
+                tds = get_node_elements(entries_url, "//td")
+                if len(tds) > 15:
+                    chart = get_chart(program, time)
+                    race = get_race(chart, number)
+                    process_url(entries_url, race, tds)
+                number +=1

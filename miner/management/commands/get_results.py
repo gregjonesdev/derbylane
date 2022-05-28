@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand
 
 from miner.utilities.common import get_node_elements
 from miner.utilities.scrape import single_url_test
+from miner.utilities.new_scrape import save_race_results
 from miner.utilities.urls import build_race_results_url
 from rawdat.models import Race, CronJob
 
@@ -31,8 +32,9 @@ class Command(BaseCommand):
                 date.day,
                 time,
                 race.number)
-            tds = get_node_elements(results_url, '//td')
-            single_url_test(results_url, tds, chart)
+            tds = get_node_elements(result÷s_url, '//td')
+            trs = get_node_elements(result÷s_url, '//tr')
+            save_race_results(race, tds, trs)
 
         new_job = CronJob(
             type="Results"
