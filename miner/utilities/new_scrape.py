@@ -58,19 +58,28 @@ def save_race_settings(race, td):
         print(parsed_setting)
     race.save()
 
+def get_exotic_bet_list(tds):
+    exotic_bet_list = []
+    for td in tds:
+        if len(td) == 3:
+            for each in td:
+                exotic_bet_list.append(each.text)
+    return exotic_bet_list
+
+
+def save_exotic_bets(race, tds):
+
+    exotic_bet_list = get_exotic_bet_list(tds)
+    print(race)
+    for exotic_bet in exotic_bet_list:
+        print(exotic_bet)
+    raise SystemExit(0)
+
 
 def save_race_results(race, tds):
     save_race_settings(race, tds[4])
-    # print(len(tds))
     if len(tds) >= 105:
-        for td in tds:
-            # print("{}: {}".format(tds.index(td), td.text))
-            if len(td) > 0:
-                print(tds.index(td))
-                print(td[0].text)
-        raise SystemExit(0)
-        # process exotics
-        pass
+        save_exotic_bets(race, tds)
     else:
-        print(len(tds))
+        print("TDS: {}".format(len(tds)))
         raise SystemExit(0)
