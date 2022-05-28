@@ -386,7 +386,13 @@ class Race(CoreModel):
     distance = models.IntegerField(
         choices=DISTANCE_CHOICES,
         null=True)
-    
+
+    def get_straight_predictions(self):
+        predictions = []
+        for participant in self.participant_set.all():
+            if participant.prediction:
+                predictions.append(participant.prediction)
+        return predictions
 
     def get_next(self):
         current_number = self.number
