@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-from miner.utilities.comments import no_elements
+from miner.utilities.comments import success
 from miner.utilities.common import get_attribute_elements, get_node_elements
 from miner.utilities.constants import bad_characters, art_skips, post_weight
 from miner.utilities.urls import build_dog_results_url
@@ -130,7 +130,6 @@ def get_running_time(raw_time):
     clean_time = remove_bad_characters(raw_time)
     return float(clean_time[0])
 
-
 def get_post_weight(dog_name, date):
     target_url = build_dog_results_url(dog_name)
     string_date = "{}".format(date)
@@ -176,20 +175,14 @@ def parse_race_results(race, tds):
         index += 10
 
 def parse_exotic_bet(race, split_text, tds):
-    print("parse exotic")
     payout = get_payout(split_text)
     posts_index =  get_posts_index(split_text)
     exotic_name = get_exotic_name(split_text, posts_index)
-    print(exotic_name)
     try:
         posts_list = get_posts_list(split_text, posts_index)
     except:
         posts_list = get_posts_from_race(exotic_name, race)
-    print(payout)
-    print(posts_list)
-    print(exotic_name)
     return [exotic_name, posts_list, payout]
-
 
 def save_exotic_bets(race, tds):
     for exotic_bet_text in get_exotic_bet_list(tds):
@@ -219,7 +212,7 @@ def update_race_condition(race, tds):
     try:
         race.condition = get_condition(parsed_setting[4])
     except IndexError:
-        print("Index Error:")
+        print("215 Index Error:")
         print(parsed_setting)
     race.save()
 
@@ -238,10 +231,7 @@ def get_parsed_bet_row(row):
             parsed_row.append(stripped_text if stripped_text else 0)
     return parsed_row
 
-
-
 def save_straight_bets(race, trs):
-    print("hey")
     for row in get_straight_bet_rows(trs):
         parsed_row = get_parsed_bet_row(row)
         print(parsed_row)
@@ -262,7 +252,7 @@ def save_straight_bets(race, trs):
     raise SystemExit(0)
 
 def save_race_results(race, tds, trs):
-    # parse_race_results(race, tds)
+    parse_race_results(race, tds)
     save_straight_bets(race, trs)
     update_race_condition(race, tds)
     if len(tds) >= 106:
@@ -270,3 +260,4 @@ def save_race_results(race, tds, trs):
     else:
         print("TDS: {}".format(len(tds)))
         raise SystemExit(0)
+    return success
