@@ -10,6 +10,7 @@ from miner.utilities.models import (
     update_participant,
     get_dog,
     get_participant,
+    create_straight_bet,
     create_exacta,
     create_quinella,
     create_trifecta,
@@ -222,10 +223,47 @@ def update_race_condition(race, tds):
         print(parsed_setting)
     race.save()
 
-def save_race_results(race, tds):
-    save_race_settings(race, tds)
-    parse_race_results(race, tds)
-    # save straight bets
+def get_straight_bet_rows(trs):
+    straight_bet_rows = []
+    for tr in trs:
+        if len(tr) == 5:
+            straight_bet_rows.append(tr)
+    return straight_bet_rows[1:]
+
+def get_parsed_bet_row(row):
+    parsed_row = []
+    for td in row:
+        if td.text:
+            stripped_text = td.text.strip()
+            parsed_row.append(stripped_text if stripped_text else 0)
+    return parsed_row
+
+
+
+def save_straight_bets(race, trs):
+    print("hey")
+    for row in get_straight_bet_rows(trs):
+        parsed_row = get_parsed_bet_row(row)
+        print(parsed_row)
+        dog = get_dog(parsed_row[0])
+        participant = get_participant(race, dog)
+        create_straight_bet(
+            participant,
+            "W",
+            parsed_row[1])
+        create_straight_bet(
+            participant,
+            "P",
+            parsed_row[2])
+        create_straight_bet(
+            participant,
+            "S",
+            parsed_row[3])
+    raise SystemExit(0)
+
+def save_race_results(race, tds, trs):
+    # parse_race_results(race, tds)
+    save_straight_bets(race, trs)
     update_race_condition(race, tds)
     if len(tds) >= 106:
         save_exotic_bets(race, tds)

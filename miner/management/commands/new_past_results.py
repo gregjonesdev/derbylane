@@ -10,7 +10,7 @@ from miner.utilities.common import get_node_elements
 from miner.utilities.constants import chart_times
 from miner.utilities.comments import no_elements
 from miner.utilities.models import get_program, get_chart, get_race
-from miner.utilities.new_scrape import save_race_results
+from miner.utilities.new_scrape import save_race_results, save_race_settings
 
 from rawdat.models import ScannedUrl, Venue
 
@@ -60,12 +60,13 @@ class Command(BaseCommand):
                 scan = self.get_scan(url)
                 if not scan.completed:
                     tds = get_node_elements(url, "//td")
-                    print(len(tds))
+                    trs = get_node_elements(url, "//tr")
                     if len(tds) > 15:
                         print(url)
                         race = get_race(chart, number)
                         if len(tds) > 33:
-                            comment = save_race_results(race, tds)
+                            save_race_settings(race, tds)
+                            comment = save_race_results(race, tds, trs)
 
                     else:
                         comment = no_elements

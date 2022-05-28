@@ -9,7 +9,8 @@ from rawdat.models import (
     Sizzle_Exacta,
     Sizzle_Trifecta,
     Sizzle_Superfecta,
-    # BetType,
+    StraightBetType,
+    Straight_Bet,
     Grade,
     Straight_Wager,
     Dog,
@@ -31,6 +32,23 @@ from miner.utilities.common import (
 from miner.utilities.urls import (
     build_dog_profile_url,
 )
+
+def create_straight_bet(participant, type_name, payout):
+    type = StraightBetType.objects.get(name=type_name)
+    try:
+        bet = Straight_Bet.objects.get(
+            type=type,
+            participant=participant,
+            payout=payout
+        )
+    except ObjectDoesNotExist:
+        bet = Straight_Bet(
+            type=type,
+            participant=participant,
+            payout=payout
+        )
+        bet.set_fields_to_base()
+        bet.save()
 
 
 
