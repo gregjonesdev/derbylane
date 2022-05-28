@@ -60,7 +60,7 @@ class Command(BaseCommand):
                 scan = self.get_scan(url)
                 if not scan.completed:
                     tds = get_node_elements(url, "//td")
-                    trs = get_node_elements(url, "//tr")
+                    trs = get_node_elements(url, "//tr")  
                     if len(tds) > 15:
                         print(url)
                         race = get_race(chart, number)

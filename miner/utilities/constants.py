@@ -68,6 +68,7 @@ length_converter = {
     "neck": 0.3,
     "head": 0.2,
     "hd": 0.2,
+    "ns": 0,
 }
 position_skips = ['.', '-', 'S', 'f', 'X', 'x', '0', 'O', 'N', '0', '+', 'D']
 art_skips = ['.', '-', 'F', 'X', '0', '+', 'D', 'OOP', 'DNF', '\xa0DNF']
