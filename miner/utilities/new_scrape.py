@@ -186,7 +186,7 @@ def parse_race_results(race, trs):
         post_weight = get_post_weight(
             dog_name,
             race.chart.program.date)
-        comment = tds[index+9].text.strip()
+        comment = row[9].text.strip()
         dog = get_dog(dog_name)
         update_participant(
             get_participant(race, dog),
