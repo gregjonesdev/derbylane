@@ -13,12 +13,92 @@ from rawdat.models import (
     Sizzle_Superfecta,
     Straight_Bet,
     Bet,
-    Straight_Wager)
+    Straight_Wager,
+    StraightBetType)
 
 
 from pww.models import Participant_Prediction
 
 class Command(BaseCommand):
+
+    def change_bets(self, bets):
+        for bet in bets:
+            try:
+                sizzle = Straight_Bet.objects.get(
+                    participant=bet.participant,
+                    type=bet.type
+                )
+            except ObjectDoesNotExist:
+                print("DNE")
+                sizzle = Straight_Bet(
+                    participant=bet.participant,
+                    type=bet.type,
+                    purchase_amount=bet.amount,
+                    payout=bet.get_return()
+                )
+                sizzle.set_fields_to_base()
+                sizzle.save()
+        print(Straight_Bet.objects.all().count())
+
+    def change_straight_wagers(self, wagers):
+        win_count = 0
+        place_count = 0
+        show_count = 0
+        for wager in wagers:
+            win_payout = 0
+            place_payout = 0
+            show_payout = 0
+            if wager.win:
+                win_payout = wager.win
+            if wager.place:
+                place_payout = wager.place
+            if wager.show:
+                show_payout = wager.show
+            try:
+                win_sizzle = Straight_Bet.objects.get(
+                    participant=wager.participant,
+                    type=StraightBetType.objects.get(name="W")
+                )
+            except ObjectDoesNotExist:
+                win_sizzle = Straight_Bet(
+                    participant=wager.participant,
+                    type=StraightBetType.objects.get(name="W")
+                )
+            win_sizzle.payout = win_payout
+            win_sizzle.set_fields_to_base()
+            win_sizzle.save()
+
+            try:
+                place_sizzle = Straight_Bet.objects.get(
+                    participant=wager.participant,
+                    type=StraightBetType.objects.get(name="P")
+                )
+            except ObjectDoesNotExist:
+                place_sizzle = Straight_Bet(
+                    participant=wager.participant,
+                    type=StraightBetType.objects.get(name="P")
+                )
+            place_sizzle.payout = place_payout
+            place_sizzle.set_fields_to_base()
+            place_sizzle.save()
+
+
+
+            try:
+                show_sizzle = Straight_Bet.objects.get(
+                    participant=wager.participant,
+                    type=StraightBetType.objects.get(name="S")
+                )
+            except ObjectDoesNotExist:
+                show_sizzle = Straight_Bet(
+                    participant=wager.participant,
+                    type=StraightBetType.objects.get(name="S")
+                )
+            show_sizzle.payout = show_payout
+            show_sizzle.set_fields_to_base()
+            show_sizzle.save()
+
+
 
     def change_quinellas(self, quinellas):
         for quinella in quinellas:
@@ -40,8 +120,8 @@ class Command(BaseCommand):
                 except ObjectDoesNotExist:
                     new_sizzle = Sizzle_Quinella(
                         race = race,
-                        left = quinella.right,
-                        right = quinella.left,
+                        left = quinella.left,
+                        right = quinella.right,
                         payout = payout
                     )
                     new_sizzle.set_fields_to_base()
@@ -101,7 +181,9 @@ class Command(BaseCommand):
         self.change_exactas(Exacta.objects.all())
         print(OldTrifecta.objects.all().count())
         self.change_trifectas(OldTrifecta.objects.all())
+        print(Bet.objects.all().count())
+        self.change_bets(Bet.objects.all())
+        self.change_straight_wagers(Straight_Wager.objects.all())
         # print(Superfecta.objects.all().count())
-        # print(Bet.objects.all().count())
         # print(Straight_Wager.objects.all().count())
         # print(Participant_Prediction.objects.all().count())
