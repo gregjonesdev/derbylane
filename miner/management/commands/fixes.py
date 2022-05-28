@@ -107,21 +107,21 @@ class Command(BaseCommand):
             try:
                 sizzle = Sizzle_Quinella.objects.get(
                     race = race,
-                    left = quinella.left,
-                    right = quinella.right
+                    left_post = quinella.left.post,
+                    right_post = quinella.right.post
                 )
             except ObjectDoesNotExist:
                 try:
                     sizzle = Sizzle_Quinella.objects.get(
                         race = race,
-                        left = quinella.right,
-                        right = quinella.left
+                        left_post = quinella.right.post,
+                        right_post = quinella.left.post
                     )
                 except ObjectDoesNotExist:
                     new_sizzle = Sizzle_Quinella(
                         race = race,
-                        left = quinella.left,
-                        right = quinella.right,
+                        left_post = quinella.left.post,
+                        right_post = quinella.right.post,
                         payout = payout
                     )
                     new_sizzle.set_fields_to_base()
@@ -135,14 +135,14 @@ class Command(BaseCommand):
             try:
                 sizzle = Sizzle_Exacta.objects.get(
                     race = race,
-                    win = exacta.win,
-                    place = exacta.place
+                    win_post = exacta.win.post,
+                    place_post = exacta.place.post
                 )
             except ObjectDoesNotExist:
                 new_sizzle = Sizzle_Exacta(
                     race = race,
-                    win = exacta.win,
-                    place = exacta.place,
+                    win_post = exacta.win.post,
+                    place_post = exacta.place.post,
                     payout = payout
                 )
                 new_sizzle.set_fields_to_base()
@@ -156,21 +156,46 @@ class Command(BaseCommand):
             try:
                 sizzle = Sizzle_Trifecta.objects.get(
                     race = race,
-                    win = trifecta.win,
-                    place = trifecta.place,
-                    show = trifecta.show
+                    win_post = trifecta.win.post,
+                    place_post = trifecta.place.post,
+                    show_post = trifecta.show.post
                 )
             except ObjectDoesNotExist:
                 new_sizzle = Sizzle_Trifecta(
                     race = race,
-                    win = trifecta.win,
-                    place = trifecta.place,
-                    show = trifecta.show,
+                    win_post = trifecta.win.post,
+                    place_post = trifecta.place.post,
+                    show_post = trifecta.show.post,
                     payout = payout
                 )
                 new_sizzle.set_fields_to_base()
                 new_sizzle.save()
         print(Sizzle_Trifecta.objects.all().count())
+
+    def change_superfectas(self, superfectas):
+        for superfecta in superfectas:
+            race = superfecta.win.race
+            payout = superfecta.payout
+            try:
+                sizzle = Sizzle_Superfecta.objects.get(
+                    race = race,
+                    win_post = superfecta.win.post,
+                    place_post = superfecta.place.post,
+                    show_post = superfecta.show.post,
+                    fourth_post = superfecta.take.post
+                )
+            except ObjectDoesNotExist:
+                new_sizzle = Sizzle_Superfecta(
+                    race = race,
+                    win_post = superfecta.win.post,
+                    place_post = superfecta.place.post,
+                    show_post = superfecta.show.post,
+                    fourth_post = superfecta.take.post,
+                    payout = payout
+                )
+                new_sizzle.set_fields_to_base()
+                new_sizzle.save()
+        print(Sizzle_Superfecta.objects.all().count())
 
 
 
@@ -184,6 +209,7 @@ class Command(BaseCommand):
         print(Bet.objects.all().count())
         self.change_bets(Bet.objects.all())
         self.change_straight_wagers(Straight_Wager.objects.all())
-        # print(Superfecta.objects.all().count())
+        print(Superfecta.objects.all().count())
+        self.change_superfectas(Superfecta.objects.all())
         # print(Straight_Wager.objects.all().count())
         # print(Participant_Prediction.objects.all().count())

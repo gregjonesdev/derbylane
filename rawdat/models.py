@@ -591,18 +591,15 @@ class Sizzle_Trifecta(Sizzle_Bet):
     race = models.ForeignKey(
         Race,
         on_delete=models.CASCADE)
-    win = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='sizzle_trifecta_win')
-    place = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='sizzle_trifecta_place')
-    show = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='sizzle_trifecta_show')
+    win_post = models.IntegerField(
+        null=True
+    )
+    place_post = models.IntegerField(
+        null=True
+    )
+    show_post = models.IntegerField(
+        null=True
+    )
 
 
 class Sizzle_Superfecta(Sizzle_Bet):
@@ -610,22 +607,18 @@ class Sizzle_Superfecta(Sizzle_Bet):
     race = models.ForeignKey(
         Race,
         on_delete=models.CASCADE)
-    win = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='sizzle_superfecta_win')
-    place = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='sizzle_superfecta_place')
-    show = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='sizzle_superfecta_show')
-    fourth = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='sizzle_superfecta_fourth')
+    win_post = models.IntegerField(
+        null=True
+    )
+    place_post = models.IntegerField(
+        null=True
+    )
+    show_post = models.IntegerField(
+        null=True
+    )
+    fourth_post = models.IntegerField(
+        null=True
+    )
 
 
 class Sizzle_Quinella(Sizzle_Bet):
@@ -633,14 +626,12 @@ class Sizzle_Quinella(Sizzle_Bet):
     race = models.ForeignKey(
         Race,
         on_delete=models.CASCADE)
-    left = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='sizzle_quinella_left')
-    right = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='sizzle_quinella_right')
+    left_post = models.IntegerField(
+        null=True
+    )
+    right_post = models.IntegerField(
+        null=True
+    )
 
 
 class Sizzle_Exacta(Sizzle_Bet):
@@ -648,14 +639,12 @@ class Sizzle_Exacta(Sizzle_Bet):
     race = models.ForeignKey(
         Race,
         on_delete=models.CASCADE)
-    win = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='sizzle_exacta_win')
-    place = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='sizzle_exacta_place')
+    win_post = models.IntegerField(
+        null=True
+    )
+    place_post = models.IntegerField(
+        null=True
+    )
 
 
 class Bet(CoreModel):
