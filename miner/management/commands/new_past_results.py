@@ -1,16 +1,18 @@
 import sys
-from concurrent.futures import ThreadPoolExecutor
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
-from miner.utilities.models import get_program, get_chart, get_race
-from rawdat.models import ScannedUrl, Venue
+
+from concurrent.futures import ThreadPoolExecutor
 
 from miner.utilities.urls import build_race_results_url
 from miner.utilities.common import get_node_elements
 from miner.utilities.constants import chart_times
 from miner.utilities.comments import no_elements
+from miner.utilities.models import get_program, get_chart, get_race
+from miner.utilities.new_scrape import save_race_results
 
-from miner.utilities.new_scrape import save_race_results, parse_race_setting
+from rawdat.models import ScannedUrl, Venue
 
 class Command(BaseCommand):
 
