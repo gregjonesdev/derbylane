@@ -9,7 +9,11 @@ from miner.utilities.models import (
     get_condition,
     update_participant,
     get_dog,
-    get_participant)
+    get_participant,
+    create_exacta,
+    create_quinella,
+    create_trifecta,
+    create_superfecta)
 
 def remove_line_breaks(text):
     return text.replace("\n", "")
@@ -35,7 +39,7 @@ def get_parsed_race_setting(race_number, tds):
     return unspaced_text.split()
 
 def save_race_settings(race, tds):
-    parsed_setting = get_parsed_race_setting(race.number, td)
+    parsed_setting = get_parsed_race_setting(race.number, tds)
     try:
         race.grade = get_grade(parsed_setting[2])
         race.distance = get_race_distance(parsed_setting[3])
@@ -210,7 +214,7 @@ def get_race_setting_index(race_number, tds):
                 return tds.index(td)
 
 def update_race_condition(race, tds):
-    parsed_setting = get_parsed_race_setting(race.number, td)
+    parsed_setting = get_parsed_race_setting(race.number, tds)
     try:
         race.condition = get_condition(parsed_setting[4])
     except IndexError:

@@ -5,10 +5,10 @@ from rawdat.models import (
     Program,
     Race,
     Participant,
-    Quiniela,
-    Exacta,
-    Winning_Trifecta,
-    Superfecta,
+    Sizzle_Quinella,
+    Sizzle_Exacta,
+    Sizzle_Trifecta,
+    Sizzle_Superfecta,
     # BetType,
     Grade,
     Straight_Wager,
@@ -36,13 +36,13 @@ from miner.utilities.urls import (
 
 def create_quinella(race, posts, payout):
     try:
-        bet = Sizzle_Quiniela.objects.get(
+        bet = Sizzle_Quinella.objects.get(
             race=race,
             left_post__in=posts,
             right_post__in=posts
         )
     except ObjectDoesNotExist:
-        new_bet = Sizzle_Quiniela(
+        new_bet = Sizzle_Quinella(
             race=race,
             left_post=posts[0],
             right_post=posts[1]
