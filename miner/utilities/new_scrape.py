@@ -1,8 +1,15 @@
+from django.core.exceptions import ObjectDoesNotExist
+from miner.utilities.comments import no_elements
 from miner.utilities.common import get_attribute_elements, get_node_elements
 from miner.utilities.constants import bad_characters, art_skips
-from miner.utilities.comments import no_elements
-from miner.utilities.models import get_race, get_grade, get_condition
-from django.core.exceptions import ObjectDoesNotExist
+from miner.utilities.urls import build_dog_results_url
+from miner.utilities.models import (
+    get_race,
+    get_grade,
+    get_condition,
+    update_participant,
+    get_dog,
+    get_participant)
 
 def remove_line_breaks(text):
     return text.replace("\n", "")
@@ -19,16 +26,16 @@ def get_race_number(race_number):
 def get_race_distance(race_distance):
     return(int(race_distance))
 
-def parse_race_setting(td):
+def get_parsed_race_setting(race_number, tds):
+    race_setting_index = get_race_setting_index(race_number, tds)
+    td = tds[race_setting_index]
     single_line_text = remove_line_breaks(td.text)
     untabbed_text = remove_tabs(single_line_text)
     unspaced_text = remove_extra_spaces(untabbed_text)
     return unspaced_text.split()
 
 def save_race_settings(race, tds):
-    race_setting_index = get_race_setting_index(race.number, tds)
-    td = tds[race_setting_index]
-    parsed_setting = parse_race_setting(td)
+    parsed_setting = get_parsed_race_setting(race.number, td)
     try:
         race.grade = get_grade(parsed_setting[2])
         race.distance = get_race_distance(parsed_setting[3])
@@ -68,8 +75,21 @@ def get_exotic_name(split_text, posts_index):
     else:
         return type_text[0]
 
-def get_posts_from_table(tds):
-    print("get posts from table")
+def get_posts_from_race(exotic_name, race):
+    if exotic_name == "SUPERFECTA":
+        posts_required = 4
+    elif exotic_name == "TRIFECTA":
+        posts_required = 3
+    else:
+        posts_required = 2
+    posts = []
+    i = 1
+    while i <= posts_required:
+        for participant in race.participant_set.all():
+            if participant.final == i:
+                posts.append(participant.post)
+        i += 1
+    return posts
 
 def get_posts_list(split_text, posts_index):
     posts_list = []
@@ -106,50 +126,81 @@ def get_running_time(raw_time):
     return float(clean_time[0])
 
 
-def parse_exotic_bets(split_text, tds):
+def get_post_weight(dog_name, date):
+    target_url = build_dog_results_url(dog_name)
+    string_date = "{}".format(date)
+    entries = get_node_elements(target_url, '//tr')
+    for entry in entries:
+        date = entry[0][0].text.strip().split()[0]
+        if date == string_date:
+            try:
+                float_weight = float(entry[5].text.strip())
+                if 20 < float_weight < 90:
+                    return float_weight
+            except:
+                return None
+
+def parse_race_results(race, tds):
+    index = 36
+    while index <= 106:
+        dog_name = parse_dog_name(tds[index][0].text)
+        post = parse_position(tds[index + 1].text)
+        off = parse_position(tds[index + 2].text)
+        eighth = parse_position(tds[index + 3].text)
+        straight = parse_position(tds[index + 4].text)
+        final_and_lengths = get_final_and_lengths(tds[index + 5].text)
+        final = parse_position(final_and_lengths[0])
+        lengths_behind = float(final_and_lengths[1])
+        actual_running_time = get_running_time(tds[index + 6].text)
+        post_weight = get_post_weight(
+            dog_name,
+            race.chart.program.date)
+        comment = tds[index+9].text.strip()
+        dog = get_dog(dog_name)
+        update_participant(
+            get_participant(race, dog),
+            post_weight,
+            post,
+            off,
+            eighth,
+            straight,
+            final,
+            actual_running_time,
+            lengths_behind,
+            comment)
+        index += 10
+
+def parse_exotic_bet(race, split_text, tds):
     print("parse exotic")
     payout = get_payout(split_text)
     posts_index =  get_posts_index(split_text)
     exotic_name = get_exotic_name(split_text, posts_index)
-    #try
-    posts_list = get_posts_list(split_text, posts_index)
-    #except
-    # get_posts_from_table(tds)
-    index = 36
+    print(exotic_name)
+    try:
+        posts_list = get_posts_list(split_text, posts_index)
+    except:
+        posts_list = get_posts_from_race(exotic_name, race)
+    print(payout)
+    print(posts_list)
+    print(exotic_name)
+    return [exotic_name, posts_list, payout]
 
-    while index <= 106:
-        dog_name = parse_dog_name(tds[index][0].text)
-        print(dog_name)
-        post = parse_position(tds[index + 1].text)
-        print(post)
-        off = parse_position(tds[index + 2].text)
-        print(off)
-        eighth = parse_position(tds[index + 3].text)
-        print(eighth)
-        straight = parse_position(tds[index + 4].text)
-        print(straight)
-        final_and_lengths = get_final_and_lengths(tds[index + 5].text)
-        final = parse_position(final_and_lengths[0])
-        print(final)
-        lengths_behind = float(final_and_lengths[1])
-        print(lengths_behind)
-        actual_running_time = get_running_time(tds[index + 6].text)
-        print(actual_running_time)
-        index += 10
-
-
-    # for td in tds:
-    #     if len(td) > 0 and td[0].text:
-    #         print(len(td[0].text))
-    #         print("{}: {}".format(tds.index(td), td.text))
-    raise SystemExit(0)
-    # print(payout)
-    # print(posts_list)
-    # print(exotic_name)
 
 def save_exotic_bets(race, tds):
     for exotic_bet_text in get_exotic_bet_list(tds):
-        parse_exotic_bets(exotic_bet_text.split(), tds)
+        exotic_bet_data = parse_exotic_bet(
+            race,
+            exotic_bet_text.split(),
+            tds)
+        exotic_name = exotic_bet_data[0]
+        if exotic_name == "TRIFECTA":
+            pass
+        elif exotic_name == "SUPERFECTA":
+            pass
+        elif exotic_name == "QUINELLA":
+            pass
+        elif exotic_name == "EXACTA":
+            pass
 
 def get_race_setting_index(race_number, tds):
     for td in tds:
@@ -158,9 +209,20 @@ def get_race_setting_index(race_number, tds):
             if "race" in text and str(race_number) in text:
                 return tds.index(td)
 
+def update_race_condition(race, tds):
+    parsed_setting = get_parsed_race_setting(race.number, td)
+    try:
+        race.condition = get_condition(parsed_setting[4])
+    except IndexError:
+        print("Index Error:")
+        print(parsed_setting)
+    race.save()
 
 def save_race_results(race, tds):
     save_race_settings(race, tds)
+    parse_race_results(race, tds)
+    # save straight bets
+    update_race_condition(race, tds)
     if len(tds) >= 106:
         save_exotic_bets(race, tds)
     else:

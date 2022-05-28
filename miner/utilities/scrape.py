@@ -95,7 +95,7 @@ def get_post_weight(dog_name, date):
     target_url = build_dog_results_url(dog_name)
     string_date = "{}".format(date)
     # entries = get_node_elements(target_url, '//td[@class="raceline"]')
-    entries = get_attribute_elements(target_url, 'td', 'class', 'raceline')
+    # entries = get_attribute_elements(target_url, 'td', 'class', 'raceline')
     entries = get_node_elements(target_url, '//tr')
     for entry in entries:
         date = entry[0][0].text.strip().split()[0]
