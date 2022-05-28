@@ -44,7 +44,10 @@ race_conditions = [
  "W"
 ]
 
-
+post_weight = {
+    "min": 20,
+    "max": 99,
+}
 
 
 dogname_corrections = {

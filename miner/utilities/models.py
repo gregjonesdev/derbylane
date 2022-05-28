@@ -34,34 +34,23 @@ from miner.utilities.urls import (
 
 
 
-def create_quiniela(race, posts, cost, payout):
-    # print("create quin")
-    if posts[0].isnumeric() and posts[1].isnumeric():
-        # print("{} is numeric".format(posts[0]))
-        # print("{} is numeric".format(posts[1]))
-        entrants = [
-            get_participant_from_post(race, int(posts[0])),
-            get_participant_from_post(race, int(posts[1]))
-            ]
-        try:
-            bet = Quiniela.objects.get(
-                race=race,
-                left__in=entrants,
-                right__in=entrants
-            )
-        except ObjectDoesNotExist:
-            new_bet = Quiniela(
-                race=race,
-                left=entrants[0],
-                right=entrants[1]
-            )
-            new_bet.set_fields_to_base()
-            bet = new_bet
-        if cost:
-            bet.cost = cost
-        if payout:
-            bet.payout = payout
-        bet.save()
+def create_quinella(race, posts, payout):
+    try:
+        bet = Sizzle_Quiniela.objects.get(
+            race=race,
+            left_post__in=posts,
+            right_post__in=posts
+        )
+    except ObjectDoesNotExist:
+        new_bet = Sizzle_Quiniela(
+            race=race,
+            left_post=posts[0],
+            right_post=posts[1]
+        )
+        new_bet.set_fields_to_base()
+        bet = new_bet
+    bet.payout = payout
+    bet.save()
 
 
 def get_participant_from_post(race, post):
@@ -77,87 +66,68 @@ def get_participant_from_post(race, post):
         raise SystemExit(0)
 
 
-def create_exacta(race, posts, cost, payout):
-    if posts[0].isnumeric() and posts[1].isnumeric():
-        win = get_participant_from_post(race, int(posts[0]))
-        place = get_participant_from_post(race, int(posts[1]))
-        try:
-            bet = Exacta.objects.get(
-                race=race,
-                win=win,
-                place=place,
-            )
-        except ObjectDoesNotExist:
-            new_bet = Exacta(
-                race=race,
-                win=win,
-                place=place,
-            )
-            new_bet.set_fields_to_base()
-            bet = new_bet
-        if cost:
-            bet.cost = cost
-        if payout:
-            bet.payout = payout
-        bet.save()
+def create_exacta(race, posts, payout):
+    try:
+        bet = Sizzle_Exacta.objects.get(
+            race=race,
+            win_post=posts[0],
+            place_post=posts[1],
+        )
+    except ObjectDoesNotExist:
+        new_bet = Sizzle_Exacta(
+            race=race,
+            win_post=posts[0],
+            place_post=posts[1],
+        )
+        new_bet.set_fields_to_base()
+        bet = new_bet
+    bet.payout = payout
+    bet.save()
 
 
 
 
-def create_trifecta(race, posts, cost, payout):
-    if posts[0].isnumeric() and posts[1].isnumeric() and posts[2].isnumeric():
-        win = get_participant_from_post(race, int(posts[0]))
-        place = get_participant_from_post(race, int(posts[1]))
-        show = get_participant_from_post(race, int(posts[2]))
-        try:
-            bet = Winning_Trifecta.objects.get(
-                race=race,
-                win=win,
-                place=place,
-                show=show
-            )
-        except ObjectDoesNotExist:
-            new_bet = Winning_Trifecta(
-                race=race,
-                win=win,
-                place=place,
-                show=show
-            )
-            new_bet.set_fields_to_base()
-            bet = new_bet
-        if payout:
-            bet.payout = payout
-        bet.save()
+def create_trifecta(race, posts, payout):
+    try:
+        bet = Sizzle_Trifecta.objects.get(
+            race=race,
+            win_post=posts[0],
+            place_post=posts[1],
+            show_post=posts[2],
+        )
+    except ObjectDoesNotExist:
+        new_bet = Sizzle_Trifecta(
+            race=race,
+            win_post=posts[0],
+            place_post=posts[1],
+            show_post=posts[2],
+        )
+        new_bet.set_fields_to_base()
+        bet = new_bet
+    bet.payout = payout
+    bet.save()
 
-def create_superfecta(race, posts, cost, payout):
-    if posts[0].isnumeric() and posts[1].isnumeric() and posts[2].isnumeric() and posts[3].isnumeric():
-        win = get_participant_from_post(race, int(posts[0]))
-        place = get_participant_from_post(race, int(posts[1]))
-        show = get_participant_from_post(race, int(posts[2]))
-        take = get_participant_from_post(race, int(posts[3]))
-        try:
-            bet = Superfecta.objects.get(
-                race=race,
-                win=win,
-                place=place,
-                show=show,
-                take=take
-            )
-        except ObjectDoesNotExist:
-            new_bet = Superfecta(
-                race=race,
-                win=win,
-                place=place,
-                show=show,
-                take=take
-            )
-            new_bet.set_fields_to_base()
-            bet = new_bet
-        if cost:
-            bet.cost = cost
-        if payout:
-            bet.payout = payout
-        bet.save()
+def create_superfecta(race, posts, payout):
+    try:
+        bet = Sizzle_Superfecta.objects.get(
+            race=race,
+            win_post=posts[0],
+            place_post=posts[1],
+            show_post=posts[2],
+            fourth_post=posts[3],
+        )
+    except ObjectDoesNotExist:
+        new_bet = Sizzle_Superfecta(
+            race=race,
+            win_post=posts[0],
+            place_post=posts[1],
+            show_post=posts[2],
+            fourth_post=posts[3],
+        )
+        new_bet.set_fields_to_base()
+        bet = new_bet
+    bet.payout = payout
+    bet.save()
 
 
 def get_parent_name(url, class_attr):
@@ -285,16 +255,6 @@ def update_participant(
     actual_running_time,
     lengths_behind,
     comment):
-    # print(participant.dog.name)
-    # print(post_weight)
-    # print(post)
-    # print(off)
-    # print(eighth)
-    # print(straight)
-    # print(final)
-    # print(actual_running_time)
-    # print(lengths_behind)
-    # print(comment)
 
     if post_weight:
         participant.post_weight = post_weight

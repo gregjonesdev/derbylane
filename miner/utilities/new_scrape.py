@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from miner.utilities.comments import no_elements
 from miner.utilities.common import get_attribute_elements, get_node_elements
-from miner.utilities.constants import bad_characters, art_skips
+from miner.utilities.constants import bad_characters, art_skips, post_weight
 from miner.utilities.urls import build_dog_results_url
 from miner.utilities.models import (
     get_race,
@@ -135,7 +135,7 @@ def get_post_weight(dog_name, date):
         if date == string_date:
             try:
                 float_weight = float(entry[5].text.strip())
-                if 20 < float_weight < 90:
+                if post_weight["min"] < float_weight < post_weight["max"]:
                     return float_weight
             except:
                 return None
@@ -194,13 +194,13 @@ def save_exotic_bets(race, tds):
             tds)
         exotic_name = exotic_bet_data[0]
         if exotic_name == "TRIFECTA":
-            pass
+            create_trifecta(race, exotic_bet_data[1], exotic_bet_data[2])
         elif exotic_name == "SUPERFECTA":
-            pass
+            create_superfecta(race, exotic_bet_data[1], exotic_bet_data[2])
         elif exotic_name == "QUINELLA":
-            pass
+            create_quinella(race, exotic_bet_data[1], exotic_bet_data[2])
         elif exotic_name == "EXACTA":
-            pass
+            create_exacta(race, exotic_bet_data[1], exotic_bet_data[2])
 
 def get_race_setting_index(race_number, tds):
     for td in tds:
