@@ -56,23 +56,6 @@
     {% endif %}
   </div>
 
-  <!-- <div id="summary-card" class="card">
-
-      <span style="font-style: italic">At a Glance
-        <button
-          type="button"
-          class="btn btn-outline-secondary btn-sm float-right">
-          <img
-          src="{% static 'img/transaction.png' %}"
-          style="display:inline"
-          height=20
-          width=20
-          class="float-right"
-          alt="transaction-icon">
-        </button>
-
-      </span>
-  </div> -->
   {% if charts|length %}
     <div
       id="charts-holder"
@@ -104,7 +87,7 @@
   {% else %}
     <div
       id="empty-charts-div">
-      No {{ content_type }} Today
+      No Charts Today
     </div>
   {% endif %}
 

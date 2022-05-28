@@ -80,19 +80,18 @@ class FrontPage(LoginRequiredMixin, View):
             else:
                 next_date = (target_day + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 
-        displayed_charts = []
-        if target_day < today:
-            content_type = "Bets"
-            for chart in Chart.objects.filter(program__date=target_day):
-                if chart.has_bets():
-                    displayed_charts.append(chart)
-        else:
-            content_type = "Predictions"
-            for chart in Chart.objects.filter(
-                program__date=target_day).order_by(
-                chart_sort):
-                if chart.has_predictions():
-                    displayed_charts.append(chart)
+        displayed_charts = Chart.objects.filter(program__date=target_day)
+        # if target_day < today:
+        #     content_type = "Bets"
+        #     for chart in Chart.objects.filter(program__date=target_day):
+        #         if chart.has_bets():
+        #             displayed_charts.append(chart)
+        # else:
+        #     for chart in Chart.objects.filter(
+        #         program__date=target_day).order_by(
+        #         chart_sort):
+        #         if chart.has_predictions():
+        #             displayed_charts.append(chart)
 
         if target_day.year < today.year:
             date_header = target_day.strftime("%a, %b %-d, %Y")
@@ -107,7 +106,6 @@ class FrontPage(LoginRequiredMixin, View):
         self.context["date_header"] = date_header
         self.context["datestring"] = datestring
         self.context["charts"] = displayed_charts
-        self.context["content_type"] = content_type
         return render(request, self.template_name, self.context)
 
 

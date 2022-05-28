@@ -219,6 +219,7 @@ class Chart(CoreModel):
     )
     is_cancelled = models.BooleanField(default=False)
 
+
     def kiosk_time(self):
         if self.time == 'A':
             if self.program.venue.code == 'WD':
@@ -385,6 +386,7 @@ class Race(CoreModel):
     distance = models.IntegerField(
         choices=DISTANCE_CHOICES,
         null=True)
+    
 
     def get_next(self):
         current_number = self.number

@@ -47,7 +47,6 @@ window.onload = (event) => {
       },
       success: function(data) {
         $("#bets").html(data)
-        const bets_container =   document.getElementById("bets")
         document.getElementById("chart-label").textContent = label
       }
     })
@@ -83,6 +82,7 @@ window.onload = (event) => {
 
   }
 
-  load_bets()
+  // load_bets()
+
 
 };
