@@ -12,7 +12,7 @@ from rawdat.models import (
     Sizzle_Trifecta,
     Sizzle_Superfecta,
     Straight_Bet,
-    Bet
+    Bet,
     Straight_Wager)
 
 
@@ -23,7 +23,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print(Quiniela.objects.all().count())
         print(Exacta.objects.all().count())
-        print(Trifecta.objects.all().count())
+        print(OldTrifecta.objects.all().count())
         print(Superfecta.objects.all().count())
         print(Bet.objects.all().count())
         print(Straight_Wager.objects.all().count())
