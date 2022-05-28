@@ -1,7 +1,13 @@
 from django.core.exceptions import ObjectDoesNotExist
 from miner.utilities.comments import success
 from miner.utilities.common import get_attribute_elements, get_node_elements
-from miner.utilities.constants import bad_characters, art_skips, post_weight
+from miner.utilities.constants import (
+    bad_characters,
+    art_skips,
+    post_weight,
+    zero_lengths,
+    length_converter,
+    max_lengths)
 from miner.utilities.urls import build_dog_results_url
 from miner.utilities.models import (
     get_race,
@@ -119,11 +125,15 @@ def parse_position(raw_position):
 
 def get_final_and_lengths(text):
     split_text = text.split("-")
+    final = None
+    lengths_behind = None
     final = split_text[0]
     if int(final) == 1:
         lengths_behind = 0
-    else:
+    elif len(split_text) > 1:
         lengths_behind = split_text[1]
+        if lengths_behind in length_converter.keys():
+            lengths_behind = length_converter[lengths_behind]
     return [final, lengths_behind]
 
 def get_running_time(raw_time):
@@ -234,7 +244,6 @@ def get_parsed_bet_row(row):
 def save_straight_bets(race, trs):
     for row in get_straight_bet_rows(trs):
         parsed_row = get_parsed_bet_row(row)
-        print(parsed_row)
         dog = get_dog(parsed_row[0])
         participant = get_participant(race, dog)
         create_straight_bet(
@@ -249,7 +258,6 @@ def save_straight_bets(race, trs):
             participant,
             "S",
             parsed_row[3])
-    raise SystemExit(0)
 
 def save_race_results(race, tds, trs):
     parse_race_results(race, tds)

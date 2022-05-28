@@ -287,7 +287,7 @@ def update_participant(
     if final:
         participant.final = final
     if lengths_behind:
-        participant.lengths_behind = lengths_behind
+        participant.lengths_behind = float(lengths_behind)
     if actual_running_time:
         participant.actual_running_time = actual_running_time
     if comment:
@@ -432,7 +432,6 @@ def save_sex_and_color(dog, elements):
         pass
 
 def get_condition(race_condition):
-    print("get condition")
     try:
         condition = Condition.objects.get(name=race_condition)
     except ObjectDoesNotExist:

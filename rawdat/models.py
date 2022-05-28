@@ -286,7 +286,7 @@ class Grade(CoreModel):
     )
     value = models.IntegerField(
         null=True
-    )
+    )   
 
 class Condition(CoreModel):
 

@@ -34,7 +34,7 @@ csv_columns = [
     # "RHF",
     "Fi",
 ]
-focused_bets = ["EXACTA", "QUINELLA", "TRIFECTA", "SUPERFECTA"]
+# focused_bets = ["EXACTA", "QUINELLA", "TRIFECTA", "SUPERFECTA"]
 race_conditions = [
  "F",
  "G",
@@ -57,6 +57,18 @@ dogname_corrections = {
 cost = 2.0
 raw_types = ["WIN", "PLACE", "SHOW"]
 grade_skips = ["--"]
+zero_lengths = []
+max_lengths = []
+
+#Distances under a length are recorded as follows: Nose = 0.05 of a length,
+#Short head = 0.1 of a length, head = 0.2 of a length, neck = 0.3 of a length,
+#half a length = 0.5 of a length, three-quarters of a length = 0.75 of a length.
+length_converter = {
+    "nk": 0.3,
+    "neck": 0.3,
+    "head": 0.2,
+    "hd": 0.2,
+}
 position_skips = ['.', '-', 'S', 'f', 'X', 'x', '0', 'O', 'N', '0', '+', 'D']
 art_skips = ['.', '-', 'F', 'X', '0', '+', 'D', 'OOP', 'DNF', '\xa0DNF']
 no_greyhound_names = ["NO+GREYHOUND", "NO GREYHOUND", "*", "[EMAIL PROTECTED]", "Cet Easi Eli"]
