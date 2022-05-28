@@ -1,5 +1,5 @@
 from miner.utilities.common import get_attribute_elements, get_node_elements
-
+from miner.utilities.constants import bad_characters, art_skips
 from miner.utilities.comments import no_elements
 from miner.utilities.models import get_race, get_grade, get_condition
 from django.core.exceptions import ObjectDoesNotExist
@@ -78,6 +78,32 @@ def get_posts_list(split_text, posts_index):
         posts_list.append(int(post))
     return posts_list
 
+def parse_dog_name(raw_name):
+    return raw_name.strip().upper()
+
+def remove_bad_characters(string):
+    for character in bad_characters:
+        string = string.replace(character, "")
+    return string
+
+
+def parse_position(raw_position):
+    clean_position = remove_bad_characters(raw_position)
+    if clean_position:
+        return int(clean_position[0])
+
+def get_final_and_lengths(text):
+    split_text = text.split("-")
+    final = split_text[0]
+    if int(final) == 1:
+        lengths_behind = 0
+    else:
+        lengths_behind = split_text[1]
+    return [final, lengths_behind]
+
+def get_running_time(raw_time):
+    clean_time = remove_bad_characters(raw_time)
+    return float(clean_time[0])
 
 
 def parse_exotic_bets(split_text, tds):
@@ -92,14 +118,23 @@ def parse_exotic_bets(split_text, tds):
     index = 36
 
     while index <= 106:
-        print(tds[index][0].text)
-        print(tds[index + 1].text)
-        print(tds[index + 2].text)
-        print(tds[index + 3].text)
-        print(tds[index + 4].text)
-        print(tds[index + 5].text)
-        print(tds[index + 6].text)
-        print(tds[index + 7].text)
+        dog_name = parse_dog_name(tds[index][0].text)
+        print(dog_name)
+        post = parse_position(tds[index + 1].text)
+        print(post)
+        off = parse_position(tds[index + 2].text)
+        print(off)
+        eighth = parse_position(tds[index + 3].text)
+        print(eighth)
+        straight = parse_position(tds[index + 4].text)
+        print(straight)
+        final_and_lengths = get_final_and_lengths(tds[index + 5].text)
+        final = parse_position(final_and_lengths[0])
+        print(final)
+        lengths_behind = float(final_and_lengths[1])
+        print(lengths_behind)
+        actual_running_time = get_running_time(tds[index + 6].text)
+        print(actual_running_time)
         index += 10
 
 
@@ -126,7 +161,7 @@ def get_race_setting_index(race_number, tds):
 
 def save_race_results(race, tds):
     save_race_settings(race, tds)
-    if len(tds) >= 105:
+    if len(tds) >= 106:
         save_exotic_bets(race, tds)
     else:
         print("TDS: {}".format(len(tds)))
