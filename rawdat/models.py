@@ -390,8 +390,8 @@ class Race(CoreModel):
     def get_straight_predictions(self):
         predictions = []
         for participant in self.participant_set.all():
-            if participant.prediction:
-                predictions.append(participant.prediction)
+            if participant.participant_prediction:
+                predictions.append(participant.participant_prediction)
         return predictions
 
     def get_next(self):

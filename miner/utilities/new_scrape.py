@@ -32,7 +32,6 @@ def save_race_settings(race, tds):
     try:
         race.grade = get_grade(parsed_setting[2])
         race.distance = get_race_distance(parsed_setting[3])
-        # race.condition = get_condition(parsed_setting[4])
     except IndexError:
         print("Index Error:")
         print(parsed_setting)
@@ -82,6 +81,7 @@ def get_posts_list(split_text, posts_index):
 
 
 def parse_exotic_bets(split_text, tds):
+    print("parse exotic")
     payout = get_payout(split_text)
     posts_index =  get_posts_index(split_text)
     exotic_name = get_exotic_name(split_text, posts_index)
@@ -89,6 +89,25 @@ def parse_exotic_bets(split_text, tds):
     posts_list = get_posts_list(split_text, posts_index)
     #except
     # get_posts_from_table(tds)
+    index = 36
+
+    while index <= 106:
+        print(tds[index][0].text)
+        print(tds[index + 1].text)
+        print(tds[index + 2].text)
+        print(tds[index + 3].text)
+        print(tds[index + 4].text)
+        print(tds[index + 5].text)
+        print(tds[index + 6].text)
+        print(tds[index + 7].text)
+        index += 10
+
+
+    # for td in tds:
+    #     if len(td) > 0 and td[0].text:
+    #         print(len(td[0].text))
+    #         print("{}: {}".format(tds.index(td), td.text))
+    raise SystemExit(0)
     # print(payout)
     # print(posts_list)
     # print(exotic_name)

@@ -1,4 +1,4 @@
-from pww.models import Metric, Prediction
+from pww.models import Metric, Participant_Prediction
 import datetime
 from rawdat.models import Participant
 from django.core.exceptions import ObjectDoesNotExist

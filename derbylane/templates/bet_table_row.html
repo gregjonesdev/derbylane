@@ -1,4 +1,4 @@
-{% extends 'bet_table.html' %}
+<!-- {% extends 'bet_table.html' %}
 
 
 {% block table_head %}
@@ -19,36 +19,8 @@ colspan="5">
 
 </button>
 
-{% if race.get_exotic_bets %}
-<div id="exotic-wagers-{{ race.uuid }}" style="margin-top: 10px; border-radius: .2rem; ">
-{% for wager in race.get_exotic_bets %}
 
-  <div id="{{ wager.uuid }}-wager-div" class="list-group-item exotic-wager-item">
-    <span class="exotic-wager-span">${{ wager.amount }} {{ wager.get_name }} {{ wager.get_posts }}</span>
-    <button
-      type="button"
-      data-wageruuid="{{ wager.uuid }}"
-      style="display:none"
-      class="btn btn-sm btn-outline-danger float-right exotic-delete-button">
-      &#10005;
-    </button>
-  </div>
-{% endfor %}
-</div>
-{% endif %}
 
-<script>
-
-  exotic_wager_buttons = document.getElementsByClassName("exotic-wager-item")
-  for (let i=0; i<exotic_wager_buttons.length; i++) {
-    exotic_wager_buttons[i].addEventListener("click", toggle_delete_show)
-  }
-
-  exotic_delete_buttons = document.getElementsByClassName("exotic-delete-button")
-  for (let i=0; i<exotic_delete_buttons.length; i++) {
-    exotic_delete_buttons[i].addEventListener("click", handle_exotic_delete)
-  }
-</script>
 
 {% endblock table_head %}
 
@@ -82,4 +54,4 @@ colspan="5">
   {% endblock show_button %}
   {% endif %}
 </td>
-{% endblock table_data %}
+{% endblock table_data %} -->
