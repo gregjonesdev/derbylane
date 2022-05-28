@@ -37,7 +37,8 @@
           data-chart="{{ prediction.participant.race.chart.get_time_display }}"
           data-number="{{ prediction.participant.race.number }}"
           data-participant="{{ prediction.participant.uuid }}"
-          data-bets="{{ prediction.get_bets }}">
+          data-bets="{{ prediction.get_bets }}"
+          disabled>
           <span id="participant_bets">
             {{ prediction.participant.get_recommended_bet }}
           </span>
@@ -47,7 +48,7 @@
         <button
           class="btn btn-sm btn-block btn-outline-light"
           disabled>
-          W
+          ${{ participant.get_win_bet.amount }}
         </button>
       </td>
       <td>

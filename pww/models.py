@@ -177,7 +177,7 @@ class Bet_Recommendation(CoreModel):
 
 
 
-class Prediction(CoreModel):
+class Participant_Prediction(CoreModel):
 
     participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
     # smoreg = models.DecimalField(
@@ -195,3 +195,36 @@ class Prediction(CoreModel):
 
     def get_bet(self):
         pass
+
+
+class Trifecta_Prediction(CoreModel):
+
+    class Meta:
+        verbose_name = 'Trifecta'
+
+    win = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='trifecta_prediction_win')
+    place = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='trifecta_prediction_place')
+    show = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='trifecta_prediction_show')
+    race = models.ForeignKey(
+        Race,
+        on_delete=models.CASCADE,
+        related_name='trifecta_prediction')
+    wager_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True)
+
+    def get_name(self):
+        return "Trifecta"
+
+    def get_posts(self):
+        return "{}, {}, {}".format(self.win.post, self.place.post, self.show.post)

@@ -461,10 +461,10 @@ class Race(CoreModel):
         return Participant.objects.get(race=self, post=post)
 
     def get_exotic_bets(self):
-        return list(chain(
-            Quiniela_Wager.objects.filter(race=self),
-            Exacta_Wager.objects.filter(race=self),
-            Predicted_Trifecta.objects.filter(race=self)))
+        pass
+
+
+
 
 
 class StraightBetType(CoreModel):
@@ -561,6 +561,103 @@ class Participant(CoreModel):
             wager_list += bet.type.name
         return (wager_list)
 
+
+class Sizzle_Bet(CoreModel):
+
+    class Meta:
+        abstract = True
+
+    purchase_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True)
+    payout = models.DecimalField(
+        max_digits=10,
+        decimal_places=2)
+
+
+class Straight_Bet(Sizzle_Bet):
+
+    type = models.ForeignKey(
+        StraightBetType,
+        on_delete=models.CASCADE)
+    participant = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE)
+
+
+class Sizzle_Trifecta(Sizzle_Bet):
+
+    race = models.ForeignKey(
+        Race,
+        on_delete=models.CASCADE)
+    win = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='sizzle_trifecta_win')
+    place = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='sizzle_trifecta_place')
+    show = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='sizzle_trifecta_show')
+
+
+class Sizzle_Superfecta(Sizzle_Bet):
+
+    race = models.ForeignKey(
+        Race,
+        on_delete=models.CASCADE)
+    win = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='sizzle_superfecta_win')
+    place = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='sizzle_superfecta_place')
+    show = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='sizzle_superfecta_show')
+    fourth = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='sizzle_superfecta_fourth')
+
+
+class Sizzle_Quinella(Sizzle_Bet):
+
+    race = models.ForeignKey(
+        Race,
+        on_delete=models.CASCADE)
+    left = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='sizzle_quinella_left')
+    right = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='sizzle_quinella_right')
+
+
+class Sizzle_Exacta(Sizzle_Bet):
+
+    race = models.ForeignKey(
+        Race,
+        on_delete=models.CASCADE)
+    win = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='sizzle_exacta_win')
+    place = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='sizzle_exacta_place')
+
+
 class Bet(CoreModel):
     participant =  models.ForeignKey(
         Participant,
@@ -598,7 +695,6 @@ class Bet(CoreModel):
 
     def get_date(self):
         return self.participant.race.chart.program.date
-
 
 
 class Straight_Wager(CoreModel):
@@ -712,105 +808,70 @@ class Quiniela_Wager(CoreModel):
     def get_posts(self):
         return "{}, {}".format(self.left.post, self.right.post)
 
-class Exacta_Wager(CoreModel):
+# class Exacta_Wager(CoreModel):
+#
+#     class Meta:
+#         verbose_name = 'Exacta'
+#
+#     win = models.ForeignKey(
+#             Participant,
+#             on_delete=models.CASCADE,
+#             related_name='exacta_wager_win')
+#     place = models.ForeignKey(
+#             Participant,
+#             on_delete=models.CASCADE,
+#             related_name='exacta_wager_place')
+#     race = models.ForeignKey(
+#         Race,
+#         on_delete=models.CASCADE,
+#         related_name='exacta_wager')
+#     amount = models.DecimalField(
+#         max_digits=10,
+#         decimal_places=2,
+#         default=2.00)
+#
+#     def get_name(self):
+#         return "Exacta"
+#
+#     def get_posts(self):
+#         return "{}, {}".format(self.win.post, self.place.post)
 
-    class Meta:
-        verbose_name = 'Exacta'
 
-    win = models.ForeignKey(
-            Participant,
-            on_delete=models.CASCADE,
-            related_name='exacta_wager_win')
-    place = models.ForeignKey(
-            Participant,
-            on_delete=models.CASCADE,
-            related_name='exacta_wager_place')
-    race = models.ForeignKey(
-        Race,
-        on_delete=models.CASCADE,
-        related_name='exacta_wager')
-    amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=2.00)
-
-    def get_name(self):
-        return "Exacta"
-
-    def get_posts(self):
-        return "{}, {}".format(self.win.post, self.place.post)
-
-class Predicted_Trifecta(CoreModel):
-
-    class Meta:
-        verbose_name = 'Trifecta'
-
-    win = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='trifecta_wager_win')
-    place = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='trifecta_wager_place')
-    show = models.ForeignKey(
-        Participant,
-        on_delete=models.CASCADE,
-        related_name='trifecta_wager_show')
-    race = models.ForeignKey(
-        Race,
-        on_delete=models.CASCADE,
-        related_name='trifecta_wager')
-    wager_amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        null=True)
-
-    def get_name(self):
-        return "Trifecta"
-
-    def get_posts(self):
-        return "{}, {}, {}".format(self.win.post, self.place.post, self.show.post)
-
-class Superfecta_Wager(CoreModel):
-
-    class Meta:
-        verbose_name = 'Trifecta'
-
-    win = models.ForeignKey(
-            Participant,
-            on_delete=models.CASCADE,
-            related_name='superfecta_wager_win')
-    place = models.ForeignKey(
-            Participant,
-            on_delete=models.CASCADE,
-            related_name='superfecta_wager_place')
-    show = models.ForeignKey(
-            Participant,
-            on_delete=models.CASCADE,
-            related_name='superfecta_wager_show')
-    fourth = models.ForeignKey(
-            Participant,
-            on_delete=models.CASCADE,
-            related_name='superfecta_wager_fourth')
-    race = models.ForeignKey(
-        Race,
-        on_delete=models.CASCADE,
-        related_name='superfecta_wager')
-    amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=2.00)
-
-    def get_name(self):
-        return "Superfecta"
-
-    def get_posts(self):
-        return "{}, {}, {}, {}".format(
-            self.win.post,
-            self.place.post,
-            self.show.post,
-            self.fourth.post)
+# class Superfecta_Wager(Bet):
+#
+#     class Meta:
+#         verbose_name = 'Trifecta'
+#
+#     win = models.ForeignKey(
+#             Participant,
+#             on_delete=models.CASCADE,
+#             related_name='superfecta_wager_win')
+#     place = models.ForeignKey(
+#             Participant,
+#             on_delete=models.CASCADE,
+#             related_name='superfecta_wager_place')
+#     show = models.ForeignKey(
+#             Participant,
+#             on_delete=models.CASCADE,
+#             related_name='superfecta_wager_show')
+#     fourth = models.ForeignKey(
+#             Participant,
+#             on_delete=models.CASCADE,
+#             related_name='superfecta_wager_fourth')
+#     race = models.ForeignKey(
+#         Race,
+#         on_delete=models.CASCADE,
+#         related_name='superfecta_wager')
+#
+#     def get_name(self):
+#         return "Superfecta"
+#
+#     def get_posts(self):
+#         return "{}, {}, {}, {}".format(
+#             self.win.post,
+#             self.place.post,
+#             self.show.post,
+#             self.fourth.post)
 
 class Exacta(Combo):
 

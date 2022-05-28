@@ -27,10 +27,10 @@ from rawdat.models import (
     Race,
     StraightBetType,
     Straight_Wager,
-    Quiniela_Wager,
-    Predicted_Trifecta,
-    Superfecta_Wager,
-    Exacta_Wager)
+    # Quiniela_Wager,
+    Sizzle_Superfecta,
+    # Exacta_Wager,
+    )
 
 
 class FrontPage(LoginRequiredMixin, View):
@@ -203,17 +203,18 @@ def load_charts(request):
 def delete_exotic_bet(request):
     wager_uuid = request.GET.get('wager_uuid')
 
-    try:
-        wager = Quiniela_Wager.objects.get(uuid=wager_uuid)
-    except ObjectDoesNotExist:
-        try:
-            wager = Exacta_Wager.objects.get(uuid=wager_uuid)
-        except ObjectDoesNotExist:
-            try:
-                wager = Predicted_Trifecta.objects.get(uuid=wager_uuid)
-            except ObjectDoesNotExist:
-                wager = Superfecta_Wager.objects.get(uuid=wager_uuid)
-    wager.delete()
+    # try:
+    #     wager = Quiniela_Wager.objects.get(uuid=wager_uuid)
+    # except ObjectDoesNotExist:
+    #     try:
+    #         wager = Exacta_Wager.objects.get(uuid=wager_uuid)
+    #     except ObjectDoesNotExist:
+    #         pass
+            # try:
+            #     wager = Predicted_Trifecta.objects.get(uuid=wager_uuid)
+            # except ObjectDoesNotExist:
+            #     wager = Sizzle_Superfecta.objects.get(uuid=wager_uuid)
+    # wager.delete()
 
 
     return JsonResponse({
@@ -226,50 +227,51 @@ def make_exotic_bet(request):
 
     selected_posts = [char for char in request.GET.get('selected_posts')]
     race = Race.objects.get(uuid=race_uuid)
-    if bet_type == "Q":
-        new_wager = Quiniela_Wager(
-            race=race,
-            amount=amount,
-            left=race.get_participant(int(selected_posts[0])),
-            right=race.get_participant(int(selected_posts[1]))
-        )
-    elif bet_type == "E":
-        new_wager = Exacta_Wager(
-            race=race,
-            amount=amount,
-            win=race.get_participant(int(selected_posts[0])),
-            place=race.get_participant(int(selected_posts[1]))
-        )
-    elif bet_type == "T":
-        new_wager = Predicted_Trifecta(
-            race=race,
-            amount=amount,
-            win=race.get_participant(int(selected_posts[0])),
-            place=race.get_participant(int(selected_posts[1])),
-            show=race.get_participant(int(selected_posts[2])),
-        )
-    elif bet_type == "TB":
-        pass
-    elif bet_type == "SB":
-        pass
-    elif bet_type == "S":
-        new_wager = Superfecta_Wager(
-            race=race,
-            amount=amount,
-            win=race.get_participant(int(selected_posts[0])),
-            place=race.get_participant(int(selected_posts[1])),
-            show=race.get_participant(int(selected_posts[2])),
-            fourth=race.get_participant(int(selected_posts[3])),
-        )
-    new_wager.set_fields_to_base()
-    new_wager.save()
+    # if bet_type == "Q":
+    #     new_wager = Quiniela_Wager(
+    #         race=race,
+    #         amount=amount,
+    #         left=race.get_participant(int(selected_posts[0])),
+    #         right=race.get_participant(int(selected_posts[1]))
+    #     )
+    # elif bet_type == "E":
+    #     new_wager = Exacta_Wager(
+    #         race=race,
+    #         amount=amount,
+    #         win=race.get_participant(int(selected_posts[0])),
+    #         place=race.get_participant(int(selected_posts[1]))
+    #     )
+    # elif bet_type == "T":
+    #     pass
+    #     # new_wager = Predicted_Trifecta(
+    #     #     race=race,
+    #     #     amount=amount,
+    #     #     win=race.get_participant(int(selected_posts[0])),
+    #     #     place=race.get_participant(int(selected_posts[1])),
+    #     #     show=race.get_participant(int(selected_posts[2])),
+    #     # )
+    # elif bet_type == "TB":
+    #     pass
+    # elif bet_type == "SB":
+    #     pass
+    # elif bet_type == "S":
+    #     new_wager = Sizzle_Superfecta(
+    #         race=race,
+    #         amount=amount,
+    #         win=race.get_participant(int(selected_posts[0])),
+    #         place=race.get_participant(int(selected_posts[1])),
+    #         show=race.get_participant(int(selected_posts[2])),
+    #         fourth=race.get_participant(int(selected_posts[3])),
+    #     )
+    # new_wager.set_fields_to_base()
+    # new_wager.save()
 
-    return JsonResponse({
-        'type': new_wager.get_name(),
-        'wager_uuid': new_wager.uuid,
-        'posts': selected_posts,
-        'amount': amount,
-        'race_uuid': race_uuid })
+    # return JsonResponse({
+    #     'type': new_wager.get_name(),
+    #     'wager_uuid': new_wager.uuid,
+    #     'posts': selected_posts,
+    #     'amount': amount,
+    #     'race_uuid': race_uuid })
 
 def make_bet(request):
     participant_id = request.GET.get('participant_id')
