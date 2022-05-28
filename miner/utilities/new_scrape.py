@@ -164,17 +164,6 @@ def get_participant_rows(trs):
 
 def parse_race_results(race, trs):
     for row in get_participant_rows(trs):
-        # print(row[0][0].text)
-        # print(row[1].text)
-        # print(row[0][0].text)
-        # print(row[0][0].text)
-        # print(row[0][0].text)
-
-    # index = 36
-    # for td in tds:
-    #     print("{}: {}".format(tds.index(td), td.text    ))
-    # while index <= 106:
-    #
         dog_name = parse_dog_name(row[0][0].text)
         post = parse_position(row[1].text)
         off = parse_position(row[2].text)
@@ -193,24 +182,23 @@ def parse_race_results(race, trs):
         print(final)
         print(lengths_behind)
         print(actual_running_time)
-    raise SystemExit(0)
-    #     post_weight = get_post_weight(
-    #         dog_name,
-    #         race.chart.program.date)
-    #     comment = tds[index+9].text.strip()
-    #     dog = get_dog(dog_name)
-    #     update_participant(
-    #         get_participant(race, dog),
-    #         post_weight,
-    #         post,
-    #         off,
-    #         eighth,
-    #         straight,
-    #         final,
-    #         actual_running_time,
-    #         lengths_behind,
-    #         comment)
-    #     index += 10
+
+        post_weight = get_post_weight(
+            dog_name,
+            race.chart.program.date)
+        comment = tds[index+9].text.strip()
+        dog = get_dog(dog_name)
+        update_participant(
+            get_participant(race, dog),
+            post_weight,
+            post,
+            off,
+            eighth,
+            straight,
+            final,
+            actual_running_time,
+            lengths_behind,
+            comment)
 
 def parse_exotic_bet(race, split_text, tds):
     payout = get_payout(split_text)
