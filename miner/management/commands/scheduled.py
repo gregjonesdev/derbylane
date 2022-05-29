@@ -54,7 +54,6 @@ class Command(BaseCommand):
                     program_date.day,
                     time,
                     number)
-                entries_url = "https://m.trackinfo.com/index.jsp?next=entriesrace&raceid=GTS$20220528E01"
                 if has_entries(entries_url):
                     chart = get_chart(program, time)
                     race = get_race(chart, number)

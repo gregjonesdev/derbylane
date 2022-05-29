@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 
 from miner.utilities.common import get_node_elements
-from miner.utilities.new_scrape import save_race_results, has_results
+from miner.utilities.new_scrape import process_url, has_results
 from miner.utilities.urls import build_race_results_url
 from rawdat.models import Race, CronJob
 
@@ -32,10 +32,10 @@ class Command(BaseCommand):
                 time,
                 race.number)
             print(results_url)
-            if has_results(url):
+            if has_results(results_url):
                 tds = get_node_elements(results_url, '//td')
                 trs = get_node_elements(results_url, '//tr')
-                save_race_results(race, tds, trs)
+                process_url(results_url ,race)
 
         new_job = CronJob(
             type="Results"

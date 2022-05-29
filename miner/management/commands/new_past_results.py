@@ -10,7 +10,7 @@ from miner.utilities.common import get_node_elements
 from miner.utilities.constants import chart_times
 from miner.utilities.comments import no_elements, success
 from miner.utilities.models import get_program, get_chart, get_race
-from miner.utilities.new_scrape import save_race_results, save_race_settings, has_results
+from miner.utilities.new_scrape import process_url, has_results
 
 from rawdat.models import ScannedUrl, Venue
 

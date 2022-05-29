@@ -39,16 +39,30 @@ def get_race_number(race_number):
 def get_race_distance(race_distance):
     return(int(race_distance))
 
-def get_parsed_race_setting(race_number, tds):
-    race_setting_index = get_race_setting_index(race_number, tds)
-    td = tds[race_setting_index]
+def get_parsed_race_setting(url):
+    td = get_attribute_elements(
+        url,
+        "td",
+        "valign",
+        "middle")[0]
+    return clean_race_setting(td)
+
+def get_parsed_results_race_setting(url):
+    td = get_attribute_elements(
+        url,
+        "td",
+        "width",
+        "90%")[1]
+    return clean_race_setting(td)
+
+
+def clean_race_setting(td):
     single_line_text = remove_line_breaks(td.text)
     untabbed_text = remove_tabs(single_line_text)
     unspaced_text = remove_extra_spaces(untabbed_text)
     return unspaced_text.split()
 
-def save_race_settings(race, tds):
-    parsed_setting = get_parsed_race_setting(race.number, tds)
+def save_race_settings(parsed_setting):
     try:
         race.grade = get_grade(parsed_setting[2])
         race.distance = get_race_distance(parsed_setting[3])
@@ -239,7 +253,10 @@ def get_race_setting_index(race_number, tds):
                 return tds.index(td)
 
 def update_race_condition(race, tds):
+    print("udape race conditon")
     parsed_setting = get_parsed_race_setting(race.number, tds)
+    print(parsed_setting)
+    raise SystemExit(0)
     try:
         race.condition = get_condition(parsed_setting[4])
     except IndexError:
@@ -311,26 +328,28 @@ def populate_race(entries_url, race):
         post_count += 1
 
 def process_entries_url(entries_url, race):
-    tds = get_node_elements(entries_url, "//td")
-
-
-    # must change for entries url !!
-    # save_race_settings(race, tds)
+    parsed_setting = get_parsed_race_setting(entries_url)
+    print(parsed_setting)
+    raise SystemExit(0)
+    save_race_settings(parsed_setting)
     populate_race(entries_url, race)
 
 def process_url(url, race):
     print("process url")
     if has_results(url):
         tds = get_node_elements(url, "//td")
-        save_race_settings(race, tds)
+        parsed_setting = get_parsed_results_race_setting(url)
+        print(parsed_setting)
+        raise SystemExit(0)
+        save_race_settings(parsed_setting)
         trs = get_node_elements(url, "//tr")
+        update_race_condition(url)
         return save_race_results(race, tds, trs)
     return no_elements
 
 def save_race_results(race, tds, trs):
     parse_race_results(race, trs)
     save_straight_bets(race, trs)
-    update_race_condition(race, tds)
     if has_exotic_bets(tds):
         save_exotic_bets(race, tds)
     else:
