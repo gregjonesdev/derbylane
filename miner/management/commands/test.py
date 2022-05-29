@@ -30,7 +30,37 @@ class Command(BaseCommand):
             race.chart.time,
             race.number
         ))
+
+        for superfecta in race.sizzle_superfecta_set.all():
+            print("{} / {} / {} / {}\t${}".format(
+                superfecta.win_post,
+                superfecta.place_post,
+                superfecta.show_post,
+                superfecta.fourth_post,
+                superfecta.payout
+            ))
+
+        for trifecta in race.sizzle_trifecta_set.all():
+            print("{} / {} / {}\t${}".format(
+                trifecta.win_post,
+                trifecta.place_post,
+                trifecta.show_post,
+                trifecta.payout
+            ))
         #
+        for exacta in race.sizzle_exacta_set.all():
+            print("{} / {}\t${}".format(
+                exacta.win_post,
+                exacta.place_post,
+                exacta.payout
+            ))
+
+        for quinella in race.sizzle_quinella_set.all():
+            print("{} / {}\t${}".format(
+                quinella.left_post,
+                quinella.right_post,
+                quinella.payout
+            ))
 
         for participant in race.participant_set.all():
             print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
