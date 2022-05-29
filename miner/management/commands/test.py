@@ -63,6 +63,14 @@ class Command(BaseCommand):
             ))
 
         for participant in race.participant_set.all():
+            for bet in participant.straight_bet_set.all():
+                print("{}\t{}\t{}".format(
+                    participant.dog.name,
+                    bet.type.name,
+                    bet.payout
+                ))
+
+        for participant in race.participant_set.all():
             print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
             participant.dog.name,
             participant.post,
