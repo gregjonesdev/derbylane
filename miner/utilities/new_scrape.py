@@ -295,46 +295,18 @@ def save_straight_bets(race, trs):
 #         chart.time,
 #         race.number)
 
-def get_participant_entry_tables(entries_url):
-    participant_entry_tables = []
-    for table in get_attribute_elements(entries_url, "a", "style", "padding:1px;12px;color:#f4780d;text-transform:uppercase;"):
-        # print(len(table))
-        print(table.text)
-
-        # if is_participant_entry_table(table):
-        #     participant_entry_tables.append(table)
-    return participant_entry_tables
-
-def get_participant_entry_rows(entries_url):
-    for table in get_participant_entry_tables(entries_url):
-        print(table[0])
-
-    raise SystemExit(0)
-
-    # trs = get_node_elements(entries_url, "//tr")
-    # participant_entry_rows = []
-    # for tr in trs:
-    #     if is_participant_entry_row(tr):
-    #         print(tr[0][1])
-    #         participant_entry_rows.append(tr)
-    # print(len(participant_entry_rows))
-    # return participant_entry_rows
-
-def is_participant_entry_row(tr):
-    return len(tr) == 3
-
-def is_participant_entry_table(table):
-    try:
-        print(len(table[0][0][0]))
-    except IndexError:
-        return True
+def get_participant_entry_anchors(entries_url):
+    return get_attribute_elements(
+        entries_url,
+        "a",
+        "style",
+        "padding:1px;12px;color:#f4780d;text-transform:uppercase;")
 
 def populate_race(entries_url):
     post_count = 1
-    for row in get_participant_entry_rows(entries_url):
-        print(row[1])
-        # dog_name = row[1][0].text
-        # print(dog_name)
+    for anchor in get_participant_entry_anchors(entries_url):
+        dog_name = anchor.text
+        print("{}: {}".format(post_count, dog_name))
         post_count += 1
     raise SystemExit(0)
 
