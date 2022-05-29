@@ -297,14 +297,17 @@ def save_straight_bets(race, trs):
 
 def get_participant_entry_tables(entries_url):
     participant_entry_tables = []
-    for table in get_node_elements(entries_url, "//table"):
-        if is_participant_entry_table(table):
-            participant_entry_tables.append(table)
+    for table in get_attribute_elements(entries_url, "a", "style", "padding:1px;12px;color:#f4780d;text-transform:uppercase;"):
+        # print(len(table))
+        print(table.text)
+
+        # if is_participant_entry_table(table):
+        #     participant_entry_tables.append(table)
     return participant_entry_tables
 
 def get_participant_entry_rows(entries_url):
     for table in get_participant_entry_tables(entries_url):
-        print(table[0][0][1][0].text)
+        print(table[0])
 
     raise SystemExit(0)
 
@@ -321,7 +324,10 @@ def is_participant_entry_row(tr):
     return len(tr) == 3
 
 def is_participant_entry_table(table):
-    return len(table[0][0]) == 3
+    try:
+        print(len(table[0][0][0]))
+    except IndexError:
+        return True
 
 def populate_race(entries_url):
     post_count = 1
