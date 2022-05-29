@@ -62,7 +62,7 @@ def clean_race_setting(td):
     unspaced_text = remove_extra_spaces(untabbed_text)
     return unspaced_text.split()
 
-def save_race_settings(parsed_setting):
+def save_race_settings(race, parsed_setting):
     try:
         race.grade = get_grade(parsed_setting[2])
         race.distance = get_race_distance(parsed_setting[3])
@@ -252,11 +252,8 @@ def get_race_setting_index(race_number, tds):
             if "race" in text and str(race_number) in text:
                 return tds.index(td)
 
-def update_race_condition(race, tds):
-    print("udape race conditon")
-    parsed_setting = get_parsed_race_setting(race.number, tds)
-    print(parsed_setting)
-    raise SystemExit(0)
+def update_race_condition(race, url):
+    parsed_setting = get_parsed_race_setting(url)
     try:
         race.condition = get_condition(parsed_setting[4])
     except IndexError:
@@ -330,8 +327,7 @@ def populate_race(entries_url, race):
 def process_entries_url(entries_url, race):
     parsed_setting = get_parsed_race_setting(entries_url)
     print(parsed_setting)
-    raise SystemExit(0)
-    save_race_settings(parsed_setting)
+    save_race_settings(race, parsed_setting)
     populate_race(entries_url, race)
 
 def process_url(url, race):
@@ -340,10 +336,9 @@ def process_url(url, race):
         tds = get_node_elements(url, "//td")
         parsed_setting = get_parsed_results_race_setting(url)
         print(parsed_setting)
-        raise SystemExit(0)
-        save_race_settings(parsed_setting)
+        save_race_settings(race, parsed_setting)
         trs = get_node_elements(url, "//tr")
-        update_race_condition(url)
+        update_race_condition(race, url)
         return save_race_results(race, tds, trs)
     return no_elements
 
