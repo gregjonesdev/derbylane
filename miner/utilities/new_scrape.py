@@ -21,7 +21,8 @@ from miner.utilities.models import (
     create_exacta,
     create_quinella,
     create_trifecta,
-    create_superfecta)
+    create_superfecta,
+    save_participant)
 
 def remove_line_breaks(text):
     return text.replace("\n", "")
@@ -302,20 +303,20 @@ def get_participant_entry_anchors(entries_url):
         "style",
         "padding:1px;12px;color:#f4780d;text-transform:uppercase;")
 
-def populate_race(entries_url):
+def populate_race(entries_url, race):
     post_count = 1
     for anchor in get_participant_entry_anchors(entries_url):
         dog_name = anchor.text
-        print("{}: {}".format(post_count, dog_name))
+        save_participant(race, post_count, get_dog(dog_name))
         post_count += 1
-    raise SystemExit(0)
-
-
 
 def process_entries_url(entries_url, race):
     tds = get_node_elements(entries_url, "//td")
-    save_race_settings(race, tds)
-    populate_race(entries_url)
+
+
+    # must change for entries url !!
+    # save_race_settings(race, tds)
+    populate_race(entries_url, race)
 
 def process_url(url, race):
     print("process url")

@@ -70,6 +70,22 @@ def create_quinella(race, posts, payout):
     bet.payout = payout
     bet.save()
 
+def save_participant(race, post, dog):
+    try:
+        participant = Participant.objects.get(
+            race=race,
+            post=int(post)
+        )
+    except ObjectDoesNotExist:
+        new_participant = Participant(
+            race=race,
+            post=int(post)
+        )
+        new_participant.set_fields_to_base()
+        participant = new_participant
+    participant.dog = dog
+    participant.save()    
+
 
 def get_participant_from_post(race, post):
     try:
