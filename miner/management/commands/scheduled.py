@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from miner.utilities.common import get_node_elements
 from miner.utilities.constants import chart_times
 from miner.utilities.models import get_program, get_race, get_chart
-from miner.utilities.new_scrape import process_url
+from miner.utilities.new_scrape import process_entries_url, has_entries
 from rawdat.models import Program, Venue, CronJob
 from miner.utilities.urls import build_entries_url
 from rawdat.utilities.methods import get_date_from_ymd
@@ -54,9 +54,9 @@ class Command(BaseCommand):
                     program_date.day,
                     time,
                     number)
-                tds = get_node_elements(entries_url, "//td")
-                if len(tds) > 15:
+                entries_url = "https://m.trackinfo.com/index.jsp?next=entriesrace&raceid=GTS$20220528E01"
+                if has_entries(entries_url):
                     chart = get_chart(program, time)
                     race = get_race(chart, number)
-                    process_url(entries_url, race, tds)
+                    process_entries_url(entries_url, race)
                 number +=1

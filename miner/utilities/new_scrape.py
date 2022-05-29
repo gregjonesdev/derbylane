@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-from miner.utilities.comments import success
+from miner.utilities.comments import success, no_elements
 from miner.utilities.common import get_attribute_elements, get_node_elements
 from miner.utilities.constants import (
     bad_characters,
@@ -114,8 +114,9 @@ def parse_dog_name(raw_name):
     return raw_name.strip().upper()
 
 def remove_bad_characters(string):
-    for character in bad_characters:
-        string = string.replace(character, "")
+    if string:
+        for character in bad_characters:
+            string = string.replace(character, "")
     return string
 
 
@@ -248,9 +249,12 @@ def update_race_condition(race, tds):
 def get_straight_bet_rows(trs):
     straight_bet_rows = []
     for tr in trs:
-        if len(tr) == 5:
+        if is_straight_bet_row(tr):
             straight_bet_rows.append(tr)
     return straight_bet_rows[1:]
+
+def is_straight_bet_row(tr):
+    return len(tr) == 5
 
 def get_parsed_bet_row(row):
     parsed_row = []
@@ -291,20 +295,77 @@ def save_straight_bets(race, trs):
 #         chart.time,
 #         race.number)
 
-def process_url(url, race, tds):
-    if len(tds) > 33:
+def get_participant_entry_tables(entries_url):
+    participant_entry_tables = []
+    for table in get_node_elements(entries_url, "//table"):
+        if is_participant_entry_table(table):
+            participant_entry_tables.append(table)
+    return participant_entry_tables
+
+def get_participant_entry_rows(entries_url):
+    for table in get_participant_entry_tables(entries_url):
+        print(table[0][0][1][0].text)
+
+    raise SystemExit(0)
+
+    # trs = get_node_elements(entries_url, "//tr")
+    # participant_entry_rows = []
+    # for tr in trs:
+    #     if is_participant_entry_row(tr):
+    #         print(tr[0][1])
+    #         participant_entry_rows.append(tr)
+    # print(len(participant_entry_rows))
+    # return participant_entry_rows
+
+def is_participant_entry_row(tr):
+    return len(tr) == 3
+
+def is_participant_entry_table(table):
+    return len(table[0][0]) == 3
+
+def populate_race(entries_url):
+    post_count = 1
+    for row in get_participant_entry_rows(entries_url):
+        print(row[1])
+        # dog_name = row[1][0].text
+        # print(dog_name)
+        post_count += 1
+    raise SystemExit(0)
+
+
+
+def process_entries_url(entries_url, race):
+    tds = get_node_elements(entries_url, "//td")
+    save_race_settings(race, tds)
+    populate_race(entries_url)
+
+def process_url(url, race):
+    print("process url")
+    if has_results(url):
+        tds = get_node_elements(url, "//td")
         save_race_settings(race, tds)
         trs = get_node_elements(url, "//tr")
-        if len(tds) < 200:
-            return save_race_results(race, tds, trs)
+        return save_race_results(race, tds, trs)
+    return no_elements
 
 def save_race_results(race, tds, trs):
     parse_race_results(race, trs)
     save_straight_bets(race, trs)
     update_race_condition(race, tds)
-    if len(tds) >= 106:
+    if has_exotic_bets(tds):
         save_exotic_bets(race, tds)
     else:
         print("TDS: {}".format(len(tds)))
         raise SystemExit(0)
     return success
+
+def has_exotic_bets(tds):
+    return len(tds) >= 106
+
+def has_results(url):
+    tds = get_node_elements(url, "//td")
+    return len(tds) > 33
+
+def has_entries(url):
+    trs = get_node_elements(url, "//tr")
+    return len(trs) > 34
