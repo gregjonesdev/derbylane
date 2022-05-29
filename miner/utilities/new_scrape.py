@@ -253,7 +253,7 @@ def get_race_setting_index(race_number, tds):
                 return tds.index(td)
 
 def update_race_condition(race, url):
-    parsed_setting = get_parsed_race_setting(url)
+    parsed_setting = get_parsed_results_race_setting(url)
     try:
         race.condition = get_condition(parsed_setting[4])
     except IndexError:
@@ -353,7 +353,7 @@ def save_race_results(race, tds, trs):
     return success
 
 def has_exotic_bets(tds):
-    return len(tds) >= 106
+    return len(tds) >= 96
 
 def has_results(url):
     tds = get_node_elements(url, "//td")
