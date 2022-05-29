@@ -84,10 +84,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         venue_codes = ['TS', 'WD', 'SL']
-        # with ThreadPoolExecutor() as executor:
-        #     executor.map(self.get_venue_results, venue_codes)
+        with ThreadPoolExecutor() as executor:
+            executor.map(self.get_venue_results, venue_codes)
 
-        self.get_venue_results('TS')
+        # self.get_venue_results('TS')
 
 
 
