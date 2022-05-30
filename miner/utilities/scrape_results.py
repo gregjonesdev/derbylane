@@ -30,11 +30,9 @@ def has_results(url):
     return len(tds) > 33
 
 def process_url(url, race):
-    print("process url")
     if has_results(url):
         tds = get_node_elements(url, "//td")
         parsed_setting = get_parsed_results_race_setting(url)
-        print(parsed_setting)
         save_race_settings(race, parsed_setting)
         trs = get_node_elements(url, "//tr")
         update_race_condition(race, url)
@@ -92,14 +90,14 @@ def parse_race_results(race, trs):
         lengths_behind = final_and_lengths[1]
         actual_running_time = get_running_time(row[6].text)
 
-        print(dog_name)
-        print(post)
-        print(off)
-        print(eighth)
-        print(straight)
-        print(final)
-        print(lengths_behind)
-        print(actual_running_time)
+        # print(dog_name)
+        # print(post)
+        # print(off)
+        # print(eighth)
+        # print(straight)
+        # print(final)
+        # print(lengths_behind)
+        # print(actual_running_time)
 
         post_weight = get_post_weight(
             dog_name,
