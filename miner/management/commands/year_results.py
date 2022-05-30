@@ -65,10 +65,9 @@ class Command(BaseCommand):
                             comment = process_url(url, race)
                         except:
                             comment = "Errored:"
+                            print(url)
                     else:
                         comment = no_elements
-                    print("{}:".format(comment))
-                    print(url)
                     self.update_scan(scan, comment)
                 number += 1
 
