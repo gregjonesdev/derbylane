@@ -60,16 +60,19 @@ class Command(BaseCommand):
                 scan = self.get_scan(url)
                 if not scan.completed:
                     # Good:
-                    print(url)
+
                     if has_results(url):
                         race = get_race(chart, number)
 
                         try:
                             comment = process_url(url, race)
+
                         except:
-                            comment = "Errored"
+                            comment = "Errored:"
                     else:
                         comment = no_elements
+                    print("{}:".format(comment))
+                    print(url)
                     self.update_scan(scan, comment)
                 number += 1
 
