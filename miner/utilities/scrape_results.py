@@ -27,7 +27,7 @@ from miner.utilities.models import (
 
 def has_results(url):
     tds = get_node_elements(url, "//td")
-    return len(tds) > 33
+    return len(tds) > 35
 
 def process_url(url, race):
     if has_results(url):

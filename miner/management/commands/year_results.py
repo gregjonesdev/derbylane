@@ -59,7 +59,7 @@ class Command(BaseCommand):
                     str(number).zfill(2))
                 scan = self.get_scan(url)
                 if not scan.completed:
-                    # Good:
+                    url =" http://m.trackinfo.com/index.jsp?next=resultsrace&raceid=GWD$20220119A13"
 
                     if has_results(url):
                         race = get_race(chart, number)
