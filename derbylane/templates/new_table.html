@@ -34,13 +34,14 @@
 <table
   id="main-table"
   class="table table-sm table-borderless fade-in">
-  {% for prediction in race.get_straight_predictions %}
+  {% for participant in race.participant_set.all %}
+    {% if participant.get_recommended_bet %}
     <tr>
       <td>
-        {{ prediction.participant.post }}
+        {{ participant.post }}
         <span
           class="dog-name-span">
-          {{ prediction.participant.dog.name|truncatechars:13 }}
+          {{ participant.dog.name|truncatechars:13 }}
       </td>
       <td>
         <button
@@ -48,20 +49,22 @@
           class="btn btn-outline-success btn-block btn-sm bet-button"
           data-toggle="modal"
           data-target="#straight-bet-modal"
-          data-dog="{{ prediction.participant.dog.name }}"
-          data-post="{{ prediction.participant.post }}"
-          data-bets="{{ prediction.participant.get_recommended_bet }}"
-          data-venue="{{ prediction.participant.race.chart.program.venue.code }}"
-          data-chart="{{ prediction.participant.race.chart.get_time_display }}"
-          data-number="{{ prediction.participant.race.number }}"
-          data-participant="{{ prediction.participant.uuid }}"
-          data-bets="{{ prediction.get_bets }}"
+          data-dog="{{ participant.dog.name }}"
+          data-post="{{ participant.post }}"
+          data-bets="{{ participant.get_recommended_bet }}"
+          data-venue="{{ participant.race.chart.program.venue.code }}"
+          data-chart="{{ participant.race.chart.get_time_display }}"
+          data-number="{{ participant.race.number }}"
+          data-participant="{{ participant.uuid }}"
+          data-bets="{{ participant.get_recommended_bet }}"
           disabled>
           <span id="participant_bets">
-             {{ prediction.smoreg }}
+             {{ participant.get_recommended_bet }}
           </span>
         </button>
       </td>
+    {% endif %}
+    <!--
       <td id="{{ participant.uuid }}-win-td">
         <button
           class="btn btn-sm btn-block btn-outline-light"
@@ -82,7 +85,7 @@
           disabled>
           S
         </button>
-      </td>
+      </td> -->
     </tr>
   {% endfor %}
 </table>

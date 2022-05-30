@@ -505,7 +505,10 @@ class Participant(CoreModel):
         max_length=256)
 
     def get_recommended_bet(self):
-        return self.participant_prediction_set.all()[0]
+        bets_object = {"W": False, "P": False, "S": False}
+        for prediction in self.participant_prediction_set.all():
+            if 4.5 < prediction.smoreg < 5:
+                return "WP"
 
 
     def get_bets(self):
