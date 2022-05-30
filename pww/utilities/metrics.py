@@ -7,8 +7,7 @@ past_race_count = 7
 minimum_participations = 2
 x_values = [1, 2, 3, 4, 5, 6, 7, 8]
 
-from miner.utilities.models import save_dog_info
-from miner.utilities.common import force_date
+from miner.utilities.common import force_date, save_dog_info
 
 from scipy.optimize import curve_fit
 from numpy import arange

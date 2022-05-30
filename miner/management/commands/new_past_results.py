@@ -59,10 +59,17 @@ class Command(BaseCommand):
                     str(number).zfill(2))
                 scan = self.get_scan(url)
                 if not scan.completed:
+                    # Good:
+                    url = "http://m.trackinfo.com/index.jsp?next=resultsrace&p=r&raceid=GWD$20220119A12"
                     if has_results(url):
                         print(url)
                         race = get_race(chart, number)
                         comment = process_url(url, race)
+                        #
+                        # try:
+                        #     comment = process_url(url, race)
+                        # except:
+                        #     comment = "Errored"
                     else:
                         comment = no_elements
                     self.update_scan(scan, comment)

@@ -162,10 +162,7 @@ def create_superfecta(race, posts, payout):
     bet.save()
 
 
-def get_parent_name(url, class_attr):
-    # print(url)
-    return get_node_elements(
-        url,'//td[@class="{}"]//a'.format(class_attr))[0].text
+
 
 
 def get_straightwager(participant):
@@ -184,51 +181,9 @@ def get_straightwager(participant):
 
 
 
-def save_dog_info(dog):
-    url = build_dog_profile_url(dog.name)
-    # print(url)
-    whelp_date = None
-    if not dog.litter:
-        try:
-            whelp_date = get_node_elements(url, '//td[@class="it4"]//em')[0].text
-        except IndexError:
-            pass
-        sire_name = get_parent_name(url, "it2")
-        sire, dam = None, None
-        if sire_name:
-            sire = get_dog(sire_name)
-        dam_name = get_parent_name(url, "it4")
-        if dam_name:
-            dam = get_dog(dam_name)
-        if sire and dam and whelp_date:
-            litter = get_litter(sire, dam, whelp_date)
-            dog.litter = litter
-    dog.save()
-    save_sex_and_color(
-        dog,
-        get_node_elements(url, '//td[@class="it2"]//em'))
 
 
 
-
-
-def get_litter(sire, dam, whelp_date):
-    try:
-        litter = Litter.objects.get(
-            sire=sire,
-            dam=dam,
-            whelp_date=whelp_date
-        )
-    except ObjectDoesNotExist:
-        new_litter = Litter(
-            sire=sire,
-            dam=dam,
-            whelp_date=whelp_date
-        )
-        new_litter.set_fields_to_base()
-        new_litter.save()
-        litter = new_litter
-    return litter
 
 
 

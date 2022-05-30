@@ -274,7 +274,10 @@ def get_straight_bet_rows(trs):
     return straight_bet_rows[1:]
 
 def is_straight_bet_row(tr):
-    return len(tr) == 5
+    return len(tr)==3 and td_has_text(tr[0])
+
+def td_has_text(td):
+    return td.text and td.text.strip()
 
 def get_parsed_bet_row(row):
     parsed_row = []
