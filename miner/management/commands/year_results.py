@@ -60,11 +60,8 @@ class Command(BaseCommand):
                 scan = self.get_scan(url)
                 if not scan.completed:
                     # Good:
-                    # url = "http://m.trackinfo.com/index.jsp?next=resultsrace&p=r&raceid=GWD$20220119A12"
                     if has_results(url):
-                        print(url)
                         race = get_race(chart, number)
-                        comment = process_url(url, race)
 
                         try:
                             comment = process_url(url, race)
@@ -95,7 +92,3 @@ class Command(BaseCommand):
             executor.map(self.get_venue_results, venue_codes)
 
         # self.get_venue_results('WD')
-
-
-
- #this is Similar to map(func, *iterables)

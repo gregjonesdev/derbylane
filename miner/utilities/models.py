@@ -14,7 +14,6 @@ from rawdat.models import (
     Grade,
     Straight_Wager,
     Dog,
-    Litter,
     Condition
 )
 
@@ -363,14 +362,7 @@ def get_participant(race, dog):
 #         new_combination.set_fields_to_base()
 #         new_combination.save()
 
-def save_sex_and_color(dog, elements):
-    try:
-        text = elements[0].text
-        sex_and_color = text.split("/")
-        save_sex(dog, sex_and_color[0])
-        save_color(dog, sex_and_color[1])
-    except:
-        pass
+
 
 def get_condition(race_condition):
     try:

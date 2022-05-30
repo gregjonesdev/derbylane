@@ -9,7 +9,7 @@ from rawdat.models import Participant
 import weka.core.serialization as serialization
 from weka.core.converters import Loader
 from django.core.exceptions import ObjectDoesNotExist
-from pww.models import Prediction
+from pww.models import Participant_Prediction
 from rawdat.models import Winning_Trifecta, Exotic_Scan, Venue
 import weka.core.jvm as jvm
 
@@ -317,6 +317,8 @@ def analyze_numeric_exotic(classifier, numbers, races, filtered_data, uuid_line_
     get_trifecta_returns(numbers, interval, races, prediction_object, writer)
 
 def get_prediction_object(filtered_data, uuid_line_index, classifier):
+    print("get_prediction_object")
+    print(classifier)
     prediction_object = {}
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
@@ -368,9 +370,9 @@ def evaluate_numeric(classifier, filtered_data, uuid_line_index):
 
 def get_prediction(participant):
     try:
-        pred = Prediction.objects.get(participant=participant)
+        pred = Participant_Prediction.objects.get(participant=participant)
     except ObjectDoesNotExist:
-        new_pred = Prediction(
+        new_pred = Participant_Prediction(
             participant = participant
         )
         new_pred.set_fields_to_base()
@@ -382,14 +384,14 @@ def save_predictions(prediction_object):
     for uuid in prediction_object.keys():
         participant = Participant.objects.get(uuid=uuid)
         prediction = get_prediction(participant)
-        prediction_bet = ""
-        if prediction_object[uuid]["W"]:
-            prediction_bet += "W"
-        if prediction_object[uuid]["P"]:
-            prediction_bet += "P"
-        if prediction_object[uuid]["S"]:
-            prediction_bet += "S"
-        prediction.bet = prediction_bet
+        # prediction_bet = ""
+        # if prediction_object[uuid]["W"]:
+        #     prediction_bet += "W"
+        # if prediction_object[uuid]["P"]:
+        #     prediction_bet += "P"
+        # if prediction_object[uuid]["S"]:
+        #     prediction_bet += "S"
+        # prediction.bet = prediction_bet
         prediction.save()
 
 
@@ -399,23 +401,24 @@ def make_predictions(model, testing_arff, classifier_name, is_nominal, bet_guide
     loaded_data = loader.load_file(testing_arff)
     filtered_data = get_filtered_data(loaded_data, is_nominal)
     prediction_object = get_prediction_object(filtered_data, uuid_line_index, model)
-    bet_object = {}
+    save_predictions(prediction_object)
 
 
 
-    for uuid in prediction_object.keys():
-        predcition = prediction_object[uuid]
-        for guide in bet_guides:
-            if guide["start"] <=prediction < guide["end"]:
-                if not uuid in prediction_object.keys():
-                    bet_object[uuid] = {
-                        "W": False,
-                        "P": False,
-                        "S": False}
-                for char in guide["bet"]:
-                    bet_object[uuid][char] = True;
-    print(bet_object)
-    save_predictions(bet_object)
+    # bet_object = {}
+    # for uuid in prediction_object.keys():
+    #     predcition = prediction_object[uuid]
+
+        # for guide in bet_guides:
+        #     if guide["start"] <=prediction < guide["end"]:
+        #         if not uuid in prediction_object.keys():
+        #             bet_object[uuid] = {
+        #                 "W": False,
+        #                 "P": False,
+        #                 "S": False}
+        #         for char in guide["bet"]:
+        #             bet_object[uuid][char] = True;
+    # print(bet_object)
 
 def start_jvm():
     jvm.start(

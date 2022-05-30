@@ -15,10 +15,17 @@ from miner.utilities.constants import (
     length_converter,
     max_lengths)
 
-from rawdat.models import Dog
+from rawdat.models import Dog, Litter
 
 
-
+def save_sex_and_color(dog, elements):
+    try:
+        text = elements[0].text
+        sex_and_color = text.split("/")
+        save_sex(dog, sex_and_color[0])
+        save_color(dog, sex_and_color[1])
+    except:
+        pass
 
 def get_litter(sire, dam, whelp_date):
     try:
