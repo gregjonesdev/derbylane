@@ -77,17 +77,17 @@ class Command(BaseCommand):
     def get_venue_results(self, venue_code):
         year = sys.argv[3]
         month = 1
-        while month <= 12:
+        while month <= 5:
             self.scan_month(venue_code, month, year)
             month += 1
 
 
     def handle(self, *args, **options):
         venue_codes = ['TS', 'WD', 'SL']
-        with ThreadPoolExecutor() as executor:
-            executor.map(self.get_venue_results, venue_codes)
+        # with ThreadPoolExecutor() as executor:
+        #     executor.map(self.get_venue_results, venue_codes)
 
-        # self.get_venue_results('TS')
+        self.get_venue_results('WD')
 
 
 
