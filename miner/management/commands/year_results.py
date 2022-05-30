@@ -60,6 +60,7 @@ class Command(BaseCommand):
                 scan = self.get_scan(url)
                 if not scan.completed:
                     # Good:
+                    print(url)
                     if has_results(url):
                         race = get_race(chart, number)
 
