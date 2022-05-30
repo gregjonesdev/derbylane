@@ -74,23 +74,25 @@ class Command(BaseCommand):
                     self.update_scan(scan, comment)
                 number += 1
 
-    def is_valid_date(self, month, year, day):
+    def is_valid_past_date(self, month, year, day):
         try:
-            return datetime.datetime(year, month, day)
+            date = datetime.datetime(year, month, day)
+            if date < datetime.datetime.now():
+                return True
         except ValueError:
             pass
 
     def scan_month(self, venue_code, month, year):
         day = 1
         while day <= 31:
-            if self.is_valid_date(month, year, day):
+            if self.is_valid_past_date(month, year, day):
                 self.scan_day(venue_code, month, year, day)
             day += 1
 
     def get_venue_results(self, venue_code):
         year = int(sys.argv[3])
         month = 1
-        while month <= 5:
+        while month <= 12:
             self.scan_month(venue_code, month, year)
             month += 1
 
