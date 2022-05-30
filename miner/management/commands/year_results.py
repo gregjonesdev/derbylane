@@ -45,6 +45,7 @@ class Command(BaseCommand):
                 str(day).zfill(2)
             )
         )
+        print("Scanning: {} {} {}".format(venue_code, month, day))
         for time in chart_times:
             chart = get_chart(program, time)
             number = 1
