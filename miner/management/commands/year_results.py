@@ -63,7 +63,6 @@ class Command(BaseCommand):
                 if not scan.completed:
                     if has_results(url):
                         race = get_race(chart, number)
-                        # comment = process_url(url, race)
                         try:
                             comment = process_url(url, race)
                         except:

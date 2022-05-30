@@ -179,19 +179,26 @@ class Bet_Recommendation(CoreModel):
 
 class Participant_Prediction(CoreModel):
 
-    participant = models.OneToOneField(Participant, on_delete=models.CASCADE)
-    # smoreg = models.DecimalField(
-    #     max_digits=16,
-    #     decimal_places=8,
-    #     null=True)
+    participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    smoreg = models.DecimalField(
+        max_digits=16,
+        decimal_places=8,
+        null=True)
     recommendation = models.ForeignKey(
         Bet_Recommendation,
         on_delete=models.CASCADE,
         null=True)
-    bet = models.CharField(
-        max_length=16,
-        null=True
-    )
+
+        # Run migration removing bet.
+
+        # Add field to savewhich model made that prediction
+        # participant needs to be a foregin key, cause two models will give two predictions
+
+
+    # bet = models.CharField(
+    #     max_length=16,
+    #     null=True
+    # )
 
     def get_bet(self):
         pass

@@ -19,6 +19,8 @@ class Command(BaseCommand):
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
         for participant in Participant.objects.filter(race__chart__program__date__gte=today):
+
+            random_int = random.randint(3500, 5500)
             try:
                 pred = Participant_Prediction.objects.get(participant=participant)
             except ObjectDoesNotExist:
@@ -27,5 +29,5 @@ class Command(BaseCommand):
                 )
                 new_pred.set_fields_to_base()
                 pred = new_pred
-            pred.bet = bets[random.randint(0, 5)]
+            pred.smoreg = random_int/1000
             pred.save()

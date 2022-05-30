@@ -22,7 +22,6 @@ class WeatherLookup(CoreModel):
         null=True,
         max_length=128)
 
-
 class Venue(CoreModel):
 
     class Meta:
@@ -295,28 +294,6 @@ class Condition(CoreModel):
         max_length=8
     )
 
-class Bet_Recommendation(CoreModel):
-    venue =  models.ForeignKey(
-        Venue,
-        on_delete=models.CASCADE)
-    classifier = models.CharField(
-        null=True,
-        max_length=16
-    )
-    distance = models.IntegerField()
-    grade = models.ForeignKey(
-        Grade,
-        on_delete=models.CASCADE)
-    prediction = models.IntegerField()
-    bet = models.CharField(
-        max_length=16,
-        null=True
-    )
-    start_date = models.DateField(null=True)
-    months = models.IntegerField(null=True)
-    cutoff = models.DecimalField(max_digits=4, decimal_places=2, null=True)
-    c_factor = models.DecimalField(max_digits=4, decimal_places=2, null=True)
-
 
 class Race(CoreModel):
 
@@ -364,16 +341,6 @@ class Race(CoreModel):
     number = models.IntegerField(
         null=True
     )
-    legacy_condition = models.CharField(
-        max_length=1,
-        choices=CONDITION_CHOICES,
-        null=True
-    )
-    legacy_grade = models.CharField(
-        null=True,
-        max_length=3,
-        choices=GRADE_CHOICES
-    )
     condition = models.ForeignKey(
         Condition,
         null=True,
@@ -390,8 +357,9 @@ class Race(CoreModel):
     def get_straight_predictions(self):
         predictions = []
         for participant in self.participant_set.all():
-            if participant.participant_prediction:
-                predictions.append(participant.participant_prediction)
+            predictions.append("A")
+            if participant.get_recommended_bet():
+                predictions.append(participant.get_recommended_bet())
         return predictions
 
     def get_next(self):
@@ -537,11 +505,8 @@ class Participant(CoreModel):
         max_length=256)
 
     def get_recommended_bet(self):
-        try:
-            prediction = self.prediction
-            return prediction.bet
-        except:
-            return None
+        return self.participant_prediction_set.all()[0]
+
 
     def get_bets(self):
         return Bet.objects.filter(participant=self)
@@ -645,8 +610,8 @@ class Sizzle_Exacta(Sizzle_Bet):
     place_post = models.IntegerField(
         null=True
     )
-
-
+#
+#
 class Bet(CoreModel):
     participant =  models.ForeignKey(
         Participant,
@@ -940,19 +905,19 @@ class CronJob(CoreModel):
     type = models.CharField(
         null=True,
         max_length=256)
-
-class Exotic_Scan(CoreModel):
-
-    start = models.DecimalField(
-        max_digits=8,
-        decimal_places=6,
-        null=True
-    )
-    grade = models.ForeignKey(
-        Grade,
-        null=True,
-        on_delete=models.CASCADE)
-    venue = models.ForeignKey(
-        Venue,
-        null=True,
-        on_delete=models.CASCADE)
+#
+# class Exotic_Scan(CoreModel):
+#
+#     start = models.DecimalField(
+#         max_digits=8,
+#         decimal_places=6,
+#         null=True
+#     )
+#     grade = models.ForeignKey(
+#         Grade,
+#         null=True,
+#         on_delete=models.CASCADE)
+#     venue = models.ForeignKey(
+#         Venue,
+#         null=True,
+#         on_delete=models.CASCADE)

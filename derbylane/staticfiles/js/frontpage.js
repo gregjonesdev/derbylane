@@ -24,11 +24,12 @@ function toggle_delete_show (e) {
     delete_button.style.display = "none";
   }
 }
-
+console.log("Anything?")
 window.onload = (event) => {
   dropdowns = document.getElementsByClassName("dropdown-item")
-
+  console.log("on load")
   function load_races (e)  {
+    console.log("load races")
     const currentTarget = e.currentTarget
     const label = currentTarget.textContent
     const chart_id = e.currentTarget.getAttribute("data-chart")
@@ -47,9 +48,6 @@ window.onload = (event) => {
       },
       success: function(data) {
         $("#bets").html(data)
-        const bets_container =   document.getElementById("bets")
-        bets_container.style.maxHeight = "75vh";
-        bets_container.style.overflowY = "scroll";
         document.getElementById("chart-label").textContent = label
       }
     })
@@ -85,6 +83,7 @@ window.onload = (event) => {
 
   }
 
-  load_bets()
+  // load_bets()
+
 
 };

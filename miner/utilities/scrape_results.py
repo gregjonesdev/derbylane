@@ -27,7 +27,7 @@ from miner.utilities.models import (
 
 def has_results(url):
     tds = get_node_elements(url, "//td")
-    return len(tds) > 35
+    return len(tds) > 41
 
 def process_url(url, race):
     if has_results(url):
@@ -302,10 +302,6 @@ def save_straight_bets(race, trs):
             participant,
             "S",
             parsed_row[3])
-
-
-
-
 
 def has_exotic_bets(tds):
     return len(tds) >= 96

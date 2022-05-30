@@ -10,7 +10,7 @@ import weka.core.serialization as serialization
 from weka.core.converters import Loader
 from django.core.exceptions import ObjectDoesNotExist
 from pww.models import Participant_Prediction
-from rawdat.models import Winning_Trifecta, Exotic_Scan, Venue
+from rawdat.models import Winning_Trifecta, Venue
 import weka.core.jvm as jvm
 
 def get_filename(model_directory, model_name):
