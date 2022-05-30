@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from miner.utilities.common import get_node_elements
 from miner.utilities.constants import chart_times
 from miner.utilities.models import get_program, get_race, get_chart
-from miner.utilities.new_scrape import process_entries_url, has_entries
+from miner.utilities.scrape_entries import process_entries_url, has_entries
 from rawdat.models import Program, Venue, CronJob
 from miner.utilities.urls import build_entries_url
 from rawdat.utilities.methods import get_date_from_ymd

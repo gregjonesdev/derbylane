@@ -1,21 +1,20 @@
-from django.core.exceptions import ObjectDoesNotExist
 from miner.utilities.comments import success, no_elements
-from miner.utilities.common import get_attribute_elements, get_node_elements
+from miner.utilities.common import get_attribute_elements, clean_race_setting, get_dog, get_node_elements, get_grade
 from miner.utilities.constants import (
     bad_characters,
     art_skips,
     post_weight,
     zero_lengths,
+
     position_skips,
     length_converter,
     max_lengths)
 from miner.utilities.urls import build_dog_results_url, build_race_results_url
 from miner.utilities.models import (
     get_race,
-    get_grade,
     get_condition,
     update_participant,
-    get_dog,
+
     get_participant,
     create_straight_bet,
     create_exacta,
@@ -24,14 +23,7 @@ from miner.utilities.models import (
     create_superfecta,
     save_participant)
 
-def remove_line_breaks(text):
-    return text.replace("\n", "")
 
-def remove_tabs(text):
-    return text.replace("\t", "")
-
-def remove_extra_spaces(text):
-    return text.replace("  ", " ")
 
 def get_race_number(race_number):
     return(int(race_number))
@@ -39,13 +31,13 @@ def get_race_number(race_number):
 def get_race_distance(race_distance):
     return(int(race_distance))
 
-def get_parsed_race_setting(url):
-    td = get_attribute_elements(
-        url,
-        "td",
-        "valign",
-        "middle")[0]
-    return clean_race_setting(td)
+# def get_parsed_race_setting(url):
+#     td = get_attribute_elements(
+#         url,
+#         "td",
+#         "valign",
+#         "middle")[0]
+#     return clean_race_setting(td)
 
 def get_parsed_results_race_setting(url):
     td = get_attribute_elements(
@@ -54,13 +46,6 @@ def get_parsed_results_race_setting(url):
         "width",
         "90%")[1]
     return clean_race_setting(td)
-
-
-def clean_race_setting(td):
-    single_line_text = remove_line_breaks(td.text)
-    untabbed_text = remove_tabs(single_line_text)
-    unspaced_text = remove_extra_spaces(untabbed_text)
-    return unspaced_text.split()
 
 def save_race_settings(race, parsed_setting):
     try:
@@ -310,25 +295,25 @@ def save_straight_bets(race, trs):
 #         chart.time,
 #         race.number)
 
-def get_participant_entry_anchors(entries_url):
-    return get_attribute_elements(
-        entries_url,
-        "a",
-        "style",
-        "padding:1px;12px;color:#f4780d;text-transform:uppercase;")
+# def get_participant_entry_anchors(entries_url):
+#     return get_attribute_elements(
+#         entries_url,
+#         "a",
+#         "style",
+#         "padding:1px;12px;color:#f4780d;text-transform:uppercase;")
+#
+# def populate_race(entries_url, race):
+#     post_count = 1
+#     for anchor in get_participant_entry_anchors(entries_url):
+#         dog_name = anchor.text
+#         save_participant(race, post_count, get_dog(dog_name))
+#         post_count += 1
 
-def populate_race(entries_url, race):
-    post_count = 1
-    for anchor in get_participant_entry_anchors(entries_url):
-        dog_name = anchor.text
-        save_participant(race, post_count, get_dog(dog_name))
-        post_count += 1
-
-def process_entries_url(entries_url, race):
-    parsed_setting = get_parsed_race_setting(entries_url)
-    print(parsed_setting)
-    save_race_settings(race, parsed_setting)
-    populate_race(entries_url, race)
+# def process_entries_url(entries_url, race):
+#     parsed_setting = get_parsed_race_setting(entries_url)
+#     print(parsed_setting)
+#     save_race_settings(race, parsed_setting)
+#     populate_race(entries_url, race)
 
 def process_url(url, race):
     print("process url")
@@ -359,6 +344,6 @@ def has_results(url):
     tds = get_node_elements(url, "//td")
     return len(tds) > 33
 
-def has_entries(url):
-    trs = get_node_elements(url, "//tr")
-    return len(trs) > 34
+# def has_entries(url):
+#     trs = get_node_elements(url, "//tr")
+#     return len(trs) > 34

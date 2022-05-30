@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 
 from miner.utilities.common import get_node_elements
-from miner.utilities.new_scrape import process_url, has_results
+from miner.utilities.scrape_results import process_url, has_results
 from miner.utilities.urls import build_race_results_url
 from rawdat.models import Race, CronJob
 

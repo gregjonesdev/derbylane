@@ -25,9 +25,7 @@ from miner.utilities.constants import (
     distance_converter
 )
 
-from miner.utilities.common import (
-    get_node_elements,
-)
+from miner.utilities.common import get_node_elements
 
 from miner.utilities.urls import (
     build_dog_profile_url,
@@ -84,7 +82,7 @@ def save_participant(race, post, dog):
         new_participant.set_fields_to_base()
         participant = new_participant
     participant.dog = dog
-    participant.save()    
+    participant.save()
 
 
 def get_participant_from_post(race, post):
@@ -212,19 +210,7 @@ def save_dog_info(dog):
 
 
 
-def get_dog(name):
-    # print(name)
-    try:
-        dog = Dog.objects.get(name=name.upper())
-    except ObjectDoesNotExist:
-        new_dog = Dog(
-            name=name.upper()
-        )
-        new_dog.set_fields_to_base()
-        new_dog.save()
-        dog = new_dog
-        save_dog_info(dog)
-    return dog
+
 
 def get_litter(sire, dam, whelp_date):
     try:
@@ -244,23 +230,7 @@ def get_litter(sire, dam, whelp_date):
         litter = new_litter
     return litter
 
-def get_grade(raw_grade):
-    stripped_grade = raw_grade.strip().upper()
-    if stripped_grade:
-        if stripped_grade in grade_skips:
-            return None
-        try:
-            grade = Grade.objects.get(name=stripped_grade)
-        except ObjectDoesNotExist:
-            new_grade = Grade(
-                name=stripped_grade
-            )
-            new_grade.set_fields_to_base()
-            new_grade.save()
-            grade = new_grade
-        return grade
-    else:
-        return None
+
 
 # def create_single(participant, type, payout):
 #     try:
