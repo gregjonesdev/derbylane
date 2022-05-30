@@ -286,7 +286,7 @@ class Grade(CoreModel):
     )
     value = models.IntegerField(
         null=True
-    )   
+    )
 
 class Condition(CoreModel):
 
@@ -796,71 +796,6 @@ class Quiniela_Wager(CoreModel):
 
     def get_posts(self):
         return "{}, {}".format(self.left.post, self.right.post)
-
-# class Exacta_Wager(CoreModel):
-#
-#     class Meta:
-#         verbose_name = 'Exacta'
-#
-#     win = models.ForeignKey(
-#             Participant,
-#             on_delete=models.CASCADE,
-#             related_name='exacta_wager_win')
-#     place = models.ForeignKey(
-#             Participant,
-#             on_delete=models.CASCADE,
-#             related_name='exacta_wager_place')
-#     race = models.ForeignKey(
-#         Race,
-#         on_delete=models.CASCADE,
-#         related_name='exacta_wager')
-#     amount = models.DecimalField(
-#         max_digits=10,
-#         decimal_places=2,
-#         default=2.00)
-#
-#     def get_name(self):
-#         return "Exacta"
-#
-#     def get_posts(self):
-#         return "{}, {}".format(self.win.post, self.place.post)
-
-
-# class Superfecta_Wager(Bet):
-#
-#     class Meta:
-#         verbose_name = 'Trifecta'
-#
-#     win = models.ForeignKey(
-#             Participant,
-#             on_delete=models.CASCADE,
-#             related_name='superfecta_wager_win')
-#     place = models.ForeignKey(
-#             Participant,
-#             on_delete=models.CASCADE,
-#             related_name='superfecta_wager_place')
-#     show = models.ForeignKey(
-#             Participant,
-#             on_delete=models.CASCADE,
-#             related_name='superfecta_wager_show')
-#     fourth = models.ForeignKey(
-#             Participant,
-#             on_delete=models.CASCADE,
-#             related_name='superfecta_wager_fourth')
-#     race = models.ForeignKey(
-#         Race,
-#         on_delete=models.CASCADE,
-#         related_name='superfecta_wager')
-#
-#     def get_name(self):
-#         return "Superfecta"
-#
-#     def get_posts(self):
-#         return "{}, {}, {}, {}".format(
-#             self.win.post,
-#             self.place.post,
-#             self.show.post,
-#             self.fourth.post)
 
 class Exacta(Combo):
 

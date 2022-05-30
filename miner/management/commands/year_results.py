@@ -1,4 +1,5 @@
 import sys
+import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
@@ -62,6 +63,7 @@ class Command(BaseCommand):
                 if not scan.completed:
                     if has_results(url):
                         race = get_race(chart, number)
+                        # comment = process_url(url, race)
                         try:
                             comment = process_url(url, race)
                         except:
@@ -72,14 +74,21 @@ class Command(BaseCommand):
                     self.update_scan(scan, comment)
                 number += 1
 
+    def is_valid_date(self, month, year, day):
+        try:
+            return datetime.datetime(year, month, day)
+        except ValueError:
+            pass
+
     def scan_month(self, venue_code, month, year):
         day = 1
         while day <= 31:
-            self.scan_day(venue_code, month, year, day)
+            if self.is_valid_date(month, year, day):
+                self.scan_day(venue_code, month, year, day)
             day += 1
 
     def get_venue_results(self, venue_code):
-        year = sys.argv[3]
+        year = int(sys.argv[3])
         month = 1
         while month <= 5:
             self.scan_month(venue_code, month, year)
