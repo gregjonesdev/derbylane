@@ -513,17 +513,13 @@ class Participant(CoreModel):
                 print("{}-{}".format(bet_rec.range_start, bet_rec.range_end))
                 answer = ""
                 if bet_rec.range_start <= prediction.smoreg < bet_rec.range_end:
-                    answer = bet_rec.bet
-                print("{} ---> {}".format(prediction.smoreg, answer))
-        #     bet = prediction.get_bet()
-        #     if bet:
-        #         for char in bet:
-        #             bets_object[char] = True
-        # recommended_bet = ""
-        # for each in bets_object.keys():
-        #     if bets_object[each]:
-        #         recommended_bet += each
-        # return recommended_bet
+                    for char in bet_rec.bet:
+                        bets_object[char] = True
+        recommended_bet = ""
+        for each in bets_object.keys():
+            if bets_object[each]:
+                recommended_bet += each
+        return recommended_bet
 
 
 

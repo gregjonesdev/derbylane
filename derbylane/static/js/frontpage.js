@@ -2,6 +2,13 @@ const text_content = document.getElementById("json-chart-data").textContent
 const json_data = JSON.parse(text_content)
 const bets_container = document.getElementById("bets")
 
+
+function quickbet (e) {
+  console.log(e.currentTarget.id)
+
+}
+
+
 function handle_exotic_delete (e) {
   wager_uuid = e.currentTarget.getAttribute("data-wageruuid")
   $.ajax({
@@ -25,16 +32,27 @@ function toggle_delete_show (e) {
     delete_button.style.display = "none";
   }
 }
+
 console.log("Anything?")
 window.onload = (event) => {
+
   dropdowns = document.getElementsByClassName("dropdown-item")
   console.log("on load")
+
+  console.log("quick_bet_buttons")
+
+
+
+
+
   function load_races (e)  {
     console.log("load races")
     const currentTarget = e.currentTarget
     const label = currentTarget.textContent
     const chart_id = e.currentTarget.getAttribute("data-chart")
     load_charts(chart_id, label)
+
+
 
 
   }

@@ -11,7 +11,6 @@ modal.addEventListener("focus", function (e) {
     const number = button.data('number')
     const participant = button.data('participant')
     const this_modal = $(this)
-    const participant_bets = document.getElementById("participant_bets")
     document.getElementById('bet_type_' + bets).selected = true;
     this_modal.find('.modal-subtitle').text(
       post + " | " +

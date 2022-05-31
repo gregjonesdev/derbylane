@@ -31,15 +31,6 @@ body {
   background-color: var(--bg-secondary);
 }
 
-#summary-card {
-  padding: 10px 20px;
-  margin-top: 10px;
-}
-
-.date_arrow {
-  display: inline;
-}
-
 #main-card-header {
   border: var(--primary-border);
   display: flex;
@@ -173,7 +164,7 @@ body {
 
 #header-table td {
   width: 20%;
-  padding: 0px 4px;
+  padding: 0px;
   margin-left:10px
 
 }
@@ -208,11 +199,11 @@ body {
 }
 
 .large-modal-body {
-  height: 50vh;
+  height: 80vh;
 }
 
 .small-modal-body {
-  height: 25vh;
+  height: 80vh;
 }
 
 #modal-form {
@@ -266,6 +257,7 @@ body {
   display:none;
 }
 
+
 .exotic-wager-item {
   display: flex;
   flex-flow: row nowrap;
@@ -309,7 +301,7 @@ body {
 
 #main-table td {
   border: none;
-  width: 15vw;
+  width: 20vw;
   text-align: center;
   vertical-align: middle;
   color: #FFF;
@@ -322,4 +314,13 @@ p label {
 p input {
   width: 70%;
   vertical-align: top;
+}
+
+.bet-button, .quick-bet-btn {
+  height: 45px;
+  margin: 0px;
+}
+
+thead {
+color: red;
 }

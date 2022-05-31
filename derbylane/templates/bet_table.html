@@ -6,7 +6,8 @@
   data-venue="{{ race.chart.program.venue.code }}"
   data-time="{{ race.chart.get_time_display }}"
   data-number="{{ race.number }}"
-  class="btn btn-sm btn-block btn-outline-primary exotic-bet bet-button">
+  class="btn btn-sm btn-block btn-outline-primary exotic-bet bet-button"
+  >
   <span class="race-number-cell">
     Race {{ race.number }}
   </span>
@@ -37,12 +38,6 @@
     {% if participant.get_recommended_bet %}
       <tr>
         <td>
-          {{ participant.post }}
-          <span
-            class="dog-name-span">
-            {{ participant.dog.name|truncatechars:13 }}
-        </td>
-        <td>
           <button
             type="button"
             class="btn btn-outline-success btn-block btn-sm bet-button"
@@ -57,41 +52,50 @@
             data-participant="{{ participant.uuid }}"
             data-bets="{{ participant.get_recommended_bet }}"
             >
-            <span id="participant_bets">
-               {{ participant.get_recommended_bet }}
+            {{ participant.post }}
+            <span
+              class="dog-name-span">
+              {{ participant.dog.name|truncatechars:8 }}
             </span>
           </button>
         </td>
-        <td id="{{ participant.uuid }}-win-td">
-          <button
-            class="btn btn-sm btn-block btn-outline-light"
-            disabled>
-            W
-            <!-- $ {{ participant.get_win_bet }} -->
-          </button>
+
+        <td id="{{ participant.uuid }}-win-td" class="quick-bet-btn">
+          {% if 'W' in participant.get_recommended_bet %}
+            <button
+              class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
+              disabled
+              style="height:43px">
+              W
+            </button>
+          {% endif %}
         </td>
-        <td id="{{ participant.uuid }}-place-td">
-          {% if participant.get_place_bet %}
+        <td id="{{ participant.uuid }}-place-td" >
+          {% if 'P' in participant.get_recommended_bet %}
             <button
               class="btn btn-sm btn-block btn-outline-light"
-              disabled>
-              {{ participant.get_place_bet.purchase_amount }}
+              disabled
+              >
+              P
             </button>
-          {% else %}
-          <button
-            class="btn btn-sm btn-block btn-outline-light"
-            disabled>
-            P
-          </button>
           {% endif %}
         </td>
         <td id="{{ participant.uuid }}-show-td">
-          <button
-            class="btn btn-sm btn-block btn-outline-light"
-            disabled>
-            S
-          </button>
+          {% if 'S' in participant.get_recommended_bet %}
+            <button
+              class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
+              disabled>
+              S
+            </button>
+          {% endif %}
         </td>
+        <!-- <td>
+          <button
+            class="btn btn-sm btn-block btn-outline-danger"
+            disabled>
+            &#10005;
+          </button>
+        </td> -->
       {% endif %}
     </tr>
   {% endfor %}
@@ -107,6 +111,12 @@
   exotic_delete_buttons = document.getElementsByClassName("exotic-delete-button")
   for (let i=0; i<exotic_delete_buttons.length; i++) {
     exotic_delete_buttons[i].addEventListener("click", handle_exotic_delete)
+  }
+
+
+  const quick_bet_buttons = document.getElementsByClassName("quick-bet-btn")
+  for (let i=0; i< quick_bet_buttons.length; i++) {
+    quick_bet_buttons[i].addEventListener("click", quickbet)
   }
 </script>
 
