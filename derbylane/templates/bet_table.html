@@ -35,56 +35,55 @@
   class="table table-sm table-borderless fade-in">
   {% for participant in race.participant_set.all %}
     {% if participant.get_recommended_bet %}
-    <tr>
-      <td>
-        {{ participant.post }}
-        <span
-          class="dog-name-span">
-          {{ participant.dog.name|truncatechars:13 }}
-      </td>
-      <td>
-        <button
-          type="button"
-          class="btn btn-outline-success btn-block btn-sm bet-button"
-          data-toggle="modal"
-          data-target="#straight-bet-modal"
-          data-dog="{{ participant.dog.name }}"
-          data-post="{{ participant.post }}"
-          data-bets="{{ participant.get_recommended_bet }}"
-          data-venue="{{ participant.race.chart.program.venue.code }}"
-          data-chart="{{ participant.race.chart.get_time_display }}"
-          data-number="{{ participant.race.number }}"
-          data-participant="{{ participant.uuid }}"
-          data-bets="{{ participant.get_recommended_bet }}"
-          disabled>
-          <span id="participant_bets">
-             {{ participant.get_recommended_bet }}
-          </span>
-        </button>
-      </td>
-    {% endif %}
-    <!--
-      <td id="{{ participant.uuid }}-win-td">
-        <button
-          class="btn btn-sm btn-block btn-outline-light"
-          disabled>
-          ${{ participant.get_win_bet.amount }}
-        </button>
-      </td>
-      <td id="{{ participant.uuid }}-place-td">
-        <button
-          class="btn btn-sm btn-block btn-outline-light"
-          disabled>
-          P
-        </button>
-      </td>
-      <td id="{{ participant.uuid }}-show-td">
-        <button
-          class="btn btn-sm btn-block btn-outline-light"
-          disabled>
-          S
-        </button>
-      </td> -->
+      <tr>
+        <td>
+          {{ participant.post }}
+          <span
+            class="dog-name-span">
+            {{ participant.dog.name|truncatechars:13 }}
+        </td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-outline-success btn-block btn-sm bet-button"
+            data-toggle="modal"
+            data-target="#straight-bet-modal"
+            data-dog="{{ participant.dog.name }}"
+            data-post="{{ participant.post }}"
+            data-bets="{{ participant.get_recommended_bet }}"
+            data-venue="{{ participant.race.chart.program.venue.code }}"
+            data-chart="{{ participant.race.chart.get_time_display }}"
+            data-number="{{ participant.race.number }}"
+            data-participant="{{ participant.uuid }}"
+            data-bets="{{ participant.get_recommended_bet }}"
+            disabled>
+            <span id="participant_bets">
+               {{ participant.get_recommended_bet }}
+            </span>
+          </button>
+        </td>
+        <td id="{{ participant.uuid }}-win-td">
+          <button
+            class="btn btn-sm btn-block btn-outline-light"
+            disabled>
+            ${{ participant.get_win_bet.amount }}
+          </button>
+        </td>
+        <td id="{{ participant.uuid }}-place-td">
+          <button
+            class="btn btn-sm btn-block btn-outline-light"
+            disabled>
+            P
+          </button>
+        </td>
+        <td id="{{ participant.uuid }}-show-td">
+          <button
+            class="btn btn-sm btn-block btn-outline-light"
+            disabled>
+            S
+          </button>
+        </td>
+      {% endif %}
     </tr>
   {% endfor %}
 </table>

@@ -319,7 +319,7 @@ def clear_bets(request):
 
 def load_bets(request):
     chart = Chart.objects.get(
-        uuid=request.GET.get('chart_id'))
+        uuid=request.GET.get('chart_id'))    
     races = chart.race_set.all()
 
         # wagering = False
@@ -328,7 +328,7 @@ def load_bets(request):
         # url = 'load_bets.html'
         # races = chart.race_set.filter(
         #     grade__value__gt=0)
-    url = 'new_table.html'
+    url = 'bet_table.html'
     return render(request, url, {'races': races})
 
 
