@@ -237,45 +237,46 @@ class Chart(CoreModel):
             self.program.venue.kiosk_name,
             self.kiosk_time())
 
-    def get_rh(self):
-        weather = self.program.weather
-        if weather:
-            max_rh = weather.max_rh
-            mean_rh = weather.mean_rh
-            try:
-                return float(mean_rh)
-            except:
-                pass
+    # def get_rh(self):
+    #     weather = self.program.weather
+    #     if weather:
+    #         max_rh = weather.max_rh
+    #         mean_rh = weather.mean_rh
+    #         try:
+    #             return float(mean_rh)
+    #         except:
+    #             pass
 
-    def get_racetemp(self):
-        weather = self.program.weather
-        if weather:
-            try:
-                return float(weather.max_temp)
-            except:
-                pass
+    # def get_racetemp(self):
+    #     weather = self.program.weather
+    #     if weather:
+    #         try:
+    #             return float(weather.max_temp)
+    #         except:
+    #             pass
 
     def get_predicted_races(self):
         predicted_races = []
         for race in self.race_set.all():
             if race.has_predictions():
                 predicted_races.append(race)
+        return predicted_races
 
     def has_predictions(self):
         for race in self.race_set.all():
             if race.has_predictions():
                 return True
 
-    def has_bets(self):
-        for race in self.race_set.all():
-            if race.has_bets():
-                return True
+    # def has_bets(self):
+    #     for race in self.race_set.all():
+    #         if race.has_bets():
+    #             return True
 
-    def is_complete(self):
-        for race in self.race_set.all():
-            if not race.is_complete():
-                return False
-        return True
+    # def is_complete(self):
+    #     for race in self.race_set.all():
+    #         if not race.is_complete():
+    #             return False
+    #     return True
 
 class Grade(CoreModel):
 
@@ -357,7 +358,6 @@ class Race(CoreModel):
     def get_straight_predictions(self):
         predictions = []
         for participant in self.participant_set.all():
-            predictions.append("A")
             if participant.get_recommended_bet():
                 predictions.append(participant.get_recommended_bet())
         return predictions
@@ -379,8 +379,8 @@ class Race(CoreModel):
             return False
 
     def has_predictions(self):
-        if "dev" in os.environ['DJANGO_SETTINGS_MODULE']:
-            return True
+        # if "dev" in os.environ['DJANGO_SETTINGS_MODULE']:
+        #     return True
         for participant in self.participant_set.all():
             try:
                 if participant.get_recommended_bet():

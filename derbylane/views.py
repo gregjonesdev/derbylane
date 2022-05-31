@@ -1,10 +1,13 @@
-# import os, fnmatch
+
 from django.utils.timezone import localdate
 from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
 import datetime
 import time
 
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import redirect
 from django.views.generic import View
 from django.shortcuts import render
@@ -13,8 +16,7 @@ from django.http import JsonResponse
 from two_factor.views.mixins import OTPRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
-from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 
 
 from rawdat.models import (
@@ -80,12 +82,13 @@ class FrontPage(LoginRequiredMixin, View):
             else:
                 next_date = (target_day + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 
-        displayed_charts = Chart.objects.filter(program__date=target_day)
+        displayed_charts = []
+
         # if target_day < today:
         #     content_type = "Bets"
-        #     for chart in Chart.objects.filter(program__date=target_day):
-        #         if chart.has_bets():
-        #             displayed_charts.append(chart)
+        for chart in Chart.objects.filter(program__date=target_day):
+            if chart.has_predictions():
+                displayed_charts.append(chart)
         # else:
         #     for chart in Chart.objects.filter(
         #         program__date=target_day).order_by(
@@ -320,7 +323,9 @@ def clear_bets(request):
 def load_bets(request):
     chart = Chart.objects.get(
         uuid=request.GET.get('chart_id'))
-    races = chart.race_set.all()
+    races = chart.get_predicted_races()
+
+    print(races)
 
         # wagering = False
         # if not localdate() > chart.program.date:
@@ -332,9 +337,6 @@ def load_bets(request):
     return render(request, url, {'races': races})
 
 
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
 
 def change_password(request):
     if request.method == 'POST':

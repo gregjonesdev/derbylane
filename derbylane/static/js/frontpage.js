@@ -4,7 +4,9 @@ const bets_container = document.getElementById("bets")
 
 
 function quickbet (e) {
-  console.log(e.currentTarget.id)
+  console.log("make quick bet")
+  console.log(e.target.getAttribute("data-participant"))
+  console.log(e.target.getAttribute("data-type"))
 
 }
 
@@ -102,7 +104,8 @@ window.onload = (event) => {
 
   }
 
-  // load_bets()
+
+  load_bets()
 
 
 };
