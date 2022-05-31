@@ -29,7 +29,7 @@ from rawdat.models import (
     Straight_Wager,
     # Quiniela_Wager,
     Sizzle_Superfecta,
-    # Exacta_Wager,
+    Straight_Bet,
     )
 
 
@@ -278,29 +278,29 @@ def make_bet(request):
     participant = Participant.objects.get(
         uuid=participant_id)
     bet_names = [char for char in request.GET.get('bet_types')]
+    amount = request.GET.get('amount')
     bet_update = {'W': 0, 'P': 0, 'S': 0}
     for bet_name in bet_names:
+        print(bet_name)
         type = StraightBetType.objects.get(name=bet_name)
         try:
-            bet = Bet.objects.get(
+            bet = Straight_Bet.objects.get(
                 participant = participant,
                 type = type
             )
         except ObjectDoesNotExist:
-            new_bet = Bet(
+            new_bet = Straight_Bet(
                 participant = participant,
                 type = type
             )
             new_bet.set_fields_to_base()
-            new_bet.save()
             bet = new_bet
-        amount = request.GET.get('amount')
-        if int(amount) == 0:
-            bet.delete()
-        else:
-            bet.amount = float(amount)
-            bet.save()
-            bet_update[bet_name] = bet.amount
+            new_bet.save()
+        bet.purchase_amount = float(amount)
+        bet.save()
+        bet_update[bet_name] = bet.purchase_amount
+
+    print(bet.uuid)
 
     return JsonResponse({
         'bets': bet_update,
@@ -319,7 +319,7 @@ def clear_bets(request):
 
 def load_bets(request):
     chart = Chart.objects.get(
-        uuid=request.GET.get('chart_id'))    
+        uuid=request.GET.get('chart_id'))
     races = chart.race_set.all()
 
         # wagering = False

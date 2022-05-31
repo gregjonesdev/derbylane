@@ -549,7 +549,8 @@ class Sizzle_Bet(CoreModel):
         null=True)
     payout = models.DecimalField(
         max_digits=10,
-        decimal_places=2)
+        decimal_places=2,
+        null=True)
 
 
 class Straight_Bet(Sizzle_Bet):

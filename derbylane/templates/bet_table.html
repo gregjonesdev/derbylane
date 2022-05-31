@@ -56,7 +56,7 @@
             data-number="{{ participant.race.number }}"
             data-participant="{{ participant.uuid }}"
             data-bets="{{ participant.get_recommended_bet }}"
-            disabled>
+            >
             <span id="participant_bets">
                {{ participant.get_recommended_bet }}
             </span>
@@ -66,7 +66,8 @@
           <button
             class="btn btn-sm btn-block btn-outline-light"
             disabled>
-            ${{ participant.get_win_bet.amount }}
+            W
+            <!-- $ {{ participant.get_win_bet }} -->
           </button>
         </td>
         <td id="{{ participant.uuid }}-place-td">
