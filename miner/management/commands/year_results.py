@@ -19,6 +19,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--year', type=int)
+        parser.add_argument('--month', type=int)
 
     def get_scan(self, url):
         try:
@@ -90,7 +91,7 @@ class Command(BaseCommand):
 
     def get_venue_results(self, venue_code):
         year = int(sys.argv[3])
-        month = 1
+        month = int(sys.argv[5])
         while month <= 12:
             self.scan_month(venue_code, month, year)
             month += 1
