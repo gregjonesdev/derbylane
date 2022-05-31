@@ -63,15 +63,22 @@
           </button>
         </td>
 
-        <td id="{{ participant.uuid }}-win-td" data-participant="{{ participant.uuid }}"
-        data-type="W"class="quick-bet-btn">
-          {% if 'W' in participant.get_recommended_bet %}
+        <td id="{{ participant.uuid }}-win-td">
+          {% if participant.get_win_bet %}
             <button
-              class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
-
+              class="btn btn-sm btn-block btn-outline-info quick-bet-btn"
               disabled>
-              W
+              {{ participant.get_win_bet.purchase_amount }}
             </button>
+          {% else %}
+            {% if 'W' in participant.get_recommended_bet %}
+              <button
+                class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
+                data-participant="{{ participant.uuid }}"
+                data-type="W">
+                W
+              </button>
+            {% endif %}
           {% endif %}
         </td>
         <td id="{{ participant.uuid }}-place-td" >

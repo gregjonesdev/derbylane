@@ -277,6 +277,7 @@ def make_exotic_bet(request):
     #     'race_uuid': race_uuid })
 
 def make_bet(request):
+    print(request.GET.__dict__)
     participant_id = request.GET.get('participant_id')
     participant = Participant.objects.get(
         uuid=participant_id)
@@ -324,15 +325,6 @@ def load_bets(request):
     chart = Chart.objects.get(
         uuid=request.GET.get('chart_id'))
     races = chart.get_predicted_races()
-
-    print(races)
-
-        # wagering = False
-        # if not localdate() > chart.program.date:
-        #     wagering = True
-        # url = 'load_bets.html'
-        # races = chart.race_set.filter(
-        #     grade__value__gt=0)
     url = 'bet_table.html'
     return render(request, url, {'races': races})
 

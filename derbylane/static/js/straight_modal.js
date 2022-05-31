@@ -98,7 +98,7 @@ make_bet = (participant_id) => {
 const create_button = (text_content) => {
   button = document.createElement("button");
   button.setAttribute("type", "button");
-  button.setAttribute("class", "btn btn-outline-info btn-block btn-sm");
+  button.setAttribute("class", "btn btn-outline-info btn-block btn-sm quick-bet-btn");
   button.disabled = true;
   button.textContent = text_content;
   return button;

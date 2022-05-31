@@ -1,12 +1,30 @@
 const text_content = document.getElementById("json-chart-data").textContent
 const json_data = JSON.parse(text_content)
 const bets_container = document.getElementById("bets")
-
+let amount = 2.0
 
 function quickbet (e) {
-  console.log("make quick bet")
-  console.log(e.target.getAttribute("data-participant"))
-  console.log(e.target.getAttribute("data-type"))
+  console.log("make quicky bet")
+  participant = e.target.getAttribute("data-participant")
+  type = e.target.getAttribute("data-type")
+  $.ajax({
+    url: json_data["make_bets_url"],
+    dataType: "html",
+    data: {
+      "bet_types": type,
+      "participant_id": participant,
+      "amount": amount
+    },
+    success: function(data) {
+      // $("#bets").html(data)
+      console.log("success")
+      parent_node = e.target.parentNode
+      e.target.remove()
+      parent_node.appendChild(build_button (amount.toFixed(2)))
+
+      // document.getElementById("chart-label").textContent = label
+    }
+  })
 
 }
 
@@ -35,18 +53,18 @@ function toggle_delete_show (e) {
   }
 }
 
-console.log("Anything?")
+function build_button (amount) {
+  const button = document.createElement("button");
+  button.setAttribute("type", "button");
+  button.setAttribute("class", "btn btn-sm btn-block btn-outline-light quick-bet-btn");
+  button.disbled = true;
+  button.textContent = amount
+  return button
+}
+
 window.onload = (event) => {
 
   dropdowns = document.getElementsByClassName("dropdown-item")
-  console.log("on load")
-
-  console.log("quick_bet_buttons")
-
-
-
-
-
   function load_races (e)  {
     console.log("load races")
     const currentTarget = e.currentTarget

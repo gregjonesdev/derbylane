@@ -388,16 +388,6 @@ class Race(CoreModel):
             except:
                 pass
 
-    def count_predictions(self):
-        prediction_count = 0
-        for participant in self.participant_set.all():
-            try:
-                if participant.prediction:
-                    prediction_count += 1
-            except:
-                pass
-        return prediction_count
-
     def has_bets(self):
         if "dev" in os.environ['DJANGO_SETTINGS_MODULE']:
             return True
@@ -405,20 +395,20 @@ class Race(CoreModel):
             if participant.bet_set.count() > 0:
                 return True
 
-    def get_displayed_participants(self):
-        all_participants = self.participant_set.all()
-        if "dev" in os.environ['DJANGO_SETTINGS_MODULE']:
-            return all_participants
-        participant_list=[]
-        if self.is_complete():
-            for participant in all_participants:
-                if participant.get_bets().count():
-                    participant_list.append(participant)
-        else:
-            for participant in all_participants:
-                if participant.get_recommended_bet():
-                    participant_list.append(participant)
-        return participant_list
+    # def get_displayed_participants(self):
+    #     all_participants = self.participant_set.all()
+    #     if "dev" in os.environ['DJANGO_SETTINGS_MODULE']:
+    #         return all_participants
+    #     participant_list=[]
+    #     if self.is_complete():
+    #         for participant in all_participants:
+    #             if participant.get_bets().count():
+    #                 participant_list.append(participant)
+    #     else:
+    #         for participant in all_participants:
+    #             if participant.get_recommended_bet():
+    #                 participant_list.append(participant)
+    #     return participant_list
 
     def is_complete(self):
         for participant in self.participant_set.all():
