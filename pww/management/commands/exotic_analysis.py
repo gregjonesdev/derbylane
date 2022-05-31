@@ -12,7 +12,7 @@ from pww.utilities.arff import (
     get_testing_arff,
 )
 from pww.utilities.classifiers import classifiers
-from pww.utilities.ultraweka import get_model, save_model, analyze_exotics
+from pww.utilities.weka import get_model, save_model, analyze_exotics
 from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
 from pww.utilities.metrics import new_get_metrics, get_race_metrics

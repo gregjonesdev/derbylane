@@ -6,7 +6,7 @@ from pww.models import Metric, Prediction
 from pww.utilities.arff import get_training_arff
 from pww.utilities.classifiers import model_data, recommendations
 from pww.utilities.metrics import new_get_metrics
-from pww.utilities.ultraweka import save_model, get_model_name
+from pww.utilities.weka import save_model, get_model_name
 
 model_directory = "weka_models"
 

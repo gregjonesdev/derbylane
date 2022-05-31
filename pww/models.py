@@ -149,7 +149,6 @@ class WekaModel(CoreModel):
     training_end = models.DateField()
 
     def get_name(self):
-        betting_grade = self.betting_grade
         return "{}_{}_{}".format(
             self.venue.code,
             self.grade.name,
@@ -183,16 +182,15 @@ class Participant_Prediction(CoreModel):
         Bet_Recommendation,
         on_delete=models.CASCADE,
         null=True)
+    model = models.ForeignKey(
+        WekaModel,
+        on_delete=models.CASCADE,
+        null=True)
 
     def get_bet(self):
-        recommendation = self.recommendation
-        smoreg = self.smoreg
-        if smoreg and recommendation:
-            start = recommendation.range_start
-            end = recommendation.range_end
-            if start <= smoreg < end:
-                return recommendation.bet
-
+        for rec in model.bet_recommendation_set.all():
+            print("{}\t{}\t{}".format(rec.range_start, rec.range_end, rec.bet))
+        return "with"
 
 class Trifecta_Prediction(CoreModel):
 

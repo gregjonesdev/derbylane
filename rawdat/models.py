@@ -507,15 +507,23 @@ class Participant(CoreModel):
     def get_recommended_bet(self):
         bets_object = {"W": False, "P": False, "S": False}
         for prediction in self.participant_prediction_set.all():
-            bet = prediction.get_bet()
-            if bet:
-                for char in bet:
-                    bets_object[char] = True
-        recommended_bet = ""
-        for each in bets_object.keys():
-            if bets_object[each]:
-                recommended_bet += each
-        return recommended_bet
+            model = prediction.model
+            print("Model: {}\t{}\t{}\t{}".format(model.venue.code, model.grade.name, model.training_start, model.training_end))
+            for bet_rec in model.bet_recommendation_set.all():
+                print("{}-{}".format(bet_rec.range_start, bet_rec.range_end))
+                answer = ""
+                if bet_rec.range_start <= prediction.smoreg < bet_rec.range_end:
+                    answer = bet_rec.bet
+                print("{} ---> {}".format(prediction.smoreg, answer))
+        #     bet = prediction.get_bet()
+        #     if bet:
+        #         for char in bet:
+        #             bets_object[char] = True
+        # recommended_bet = ""
+        # for each in bets_object.keys():
+        #     if bets_object[each]:
+        #         recommended_bet += each
+        # return recommended_bet
 
 
 

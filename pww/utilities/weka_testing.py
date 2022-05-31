@@ -276,12 +276,6 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index, w
         "success_rate": 0,
     }
 
-    # USE THIS
-    # writer.writerow(row)
-
-
-
-    # interval_object = build_interval_object(start, stop, interval)
     prediction_object = {}
     for index, inst in enumerate(filtered_data):
         if index in uuid_line_index.keys():
@@ -309,15 +303,15 @@ def evaluate_numeric_exotic(classifier, races, filtered_data, uuid_line_index, w
         numbers[0] += interval
 
 def analyze_numeric_exotic(classifier, numbers, races, filtered_data, uuid_line_index, writer):
-    prediction_object = get_prediction_object(filtered_data, uuid_line_index, classifier)
+    prediction_object = build_prediction_object(filtered_data, uuid_line_index, classifier)
 
     interval = .0625
     # interval = .125
 
     get_trifecta_returns(numbers, interval, races, prediction_object, writer)
 
-def get_prediction_object(filtered_data, uuid_line_index, classifier):
-    print("get_prediction_object")
+def build_prediction_object(filtered_data, uuid_line_index, classifier):
+    print("build_prediction_object")
     print(classifier)
     prediction_object = {}
     for index, inst in enumerate(filtered_data):
@@ -335,7 +329,7 @@ def evaluate_numeric(classifier, filtered_data, uuid_line_index):
     interval = .0625
     count = 0
     interval_object = build_interval_object(start, stop, interval)
-    prediction_object = get_prediction_object(filtered_data, uuid_line_index, classifier)
+    prediction_object = build_prediction_object(filtered_data, uuid_line_index, classifier)
     for uuid in prediction_object.keys():
         predcition = prediction_object[uuid]
         for each in interval_object.keys():
@@ -368,42 +362,40 @@ def evaluate_numeric(classifier, filtered_data, uuid_line_index):
         # print(round(float(each), 2))
         # get_average_win(interval_object[each])
 
-def get_prediction(participant):
+def get_prediction(participant, weka_model):
     try:
-        pred = Participant_Prediction.objects.get(participant=participant)
+        pred = Participant_Prediction.objects.get(
+            participant=participant,
+            model=weka_model)
     except ObjectDoesNotExist:
         new_pred = Participant_Prediction(
-            participant = participant
+            participant = participant,
+            model = weka_model
         )
         new_pred.set_fields_to_base()
         new_pred.save()
         pred = new_pred
     return pred
 
-def save_predictions(prediction_object):
+def save_predictions(prediction_object, weka_model):
     for uuid in prediction_object.keys():
         participant = Participant.objects.get(uuid=uuid)
-        prediction = get_prediction(participant)
-        # prediction_bet = ""
-        # if prediction_object[uuid]["W"]:
-        #     prediction_bet += "W"
-        # if prediction_object[uuid]["P"]:
-        #     prediction_bet += "P"
-        # if prediction_object[uuid]["S"]:
-        #     prediction_bet += "S"
-        # prediction.bet = prediction_bet
+        prediction = get_prediction(participant, weka_model)
+        prediction.smoreg = prediction_object[uuid]
         prediction.save()
 
 
-def make_predictions(model, testing_arff, classifier_name, is_nominal, bet_guides):
-    uuid_line_index = get_uuid_line_index(testing_arff)
+def make_predictions(weka_model, prediction_arff, is_nominal):
+    uuid_line_index = get_uuid_line_index(prediction_arff)
     loader = Loader(classname="weka.core.converters.ArffLoader")
-    loaded_data = loader.load_file(testing_arff)
+    loaded_data = loader.load_file(prediction_arff)
     filtered_data = get_filtered_data(loaded_data, is_nominal)
-    prediction_object = get_prediction_object(filtered_data, uuid_line_index, model)
-    save_predictions(prediction_object)
-
-
+    model_filename = get_model(model_directory, weka_model.get_name())
+    prediction_object = build_prediction_object(
+        filtered_data,
+        uuid_line_index,
+        model_filename)
+    save_predictions(prediction_object, weka_model)
 
     # bet_object = {}
     # for uuid in prediction_object.keys():

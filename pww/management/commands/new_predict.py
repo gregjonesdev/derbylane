@@ -9,7 +9,7 @@ from pww.utilities.metrics import new_get_metrics
 from rawdat.models import Race, Program
 from miner.utilities.constants import focused_grades, betting_venues
 from miner.utilities.urls import model_directory
-from pww.utilities.ultraweka import make_predictions, get_model
+from pww.utilities.weka import make_predictions, get_model
 
 
 class Command(BaseCommand):
