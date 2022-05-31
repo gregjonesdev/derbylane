@@ -132,32 +132,27 @@ class WekaClassifier(CoreModel):
         max_length=128)
     is_nominal = models.BooleanField(default=False)
 
-class BettingGrade(CoreModel):
-
-    venue = models.ForeignKey(
-        Venue,
-        on_delete=models.CASCADE)
-    grade = models.ForeignKey(
-        Grade,
-        on_delete=models.CASCADE)
-
-
 class WekaModel(CoreModel):
 
     classifier = models.ForeignKey(
         WekaClassifier,
         on_delete=models.CASCADE)
-    betting_grade = models.ForeignKey(
-        BettingGrade,
-        on_delete=models.CASCADE)
+    venue = models.ForeignKey(
+        Venue,
+        on_delete=models.CASCADE,
+        null=True)
+    grade = models.ForeignKey(
+        Grade,
+        on_delete=models.CASCADE,
+        null=True)
     training_start = models.DateField()
     training_end = models.DateField()
 
     def get_name(self):
         betting_grade = self.betting_grade
         return "{}_{}_{}".format(
-            betting_grade.venue.code,
-            betting_grade.grade.name,
+            self.venue.code,
+            self.grade.name,
             str(self.training_start).replace("-", "_"))
 
 

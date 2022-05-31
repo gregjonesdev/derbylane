@@ -7,48 +7,54 @@ from django.core.exceptions import ObjectDoesNotExist
 from rawdat.models import (
     Venue,
     Grade,
-    StraightBetType)
+    StraightBetType,
+)
 
-from pww.models import BettingGrade, WekaClassifier, WekaModel
+from pww.models import WekaClassifier, WekaModel, Bet_Recommendation
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        self.stdout.write("Starting Bootstrap script..\n")
+        self.stdout.write("Starting Bootstrap script..\n\n")
         jsonData = json.loads(open('./rawdat/json/data.json').read())
         wekaData = json.loads(open('./rawdat/json/weka.json').read())
         self.seed_users(jsonData["users"])
         self.seed_venues(jsonData["venues"])
         self.seed_grades(jsonData["race_grades"])
         self.seed_bettypes(jsonData["straight_bet_types"])
-        self.seed_betting_grades(wekaData["betting_grades"])
         self.seed_classifiers(wekaData["classifiers"])
         self.seed_models(wekaData["models"])
         self.stdout.write("\nComplete.")
 
-    def build_model(
+
+    def get_model(
         self,
         classifier,
-        betting_grade,
+        venue,
+        grade,
         training_start,
         training_end):
         try:
             weka_model = WekaModel.objects.get(
                 classifier=classifier,
-                betting_grade=betting_grade,
+                venue=venue,
+                grade=grade,
                 training_start=training_start,
                 training_end=training_end
             )
         except ObjectDoesNotExist:
             new_weka_model = WekaModel(
                 classifier=classifier,
-                betting_grade=betting_grade,
+                venue=venue,
+                grade=grade,
                 training_start=training_start,
                 training_end=training_end
             )
             new_weka_model.set_fields_to_base()
             new_weka_model.save()
+            weka_model = new_weka_model
+        return weka_model
 
 
     def seed_models(self, models):
@@ -59,16 +65,20 @@ class Command(BaseCommand):
                 venue = Venue.objects.get(code=model_venue["code"])
                 for venue_grade in model_venue["grades"]:
                     grade = Grade.objects.get(name=venue_grade["name"])
-                    betting_grade = BettingGrade.objects.get(
-                        venue=venue,
-                        grade=grade
-                    )
                     for date_range in venue_grade["date_ranges"]:
-                        self.build_model(
+                        weka_model = self.get_model(
                             classifier,
-                            betting_grade,
+                            venue,
+                            grade,
                             date_range["start_date"],
                             date_range["end_date"])
+                        for recommendation in date_range["recommendations"]:
+                            self.save_bet_recommendation(
+                                weka_model,
+                                recommendation["start"],
+                                recommendation["end"],
+                                recommendation["bet"]
+                            )
 
 
     def seed_classifiers(self, classifiers):
@@ -87,24 +97,23 @@ class Command(BaseCommand):
             weka_classifier.is_nominal = classifier["is_nominal"]
             weka_classifier.save()
 
-    def seed_betting_grades(self, betting_grades):
-        self.stdout.write("Building Betting Grades")
-        for betting_grade in betting_grades:
-            grade = Grade.objects.get(name=betting_grade["grade_name"])
-            venue = Venue.objects.get(code=betting_grade["venue_code"])
-
+    def save_bet_recommendation(self, weka_model, start, end, bet):
             try:
-                type = BettingGrade.objects.get(
-                    grade = grade,
-                    venue = venue
+                recommendation = Bet_Recommendation.objects.get(
+                    model=weka_model,
+                    range_start=start,
+                    range_end=end
                 )
             except ObjectDoesNotExist:
-                new_betting_grade = BettingGrade(
-                    grade = grade,
-                    venue = venue
+                new_recommendation = Bet_Recommendation(
+                    model=weka_model,
+                    range_start=start,
+                    range_end=end
                 )
-                new_betting_grade.set_fields_to_base()
-                new_betting_grade.save()
+                new_recommendation.set_fields_to_base()
+                recommendation = new_recommendation
+            recommendation.bet = bet
+            recommendation.save()
 
     def seed_bettypes(self, bettypes):
         self.stdout.write("Building Bet Types")

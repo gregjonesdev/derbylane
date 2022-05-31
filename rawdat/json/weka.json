@@ -10,81 +10,59 @@
       "classifier": "smoreg",
       "venues" : [
         {
-            "code": "SL",
-            "grades": [
-              {
-                "name": "A",
-                "date_ranges": [
-                  {
-                    "start_date": "2019-01-01",
-                    "end_date":	"2021-12-31"
-                  },
-                  {
-                    "start_date": "2018-06-01",
-                    "end_date":	"2021-12-31"
-                  }
-                ]
-              },
-                {
-                "name": "B",
-                "date_ranges": [
-                  {
-                    "start_date": "2018-01-01",
-                    "end_date":	"2021-12-31"
-                  },
-                  {
-                    "start_date": "2020-09-01",
-                    "end_date":	"2021-12-31"
-                  }
-                ]
-              },
-              {
-                "name": "C",
-                "date_ranges": [
-                  {
-                    "start_date": "2021-01-01",
-                    "end_date":	"2021-12-31"
-                  },
-                  {
-                    "start_date": "2020-06-01",
-                    "end_date":	"2021-12-31"
-                  },
-                  {
-                    "start_date": "2020-01-01",
-                    "end_date":	"2021-12-31"
-                  }
-                ]
-              },
-              {
-                "name": "D",
-                "date_ranges": [
-                  {
-                    "start_date": "2019-01-01",
-                    "end_date":	"2021-12-31"
-                  }
-                ]
-              }
-              ]
-
-        },
-        {
-          "code": "TS",
+          "code": "SL",
           "grades": [
             {
               "name": "A",
               "date_ranges": [
                 {
-                  "start_date": "2018-12-01",
-                  "end_date":	"2021-12-31"
+                  "start_date": "2019-01-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.56,
+                      "end": 4.62,
+                      "bet": "P"
+                    }
+                  ]
+                },
+                {
+                  "start_date": "2018-06-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.56,
+                      "end": 4.62,
+                      "bet": "W"
+                    }
+                  ]
                 }
               ]
             },
-            {
+              {
               "name": "B",
               "date_ranges": [
                 {
-                  "start_date": "2021-01-01",
-                  "end_date":	"2021-12-31"
+                  "start_date": "2018-01-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.19,
+                      "end": 4.25,
+                      "bet": "W"
+                    }
+                  ]
+                },
+                {
+                  "start_date": "2020-09-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.06,
+                      "end": 4.12,
+                      "bet": "P"
+                    }
+                  ]
                 }
               ]
             },
@@ -92,8 +70,37 @@
               "name": "C",
               "date_ranges": [
                 {
-                  "start_date": "2019-06-01",
-                  "end_date":	"2021-12-31"
+                  "start_date": "2021-01-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.19,
+                      "end": 4.25,
+                      "bet": "W"
+                    }
+                  ]
+                },
+                {
+                  "start_date": "2020-06-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.12,
+                      "end": 4.19,
+                      "bet": "S"
+                    }
+                  ]
+                },
+                {
+                  "start_date": "2020-01-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.19,
+                      "end": 4.25,
+                      "bet": "P"
+                    }
+                  ]
                 }
               ]
             },
@@ -101,124 +108,214 @@
               "name": "D",
               "date_ranges": [
                 {
-                  "start_date": "2021-01-01",
-                  "end_date":	"2021-12-31"
-                },
-                {
-                  "start_date": "2020-01-01",
-                  "end_date":	"2021-12-31"
+                  "start_date": "2019-01-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.5,
+                      "end": 4.56,
+                      "bet": "WP"
+                    }
+                  ]
                 }
               ]
             }
-          ]
-        },
+            ]
 
-           { "code": "WD",
-            "grades": [
+      },
+      {
+        "code": "TS",
+        "grades": [
+          {
+            "name": "A",
+            "date_ranges": [
               {
-                "name": "AA",
-                "date_ranges": [
+                "start_date": "2018-12-01",
+                "end_date":	"2021-12-31",
+                "recommendations": [
                   {
-                    "start_date": "2018-06-01",
-                    "end_date":	"2021-12-31"
-                  },
+                    "start": 4.5,
+                    "end": 4.56,
+                    "bet": "WP"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "B",
+            "date_ranges": [
+              {
+                "start_date": "2021-01-01",
+                "end_date":	"2021-12-31",
+                "recommendations": [
                   {
-                    "start_date": "2018-01-01",
-                    "end_date":	"2021-12-31"
-                  },
+                    "start": 4.62,
+                    "end": 4.69,
+                    "bet": "WPS"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "C",
+            "date_ranges": [
+              {
+                "start_date": "2019-06-01",
+                "end_date":	"2021-12-31",
+                "recommendations": [
                   {
-                    "start_date": "2017-06-01",
-                    "end_date":	"2021-12-31"
+                    "start": 4.62,
+                    "end": 4.69,
+                    "bet": "WPS"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "D",
+            "date_ranges": [
+              {
+                "start_date": "2021-01-01",
+                "end_date":	"2021-12-31",
+                "recommendations": [
+                  {
+                    "start": 4.62,
+                    "end": 4.69,
+                    "bet": "PS"
                   }
                 ]
               },
               {
-                "name": "A",
-                "date_ranges": [
+                "start_date": "2020-01-01",
+                "end_date":	"2021-12-31",
+                "recommendations": [
                   {
-                    "start_date": "2020-06-01",
-                    "end_date":	"2021-12-31"
-                  }
-                ]
-              },
-              {
-                "name": "B",
-                "date_ranges": [
-                  {
-                    "start_date": "2018-01-01",
-                    "end_date":	"2021-12-31"
-                  }
-                ]
-              },
-              {
-                "name": "C",
-                "date_ranges": [
-                  {
-                    "start_date": "2021-01-01",
-                    "end_date":	"2021-12-31"
-                  },
-                  {
-                    "start_date": "2020-09-01",
-                    "end_date":	"2021-12-31"
+                    "start": 4.81,
+                    "end": 4.88,
+                    "bet": "W"
                   }
                 ]
               }
             ]
           }
-
-
         ]
+      },
+         {
+          "code": "WD",
+          "grades": [
+            {
+              "name": "AA",
+              "date_ranges": [
+                {
+                  "start_date": "2018-06-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.56,
+                      "end": 4.62,
+                      "bet": "W"
+                    }
+                  ]
+                },
+                {
+                  "start_date": "2018-01-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.06,
+                      "end": 4.12,
+                      "bet": "P"
+                    }
+                  ]
+                },
+                {
+                  "start_date": "2017-06-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 5.12,
+                      "end": 5.19,
+                      "bet": "S"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "A",
+              "date_ranges": [
+                {
+                  "start_date": "2020-06-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.06,
+                      "end": 4.12,
+                      "bet": "WPS"
+                    },
+                    {
+                      "start": 4.19,
+                      "end": 4.25,
+                      "bet": "W"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "B",
+              "date_ranges": [
+                {
+                  "start_date": "2018-01-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.19,
+                      "end": 4.25,
+                      "bet": "W"
+                    },
+                    {
+                      "start": 4.62,
+                      "end": 4.69,
+                      "bet": "PS"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "C",
+              "date_ranges": [
+                {
+                  "start_date": "2021-01-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.0,
+                      "end": 4.06,
+                      "bet": "P"
+                    }
+                  ]
+                },
+                {
+                  "start_date": "2020-09-01",
+                  "end_date":	"2021-12-31",
+                  "recommendations": [
+                    {
+                      "start": 4.5,
+                      "end": 4.56,
+                      "bet": "W"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
-  ],
-  "betting_grades": [
-      {
-
-          "venue_code": "SL",
-          "grade_name": "A"
-      },
-      {
-          "venue_code": "SL",
-          "grade_name": "B"
-      },
-      {
-          "venue_code": "SL",
-          "grade_name": "C"
-      },
-      {
-          "venue_code": "SL",
-          "grade_name": "D"
-      },
-      {
-          "venue_code": "TS",
-          "grade_name": "A"
-      },
-      {
-          "venue_code": "TS",
-          "grade_name": "B"
-      },
-      {
-          "venue_code": "TS",
-          "grade_name": "C"
-      },
-      {
-          "venue_code": "TS",
-          "grade_name": "D"
-      },
-      {
-          "venue_code": "WD",
-          "grade_name": "AA"
-      },
-      {
-          "venue_code": "WD",
-          "grade_name": "A"
-      },
-      {
-          "venue_code": "WD",
-          "grade_name": "B"
-      },
-      {
-          "venue_code": "WD",
-          "grade_name": "C"
-      }
   ]
 }
