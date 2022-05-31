@@ -184,11 +184,6 @@ body {
     display: none;  /* Safari and Chrome */
 }
 
-
-.race-info-cell {
-  border-right: 1px solid #222;
-}
-
 .race-number-cell {
   font-size: 1em;
 }
@@ -317,10 +312,6 @@ p input {
 }
 
 .bet-button, .quick-bet-btn {
-  height: 45px;
+  height: 47px;
   margin: 0px;
-}
-
-thead {
-color: red;
 }

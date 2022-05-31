@@ -7,6 +7,7 @@
   data-time="{{ race.chart.get_time_display }}"
   data-number="{{ race.number }}"
   class="btn btn-sm btn-block btn-outline-primary exotic-bet bet-button"
+  style="padding: 0"
   >
   <span class="race-number-cell">
     Race {{ race.number }}
@@ -14,7 +15,7 @@
 </button>
 
 {% if race.get_exotic_bets %}
-<div id="exotic-wagers-{{ race.uuid }}" style="margin-top: 10px; border-radius: .2rem; ">
+<div id="exotic-wagers-{{ race.uuid }}" style="margin-top: 5px; border-radius: .2rem; ">
 {% for wager in race.get_exotic_bets %}
   <div id="{{ wager.uuid }}-wager-div" class="list-group-item exotic-wager-item">
     <span class="exotic-wager-span">${{ wager.amount }} {{ wager.get_name }} {{ wager.get_posts }}</span>
@@ -33,7 +34,8 @@
 
 <table
   id="main-table"
-  class="table table-sm table-borderless fade-in">
+  class="table table-sm table-borderless fade-in"
+  style="margin:5px 0px;">
   {% for participant in race.participant_set.all %}
     {% if participant.get_recommended_bet %}
       <tr>
@@ -64,16 +66,15 @@
           {% if 'W' in participant.get_recommended_bet %}
             <button
               class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
-              disabled
-              style="height:43px">
+              disabled>
               W
             </button>
           {% endif %}
         </td>
         <td id="{{ participant.uuid }}-place-td" >
-          {% if 'P' in participant.get_recommended_bet %}
+          {% if not 'P' in participant.get_recommended_bet %}
             <button
-              class="btn btn-sm btn-block btn-outline-light"
+              class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
               disabled
               >
               P
@@ -81,7 +82,7 @@
           {% endif %}
         </td>
         <td id="{{ participant.uuid }}-show-td">
-          {% if 'S' in participant.get_recommended_bet %}
+          {% if not 'S' in participant.get_recommended_bet %}
             <button
               class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
               disabled>
