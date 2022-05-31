@@ -184,19 +184,14 @@ class Participant_Prediction(CoreModel):
         on_delete=models.CASCADE,
         null=True)
 
-        # Run migration removing bet.
-
-        # Add field to savewhich model made that prediction
-        # participant needs to be a foregin key, cause two models will give two predictions
-
-
-    # bet = models.CharField(
-    #     max_length=16,
-    #     null=True
-    # )
-
     def get_bet(self):
-        pass
+        recommendation = self.recommendation
+        smoreg = self.smoreg
+        if smoreg and recommendation:
+            start = recommendation.range_start
+            end = recommendation.range_end
+            if start <= smoreg < end:
+                return recommendation.bet
 
 
 class Trifecta_Prediction(CoreModel):

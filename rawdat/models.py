@@ -507,8 +507,16 @@ class Participant(CoreModel):
     def get_recommended_bet(self):
         bets_object = {"W": False, "P": False, "S": False}
         for prediction in self.participant_prediction_set.all():
-            if 4.5 < prediction.smoreg < 5:
-                return "WP"
+            bet = prediction.get_bet()
+            if bet:
+                for char in bet:
+                    bets_object[char] = True
+        recommended_bet = ""
+        for each in bets_object.keys():
+            if bets_object[each]:
+                recommended_bet += each
+        return recommended_bet
+
 
 
     def get_bets(self):

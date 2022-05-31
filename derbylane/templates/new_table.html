@@ -15,7 +15,6 @@
 {% if race.get_exotic_bets %}
 <div id="exotic-wagers-{{ race.uuid }}" style="margin-top: 10px; border-radius: .2rem; ">
 {% for wager in race.get_exotic_bets %}
-
   <div id="{{ wager.uuid }}-wager-div" class="list-group-item exotic-wager-item">
     <span class="exotic-wager-span">${{ wager.amount }} {{ wager.get_name }} {{ wager.get_posts }}</span>
     <button
