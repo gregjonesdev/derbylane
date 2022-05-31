@@ -50,9 +50,11 @@ clear_bet = (participant_id) => {
     },
     success: function(data) {
       const part_id = data["participant_id"]
-      document.getElementById(part_id + "-win-td").innerHTML = "";
-      document.getElementById(part_id + "-place-td").innerHTML = "";
-      document.getElementById(part_id + "-show-td").innerHTML = "";}
+      console.log("HEYHEYHEY")
+      
+      // document.getElementById(part_id + "-win-td").innerHTML = "";
+      // document.getElementById(part_id + "-place-td").innerHTML = "";
+      // document.getElementById(part_id + "-show-td").innerHTML = "";}
 })
 }
 

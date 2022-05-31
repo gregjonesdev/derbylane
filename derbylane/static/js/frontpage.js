@@ -18,10 +18,11 @@ function quickbet (e) {
     success: function(data) {
       // $("#bets").html(data)
       console.log("success")
-      parent_node = e.target.parentNode
-      e.target.remove()
-      parent_node.appendChild(build_button (amount.toFixed(2)))
-
+      // parent_node = e.target.parentNode
+      // e.target.remove()
+      // parent_node.appendChild(build_button (amount.toFixed(2)))
+      e.target.textContent = amount.toFixed(2)
+      e.target.disabled = true;
       // document.getElementById("chart-label").textContent = label
     }
   })
