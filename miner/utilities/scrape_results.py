@@ -25,6 +25,8 @@ from miner.utilities.models import (
     create_trifecta,
     create_superfecta)
 
+from pww.utilities.metrics import build_race_metrics
+
 def has_results(url):
     tds = get_node_elements(url, "//td")
     return len(tds) > 41
@@ -69,7 +71,10 @@ def update_race_condition(race, url):
     race.save()
 
 def save_race_results(race, tds, trs):
+    print("save rac results")
     parse_race_results(race, trs)
+    print("ready")
+    build_race_metrics(race)
     save_straight_bets(race, trs)
     if has_exotic_bets(tds):
         save_exotic_bets(race, tds)
@@ -89,19 +94,19 @@ def parse_race_results(race, trs):
         final = parse_position(final_and_lengths[0])
         lengths_behind = final_and_lengths[1]
         actual_running_time = get_running_time(row[6].text)
+        print(dog_name)
+        print(post)
+        print(off)
+        print(eighth)
+        print(straight)
+        print(final)
+        print(lengths_behind)
+        print(actual_running_time)
 
-        # print(dog_name)
-        # print(post)
-        # print(off)
-        # print(eighth)
-        # print(straight)
-        # print(final)
-        # print(lengths_behind)
-        # print(actual_running_time)
 
-        post_weight = get_post_weight(
-            dog_name,
-            race.chart.program.date)
+        # post_weight = get_post_weight(
+        #     dog_name,
+        #     race.chart.program.date)
         comment = row[9].text.strip()
         dog = get_dog(dog_name)
         update_participant(
@@ -211,16 +216,21 @@ def get_running_time(raw_time):
 def get_post_weight(dog_name, date):
     target_url = build_dog_results_url(dog_name)
     string_date = "{}".format(date)
-    entries = get_node_elements(target_url, '//tr')
-    for entry in entries:
-        date = entry[0][0].text.strip().split()[0]
-        if date == string_date:
-            try:
-                float_weight = float(entry[5].text.strip())
-                if post_weight["min"] < float_weight < post_weight["max"]:
-                    return float_weight
-            except:
-                return None
+    print(target_url)
+    print(get_node_elements(target_url, '//td'))
+    entries = "Oh"
+    print("haave entries")
+    raise SystemExit(0)
+    # for entry in entries:
+    #     date = entry[0][0].text.strip().split()[0]
+    #     if date == string_date:
+    #         try:
+    #             float_weight = float(entry[5].text.strip())
+    #             print(float_weight)
+    #             if post_weight["min"] < float_weight < post_weight["max"]:
+    #                 return float_weight
+    #         except:
+    #             return None
 
 def get_participant_rows(trs):
     participant_rows = []

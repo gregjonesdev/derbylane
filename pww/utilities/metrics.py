@@ -1,4 +1,4 @@
-from pww.models import Metric, Participant_Prediction
+from pww.models import Metric
 import datetime
 from rawdat.models import Participant
 from django.core.exceptions import ObjectDoesNotExist
@@ -289,6 +289,7 @@ def get_raw_participant_metrics(participant, distance):
         print("")
         print(dog)
         print(dog.participant_set.all())
+        print(minimum_participations)
         target_date = participant.race.chart.program.date
         participations = get_prior_participations(
             dog,
@@ -327,6 +328,7 @@ def get_raw_participant_metrics(participant, distance):
                 #     build_rh_object(participations)),
                 # "final": participant.final,
             }
+            print(raw_metrics)
             return raw_metrics
 
 def scale_metrics(raw_metrics):

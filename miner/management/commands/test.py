@@ -4,23 +4,23 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 
 from miner.utilities.common import get_node_elements
-from miner.utilities.new_scrape import process_url, has_results
+from miner.utilities.scrape_results import process_url, has_results
 from miner.utilities.urls import build_race_results_url
 from rawdat.models import Race, Participant
-
+from pww.utilities.metrics import get_prior_participations
 from pww.utilities.metrics import build_race_metrics
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        url = "http://m.trackinfo.com/index.jsp?next=resultsrace&raceid=GTS$20220204E08"
+        url = "http://m.trackinfo.com/index.jsp?next=resultsrace&raceid=GWD$20220529A01"
 
         race = Race.objects.get(
-            chart__program__venue__code="TS",
-            chart__program__date="2022-02-04",
-            chart__time="E",
-            number=8)
+            chart__program__venue__code="WD",
+            chart__program__date="2022-05-29",
+            chart__time="A",
+            number=1)
 
 
 #
@@ -81,3 +81,9 @@ class Command(BaseCommand):
             participant.actual_running_time,
             participant.lengths_behind
             ))
+
+            # priors = get_prior_participations(
+            #     participant.dog,
+            #     race.chart.program.date,
+            #     race.distance,
+            #     7)

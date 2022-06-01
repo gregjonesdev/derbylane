@@ -76,7 +76,7 @@ def save_dog_info(dog):
         get_node_elements(url, '//td[@class="it2"]//em'))
 
 def get_dog(name):
-    # print(name)
+    print(name)
     try:
         dog = Dog.objects.get(name=name.upper())
     except ObjectDoesNotExist:

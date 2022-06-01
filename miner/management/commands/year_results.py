@@ -83,7 +83,7 @@ class Command(BaseCommand):
             pass
 
     def scan_month(self, venue_code, month, year):
-        day = 1
+        day = 29
         while day <= 31:
             if self.is_valid_past_date(month, year, day):
                 self.scan_day(venue_code, month, year, day)
@@ -98,8 +98,8 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        venue_codes = ['TS', 'WD', 'SL']
-        with ThreadPoolExecutor() as executor:
-            executor.map(self.get_venue_results, venue_codes)
+        # venue_codes = ['TS', 'WD', 'SL']
+        # with ThreadPoolExecutor() as executor:
+        #     executor.map(self.get_venue_results, venue_codes)
 
-        # self.get_venue_results('WD')
+        self.get_venue_results('WD')
