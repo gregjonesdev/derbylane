@@ -10,6 +10,16 @@ from weka.filters import Filter
 from rawdat.models import Participant
 from pww.models import Participant_Prediction
 
+def start_jvm():
+    jvm.start(
+    packages=True,
+    max_heap_size="5028m"
+    )
+
+def stop_jvm():
+    jvm.stop()
+
+
 def get_filtered_data(loaded_data, is_nominal):
     filtered_data = remove_uuid(loaded_data)
     filtered_data.class_is_last()
