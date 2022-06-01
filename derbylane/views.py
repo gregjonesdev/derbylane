@@ -314,7 +314,7 @@ def clear_bets(request):
     participant_id = request.GET.get('participant_id')
     participant = Participant.objects.get(
         uuid=participant_id)
-    for bet in Bet.objects.filter(
+    for bet in Straight_Bet.objects.filter(
         participant=participant):
         bet.delete()
     return JsonResponse({

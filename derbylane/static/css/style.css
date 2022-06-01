@@ -4,6 +4,11 @@
   /* --main-padding: 15px; */
   /* --primary: #BB86FC; */
   /* --secondary: #03DAC5; */
+  --darker: #222831;
+  --dark: #30475e;
+  --light: #F05454;
+  --lighter: #DDDDDD;
+
   --bg-primary: #121212;
   --bg-secondary: #212121;
   --primary-border: 1px solid #333333;

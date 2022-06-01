@@ -66,47 +66,30 @@
         <td id="{{ participant.uuid }}-win-td">
           {% if participant.get_win_bet %}
             <button
+              id="{{ participant.uuid }}-win-button"
               class="btn btn-sm btn-block btn-outline-info quick-bet-btn"
               disabled>
-              {{ participant.get_win_bet.purchase_amount }}
+                {{ participant.get_win_bet.purchase_amount }}
             </button>
-          {% else %}
+              {% else %}
             {% if 'W' in participant.get_recommended_bet %}
               <button
+                id="{{ participant.uuid }}-win-button"
                 class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
                 data-participant="{{ participant.uuid }}"
-                data-type="W">
+                data-type="W"
+                disabled>
                 W
               </button>
             {% endif %}
           {% endif %}
         </td>
         <td id="{{ participant.uuid }}-place-td" >
-          {% if 'P' in participant.get_recommended_bet %}
-            <button
-              class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
-              disabled
-              >
-              P
-            </button>
-          {% endif %}
+
         </td>
         <td id="{{ participant.uuid }}-show-td">
-          {% if 'S' in participant.get_recommended_bet %}
-            <button
-              class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
-              disabled>
-              S
-            </button>
-          {% endif %}
+        
         </td>
-        <!-- <td>
-          <button
-            class="btn btn-sm btn-block btn-outline-danger"
-            disabled>
-            &#10005;
-          </button>
-        </td> -->
       {% endif %}
     </tr>
   {% endfor %}

@@ -50,13 +50,13 @@ clear_bet = (participant_id) => {
     },
     success: function(data) {
       const part_id = data["participant_id"]
-      console.log("HEYHEYHEY")
-      
-      // document.getElementById(part_id + "-win-td").innerHTML = "";
-      // document.getElementById(part_id + "-place-td").innerHTML = "";
-      // document.getElementById(part_id + "-show-td").innerHTML = "";}
-})
+      console.log("revert to predictions")
+      participant_recs = document.getElementsByClassName(part_id + "-rec")
+      for (let i = 0; i<participant_recs.length; i++) {
+        participant_recs[i].style.display =""
+      }
 }
+})}
 
 make_bet = (participant_id) => {
   $.ajax({
@@ -76,20 +76,20 @@ make_bet = (participant_id) => {
 
       if (win_bet) {
         const target_td = document.getElementById(part_id + "-win-td")
-        target_td.innerHTML = "";
+        document.getElementById(part_id + "-win-rec").style.display="hidden"
         target_td.appendChild(create_button(win_bet.toFixed(2)))
       }
-      if (place_bet) {
-        const target_td = document.getElementById(part_id + "-place-td")
-        target_td.innerHTML = "";
-        target_td.appendChild(create_button(place_bet.toFixed(2)))
-
-      }
-      if (show_bet) {
-        const target_td = document.getElementById(part_id + "-show-td")
-        target_td.innerHTML = "";
-        target_td.appendChild(create_button(show_bet.toFixed(2)))
-      }
+      // if (place_bet) {
+      //   const target_td = document.getElementById(part_id + "-place-td")
+      //   document.getElementById(part_id + "-place-rec").style.display="hidden"
+      //   target_td.appendChild(create_button(place_bet.toFixed(2)))
+      //
+      // }
+      // if (show_bet) {
+      //   const target_td = document.getElementById(part_id + "-show-td")
+      //   document.getElementById(part_id + "-show-rec").style.display="hidden"
+      //   target_td.appendChild(create_button(show_bet.toFixed(2)))
+      // }
     }
   })
 }
