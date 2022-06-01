@@ -286,6 +286,9 @@ def get_raw_participant_metrics(participant, distance):
     if participant.race.grade:
         target_grade_value = participant.race.grade.value
         dog = participant.dog
+        print("----")
+        print(dog)
+        print(dog.participant_set.all())
         target_date = participant.race.chart.program.date
         participations = get_prior_participations(
             dog,
@@ -448,4 +451,4 @@ def new_get_metrics(grade_name, venue_code, start_date, end_date):
 
 def get_scheduled_metrics(today):
     return Metric.objects.filter(
-        participant__race__chart__program__date__gte=today)
+        participant__race__chart__program__date__gte="2022-05-27")
