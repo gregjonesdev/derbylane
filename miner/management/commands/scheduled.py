@@ -37,6 +37,7 @@ class Command(BaseCommand):
     def get_dates(self):
         dates = []
         i = 0
+        i = -10
         while i < 2:
             offset = datetime.timedelta(days=i)
             dates.append(datetime.datetime.now() + offset)

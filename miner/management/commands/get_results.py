@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         today = datetime.date.today()
-        yesterday = today - datetime.timedelta(days=1)
+        yesterday = today - datetime.timedelta(days=10)
         for race in Race.objects.filter(
             chart__program__date__range=(
                 yesterday, today)):

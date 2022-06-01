@@ -34,11 +34,12 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        start_jvm()
+        # start_jvm()
         today = datetime.date.today()
         scheduled_metrics = get_scheduled_metrics(today)
         print("scheduled_metrics")
         print(scheduled_metrics.count())
+        raise SystemExit(0)
         for race in Race.objects.filter(chart__program__date__gte=today):
             print(race.number)
             grade = race.grade
@@ -60,4 +61,4 @@ class Command(BaseCommand):
                         weka_model,
                         graded_metrics)
 
-        stop_jvm()
+        # stop_jvm()

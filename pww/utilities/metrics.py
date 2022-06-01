@@ -259,9 +259,13 @@ def get_position_percent(participations, position):
 
 
 def get_prior_participations(dog, target_date, distance, race_count):
-    # print("priors")
-    # print("any parts?")
-    # print(len(dog.participant_set.all()))
+    print("priors")
+    print("any parts?")
+    print(distance)
+    print(len(dog.participant_set.all()))
+    print("new")
+    print(dog.participant_set.filter(
+        race__chart__program__date__lt=target_date).count())
     return dog.participant_set.filter(
         race__chart__program__date__lt=target_date,
         race__distance=distance,
@@ -290,7 +294,7 @@ def get_raw_participant_metrics(participant, distance):
             past_race_count)
 
         chart = participant.race.chart
-        # print("participations: {}".format(len(participations)))
+        print("participations: {}".format(len(participations)))
         if len(participations) >= minimum_participations:
             raw_metrics = {
                 "participant": participant,
@@ -312,12 +316,12 @@ def get_raw_participant_metrics(participant, distance):
                 "post_factor": calculate_factor(
                     participant.post,
                     build_posts_object(participations)),
-                "temp_factor": calculate_factor(
-                    chart.get_racetemp(),
-                    build_temp_object(participations)),
-                "rh_factor": calculate_factor(
-                    chart.get_rh(),
-                    build_rh_object(participations)),
+                # "temp_factor": calculate_factor(
+                #     chart.get_racetemp(),
+                #     build_temp_object(participations)),
+                # "rh_factor": calculate_factor(
+                #     chart.get_rh(),
+                #     build_rh_object(participations)),
                 # "final": participant.final,
             }
             return raw_metrics
@@ -347,8 +351,9 @@ def get_slowest_raw_time(raw_race_metrics):
 def get_raw_race_metrics(race):
     raw_race_metrics = []
     for participant in race.participant_set.all():
+        print(participant.dog.name)
         raw_metrics = get_raw_participant_metrics(participant, race.distance)
-        # print("RAW PART METRICS: {}".format(len(raw_metrics)))
+        print("RAW PART METRICS: {}".format(len(raw_metrics)))
         if raw_metrics:
             raw_race_metrics.append(raw_metrics)
     return raw_race_metrics
@@ -356,7 +361,7 @@ def get_raw_race_metrics(race):
 
 def calculate_scaled_race_metrics(race):
     raw_race_metrics = get_raw_race_metrics(race)
-    # print("RAW RACE METRICS: {}".format(len(raw_race_metrics)))
+    print("RAW RACE METRICS: {}".format(len(raw_race_metrics)))
     return scale_metrics(raw_race_metrics)
 
 def save_metrics(metrics):
@@ -397,9 +402,9 @@ def save_metrics(metrics):
     existing_metric.save()
 
 def build_race_metrics(race):
-    # print("BUILD RACE METRICS ")
+    print("BUILD RACE METRICS ")
     scaled_race_metrics = calculate_scaled_race_metrics(race)
-    # print(len(scaled_race_metrics))
+    print(len(scaled_race_metrics))
     for metrics in scaled_race_metrics:
         save_metrics(metrics)
 
