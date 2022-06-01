@@ -10,7 +10,7 @@ from weka.filters import Filter
 from rawdat.models import Participant
 from pww.models import Participant_Prediction
 
-from pww.utilities.urls import model_directory
+from miner.utilities.urls import model_directory
 
 def start_jvm():
     jvm.start(
