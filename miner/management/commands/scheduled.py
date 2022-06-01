@@ -14,6 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write("Starting Scheduled script..")
         dates = self.get_dates()
+        print(dates)
         for venue in Venue.objects.filter(is_active=True):
             for date in dates:
                 formatted_date = get_date_from_ymd(
