@@ -21,6 +21,8 @@ def start_jvm():
 def stop_jvm():
     jvm.stop()
 
+def get_filename(model_directory, model_name):
+    return "{}/{}.model".format(model_directory, model_name)
 
 def get_filtered_data(loaded_data, is_nominal):
     filtered_data = remove_uuid(loaded_data)
