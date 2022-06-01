@@ -34,7 +34,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        # start_jvm()
+        start_jvm()
         today = datetime.date.today()
         scheduled_metrics = get_scheduled_metrics(today)
         for race in Race.objects.filter(chart__program__date__gte=today):
@@ -56,4 +56,4 @@ class Command(BaseCommand):
                         weka_model,
                         graded_metrics)
 
-        # stop_jvm()
+        stop_jvm()
