@@ -22,7 +22,7 @@ class Command(BaseCommand):
             chart__time="A",
             number=1)
 
-
+        print(race.uuid)
 #
         print("{} {} {} Race {}".format(
             race.chart.program.venue.code,
@@ -71,8 +71,9 @@ class Command(BaseCommand):
                 ))
 
         for participant in race.participant_set.all():
-            print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
+            print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
             participant.dog.name,
+            participant.uuid,
             participant.post,
             participant.off,
             participant.eighth,

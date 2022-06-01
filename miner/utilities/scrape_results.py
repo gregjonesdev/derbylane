@@ -99,9 +99,13 @@ def parse_race_results(race, trs):
         print(off)
         print(eighth)
         print(straight)
+        print("---")
         print(final)
+        print("----")
         print(lengths_behind)
         print(actual_running_time)
+
+        raise SystemExit(0)
 
 
         # post_weight = get_post_weight(
