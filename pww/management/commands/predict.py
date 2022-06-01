@@ -38,6 +38,7 @@ class Command(BaseCommand):
         today = datetime.date.today()
         scheduled_metrics = get_scheduled_metrics(today)
         for race in Race.objects.filter(chart__program__date__gte=today):
+            print(race.number)
             grade = race.grade
             venue = race.chart.program.venue
             weka_models = WekaModel.objects.filter(
