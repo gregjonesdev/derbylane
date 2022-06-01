@@ -45,6 +45,7 @@ class Command(BaseCommand):
                 venue=venue,
                 grade=grade
             )
+            print("Weka models: {}".format(weka_models.count()))
             if weka_models.count() > 0:
                 graded_metrics = scheduled_metrics.filter(
                     participant__race__chart__program__venue=venue,
