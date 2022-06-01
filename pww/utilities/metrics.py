@@ -451,4 +451,4 @@ def new_get_metrics(grade_name, venue_code, start_date, end_date):
 
 def get_scheduled_metrics(today):
     return Metric.objects.filter(
-        participant__race__chart__program__date__gte="2022-05-27")
+        participant__race__chart__program__date__gte="2022-05-28")
