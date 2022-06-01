@@ -25,7 +25,6 @@ class Command(BaseCommand):
         print(weka_model.training_end)
         print(weka_model.classifier.name)
         classifier = weka_model.classifier
-        model =
         print(weka_model)
         make_predictions(
             weka_model,
