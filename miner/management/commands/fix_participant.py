@@ -1,6 +1,6 @@
 import datetime
 import random
-
+import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 
@@ -30,5 +30,7 @@ class Command(BaseCommand):
                         participant.straight,
                         participant.created_at
                     ))
+                    if datetime.date(2022, 5, 28) <= participant.created_at <= datetime.date(2022, 5, 30):
+                        participant.delete()
 
         print("{} Races affected".format(i))
