@@ -17,16 +17,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         for race in Race.objects.filter(
-            condition__name__isnull=True
-        ):
-            print("Race #: {}".format(race.number))
-            print("Chart time: {}".format(race.chart.time))
-            url = build_race_results_url(
-                    race.chart.program.venue.code,
-                    race.chart.program.date.year,
-                    race.chart.program.date.month,
-                    race.chart.program.date.day,
-                    race.chart.time,
-                    race.number)
-            print(url)
+            chart__program__date="2022-05-27")[:1]:
+            for participant in race.participant_set.all():
+                print(participant.actual_running_time)
+                print(participant.straight)
+            build_race_metrics(race)
+
+
             # update_race_condition(race, url)

@@ -233,6 +233,8 @@ def update_participant(
     if comment:
         participant.comment = comment
     participant.save()
+    print("Saved participant; ")
+    print(participant)
 
 def ask_user(attribute, value, check_url):
     print("Attention: {} is not a valid {}".format(value, attribute))

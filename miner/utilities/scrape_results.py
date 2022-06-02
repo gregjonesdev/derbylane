@@ -65,7 +65,6 @@ def update_race_condition(race, url):
     parsed_setting = get_parsed_results_race_setting(url)
     print(parsed_setting)
     print(parsed_setting[4])
-    raise SystemExit(0)
     condition = get_condition(parsed_setting[4])
     try:
         race.condition = condition
@@ -77,7 +76,7 @@ def update_race_condition(race, url):
 
 def save_race_results(race, tds, trs):
     print("save rac results")
-    # parse_race_results(race, trs)
+    parse_race_results(race, trs)
     print("ready")
     build_race_metrics(race)
     print("Done")
@@ -90,6 +89,7 @@ def save_race_results(race, tds, trs):
     return success
 
 def parse_race_results(race, trs):
+    print("el parso")
     for row in get_participant_rows(trs):
         dog_name = parse_dog_name(row[0][0].text)
         post = parse_position(row[1].text)
@@ -110,14 +110,12 @@ def parse_race_results(race, trs):
         print("----")
         print(lengths_behind)
         print(actual_running_time)
-
-        raise SystemExit(0)
-
-
         post_weight = get_post_weight(
             dog_name,
             race.chart.program.date)
+        print("done")
         comment = row[9].text.strip()
+        print(comment)
         dog = get_dog(dog_name)
         if dog:
             update_participant(
@@ -228,20 +226,24 @@ def get_post_weight(dog_name, date):
     target_url = build_dog_results_url(dog_name)
     string_date = "{}".format(date)
     print(target_url)
-    print(get_node_elements(target_url, '//td'))
-    entries = "Oh"
-    print("haave entries")
-    raise SystemExit(0)
+    print(date)
+    trs = get_node_elements(target_url, '//tr')
+    for tr in trs:
+        row_date = tr[0][0].text.strip().split()[0]
+        print(row_date)
+    # entries = "Oh"
     # for entry in entries:
+    #     print(entry)
+    #     print(entry[0].)
+    #     print(entry[0][0])
     #     date = entry[0][0].text.strip().split()[0]
-    #     if date == string_date:
-    #         try:
-    #             float_weight = float(entry[5].text.strip())
-    #             print(float_weight)
-    #             if post_weight["min"] < float_weight < post_weight["max"]:
-    #                 return float_weight
-    #         except:
-    #             return None
+        if string_date == row_date:
+            print("Yeah buddy")
+            string_postweight = tr[5].text.strip()
+            try:
+                return float(string_postweight)
+            except:
+                return None
 
 def get_participant_rows(trs):
     participant_rows = []
