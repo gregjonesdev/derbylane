@@ -108,9 +108,9 @@ def parse_race_results(race, trs):
         raise SystemExit(0)
 
 
-        # post_weight = get_post_weight(
-        #     dog_name,
-        #     race.chart.program.date)
+        post_weight = get_post_weight(
+            dog_name,
+            race.chart.program.date)
         comment = row[9].text.strip()
         dog = get_dog(dog_name)
         update_participant(
