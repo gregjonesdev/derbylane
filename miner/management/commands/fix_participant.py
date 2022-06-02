@@ -30,7 +30,7 @@ class Command(BaseCommand):
                         participant.straight,
                         participant.created_at
                     ))
-                    if datetime.date(2022, 5, 28) <= participant.created_at <= datetime.date(2022, 5, 30):
+                    if datetime.date(2022, 5, 28) <= participant.created_at.date() <= datetime.date(2022, 5, 30):
                         participant.delete()
 
         print("{} Races affected".format(i))
