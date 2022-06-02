@@ -63,18 +63,24 @@ def get_race_distance(race_distance):
 
 def update_race_condition(race, url):
     parsed_setting = get_parsed_results_race_setting(url)
+    print(parsed_setting)
+    print(parsed_setting[4])
+    raise SystemExit(0)
+    condition = get_condition(parsed_setting[4])
     try:
-        race.condition = get_condition(parsed_setting[4])
+        race.condition = condition
     except IndexError:
         print("244 Index Error:")
         print(parsed_setting)
+        raise SystemExit(0)
     race.save()
 
 def save_race_results(race, tds, trs):
     print("save rac results")
-    parse_race_results(race, trs)
+    # parse_race_results(race, trs)
     print("ready")
     build_race_metrics(race)
+    print("Done")
     save_straight_bets(race, trs)
     if has_exotic_bets(tds):
         save_exotic_bets(race, tds)
@@ -113,17 +119,18 @@ def parse_race_results(race, trs):
             race.chart.program.date)
         comment = row[9].text.strip()
         dog = get_dog(dog_name)
-        update_participant(
-            get_participant(race, dog),
-            post_weight,
-            post,
-            off,
-            eighth,
-            straight,
-            final,
-            actual_running_time,
-            lengths_behind,
-            comment)
+        if dog:
+            update_participant(
+                get_participant(race, dog),
+                post_weight,
+                post,
+                off,
+                eighth,
+                straight,
+                final,
+                actual_running_time,
+                lengths_behind,
+                comment)
 
 def get_race_number(race_number):
     return(int(race_number))

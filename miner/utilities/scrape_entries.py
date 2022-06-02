@@ -29,7 +29,8 @@ def populate_race(entries_url, race):
     post_count = 1
     for anchor in get_participant_entry_anchors(entries_url):
         dog_name = anchor.text
-        save_participant(race, post_count, get_dog(dog_name))
+        if dog_name
+            save_participant(race, post_count, get_dog(dog_name))
         post_count += 1
 
 def process_entries_url(entries_url, race):

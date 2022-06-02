@@ -83,7 +83,7 @@ class Command(BaseCommand):
             pass
 
     def scan_month(self, venue_code, month, year):
-        day = 29
+        day = 28
         while day <= 31:
             if self.is_valid_past_date(month, year, day):
                 self.scan_day(venue_code, month, year, day)
