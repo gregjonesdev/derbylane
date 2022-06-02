@@ -19,6 +19,8 @@ class Command(BaseCommand):
         for race in Race.objects.filter(
             condition__name__isnull=True
         ):
+            print("Race #: {}".format(race.number))
+            print("Chart time: {}".format(race.chart.time))
             url = build_race_results_url(
                     race.chart.program.venue.code,
                     race.chart.program.date.year,
