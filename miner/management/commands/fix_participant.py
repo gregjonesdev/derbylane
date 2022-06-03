@@ -16,8 +16,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        for race in Race.objects.filter(
-            chart__program__date__gte="2022-01-01"):    
-            for participant in race.participant_set.all():
-                print(participant.actual_running_time)
-            build_race_metrics(race)
+        for race in Race.objects.all():
+            if race.participant_set.all().count() <1:
+                race.delete()
