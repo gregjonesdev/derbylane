@@ -286,11 +286,6 @@ def get_raw_participant_metrics(participant, distance):
     if participant.race.grade:
         target_grade_value = participant.race.grade.value
         dog = participant.dog
-        print("")
-        print(dog)
-        print(distance)
-        print(dog.participant_set.all())
-        print(minimum_participations)
         target_date = participant.race.chart.program.date
         participations = get_prior_participations(
             dog,
@@ -303,7 +298,8 @@ def get_raw_participant_metrics(participant, distance):
         print("participations: {}".format(len(participations)))
         print("must be at least: {}".format(minimum_participations))
         for each in participations:
-            print(each.final)
+            if not each.final:
+                print("No final for race on {}".format(each.race.chart.program.date))
         print(" /\-------------")
         if len(participations) >= minimum_participations:
             print("ok")
@@ -333,10 +329,10 @@ def get_raw_participant_metrics(participant, distance):
                 # "rh_factor": calculate_factor(
                 #     chart.get_rh(),
                 #     build_rh_object(participations)),
-                # "final": participant.final,
+                "final": participant.final,
             }
             print(raw_metrics)
-            # return raw_metrics
+            return raw_metrics
 
 def scale_metrics(raw_metrics):
     slowest_time = get_slowest_raw_time(raw_metrics)
@@ -363,9 +359,7 @@ def get_slowest_raw_time(raw_race_metrics):
 def get_raw_race_metrics(race):
     raw_race_metrics = []
     for participant in race.participant_set.all():
-        print(participant.dog.name)
         raw_metrics = get_raw_participant_metrics(participant, race.distance)
-        print("RAW PART METRICS: {}".format(len(raw_metrics)))
         if raw_metrics:
             raw_race_metrics.append(raw_metrics)
     return raw_race_metrics
@@ -373,10 +367,12 @@ def get_raw_race_metrics(race):
 
 def calculate_scaled_race_metrics(race):
     raw_race_metrics = get_raw_race_metrics(race)
-    print("RAW RACE METRICS: {}".format(len(raw_race_metrics)))
     return scale_metrics(raw_race_metrics)
 
 def save_metrics(metrics):
+
+
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~`FINALLY SAVE METRCI")
     participant = metrics["participant"]
     try:
         existing_metric = Metric.objects.get(participant=participant)
@@ -388,9 +384,7 @@ def save_metrics(metrics):
         # print("new")
         new_metric.set_fields_to_base()
         existing_metric = new_metric
-        # print("CREATED NEW METRIC FOR: {}".format(participant.uuid))
-    # print(participant.final)
-    # print("{} {} {} {}".format(participant.race.chart.program.date, participant.race.chart.program.venue.code, participant.race.grade.name, participant.race.distance ))
+
     existing_metric.scaled_fastest_time = metrics["scaled_fastest_time"]
     existing_metric.win = metrics["win_percent"]
     existing_metric.place = metrics["place_percent"]
@@ -407,18 +401,20 @@ def save_metrics(metrics):
     existing_metric.sex = metrics["sex"]
     existing_metric.post_weight_avg = metrics["post_weight_avg"]
     existing_metric.post_factor = metrics["post_factor"]
-    existing_metric.temp_factor = metrics["temp_factor"]
-    existing_metric.rh_factor =  metrics["rh_factor"]
+    # existing_metric.temp_factor = metrics["temp_factor"]
+    # existing_metric.rh_factor =  metrics["rh_factor"]
     if participant.final:
         existing_metric.final = participant.final
     existing_metric.save()
 
 def build_race_metrics(race):
-    print("BUILD RACE METRICS ")
+    print("build race metrics ()")
     scaled_race_metrics = calculate_scaled_race_metrics(race)
-    print(len(scaled_race_metrics))
+    print("$$$$$$$$$$ SCaled MEtrics count: {}".format(len(scaled_race_metrics)))
     for metrics in scaled_race_metrics:
         save_metrics(metrics)
+    print("build race metrics complete")
+
 
 def get_defined_training_metrics(grade, distance, venue, start_date, months):
     days = 30*months

@@ -61,7 +61,7 @@ class Command(BaseCommand):
                     time,
                     str(number).zfill(2))
                 scan = self.get_scan(url)
-                if not scan.completed:
+                if scan.completed:
                     if has_results(url):
                         race = get_race(chart, number)
                         try:
@@ -83,7 +83,7 @@ class Command(BaseCommand):
             pass
 
     def scan_month(self, venue_code, month, year):
-        day = 28
+        day = 1
         while day <= 31:
             if self.is_valid_past_date(month, year, day):
                 self.scan_day(venue_code, month, year, day)
