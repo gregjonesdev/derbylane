@@ -287,7 +287,7 @@ def get_raw_participant_metrics(participant, distance):
         target_grade_value = participant.race.grade.value
         print(" 0 0 ")
         print(participant.race)
-        print(get_results_url_for_race(participant.racce))
+        print(get_results_url_for_race(participant.race))
         print(" 0 ~~~~~~~~~~ 0 ")
         print(participant.race.grade.name)
         print("\t\t\t\t\t\t".format(target_grade_value))
