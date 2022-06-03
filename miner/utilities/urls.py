@@ -32,6 +32,15 @@ def build_entries_url(venue_code, year, month, day, time, race_number):
         time,
         str(race_number).zfill(2))
 
+def get_results_url_for_race(race):
+    return build_race_results_url(
+        race.chart.program.venue.code,
+        race.chart.program.date.year,
+        race.chart.program.date.month,
+        race.chart.program.date.day,
+        race.chart.time,
+        race.number)
+
 def build_race_results_url(venue_code, year, month, day, time, race_number):
     return "{}G{}${}{}{}{}{}".format(
         results_url,

@@ -50,6 +50,8 @@ def get_parsed_results_race_setting(url):
     return clean_race_setting(td)
 
 def save_race_settings(race, parsed_setting):
+    print(parsed_setting)
+
     try:
         race.grade = get_grade(parsed_setting[2])
         race.distance = get_race_distance(parsed_setting[3])
@@ -57,6 +59,8 @@ def save_race_settings(race, parsed_setting):
         print("Index Error:")
         print(parsed_setting)
     race.save()
+    print(race.__dict__)
+    print("\n\n\n\n\n\n\n\n\n\n")
 
 def get_race_distance(race_distance):
     return(int(race_distance))

@@ -90,9 +90,14 @@ def get_dog(name):
     return dog
 
 def get_grade(raw_grade):
+    print("get_grade")
+
+    print(raw_grade)
     stripped_grade = raw_grade.strip().upper()
     if stripped_grade:
         if stripped_grade in grade_skips:
+            print("Skiiped")
+            print(grade_skips)
             return None
         try:
             grade = Grade.objects.get(name=stripped_grade)
@@ -105,6 +110,7 @@ def get_grade(raw_grade):
             grade = new_grade
         return grade
     else:
+        print("nothing")
         return None
 
 def get_node_elements(url, string):
