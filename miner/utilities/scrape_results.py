@@ -78,7 +78,7 @@ def save_race_results(race, tds, trs):
     print("save rac results")
     parse_race_results(race, trs)
     print("ready")
-    build_race_metrics(race)
+    # build_race_metrics(race)
     print("Done")
     save_straight_bets(race, trs)
     if has_exotic_bets(tds):

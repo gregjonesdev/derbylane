@@ -17,11 +17,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         for race in Race.objects.filter(
-            chart__program__date="2022-05-27")[:1]:
+            chart__program__date="2022-05-12")[:1]:
             for participant in race.participant_set.all():
                 print(participant.actual_running_time)
-                print(participant.straight)
             build_race_metrics(race)
-
-
-            # update_race_condition(race, url)
