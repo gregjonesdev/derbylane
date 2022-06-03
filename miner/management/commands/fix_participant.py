@@ -17,14 +17,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         for race in Race.objects.filter(
-            chart__program__date__gte="2022-01-01"):
-            if race.chart.program.venue.is_active and not race.grade.name:
-                url = get_results_url_for_race(race)
-                print(url)
-                parsed_setting = get_parsed_results_race_setting(url)
-                save_race_settings(race, parsed_setting)
-                print(race.grade.name)
-                print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            # for participant in race.participant_set.all():
-            #     print(participant.actual_running_time)
-            # build_race_metrics(race)
+            chart__program__date__gte="2022-01-01"):    
+            for participant in race.participant_set.all():
+                print(participant.actual_running_time)
+            build_race_metrics(race)
