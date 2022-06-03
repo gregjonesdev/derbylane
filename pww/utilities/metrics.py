@@ -285,6 +285,8 @@ def is_complete(participant_metrics):
 def get_raw_participant_metrics(participant, distance):
     if participant.race.grade:
         target_grade_value = participant.race.grade.value
+        print(" 0 0 ")
+        print(participant.race.grade)
         dog = participant.dog
         target_date = participant.race.chart.program.date
         participations = get_prior_participations(
