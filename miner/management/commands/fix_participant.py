@@ -18,7 +18,7 @@ class Command(BaseCommand):
 
         for race in Race.objects.filter(
             chart__program__date__gte="2022-01-01"):
-            if not race.grade.name:
+            if race.chart.program.venue.is_active and not race.grade.name:
                 url = get_results_url_for_race(race)
                 print(url)
                 parsed_setting = get_parsed_results_race_setting(url)
