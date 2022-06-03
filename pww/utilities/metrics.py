@@ -8,7 +8,7 @@ minimum_participations = 2
 x_values = [1, 2, 3, 4, 5, 6, 7, 8]
 
 from miner.utilities.common import force_date, save_dog_info
-
+from miner.utilities.urls import build_race_results_url
 from scipy.optimize import curve_fit
 from numpy import arange
 
@@ -286,7 +286,14 @@ def get_raw_participant_metrics(participant, distance):
     if participant.race.grade:
         target_grade_value = participant.race.grade.value
         print(" 0 0 ")
-        print(participant.race.grade)
+        print(participant.race)
+        print(build_race_results_url(
+            participant.race.chart.program.venue.code,
+            participant.race.chart.program.date.year,
+            participant.race.chart.program.date.month,
+            participant.race.chart.program.date.day,
+            participant.race.chart.time,
+            participant.race.number))
         dog = participant.dog
         target_date = participant.race.chart.program.date
         participations = get_prior_participations(
