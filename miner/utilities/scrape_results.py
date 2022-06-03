@@ -3,7 +3,6 @@ from miner.utilities.common import (
     get_attribute_elements,
     clean_race_setting,
     get_dog,
-    distance_converter,
     get_node_elements,
     get_grade
 )
@@ -11,6 +10,7 @@ from miner.utilities.constants import (
     bad_characters,
     art_skips,
     post_weight,
+    distance_converter,
     position_skips,
     length_converter,
 )
