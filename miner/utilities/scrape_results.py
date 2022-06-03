@@ -29,8 +29,8 @@ from miner.utilities.models import (
 from pww.utilities.metrics import build_race_metrics
 
 def has_results(url):
-    tds = get_node_elements(url, "//td")
-    return len(tds) > 41
+    trs = get_node_elements(url, "//tr")
+    return len(trs) > 23
 
 def process_url(url, race):
     if has_results(url):
