@@ -61,7 +61,7 @@ class Command(BaseCommand):
                     time,
                     str(number).zfill(2))
                 scan = self.get_scan(url)
-                if scan.completed:
+                if not scan.completed:
                     if has_results(url):
                         race = get_race(chart, number)
                         try:
@@ -98,8 +98,8 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        # venue_codes = ['TS', 'WD', 'SL']
-        # with ThreadPoolExecutor() as executor:
-        #     executor.map(self.get_venue_results, venue_codes)
+        venue_codes = ['TS', 'WD', 'SL']
+        with ThreadPoolExecutor() as executor:
+            executor.map(self.get_venue_results, venue_codes)
 
-        self.get_venue_results('WD')
+        # self.get_venue_results('WD')
