@@ -51,7 +51,6 @@ def get_parsed_results_race_setting(url):
 
 def save_race_settings(race, parsed_setting):
     print(parsed_setting)
-
     try:
         race.grade = get_grade(parsed_setting[2])
         race.distance = get_race_distance(parsed_setting[3])
@@ -63,6 +62,8 @@ def save_race_settings(race, parsed_setting):
     print("\n\n\n\n\n\n\n\n\n\n")
 
 def get_race_distance(race_distance):
+    if race__distance in distance_converter.keys():
+        return distance_converter[race_distance]
     return(int(race_distance))
 
 def update_race_condition(race, url):
