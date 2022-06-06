@@ -24,7 +24,7 @@ class Command(BaseCommand):
                         post=int(i)
                     )
                 except MultipleObjectsReturned:
-                    get_results_url_for_race(race)
+                    print(get_results_url_for_race(race))
                     for participant in Participant.objects.filter(
                         race=race,
                         post=int(i)
