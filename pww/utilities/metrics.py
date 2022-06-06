@@ -262,9 +262,7 @@ def get_position_percent(participations, position):
 def get_prior_participations(dog, target_date, distance, race_count):
     print("Get prior participations")
     print(dog.participant_set.all().count())
-    print(race_count)
-    print(target_date)
-    print(distance)
+
     priors = dog.participant_set.filter(
         race__chart__program__date__lt=target_date,
         race__distance=distance,
@@ -300,8 +298,7 @@ def get_raw_participant_metrics(participant, distance):
             target_date,
             distance,
             past_race_count)
-        print("Participations:")
-        print(participations.count())
+
         # chart = participant.race.chart
         # print("ARRIVED>>>>")
         # print("participations: {}".format(len(participations)))

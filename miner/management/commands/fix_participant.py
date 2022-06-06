@@ -15,11 +15,13 @@ bets = ["W", "P", "S", "WP", "PS", "WPS"]
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        race = Race.objects.get(
-            chart__program__venue__code="TS",
-            chart__program__date="2022-05-30",
-            number=3
-        )
-        metrics = get_raw_race_metrics(race)
-        for metric in metrics:
-            print(metric)
+        for race in Race.objects.all():
+            i = 0
+            while i < 9:
+                try:
+                    Participant.objects.get(
+                        race=race,
+                        post=int(i)
+                    )
+                except MultipleObjectsReturns:
+                    print(race.uuid)    
