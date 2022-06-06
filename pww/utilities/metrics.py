@@ -265,13 +265,15 @@ def get_prior_participations(dog, target_date, distance, race_count):
     print(race_count)
     print(target_date)
     print(distance)
-    return dog.participant_set.filter(
+    priors = dog.participant_set.filter(
         race__chart__program__date__lt=target_date,
         race__distance=distance,
         race__condition__name="F",
         final__isnull=False,
         ).order_by(
             '-race__chart__program__date')[:race_count]
+    print("Priors: {}".format(priors.count()))        
+    return priors
 
 
 def is_complete(participant_metrics):
