@@ -10,7 +10,7 @@ class Command(BaseCommand):
         dog = Dog.objects.get(name="SUPER C DEMURE")
         parts = dog.participant_set.filter(
             race__chart__program__date__lt=target_date,
-            race__distance=distance,
+            race__distance=550,
             race__condition__name="F",
             final__isnull=False,
             ).order_by(
