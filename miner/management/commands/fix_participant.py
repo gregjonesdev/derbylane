@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for race in Race.objects.all():
-            i = 0
+            i = 1
             while i < 9:
                 try:
                     Participant.objects.get(
@@ -24,4 +24,5 @@ class Command(BaseCommand):
                         post=int(i)
                     )
                 except MultipleObjectsReturns:
-                    print(race.uuid)    
+                    print(race.uuid)
+                i += 1
