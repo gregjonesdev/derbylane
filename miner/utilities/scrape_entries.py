@@ -9,6 +9,8 @@ from miner.utilities.common import (
 from pww.utilities.metrics import build_race_metrics
 from miner.utilities.models import save_participant
 
+from miner.utilities.constants import no_greyhound_names
+
 
 def get_parsed_race_setting(url):
     td = get_attribute_elements(
@@ -29,7 +31,7 @@ def populate_race(entries_url, race):
     post_count = 1
     for anchor in get_participant_entry_anchors(entries_url):
         dog_name = anchor.text
-        if dog_name:
+        if dog_name and not dog_name in no_greyhound_names:
             save_participant(race, post_count, get_dog(dog_name))
         post_count += 1
 
