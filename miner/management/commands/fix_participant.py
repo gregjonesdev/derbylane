@@ -25,6 +25,11 @@ class Command(BaseCommand):
                     )
                 except MultipleObjectsReturned:
                     print(race.uuid)
+                    for participant in Participant.objects.filter(
+                        race=race,
+                        post=int(i)
+                    ):
+                    print(participant.created_at)
                 except ObjectDoesNotExist:
-                    pass    
+                    pass
                 i += 1
