@@ -29,7 +29,7 @@ class Command(BaseCommand):
                         race=race,
                         post=int(i)
                     ):
-                        print(participant.created_at)
+                        print("{} {}".format(participant.post, participant.dog.name))
                 except ObjectDoesNotExist:
                     pass
                 i += 1
