@@ -25,4 +25,6 @@ class Command(BaseCommand):
                     )
                 except MultipleObjectsReturned:
                     print(race.uuid)
+                except ObjectDoesNotExist:
+                    pass    
                 i += 1
