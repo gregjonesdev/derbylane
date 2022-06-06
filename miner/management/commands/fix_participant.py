@@ -1,7 +1,7 @@
 import datetime
 import random
 import datetime
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.management.base import BaseCommand
 
 from rawdat.models import Race, Condition
@@ -23,6 +23,6 @@ class Command(BaseCommand):
                         race=race,
                         post=int(i)
                     )
-                except MultipleObjectsReturns:
+                except MultipleObjectsReturned:
                     print(race.uuid)
                 i += 1
