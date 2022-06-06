@@ -4,7 +4,7 @@ import datetime
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.management.base import BaseCommand
 
-from rawdat.models import Race, Condition
+from rawdat.models import Race, Participant
 from pww.models import Participant_Prediction, WekaModel
 from pww.utilities.metrics import get_raw_race_metrics
 from miner.utilities.urls import get_results_url_for_race
