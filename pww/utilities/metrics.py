@@ -260,10 +260,11 @@ def get_position_percent(participations, position):
 
 
 def get_prior_participations(dog, target_date, distance, race_count):
-    print("priors")
-    print("any parts?")
+    print("Get prior participations")
     print(dog.participant_set.all().count())
     print(race_count)
+    print(target_date)
+    print(distance)
     return dog.participant_set.filter(
         race__chart__program__date__lt=target_date,
         race__distance=distance,
