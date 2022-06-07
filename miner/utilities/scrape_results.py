@@ -231,20 +231,10 @@ def get_running_time(raw_time):
 def get_post_weight(dog_name, date):
     target_url = build_dog_results_url(dog_name)
     string_date = "{}".format(date)
-    print(target_url)
-    print(date)
     trs = get_node_elements(target_url, '//tr')
     for tr in trs:
         row_date = tr[0][0].text.strip().split()[0]
-        print(row_date)
-    # entries = "Oh"
-    # for entry in entries:
-    #     print(entry)
-    #     print(entry[0].)
-    #     print(entry[0][0])
-    #     date = entry[0][0].text.strip().split()[0]
         if string_date == row_date:
-            print("Yeah buddy")
             string_postweight = tr[5].text.strip()
             try:
                 return float(string_postweight)

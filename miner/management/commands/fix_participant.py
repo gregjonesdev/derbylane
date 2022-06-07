@@ -29,6 +29,7 @@ class Command(BaseCommand):
                         race=race,
                         post=int(i)
                     ):
+                        participant.delete()
                         print("{} {}".format(participant.post, participant.dog.name))
                 except ObjectDoesNotExist:
                     pass
