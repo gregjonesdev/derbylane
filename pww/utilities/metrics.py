@@ -285,12 +285,6 @@ def is_complete(participant_metrics):
 def get_raw_participant_metrics(participant, distance):
     if participant.race.grade:
         target_grade_value = participant.race.grade.value
-        print(" 0 0 ")
-        print(participant.race)
-        # print(get_results_url_for_race(participant.race))
-        print(" 0 ~~~~~~~~~~ 0 ")
-        print(participant.race.grade.name)
-        print("\t\t\t\t\t\t".format(target_grade_value))
         dog = participant.dog
         target_date = participant.race.chart.program.date
         participations = get_prior_participations(
@@ -299,46 +293,36 @@ def get_raw_participant_metrics(participant, distance):
             distance,
             past_race_count)
 
-        # chart = participant.race.chart
-        # print("ARRIVED>>>>")
-        # print("participations: {}".format(len(participations)))
-        # print("must be at least: {}".format(minimum_participations))
-        # for each in participations:
-        #     if not each.final:
-        #         print("No final for race on {}".format(each.race.chart.program.date))
-        # print(" /\-------------")
-        # if len(participations) >= minimum_participations:
-        #     print("ok")
-        #     raw_metrics = {
-        #         "participant": participant,
-        #         "raw_fastest_time": get_raw_fastest_time(participations),
-        #         "win_percent": get_position_percent(participations, 1),
-        #         "place_percent": get_position_percent(participations, 2),
-        #         "show_percent": get_position_percent(participations, 3),
-        #         "break_avg": get_break_average(participations),
-        #         "eighth_avg": get_eighth_average(participations),
-        #         "straight_avg": get_straight_average(participations),
-        #         "finish_avg": get_finish_average(participations),
-        #         "grade_avg": grade_average(participations),
-        #         "time_seven": time_average(participations[:7]),
-        #         "time_three": time_average(participations[:3]),
-        #         "upgrade": upgrade(participations[:3], target_grade_value),
-        #         "age": get_age(participant),
-        #         "sex": participant.dog.sex,
-        #         "post_weight_avg": get_postweight_average(participations),
-        #         "post_factor": calculate_factor(
-        #             participant.post,
-        #             build_posts_object(participations)),
-        #         # "temp_factor": calculate_factor(
-        #         #     chart.get_racetemp(),
-        #         #     build_temp_object(participations)),
-        #         # "rh_factor": calculate_factor(
-        #         #     chart.get_rh(),
-        #         #     build_rh_object(participations)),
-        #         "final": participant.final,
-        #     }
-        #     print(raw_metrics)
-        #     return raw_metrics
+        if len(participations) >= minimum_participations:
+            raw_metrics = {
+                "participant": participant,
+                "raw_fastest_time": get_raw_fastest_time(participations),
+                "win_percent": get_position_percent(participations, 1),
+                "place_percent": get_position_percent(participations, 2),
+                "show_percent": get_position_percent(participations, 3),
+                "break_avg": get_break_average(participations),
+                "eighth_avg": get_eighth_average(participations),
+                "straight_avg": get_straight_average(participations),
+                "finish_avg": get_finish_average(participations),
+                "grade_avg": grade_average(participations),
+                "time_seven": time_average(participations[:7]),
+                "time_three": time_average(participations[:3]),
+                "upgrade": upgrade(participations[:3], target_grade_value),
+                "age": get_age(participant),
+                "sex": participant.dog.sex,
+                "post_weight_avg": get_postweight_average(participations),
+                "post_factor": calculate_factor(
+                    participant.post,
+                    build_posts_object(participations)),
+                # "temp_factor": calculate_factor(
+                #     chart.get_racetemp(),
+                #     build_temp_object(participations)),
+                # "rh_factor": calculate_factor(
+                #     chart.get_rh(),
+                #     build_rh_object(participations)),
+                "final": participant.final,
+            }
+            return raw_metrics
 
 def scale_metrics(raw_metrics):
     slowest_time = get_slowest_raw_time(raw_metrics)
