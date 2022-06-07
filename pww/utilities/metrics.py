@@ -288,7 +288,7 @@ def get_raw_participant_metrics(participant, distance):
             target_date,
             distance,
             past_race_count)
-        print("Participations: {}".format(len(participations))
+        print("Participations: {}".format(len(participations)))
         if len(participations) >= minimum_participations:
             raw_metrics = {
                 "participant": participant,
