@@ -232,7 +232,6 @@ def get_finish_average(participations):
 def get_average(data_list):
     Not_none_values = filter(None.__ne__, data_list)
     list_of_values = list(Not_none_values)
-
     if len(list_of_values) > 0:
         return float(sum(list_of_values)/len(list_of_values))
     return None
@@ -260,9 +259,6 @@ def get_position_percent(participations, position):
 
 
 def get_prior_participations(dog, target_date, distance, race_count):
-    print("Get prior participations")
-    print(dog.participant_set.all().count())
-
     priors = dog.participant_set.filter(
         race__chart__program__date__lt=target_date,
         race__distance=distance,
@@ -270,7 +266,6 @@ def get_prior_participations(dog, target_date, distance, race_count):
         final__isnull=False,
         ).order_by(
             '-race__chart__program__date')[:race_count]
-    print("Priors: {}".format(priors.count()))
     return priors
 
 
@@ -283,6 +278,7 @@ def is_complete(participant_metrics):
 
 
 def get_raw_participant_metrics(participant, distance):
+    print("get raw part metrics")
     if participant.race.grade:
         target_grade_value = participant.race.grade.value
         dog = participant.dog
@@ -292,7 +288,7 @@ def get_raw_participant_metrics(participant, distance):
             target_date,
             distance,
             past_race_count)
-
+        print("Participations: {}".format(len(participations))
         if len(participations) >= minimum_participations:
             raw_metrics = {
                 "participant": participant,
@@ -357,21 +353,17 @@ def get_raw_race_metrics(race):
 
 def calculate_scaled_race_metrics(race):
     raw_race_metrics = get_raw_race_metrics(race)
+    print("raw race metrics: {}".format(len(raw_race_metrics)))
     return scale_metrics(raw_race_metrics)
 
 def save_metrics(metrics):
-
-
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~`FINALLY SAVE METRCI")
     participant = metrics["participant"]
     try:
         existing_metric = Metric.objects.get(participant=participant)
-        # print("metric already exists. updating {}".format(participant.uuid))
     except ObjectDoesNotExist:
         new_metric = Metric(
             participant=metrics["participant"]
         )
-        # print("new")
         new_metric.set_fields_to_base()
         existing_metric = new_metric
 
@@ -398,35 +390,11 @@ def save_metrics(metrics):
     existing_metric.save()
 
 def build_race_metrics(race):
-    print("build race metrics ()")
+    print("build race metrics")
     scaled_race_metrics = calculate_scaled_race_metrics(race)
-    print("$$$$$$$$$$ SCaled MEtrics count: {}".format(len(scaled_race_metrics)))
+    print(len(scaled_race_metrics))
     for metrics in scaled_race_metrics:
         save_metrics(metrics)
-    print("build race metrics complete")
-
-
-def get_defined_training_metrics(grade, distance, venue, start_date, months):
-    days = 30*months
-    end_date = datetime.datetime.strptime("2021-12-31", "%Y-%m-%d").date()
-    print(end_date)
-    return Metric.objects.filter(
-        participant__race__grade=grade,
-        participant__race__distance=distance,
-        participant__race__chart__program__venue=venue,
-        participant__race__chart__program__date__range=(
-            start_date,
-            end_date))
-
-
-def get_training_metrics(venue_code, grade_name, distance, end_date):
-    start_date = "2021-09-01"
-    return Metric.objects.filter(
-        participant__race__chart__program__venue__code=venue_code,
-        participant__race__grade__name=grade_name,
-        participant__race__distance=distance,
-        participant__race__chart__program__date__range=(
-            start_date, end_date))
 
 def get_race_metrics(race):
     return Metric.objects.filter(
@@ -438,11 +406,6 @@ def new_get_metrics(grade_name, venue_code, start_date, end_date):
         participant__race__grade__name=grade_name,
         participant__race__chart__program__date__range=(
             start_date, end_date))
-
-# def get_graded_metrics(grade, venue):
-#     return Metric.objects.filter(
-#         participant__race__chart__program__venue=venue,
-#         participant__race__grade=grade)
 
 def get_scheduled_metrics(today):
     return Metric.objects.filter(
