@@ -37,7 +37,6 @@ def populate_race(entries_url, race):
 
 def process_entries_url(entries_url, race):
     parsed_setting = get_parsed_race_setting(entries_url)
-    print(parsed_setting)
     save_race_settings(race, parsed_setting)
     populate_race(entries_url, race)
     if race.grade and race.grade.value:

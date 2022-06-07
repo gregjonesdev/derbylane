@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 
 from concurrent.futures import ThreadPoolExecutor
+from pww.utilities.metrics import build_race_metrics
 
 from miner.utilities.urls import build_race_results_url
 from miner.utilities.common import get_node_elements
@@ -66,6 +67,7 @@ class Command(BaseCommand):
                         race = get_race(chart, number)
                         try:
                             comment = process_url(url, race)
+                            build_race_metrics(race)
                         except:
                             comment = "Errored:"
                             print(url)

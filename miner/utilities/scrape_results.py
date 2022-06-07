@@ -26,7 +26,6 @@ from miner.utilities.models import (
     create_trifecta,
     create_superfecta)
 
-from pww.utilities.metrics import build_race_metrics
 
 def has_results(url):
     trs = get_node_elements(url, "//tr")
@@ -35,9 +34,10 @@ def has_results(url):
 def process_url(url, race):
     if has_results(url):
         tds = get_node_elements(url, "//td")
-        parsed_setting = get_parsed_results_race_setting(url)
-        save_race_settings(race, parsed_setting)
         trs = get_node_elements(url, "//tr")
+        save_race_settings(
+            race,
+            get_parsed_results_race_setting(url))
         update_race_condition(race, url)
         return save_race_results(race, tds, trs)
     return no_elements
@@ -51,7 +51,6 @@ def get_parsed_results_race_setting(url):
     return clean_race_setting(td)
 
 def save_race_settings(race, parsed_setting):
-    print(parsed_setting)
     try:
         race.grade = get_grade(parsed_setting[2])
         race.distance = get_race_distance(parsed_setting[3])
@@ -59,8 +58,6 @@ def save_race_settings(race, parsed_setting):
         print("Index Error:")
         print(parsed_setting)
     race.save()
-    print(race.__dict__)
-    print("\n\n\n\n\n\n\n\n\n\n")
 
 def get_race_distance(race_distance):
     if race_distance in distance_converter.keys():
@@ -69,8 +66,6 @@ def get_race_distance(race_distance):
 
 def update_race_condition(race, url):
     parsed_setting = get_parsed_results_race_setting(url)
-    print(parsed_setting)
-    print(parsed_setting[4])
     condition = get_condition(parsed_setting[4])
     try:
         race.condition = condition
@@ -81,11 +76,7 @@ def update_race_condition(race, url):
     race.save()
 
 def save_race_results(race, tds, trs):
-    print("save rac results")
     parse_race_results(race, trs)
-    print("ready")
-    build_race_metrics(race)
-    print("Done")
     save_straight_bets(race, trs)
     if has_exotic_bets(tds):
         save_exotic_bets(race, tds)
@@ -95,7 +86,6 @@ def save_race_results(race, tds, trs):
     return success
 
 def parse_race_results(race, trs):
-    print("el parso")
     for row in get_participant_rows(trs):
         dog_name = parse_dog_name(row[0][0].text)
         post = parse_position(row[1].text)
@@ -106,22 +96,20 @@ def parse_race_results(race, trs):
         final = parse_position(final_and_lengths[0])
         lengths_behind = final_and_lengths[1]
         actual_running_time = get_running_time(row[6].text)
-        print(dog_name)
-        print(post)
-        print(off)
-        print(eighth)
-        print(straight)
-        print("---")
-        print(final)
-        print("----")
-        print(lengths_behind)
-        print(actual_running_time)
+        # print(dog_name)
+        # print(post)
+        # print(off)
+        # print(eighth)
+        # print(straight)
+        # print("---")
+        # print(final)
+        # print("----")
+        # print(lengths_behind)
+        # print(actual_running_time)
         post_weight = get_post_weight(
             dog_name,
             race.chart.program.date)
-        print("done")
         comment = row[9].text.strip()
-        print(comment)
         dog = get_dog(dog_name)
         if dog:
             update_participant(
