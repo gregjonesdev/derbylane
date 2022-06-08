@@ -259,7 +259,7 @@ def get_position_percent(participations, position):
 
 
 def get_prior_participations(dog, target_date, distance, race_count):
-    print(dog.name)
+    print("_{}_".format(dog.name))
     print(build_dog_results_url(dog.name))
     priors = dog.participant_set.all()
     print("Priors: {}".format(len(priors)))
@@ -359,10 +359,10 @@ def get_slowest_raw_time(raw_race_metrics):
 def get_raw_race_metrics(race):
     raw_race_metrics = []
     for participant in race.participant_set.all():
+        print("~{}~".format(participant.dog.name))
         raw_metrics = get_raw_participant_metrics(participant, race.distance)
         if raw_metrics:
             raw_race_metrics.append(raw_metrics)
-    raise SystemExit(0)        
     return raw_race_metrics
 
 

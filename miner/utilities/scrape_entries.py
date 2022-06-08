@@ -30,7 +30,7 @@ def get_participant_entry_anchors(entries_url):
 def populate_race(entries_url, race):
     post_count = 1
     for anchor in get_participant_entry_anchors(entries_url):
-        dog_name = anchor.text
+        dog_name = anchor.text.upper().strip()
         if dog_name and not dog_name in no_greyhound_names:
             save_participant(race, post_count, get_dog(dog_name))
         post_count += 1

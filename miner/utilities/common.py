@@ -78,7 +78,7 @@ def save_dog_info(dog):
 def get_dog(name):
     print(name)
     try:
-        dog = Dog.objects.get(name=name.upper())
+        dog = Dog.objects.get(name=name.strip().upper())
     except ObjectDoesNotExist:
         new_dog = Dog(
             name=name.upper()
