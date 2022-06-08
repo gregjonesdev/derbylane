@@ -34,7 +34,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        # start_jvm()
+        start_jvm()
         today = datetime.date.today()
         scheduled_metrics = get_scheduled_metrics(today)
         print("scheduled_metrics")
@@ -54,11 +54,11 @@ class Command(BaseCommand):
                     participant__race__chart__program__venue=venue,
                     participant__race__grade=grade)
                 print("Graded Mterics: {}".format(len(graded_metrics)))
-                # for weka_model in weka_models:
-                    # print(weka_model.get_name())
-                    # self.make_straight_predictions(
-                    #     race,
-                    #     weka_model,
-                    #     graded_metrics)
+                for weka_model in weka_models:
+                    print(weka_model.get_name())
+                    self.make_straight_predictions(
+                        race,
+                        weka_model,
+                        graded_metrics)
 
-        # stop_jvm()
+        stop_jvm()
