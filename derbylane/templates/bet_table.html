@@ -71,7 +71,7 @@
               disabled>
                 {{ participant.get_win_bet.purchase_amount }}
             </button>
-              {% else %}
+          {% else %}
             {% if 'W' in participant.get_recommended_bet %}
               <button
                 id="{{ participant.uuid }}-win-button"
@@ -85,10 +85,46 @@
           {% endif %}
         </td>
         <td id="{{ participant.uuid }}-place-td" >
-
+          {% if participant.get_place_bet %}
+            <button
+              id="{{ participant.uuid }}-place-button"
+              class="btn btn-sm btn-block btn-outline-info quick-bet-btn"
+              disabled>
+                {{ participant.get_place_bet.purchase_amount }}
+            </button>
+          {% else %}
+            {% if 'P' in participant.get_recommended_bet %}
+              <button
+                id="{{ participant.uuid }}-place-button"
+                class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
+                data-participant="{{ participant.uuid }}"
+                data-type="P"
+                disabled>
+                P
+              </button>
+            {% endif %}
+          {% endif %}
         </td>
         <td id="{{ participant.uuid }}-show-td">
-        
+          {% if participant.get_show_bet %}
+            <button
+              id="{{ participant.uuid }}-show-button"
+              class="btn btn-sm btn-block btn-outline-info quick-bet-btn"
+              disabled>
+                {{ participant.get_show_bet.purchase_amount }}
+            </button>
+          {% else %}
+            {% if 'S' in participant.get_recommended_bet %}
+              <button
+                id="{{ participant.uuid }}-show-button"
+                class="btn btn-sm btn-block btn-outline-light quick-bet-btn"
+                data-participant="{{ participant.uuid }}"
+                data-type="S"
+                disabled>
+                S
+              </button>
+            {% endif %}
+          {% endif %}
         </td>
       {% endif %}
     </tr>
