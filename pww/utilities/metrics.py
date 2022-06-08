@@ -8,7 +8,7 @@ minimum_participations = 2
 x_values = [1, 2, 3, 4, 5, 6, 7, 8]
 
 from miner.utilities.common import force_date, save_dog_info
-from miner.utilities.urls import get_results_url_for_race
+from miner.utilities.urls import get_results_url_for_race, build_dog_results_url
 from scipy.optimize import curve_fit
 from numpy import arange
 
@@ -259,6 +259,19 @@ def get_position_percent(participations, position):
 
 
 def get_prior_participations(dog, target_date, distance, race_count):
+    print(dog.name)
+    print(build_dog_results_url(dog.name))
+    priors = dog.participant_set.all()
+    print("Priors: {}".format(len(priors)))
+    past_priors = priors.filter(race__chart__program__date__lt=target_date)
+    print("Past Priors: {}".format(len(past_priors)))
+    distanced_priors = past_priors.filter(race__distance=distance)
+    print("Distanced Priors: {}".format(len(distanced_priors)))
+    conditioned_priors = distanced_priors.filter(race__condition__name="F")
+    print("Conditionedd Priors: {}".format(len(conditioned_priors)))
+    final_priors = conditioned_priors.filter(final__isnull=False)
+    print("Final Priors: {}".format(len(final_priors)))
+
     priors = dog.participant_set.filter(
         race__chart__program__date__lt=target_date,
         race__distance=distance,
@@ -266,6 +279,7 @@ def get_prior_participations(dog, target_date, distance, race_count):
         final__isnull=False,
         ).order_by(
             '-race__chart__program__date')[:race_count]
+    print(len(priors))
     return priors
 
 
@@ -348,6 +362,7 @@ def get_raw_race_metrics(race):
         raw_metrics = get_raw_participant_metrics(participant, race.distance)
         if raw_metrics:
             raw_race_metrics.append(raw_metrics)
+    raise SystemExit(0)        
     return raw_race_metrics
 
 
