@@ -36,13 +36,13 @@ class Command(BaseCommand):
             print(venue.code)
             for weka_model in WekaModel.objects.filter(venue=venue):
                 print("Grade: {}".format(weka_model.grade.name))
+                print(len(metrics))
                 metrics = get_training_metrics(
                     weka_model.grade.name,
                     venue.code,
                     start_date,
                     end_date)
-                 self.make_straight_predictions(
+                self.make_straight_predictions(
                     weka_model,
                     graded_metrics)
-                print(len(metrics))
         stop_jvm()
