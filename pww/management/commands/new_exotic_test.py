@@ -15,7 +15,7 @@ from pww.utilities.classifiers import classifiers
 from pww.utilities.weka import get_model, save_model, evaluate_exotics
 from pww.utilities.weka import create_model
 from pww.utilities.testing import evaluate_model_cutoffs, evaluate_nominal_model
-from pww.utilities.metrics import new_get_metrics, get_race_metrics
+from pww.utilities.metrics import get_training_metrics, get_race_metrics
 
 
 from rawdat.models import Race
@@ -64,7 +64,7 @@ class Command(BaseCommand):
             for participant in race.participant_set.all():
                 participants.append(participant)
 
-        training_metrics = new_get_metrics(
+        training_metrics = get_training_metrics(
             grade_name,
             venue_code,
             start_date,

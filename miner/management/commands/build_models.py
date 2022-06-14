@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from pww.models import Metric, Prediction
 from pww.utilities.arff import get_training_arff
 from pww.utilities.classifiers import model_data, recommendations
-from pww.utilities.metrics import new_get_metrics
+from pww.utilities.metrics import get_training_metrics
 from pww.utilities.weka import save_model, get_model_name
 
 model_directory = "weka_models"
@@ -29,7 +29,7 @@ class Command(BaseCommand):
             venue_code = model["venue_code"]
             grade_name = model["grade_name"]
             model_name = get_model_name(venue_code, grade_name, start_date)
-            training_metrics = new_get_metrics(
+            training_metrics = get_training_metrics(
                 grade_name,
                 venue_code,
                 start_date,

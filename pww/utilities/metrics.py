@@ -415,12 +415,13 @@ def get_race_metrics(race):
     return Metric.objects.filter(
         participant__race=race)
 
-def new_get_metrics(grade_name, venue_code, start_date, end_date):
+def get_training_metrics(grade_name, venue_code, start_date, end_date):
     return Metric.objects.filter(
         participant__race__chart__program__venue__code=venue_code,
         participant__race__grade__name=grade_name,
         participant__race__chart__program__date__range=(
-            start_date, end_date))
+            start_date, end_date)
+        )
 
 def get_scheduled_metrics(today):
     return Metric.objects.filter(
