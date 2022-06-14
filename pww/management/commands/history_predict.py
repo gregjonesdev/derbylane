@@ -19,11 +19,11 @@ from pww.utilities.weka import (
 
 class Command(BaseCommand):
 
-    def make_straight_predictions(self, weka_model, graded_metrics):
+    def make_straight_predictions(self, weka_model, prediction_metrics):
         classifier = weka_model.classifier
         make_predictions(
             weka_model,
-            get_prediction_arff(graded_metrics),
+            get_prediction_arff(prediction_metrics),
             classifier.is_nominal)
 
 
@@ -37,12 +37,12 @@ class Command(BaseCommand):
             for weka_model in WekaModel.objects.filter(venue=venue):
                 print("Grade: {}".format(weka_model.grade.name))
                 print(len(metrics))
-                metrics = get_training_metrics(
+                prediction_metrics = get_training_metrics(
                     weka_model.grade.name,
                     venue.code,
                     start_date,
                     end_date)
                 self.make_straight_predictions(
                     weka_model,
-                    graded_metrics)
+                    prediction_metrics)
         stop_jvm()
