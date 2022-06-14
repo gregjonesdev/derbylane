@@ -30,8 +30,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         start_jvm()
-        start_date = datetime.datetime(2015, 1, 1)
-        end_date = datetime.datetime(2020, 12, 31)
+        start_date = datetime.datetime(2021, 1, 1)
+        end_date = datetime.datetime(2022, 5, 31)
         for venue in Venue.objects.filter(is_active=True):
             print(venue.code)
             for weka_model in WekaModel.objects.filter(venue=venue):
